@@ -75,7 +75,7 @@ const StakingPairCard = ({
   let tokenAReserveAmount = data
     ? parseFloat(
         u.BigInteger.fromNumber(data.reserve.pair[tokenA].reserveAmount)
-          .mul(tokensStaked)
+          .mul(tokensStaked > 0 ? tokensStaked : 1)
           .div(data.reserve.totalShare)
           .toDecimal(data.reserve.pair[tokenA].decimals)
       )
@@ -84,13 +84,15 @@ const StakingPairCard = ({
   let tokenBReserveAmount = data
     ? parseFloat(
         u.BigInteger.fromNumber(data.reserve.pair[tokenB].reserveAmount)
-          .mul(tokensStaked)
+          .mul(tokensStaked > 0 ? tokensStaked : 1)
           .div(data.reserve.totalShare)
           .toDecimal(data.reserve.pair[tokenB].decimals)
       )
     : 0;
+
   const TVL =
     tokenAReserveAmount * tokenAPrice + tokenBReserveAmount * tokenBPrice;
+
   const stakeAPR =
     ((nepPerSecond * 31536000 * nepPrice +
       bonusPerSecond * bonusTokenPrice * 31536000) /

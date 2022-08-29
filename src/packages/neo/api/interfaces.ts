@@ -1,6 +1,9 @@
 export interface IPrices {
   [key: string]: number;
 }
+export interface IPrice {
+	price: number
+}
 
 export interface ISwapHistoryResult {
   items: ISwap[];

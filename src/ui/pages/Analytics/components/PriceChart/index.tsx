@@ -60,9 +60,9 @@ export const options = {
   },
 };
 
-interface ITokenPriceChartProps{
-	tokenId: string
-	days: string
+interface ITokenPriceChartProps {
+  tokenId: string;
+  days: string;
 }
 const TokenPriceChart = ({ tokenId, days }: ITokenPriceChartProps) => {
   const { network } = useWallet();
@@ -74,11 +74,17 @@ const TokenPriceChart = ({ tokenId, days }: ITokenPriceChartProps) => {
         setLoading(true);
         const res = await new RestAPI(network).getNumbersWithRange(
           tokenId,
-	        days
+          days
         );
+        const lastPrice = await new RestAPI(network).getPrice(
+          tokenId
+        );
+				// res.
+				// console.log(lastPrice)
         setData(res);
         setLoading(false);
       } catch (e: any) {
+				console.log(e)
         setLoading(false);
         // setError(e.message);
       }

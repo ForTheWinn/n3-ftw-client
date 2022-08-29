@@ -3,7 +3,7 @@ import { ENDPOINT } from "./consts";
 import {
 	ILiquidityWithTimeRange, INEPInfoWithTimeRange,
 	IPair, IPairDay,
-	IPairWithNumbers, IPrices,
+	IPairWithNumbers, IPrice, IPrices,
 	IRuneProperties,
 	ISwapHistoryResult,
 	IToken,
@@ -49,6 +49,11 @@ export class RestAPI {
   async getFarms() {
     return this.fetchResult(this.endpoint + "/farms");
   }
+
+	async getPrice(id): Promise<IPrice> {
+		console.log(id)
+		return this.fetchResult(this.endpoint + `/prices/${id}`);
+	}
 
   async getPrices(): Promise<IPrices> {
     return this.fetchResult(this.endpoint + "/prices");

@@ -128,7 +128,7 @@ export const MAINNET_TOKEN_LIST = {
     category: TOKEN_CATEGORY_STARTUPS,
     contractHash: TED_SCRIPT_HASH,
     symbol: "TEDS",
-    logo: "/symbols/ted.jpg",
+    logo: "/symbols/ted.png",
     decimals: 8,
   },
   [MAXI_SCRIPT_HASH]: {
