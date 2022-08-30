@@ -39,34 +39,36 @@ const TokensAnalytics = (props) => {
     fetch();
   }, []);
   return (
-    <div className="table-container">
-      <table className="table is-fullwidth is-narrow">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Liquidity</th>
-            <th>Volume</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((token) => (
-            <TokenItem
-              onClick={handleTokenClick}
-              key={token.id}
-              id={token.id}
-              network={network}
-              symbol={token.symbol}
-            />
-          ))}
-        </tbody>
-      </table>
+    <div>
+      <div className="table-container">
+        <table className="table is-fullwidth is-narrow">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Liquidity</th>
+              <th>Volume</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((token) => (
+              <TokenItem
+                onClick={handleTokenClick}
+                key={token.id}
+                id={token.id}
+                network={network}
+                symbol={token.symbol}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
       {isModalActive !== "" ? (
         <ModalCard isLarge={true} onClose={handleModalClose}>
-	        <div className="has-modal-page">
-		        <TokenDetail tokenId={isModalActive} />
-	        </div>
+          <div className="has-modal-page">
+            <TokenDetail tokenId={isModalActive} />
+          </div>
         </ModalCard>
       ) : (
         <></>

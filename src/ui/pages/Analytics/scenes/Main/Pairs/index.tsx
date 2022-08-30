@@ -39,42 +39,44 @@ const Pairs = (props) => {
     fetch();
   }, []);
   return (
+		<div>
+			<div className="table-container">
+				<table className="table is-fullwidth">
+					<thead>
+					<tr>
+						<th>Name</th>
+						<th>Liquidity</th>
+						<th>Volume</th>
+						{/*<th>Fees</th>*/}
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					{data.map((pair) => (
+						<PairItem
+							onClick={() => handleTokenClick(pair.id)}
+							key={pair.id}
+							tokenA={pair.token_A_id}
+							tokenB={pair.token_B_id}
+							tokenASymbol={pair.token_A_symbol}
+							tokenBSymbol={pair.token_B_symbol}
+							network={network}
+						/>
+					))}
+					</tbody>
+				</table>
+			</div>
+			{isModalActive !== "" ? (
+				<ModalCard isLarge={true} onClose={handleModalClose}>
+					<div className="has-modal-page">
+						<PairDetail id={isModalActive} />
+					</div>
+				</ModalCard>
+			) : (
+				<></>
+			)}
+		</div>
 
-    <div className="table-container">
-      <table className="table is-fullwidth">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Liquidity</th>
-            <th>Volume</th>
-            {/*<th>Fees</th>*/}
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((pair) => (
-            <PairItem
-              onClick={() => handleTokenClick(pair.id)}
-              key={pair.id}
-              tokenA={pair.token_A_id}
-              tokenB={pair.token_B_id}
-              tokenASymbol={pair.token_A_symbol}
-              tokenBSymbol={pair.token_B_symbol}
-              network={network}
-            />
-          ))}
-        </tbody>
-      </table>
-      {isModalActive !== "" ? (
-        <ModalCard isLarge={true} onClose={handleModalClose}>
-          <div className="has-modal-page">
-            <PairDetail id={isModalActive} />
-          </div>
-        </ModalCard>
-      ) : (
-        <></>
-      )}
-    </div>
   );
 };
 
