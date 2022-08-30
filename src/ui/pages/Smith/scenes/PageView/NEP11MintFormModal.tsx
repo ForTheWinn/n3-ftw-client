@@ -53,7 +53,7 @@ const NEP11MintFormModal = ({ onClose, onMint }: IActionModal) => {
     <Modal onClose={onClose}>
       <>
         <h1 className="title is-5">Mint a NFT</h1>
-	      <p className="subtitle is-7">Only contract owner can mint</p>
+        <p className="subtitle is-7">Only contract owner can mint</p>
         <hr />
         <div className="field">
           <label className="label">NFT Name</label>

@@ -201,6 +201,7 @@ const NEP17InfoPage = () => {
 
       {isUpdateModalActive && (
         <NEP17UpdateFormModal
+	        manifest={manifest}
           onUpdate={onUpdate}
           onClose={() => setUpdateModalActive(false)}
         />

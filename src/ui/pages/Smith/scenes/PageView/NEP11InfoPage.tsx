@@ -16,7 +16,7 @@ import Modal from "../../../../components/Modal";
 import PageLayout from "../../../../components/PageLayout";
 import { SMITH_PATH, SMITH_PATH_NEP11 } from "../../../../../consts";
 import NEP17UpdateFormModal from "./NEP17UpdateFormModal";
-import {handleError} from "../../../../../packages/neo/utils/errors";
+import { handleError } from "../../../../../packages/neo/utils/errors";
 
 const NEP11InfoPage = () => {
   const params = useParams();
@@ -57,7 +57,7 @@ const NEP11InfoPage = () => {
           setTxid(res);
         }
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet.");
@@ -89,7 +89,7 @@ const NEP11InfoPage = () => {
         setMintModalActive("");
         setTxid(res);
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet.");
@@ -240,6 +240,7 @@ const NEP11InfoPage = () => {
 
       {isUpdateModalActive && (
         <NEP17UpdateFormModal
+          manifest={manifest}
           onUpdate={onUpdate}
           onClose={() => {
             setAdmin(false);

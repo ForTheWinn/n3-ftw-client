@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import Modal from "../../../../components/Modal";
 
 interface IActionModal {
+  manifest?: {
+    logo: string;
+    website: string;
+  };
   onClose: () => void;
   onUpdate: (values: any) => void;
 }
-const NEP17UpdateFormModal = ({ onClose, onUpdate }: IActionModal) => {
+const NEP17UpdateFormModal = ({ onClose, onUpdate, manifest }: IActionModal) => {
   const [values, setValues] = useState({
-    logo: "",
-    website: "",
+    logo: manifest ? manifest.logo : "",
+    website: manifest ? manifest.website : "",
   });
   const handleValueChange = (key: string, val: string) => {
     setValues({
