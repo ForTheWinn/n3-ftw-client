@@ -38,7 +38,7 @@ const RemoveLiquidity = () => {
 
   return (
     <>
-      <HeaderBetween path={SWAP_PATH} title={"Remove liquidity"} />
+      <HeaderBetween path={SWAP_PATH} title={"Withdraw liquidity"} />
       <hr />
       {connectedWallet ? (
         <LPTokenList

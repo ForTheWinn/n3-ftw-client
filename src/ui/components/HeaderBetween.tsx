@@ -8,16 +8,24 @@ interface IHeaderBetweenProps {
 }
 const HeaderBetween = (props: IHeaderBetweenProps) => {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
       <div style={{ width: "50px" }}>
         <Link className="button is-white is-small" to={props.path}>
           <span className="icon">
             <FaAngleLeft />
           </span>
-          <span>Main</span>
+          <span className="is-hidden-mobile">Main</span>
         </Link>
       </div>
-	    <h1 className="title  is-5 is-marginless">{props.title}</h1>
+
+      <h1 className="title is-5 is-marginless has-text-centered">{props.title}</h1>
+
       <div className="is-relative" style={{ width: "50px" }}>
         {props.isLoading && (
           <div

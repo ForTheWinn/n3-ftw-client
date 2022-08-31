@@ -187,27 +187,28 @@ const Liquidity = () => {
   const title = noLiquidity ? "Create a new pool" : "Provide liquidity";
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <div style={{ width: "50px" }}>
           <Link className="button is-white is-small" to={toMain}>
             <span className="icon">
               <FaAngleLeft />
             </span>
-            <span>Main</span>
+            <span className="is-hidden-mobile">Main</span>
           </Link>
         </div>
-        <h1 className="title  is-5 is-marginless">{title}</h1>
+
+        <h1 className="title is-5 is-marginless has-text-centered">{title}</h1>
+
         <div className="is-relative" style={{ width: "50px" }}>
           <div className="is-pulled-right">
             <SettingDropdown slippage={slippage} setSlippage={setSlippage} />
           </div>
-
-          {/*{isPairLoading && (*/}
-          {/*  <div*/}
-          {/*    className="button is-white is-loading"*/}
-          {/*    style={{ position: "absolute", right: 0 }}*/}
-          {/*  />*/}
-          {/*)}*/}
         </div>
       </div>
 

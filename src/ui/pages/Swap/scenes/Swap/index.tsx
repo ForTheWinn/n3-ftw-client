@@ -278,7 +278,7 @@ const Swap = () => {
                     effect="solid"
                     place="bottom"
                   >
-                    <span>Remove liquidity</span>
+                    <span>Withdraw liquidity</span>
                   </ReactTooltip>
                   <FaMinus />
                 </Link>
@@ -295,7 +295,7 @@ const Swap = () => {
                   effect="solid"
                   place="bottom"
                 >
-                  <span>Show pools</span>
+                  <span>Pool list</span>
                 </ReactTooltip>
                 <FaListAlt />
               </button>

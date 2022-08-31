@@ -75,7 +75,7 @@ const SwapInputs = ({
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
   return (
-    <>
+    <div className="pb-2">
       <Input
         contractHash={tokenA ? tokenA.hash : ""}
         symbol={tokenA ? tokenA.symbol : undefined}
@@ -106,7 +106,7 @@ const SwapInputs = ({
             : undefined
         }
       />
-      <div className="pt-4 pb-4">
+      <div className="pt-5 pb-5">
         <button onClick={onSwitch} className="button is-white is-fullwidth">
           <FaExchangeAlt />
         </button>
@@ -131,7 +131,7 @@ const SwapInputs = ({
         userBalance={userTokenBBalance}
         isLoading={isAmountBLoading}
       />
-    </>
+    </div>
   );
 };
 

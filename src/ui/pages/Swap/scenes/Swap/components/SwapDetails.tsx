@@ -24,8 +24,8 @@ const SwapDetails = ({
   const tolerance = numberTrim(getAfterSlippage(amountB, slippage), decimalsB);
   const expected = numberTrim(amountB, decimalsB);
   return (
-    <div className="message content is-small" style={{ overflow: "scroll" }}>
-      <div className="message-body">
+    <div className="message content is-small">
+      <div className="message-body"  style={{ overflow: "scroll" }}>
         <div className="level mb-1 is-mobile">
           <div className="level-left">
             <div className="level-item">Expected output</div>

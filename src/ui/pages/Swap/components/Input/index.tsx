@@ -49,48 +49,46 @@ const Input = ({
   }
   // const noFund = userBalance && val && val > userBalance
   return (
-    <div className="">
-      <div className="columns" style={{ alignItems: "center" }}>
+    <div>
+      <div className="columns is-mobile" style={{ alignItems: "center" }}>
         <div className="column is-narrow">
-          <div>
-            <div className="level is-mobile">
-              <div className="level-left">
-                <div className="level-item mr-4">
-                  {logoIcon ? (
-                    <LogoIcon width="35px" height="35px" img={logoIcon} />
-                  ) : (
-                    <div
-                      className="circular--portrait"
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        position: "relative",
-                        borderRadius: "50%",
-                        background: "white",
-                        width: "35px",
-                        height: "35px",
-                      }}
-                    >
-                      <BsQuestionSquare size={25} />
-                    </div>
-                  )}
-                </div>
-                <div className="level-item">
+          <div className="level is-mobile">
+            <div className="level-left">
+              <div className="level-item mr-4 is-hidden-mobile">
+                {logoIcon ? (
+                  <LogoIcon width="35px" height="35px" img={logoIcon} />
+                ) : (
                   <div
-                    onClick={onClickAsset}
-                    className="is-clickable"
-                    style={{ width: "60px" }}
+                    className="circular--portrait"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      position: "relative",
+                      borderRadius: "50%",
+                      background: "white",
+                      width: "35px",
+                      height: "35px",
+                    }}
                   >
-                    {heading && <p className="heading">{heading}</p>}
-                    <div style={{ alignItems: "center", display: "flex" }}>
-                      <span className="has-text-weight-bold">
-                        {symbol ? symbol : "Select"}
-                      </span>
-                      <span className="icon">
-                        <FaAngleDown />
-                      </span>
-                    </div>
+                    <BsQuestionSquare size={25} />
+                  </div>
+                )}
+              </div>
+              <div className="level-item">
+                <div
+                  onClick={onClickAsset}
+                  className="is-clickable"
+                  style={{ width: "60px" }}
+                >
+                  {heading && <p className="heading">{heading}</p>}
+                  <div style={{ alignItems: "center", display: "flex" }}>
+                    <span className="has-text-weight-bold">
+                      {symbol ? symbol : "Select"}
+                    </span>
+                    <span className="icon">
+                      <FaAngleDown />
+                    </span>
                   </div>
                 </div>
               </div>
@@ -117,37 +115,28 @@ const Input = ({
               suffix={` ${symbol ? symbol : ""}`}
               allowLeadingZeros={false}
             />
-            {errorMessage ? (
-              <p className="help is-danger">{errorMessage}</p>
-            ) : userBalance !== undefined ? (
-              <div className="level is-mobile mt-1">
-                <div className="level-left">
-                  <div className="level-item">
-                    <small className="is-size-7">Your balance</small>
-                  </div>
-                </div>
-                <div className="level-right">
-                  <div className="level-item">
-                    <small
-                      onClick={(e) => {
-                        if (userBalance) {
-                          // @ts-ignore
-                          setValue(userBalance, e);
-                        }
-                      }}
-                      className={`is-size-7 ${
-                        userBalance && userBalance > 0 ? "is-clickable" : ""
-                      }`}
-                    >
-                      {userBalance ? userBalance.toLocaleString() : 0}{" "}
-                      {symbol ? symbol : ""}
-                    </small>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
+            <div style={{ position: "absolute", width: "100%" }}>
+              {errorMessage ? (
+                <p className="help is-danger has-text-right">{errorMessage}</p>
+              ) : userBalance !== undefined ? (
+                <p
+                  onClick={(e) => {
+                    if (userBalance) {
+                      // @ts-ignore
+                      setValue(userBalance, e);
+                    }
+                  }}
+                  className={`help has-text-right ${
+                    userBalance && userBalance > 0 ? "is-clickable" : ""
+                  }`}
+                >
+                  {userBalance ? userBalance.toLocaleString() : 0}{" "}
+                  {symbol ? symbol : ""}
+                </p>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
         </div>
       </div>
