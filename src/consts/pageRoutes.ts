@@ -77,7 +77,7 @@ export const SMITH_PAGE_ROUTE = {
 export const DAO_PAGE_ROUTE = {
   label: "DAO",
   path: DAO_PATH,
-  network: [PRIVATENET],
+  network: [TESTNET],
   category: [],
 };
 
