@@ -49,6 +49,10 @@ export const GM_SCRIPT_HASH = {
   [TESTNET]: "047dbe376096643d7a93609388cde7f84ec28c52",
   [MAINNET]: "9b049f1283515eef1d3f6ac610e1595ed25ca3e9",
 };
+export const GASFI_SCRIPT_HASH = {
+	[TESTNET]: "0x350007234b2cf5f5b3ab8ef6163334879de98bd3",
+	[MAINNET]: "",
+};
 
 /* Smith contracts */
 export const NUDES_SCRIPT_HASH = "340720c7107ef5721e44ed2ea8e314cce5c130fa"
