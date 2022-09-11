@@ -20,9 +20,6 @@ const Farm = () => {
   const [refresh, setRefresh] = useState(0);
   const { network } = useWallet();
   const [prices, setPrices] = useState<IPrices | undefined>();
-  // if (!FARM_V2_PAGE_ROUTE.network.includes(network)) {
-  //   return <ProductNotSupportedInNetwork title={"DAO"} network={network} />;
-  // }
 
   useEffect(() => {
     document.title = "FTW Double Farm";
@@ -32,7 +29,9 @@ const Farm = () => {
     }
     fetch();
   }, [refresh, network]);
+
   if (!prices) return <></>;
+
   return (
     <PageLayout>
       <div className="columns">

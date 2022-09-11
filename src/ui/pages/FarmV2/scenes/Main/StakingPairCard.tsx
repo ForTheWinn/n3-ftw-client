@@ -140,7 +140,7 @@ const StakingPairCard = ({
             className="button is-white is-small"
           >
             <span className="has-text-success">
-              {data ? numberTrim(totalAPR) : "Loading.."}%
+              {data ? totalAPR > 0 ? numberTrim(totalAPR) : "--" : "Loading.."}%
             </span>
 
             <span className="icon is-small">
