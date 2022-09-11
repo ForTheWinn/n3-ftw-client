@@ -3,10 +3,11 @@ import { IConnectedWallet } from "../../../wallet/interfaces";
 import { wallet } from "../../../index";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 
-import {parseMapValue, toDecimal} from "../../../utils";
+import { parseMapValue, toDecimal } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
 import { BNEO_SCRIPT_HASH } from "../../../consts/nep17-list";
+import { IStakeResult, IStatusResult } from "./interfaces";
 
 export class GasFiContract {
   network: INetworkType;
@@ -100,7 +101,18 @@ export class GasFiContract {
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
-  getStake = async (connectedWallet): Promise<any> => {
+  getStatus = async (): Promise<IStatusResult> => {
+    const stake = {
+      operation: "status",
+      scriptHash: this.contractHash,
+      args: [],
+    };
+    const res = await Network.read(this.network, [stake]);
+    console.log(res);
+    return parseMapValue(res.stack[0] as any);
+  };
+
+  getStake = async (connectedWallet): Promise<IStakeResult | undefined> => {
     const stake = {
       operation: "getStake",
       scriptHash: this.contractHash,
@@ -111,12 +123,12 @@ export class GasFiContract {
         },
       ],
     };
-		/* getStake throws exception if there is no staking data */
-		try{
-			const res = await Network.read(this.network, [stake]);
-			return parseMapValue(res.stack[0] as any);
-		}catch (e){
-			return undefined
-		}
+    /* getStake throws exception if there is no staking data */
+    const res = await Network.read(this.network, [stake]);
+    if (res.state === "HALT") {
+      return parseMapValue(res.stack[0] as any);
+    } else {
+      return undefined;
+    }
   };
 }

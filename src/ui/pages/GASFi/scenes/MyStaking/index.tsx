@@ -5,13 +5,10 @@ import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/i
 import HeaderBetween from "../../../../components/HeaderBetween";
 import { GASFI_PATH } from "../../../../../consts";
 
-export interface IMainData {
-  staking: IStakeResult;
-}
 const MyStaking = (props) => {
   const { network, connectedWallet } = useWallet();
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<IMainData | undefined>(undefined);
+  const [data, setData] = useState<IStakeResult | undefined>(undefined);
   const [error, setError] = useState();
 
   useEffect(() => {
@@ -35,20 +32,40 @@ const MyStaking = (props) => {
         <div className="column is-half">
           <div className="box is-shadowless">
             <HeaderBetween path={GASFI_PATH} title={"My staking"} />
-            <div className="box is-shadowless">History</div>
           </div>
-
-          <div className="columns">
-            <div className="column">
-              <div className="box is-shadowless">Last position</div>
+          {isLoading ? (
+            <></>
+          ) : (
+            <div className="content has-text-centered">
+              <div className="columns">
+                <div className="column">
+                  <div className="box is-shadowless">
+                    <h6>Total bNEO</h6>
+                    <p>{data ? data.amount : ""}</p>
+                  </div>
+                </div>
+                <div className="column">
+                  <div className="box is-shadowless">
+                    <h6>Position</h6>
+                    <p>{data ? data.position : ""}</p>
+                  </div>
+                </div>
+              </div>
+	            <button className="button is-danger is-fullwidth">UnStake</button>
             </div>
-            <div className="column">
-              <div className="box is-shadowless">Next drawing at</div>
-            </div>
-          </div>
-
-          <div className="box is-shadowless">History</div>
+          )}
         </div>
+
+        {/*<div className="columns">*/}
+        {/*  <div className="column">*/}
+        {/*    <div className="box is-shadowless">Last position</div>*/}
+        {/*  </div>*/}
+        {/*  <div className="column">*/}
+        {/*    <div className="box is-shadowless">Next drawing at</div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+
+        {/*<div className="box is-shadowless">History</div>*/}
       </div>
     </div>
   );
