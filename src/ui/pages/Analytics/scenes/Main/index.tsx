@@ -47,6 +47,7 @@ const AnalyticsMain = () => {
               style={{
                 height: "600px",
                 width: "100%",
+	              overflowY: "scroll"
                 //overflow: "hidden",
               }}
             >
@@ -63,7 +64,7 @@ const AnalyticsMain = () => {
               style={{
                 height: "600px",
                 width: "100%",
-                // overflow: "hidden"
+                overflowY: "scroll"
               }}
             >
               {/*<div style={{ padding: "1.25rem", paddingTop: "0", height: "100%", width:"100%", overflow:"auto" ,paddingRight: "20px" }}>*/}
