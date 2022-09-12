@@ -7,7 +7,8 @@ import { parseMapValue, toDecimal } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
 import { BNEO_SCRIPT_HASH } from "../../../consts/nep17-list";
-import { IStakeResult, IStatusResult } from "./interfaces";
+import {IDrawsResult, IStakeResult, IStatusResult} from "./interfaces";
+import {ILockerContracts} from "../locker/interface";
 
 export class GasFiContract {
   network: INetworkType;
@@ -131,4 +132,26 @@ export class GasFiContract {
       return undefined;
     }
   };
+
+	getDraws = async (page: number): Promise<IDrawsResult> => {
+		const script = {
+			scriptHash: this.contractHash,
+			operation: "getDraws",
+			args: [
+				{
+					type: "Integer",
+					value: "30",
+				},
+				{
+					type: "Integer",
+					value: page,
+				},
+			],
+		};
+		const res = await Network.read(this.network, [script]);
+		if (res.state === "FAULT") {
+			throw new Error(res.exception as string);
+		}
+		return parseMapValue(res.stack[0] as any);
+	};
 }

@@ -6,6 +6,7 @@ import {
   IStakeResult,
   IStatusResult,
 } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
+import DrawHistory from "./DrawHistory";
 
 export interface IMainData {
   status: IStatusResult;
@@ -43,8 +44,13 @@ const Main = (props) => {
       <div className="columns is-centered">
         <div className="column is-half">
           <StakeHeader isLoading={isLoading} data={data} />
-
           <div className="columns content has-text-centered">
+	          <div className="column">
+		          <div className="box is-shadowless">
+			          <h6>Last draw #</h6>
+			          <p>{data ? data.status.lastDrawNo : ""}</p>
+		          </div>
+	          </div>
             <div className="column">
               <div className="box is-shadowless">
                 <h6>Last position</h6>
@@ -58,8 +64,10 @@ const Main = (props) => {
               </div>
             </div>
           </div>
+          <div className="box is-shadowless">
+	          <DrawHistory network={network} />
 
-          <div className="box is-shadowless">History</div>
+					</div>
         </div>
       </div>
     </div>
