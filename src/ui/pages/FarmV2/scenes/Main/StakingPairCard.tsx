@@ -107,20 +107,20 @@ const StakingPairCard = ({
     <>
       <tr>
         <td>
-	        <div className="is-flex">
-		        <PairIcons
-			        network={network}
-			        tokenA={tokenA}
-			        tokenB={tokenB}
-			        width="20px"
-			        height="20px"
-		        />
-		        <div className="ml-2">
-			        <strong>
-				        {tokenASymbol} / {tokenBSymbol}
-			        </strong>
-		        </div>
-	        </div>
+          <div className="is-flex">
+            <PairIcons
+              network={network}
+              tokenA={tokenA}
+              tokenB={tokenB}
+              width="20px"
+              height="20px"
+            />
+            <div className="ml-2">
+              <strong>
+                {tokenASymbol} / {tokenBSymbol}
+              </strong>
+            </div>
+          </div>
         </td>
         <td>
           <div className="is-center" style={{ justifyContent: "start" }}>
@@ -139,8 +139,17 @@ const StakingPairCard = ({
             onClick={() => setExpanded(!isExpanded)}
             className="button is-white is-small"
           >
-            <span className="has-text-success">
-              {data ? totalAPR > 0 ? numberTrim(totalAPR) : "--" : "Loading.."}%
+            <span
+              style={{ minWidth: "60px" }}
+              className="has-text-success"
+            >
+              {isLoading
+                ? "Loading.."
+                : data
+                ? totalAPR > 0
+                  ? numberTrim(totalAPR) + "%"
+                  : "--"
+                : "--"}
             </span>
 
             <span className="icon is-small">
