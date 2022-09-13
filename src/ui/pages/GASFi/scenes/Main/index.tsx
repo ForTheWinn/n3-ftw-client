@@ -66,7 +66,6 @@ const Main = (props) => {
           </div>
           <div className="box is-shadowless">
 	          <DrawHistory network={network} />
-
 					</div>
         </div>
       </div>
