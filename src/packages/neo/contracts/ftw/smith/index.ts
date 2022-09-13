@@ -376,7 +376,7 @@ export class SmithContract {
   getProperties = async (
     contractHash: string,
     tokenId: string
-  ): Promise<IRuneMeta> => {
+  ): Promise<any> => {
     const script = {
       scriptHash: contractHash,
       operation: "properties",
@@ -391,7 +391,8 @@ export class SmithContract {
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
     }
-    return parseSmithProperties(res.stack) as IRuneMeta;
+    // return parseSmithProperties(res.stack) as IRuneMeta;
+    return parseMapValue(res.stack[0] as any);
   };
 
   getNep17ContractInfo = async (

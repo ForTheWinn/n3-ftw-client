@@ -14,7 +14,6 @@ const Tokens = ({ contractHash }: ITokensProps) => {
   const { isLoaded, error, data } = useOnChainData(() => {
     return new SmithContract(network).totalSupply(contractHash);
   }, [network]);
-
   return (
     <>
       {!isLoaded ? (

@@ -109,6 +109,7 @@ const stringList = [
   "description",
   "author",
   "bonusTokenSymbol",
+	"image"
 ];
 const addressList = ["owner", "account", "creator", "receiver"];
 const hash160List = [
