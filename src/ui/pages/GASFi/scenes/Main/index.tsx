@@ -7,6 +7,7 @@ import {
   IStatusResult,
 } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import DrawHistory from "./DrawHistory";
+import Countdown from "react-countdown";
 
 export interface IMainData {
   status: IStatusResult;
@@ -17,7 +18,6 @@ const Main = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IMainData | undefined>(undefined);
   const [error, setError] = useState();
-
   useEffect(() => {
     async function fetch() {
       try {
@@ -43,14 +43,19 @@ const Main = (props) => {
     <div>
       <div className="columns is-centered">
         <div className="column is-half">
-          <StakeHeader isLoading={isLoading} data={data} />
+          <StakeHeader
+            isLoading={isLoading}
+            data={data}
+            connectedWallet={connectedWallet}
+          />
+
           <div className="columns content has-text-centered">
-	          <div className="column">
-		          <div className="box is-shadowless">
-			          <h6>Last draw #</h6>
-			          <p>{data ? data.status.lastDrawNo : ""}</p>
-		          </div>
-	          </div>
+            <div className="column">
+              <div className="box is-shadowless">
+                <h6>Last draw #</h6>
+                <p>{data ? data.status.lastDrawNo : ""}</p>
+              </div>
+            </div>
             <div className="column">
               <div className="box is-shadowless">
                 <h6>Last position</h6>
@@ -60,13 +65,26 @@ const Main = (props) => {
             <div className="column">
               <div className="box is-shadowless">
                 <h6>Next drawing</h6>
-                <p>{data ? data.status.lastReward : ""}</p>
+                {data ? (
+                  <Countdown date={data.status.nextDrawingAt}>
+                    <button className="button">Draw</button>
+                  </Countdown>
+                ) : (
+                  <></>
+                )}
+
+                {/*<p>{data ? data.status.nextDrawingAt : ""}</p>*/}
               </div>
             </div>
           </div>
+
           <div className="box is-shadowless">
-	          <DrawHistory network={network} />
-					</div>
+            <DrawHistory
+              connectedWallet={connectedWallet}
+              network={network}
+              data={data}
+            />
+          </div>
         </div>
       </div>
     </div>

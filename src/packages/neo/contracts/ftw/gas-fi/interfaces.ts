@@ -1,4 +1,3 @@
-import { ILockerContract } from "../locker/interface";
 
 export interface IStatusResult {
   totalNEO: number; // current
@@ -8,12 +7,13 @@ export interface IStatusResult {
   lastDrawNo: number; // past
   lastPosition: number; // past
   lastReward: number; // past
+	nextDrawingAt: number; // future
 }
 
 export interface IStakeResult {
   position: number;
   amount: number;
-  startAt: number;
+  startAt: number; // quality draw no from
   stakeAt: number;
 }
 

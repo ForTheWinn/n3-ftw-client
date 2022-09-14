@@ -2,29 +2,55 @@ import React, { useEffect, useState } from "react";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import Pagination from "bulma-pagination-react";
 import { INetworkType } from "../../../../../packages/neo/network";
-import {
-  IDraw,
-  IDrawsResult,
-} from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
+import { IDrawsResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import moment from "moment";
+import { IMainData } from "./index";
+import { toast } from "react-hot-toast";
+import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import Modal from "../../../../components/Modal";
+import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
 
 export interface IDrawHistoryProps {
   network: INetworkType;
+  data?: IMainData;
+  connectedWallet?: IConnectedWallet;
 }
-const DrawHistory = ({ network }: IDrawHistoryProps) => {
+const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<IDrawsResult | undefined>(undefined);
+  const [drawHistory, setDrawHistory] = useState<IDrawsResult | undefined>(
+    undefined
+  );
   const [error, setError] = useState();
   const [page, setPage] = useState(1);
+  const [txid, setTxid] = useState("");
+
+  const onClaim = async (drawNo: number) => {
+    if (connectedWallet) {
+      try {
+        const tx = await new GasFiContract(network).claim(
+          connectedWallet,
+          drawNo
+        );
+        setTxid(tx);
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    } else {
+      // toggleWalletSidebar();
+    }
+  };
+
+  const handleSuccess = () => {
+    setTxid("");
+  };
 
   useEffect(() => {
     async function fetch() {
       try {
         setLoading(true);
         const res = await new GasFiContract(network).getDraws(page);
-        console.log(res);
-        setData(res);
+        setDrawHistory(res);
         setLoading(false);
       } catch (e: any) {
         console.log(e);
@@ -34,7 +60,7 @@ const DrawHistory = ({ network }: IDrawHistoryProps) => {
     }
     fetch();
   }, [network]);
-  console.log(data);
+
   return (
     <div>
       <h6 className="title is-6">History</h6>
@@ -43,10 +69,11 @@ const DrawHistory = ({ network }: IDrawHistoryProps) => {
         <table className="table is-fullwidth is-striped">
           <thead>
             <tr>
-              <th>In</th>
-              <th>Out</th>
-              <th>Address</th>
-              <th>At</th>
+              <th>Draw no</th>
+              <th>Winning position</th>
+              <th>Total GAS</th>
+              <th>Created at</th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -56,20 +83,35 @@ const DrawHistory = ({ network }: IDrawHistoryProps) => {
               </tr>
             ) : error ? (
               <div>{error}</div>
-            ) : data ? (
-              data.items.length > 0 ? (
-                data.items.map((item, i) => {
+            ) : drawHistory ? (
+              drawHistory.items.length > 0 ? (
+                drawHistory.items.map((item, i) => {
+                  console.log(item);
                   return (
                     <tr key={`single-swap-${i}`}>
+                      <td>{item.drawNo}</td>
+                      <td>{item.position}</td>
                       <td>
-                        <>
-                          {withDecimal(item.totalReward, 8, true)}
-                          &nbsp;
-                          <strong>bNEO</strong>
-                        </>
-                        )
+                        <>{`${withDecimal(item.totalReward, 8, true)} GAS`}</>
                       </td>
                       <td>{moment(item.createdAt).format("lll")}</td>
+                      {data && data.staking ? (
+                        <td>
+                          {data.staking.startAt <= item.drawNo &&
+                          data.staking.position === item.position ? (
+                            <button
+                              onClick={() => onClaim(item.drawNo)}
+                              className="button is-small is-primary"
+                            >
+                              Claim
+                            </button>
+                          ) : (
+                            <div></div>
+                          )}
+                        </td>
+                      ) : (
+                        <></>
+                      )}
                     </tr>
                   );
                 })
@@ -84,12 +126,12 @@ const DrawHistory = ({ network }: IDrawHistoryProps) => {
               </tr>
             )}
           </tbody>
-          {data && data.totalPages > 1 && (
+          {drawHistory && drawHistory.totalPages > 1 && (
             <tfoot>
               <tr>
                 <td colSpan={6}>
                   <Pagination
-                    pages={data.totalPages}
+                    pages={drawHistory.totalPages}
                     currentPage={page}
                     onChange={(_page) => {
                       if (page !== _page) {
@@ -103,6 +145,17 @@ const DrawHistory = ({ network }: IDrawHistoryProps) => {
           )}
         </table>
       </div>
+
+      {txid && (
+        <Modal onClose={() => setTxid("")}>
+          <AfterTransactionSubmitted
+            txid={txid}
+            network={network}
+            onSuccess={handleSuccess}
+            onError={() => setTxid("")}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

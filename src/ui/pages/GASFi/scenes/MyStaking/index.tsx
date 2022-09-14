@@ -4,12 +4,39 @@ import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi"
 import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import HeaderBetween from "../../../../components/HeaderBetween";
 import { GASFI_PATH } from "../../../../../consts";
+import { withDecimal } from "../../../../../packages/neo/utils";
+import { toast } from "react-hot-toast";
+import Modal from "../../../../components/Modal";
+import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import { useHistory } from "react-router-dom";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const MyStaking = (props) => {
+  const history = useHistory();
+  const { toggleWalletSidebar } = useApp();
   const { network, connectedWallet } = useWallet();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IStakeResult | undefined>(undefined);
   const [error, setError] = useState();
+  const [txid, setTxid] = useState("");
+
+  const onSubmit = async () => {
+    if (connectedWallet) {
+      try {
+        const tx = await new GasFiContract(network).unStake(connectedWallet);
+        setTxid(tx);
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    } else {
+      // toggleWalletSidebar();
+    }
+  };
+
+  const handleSuccess = () => {
+    setTxid("");
+    history.push(GASFI_PATH);
+  };
 
   useEffect(() => {
     async function fetch() {
@@ -33,15 +60,22 @@ const MyStaking = (props) => {
           <div className="box is-shadowless">
             <HeaderBetween path={GASFI_PATH} title={"My staking"} />
           </div>
-          {isLoading ? (
+          {!connectedWallet ? (
+            <button
+              onClick={toggleWalletSidebar}
+              className="button is-primary is-fullwidth"
+            >
+              Connect wallet
+            </button>
+          ) : isLoading ? (
             <></>
-          ) : (
+          ) : data ? (
             <div className="content has-text-centered">
               <div className="columns">
                 <div className="column">
                   <div className="box is-shadowless">
                     <h6>Total bNEO</h6>
-                    <p>{data ? data.amount : ""}</p>
+                    <p>{data ? withDecimal(data.amount, 8, true) : ""}</p>
                   </div>
                 </div>
                 <div className="column">
@@ -51,8 +85,15 @@ const MyStaking = (props) => {
                   </div>
                 </div>
               </div>
-	            <button className="button is-danger is-fullwidth">UnStake</button>
+              <button
+                onClick={onSubmit}
+                className="button is-danger is-fullwidth"
+              >
+                UnStake
+              </button>
             </div>
+          ) : (
+            <div className="box is-shadowless">There is no staking.</div>
           )}
         </div>
 
@@ -67,6 +108,18 @@ const MyStaking = (props) => {
 
         {/*<div className="box is-shadowless">History</div>*/}
       </div>
+
+      {txid && (
+        <Modal onClose={() => setTxid("")}>
+          <AfterTransactionSubmitted
+            txid={txid}
+            network={network}
+            onSuccess={handleSuccess}
+            onError={() => setTxid("")}
+          />
+        </Modal>
+      )}
+
     </div>
   );
 };

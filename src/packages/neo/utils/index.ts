@@ -121,7 +121,7 @@ const hash160List = [
   "bonusTokenHash",
 
 ];
-const dateList = ["createdAt"];
+const dateList = ["createdAt", "stakedAt"];
 const intList = [
   "start",
   "end",
@@ -156,6 +156,12 @@ const intList = [
 	"lockedAmount",
 	"releasedAt",
 	"releaseAt",
+	"nextDrawingAt",
+	"position",
+	"startAt",
+	"drawNo",
+	"totalReward",
+	"totalPosition",
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {

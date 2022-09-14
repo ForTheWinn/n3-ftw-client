@@ -3,12 +3,11 @@ import { IConnectedWallet } from "../../../wallet/interfaces";
 import { wallet } from "../../../index";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 
-import { parseMapValue, toDecimal } from "../../../utils";
+import { parseMapValue } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
 import { BNEO_SCRIPT_HASH } from "../../../consts/nep17-list";
 import {IDrawsResult, IStakeResult, IStatusResult} from "./interfaces";
-import {ILockerContracts} from "../locker/interface";
 
 export class GasFiContract {
   network: INetworkType;
@@ -58,7 +57,7 @@ export class GasFiContract {
       connectedWallet.account.address
     );
     const invokeScript = {
-      operation: "removeFund",
+      operation: "unStake",
       scriptHash: this.contractHash,
       args: [
         {
@@ -84,7 +83,7 @@ export class GasFiContract {
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
-  claim = async (connectedWallet: IConnectedWallet): Promise<string> => {
+  claim = async (connectedWallet: IConnectedWallet, drawNo: number): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
@@ -96,6 +95,10 @@ export class GasFiContract {
           type: "Hash160",
           value: senderHash,
         },
+	      {
+		      type: "Integer",
+		      value: drawNo,
+	      },
       ],
       signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
     };
