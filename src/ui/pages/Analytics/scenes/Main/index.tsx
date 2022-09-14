@@ -11,15 +11,17 @@ import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
 
 const AnalyticsMain = () => {
   const { network } = useWallet();
+
+  useEffect(() => {
+    document.title = "FTW Analytics";
+  }, []);
+
   if (!ANALYTICS_ROUTE.network.includes(network)) {
     return (
       <ProductNotSupportedInNetwork title={"Analytics"} network={network} />
     );
   }
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    document.title = "FTW Analytics";
-  }, []);
+
   return (
     <PageLayout>
       <div className="columns is-multiline">
@@ -36,41 +38,29 @@ const AnalyticsMain = () => {
           </div>
         </div>
         <div className="column is-6">
-          <div className="box is-shadowless">
-            <h1
-              className="title is-6"
-              // style={{ padding: "1.25rem", paddingBottom: "0" }}
-            >
-              Tokens
-            </h1>
-            <div
-              style={{
-                height: "600px",
-                width: "100%",
-	              overflowY: "scroll"
-                //overflow: "hidden",
-              }}
-            >
-              {/*<div style={{ padding: "1.25rem", paddingTop: "0", height: "100%", width:"100%", overflow:"auto" ,paddingRight: "20px" }}>*/}
-              <Tokens />
-              {/*</div>*/}
-            </div>
+          <div
+            className="box is-shadowless has-scroll-hide"
+            style={{
+              height: "600px",
+              width: "100%",
+              overflowY: "scroll",
+            }}
+          >
+            <h1 className="title is-6">Tokens</h1>
+            <Tokens />
           </div>
         </div>
         <div className="column is-6">
-          <div className="box is-shadowless">
+          <div
+            className="box is-shadowless has-scroll-hide"
+            style={{
+              height: "600px",
+              width: "100%",
+              overflowY: "scroll",
+            }}
+          >
             <h1 className="title is-6">Pairs</h1>
-            <div
-              style={{
-                height: "600px",
-                width: "100%",
-                overflowY: "scroll"
-              }}
-            >
-              {/*<div style={{ padding: "1.25rem", paddingTop: "0", height: "100%", width:"100%", overflow:"auto" ,paddingRight: "20px" }}>*/}
-              <Pools />
-              {/*</div>*/}
-            </div>
+            <Pools />
           </div>
         </div>
       </div>

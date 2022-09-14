@@ -240,71 +240,97 @@ const Swap = () => {
             <h1 className="title is-5 is-marginless ">Swap</h1>
           </div>
         </div>
-        <div className="level-right">
+
+        <div className="level-right is-hidden-mobile">
           <div className="level-item">
             <div className="buttons">
-              <div className="level-item">
-                <Link
-                  to={{
-                    pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
-                    search:
-                      tokenA && tokenB
-                        ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
-                        : "",
-                  }}
-                  data-tip
-                  data-for="addLiquidity"
-                  className="button is-small is-white"
-                >
-                  <ReactTooltip
-                    id="addLiquidity"
-                    type="info"
-                    effect="solid"
-                    place="bottom"
-                  >
-                    <span>Add liquidity</span>
-                  </ReactTooltip>
-                  <FaPlus />
-                </Link>
-                <Link
-                  to={SWAP_PATH_LIQUIDITY_REMOVE}
-                  data-tip
-                  data-for="removeLiquidity"
-                  className="button is-small is-white"
-                >
-                  <ReactTooltip
-                    id="removeLiquidity"
-                    type="info"
-                    effect="solid"
-                    place="bottom"
-                  >
-                    <span>Withdraw liquidity</span>
-                  </ReactTooltip>
-                  <FaMinus />
-                </Link>
-              </div>
-              <button
-                onClick={() => setPoolListModalActive(true)}
-                data-tip
-                data-for="showPools"
+              <Link
+                to={{
+                  pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
+                  search:
+                    tokenA && tokenB
+                      ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
+                      : "",
+                }}
                 className="button is-small is-white"
               >
-                <ReactTooltip
-                  id="showPools"
-                  type="info"
-                  effect="solid"
-                  place="bottom"
-                >
-                  <span>Pool list</span>
-                </ReactTooltip>
-                <FaListAlt />
+                <span className="icon">
+                  <FaPlus />
+                </span>
+                <span className="ml-1 is-hidden-mobile">Add Liquidity</span>
+              </Link>
+
+              <Link
+                to={SWAP_PATH_LIQUIDITY_REMOVE}
+                data-tip
+                data-for="removeLiquidity"
+                className="button is-small is-white"
+              >
+                <span className="icon">
+                  <FaMinus />
+                </span>
+                <span className="ml-1 is-hidden-mobile">Withdraw</span>
+              </Link>
+
+              <button
+                onClick={() => setPoolListModalActive(true)}
+                className="button is-small is-white"
+              >
+                <span className="icon">
+                  <FaListAlt />
+                </span>
+                <span className="ml-1 is-hidden-mobile">Pools</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <hr />
+      <div className="tabs is-small is-hidden-tablet has-scroll-hide">
+        <ul>
+          <li>
+            <Link
+              to={{
+                pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
+                search:
+                  tokenA && tokenB
+                    ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
+                    : "",
+              }}
+              className="button is-small is-white"
+            >
+              <span className="icon">
+                <FaPlus />
+              </span>
+              <span className="ml-1">Add Liquidity</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to={SWAP_PATH_LIQUIDITY_REMOVE}
+              className="button is-small is-white"
+            >
+              <span className="icon">
+                <FaMinus />
+              </span>
+              <span className="ml-1">Withdraw</span>
+            </Link>
+          </li>
+          <li>
+            <button
+              onClick={() => setPoolListModalActive(true)}
+              className="button is-small is-white"
+            >
+              <span className="icon">
+                <FaListAlt />
+              </span>
+              <span className="ml-1">Pools</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <hr className="is-hidden-mobile" />
 
       {noLiquidity && tokenA && tokenB ? (
         <NoLPInfo tokenA={tokenA.hash} tokenB={tokenB.hash} />
@@ -461,23 +487,23 @@ const Swap = () => {
 
       {tokenA && tokenB && isSwapHistoryModalActive && data ? (
         <Modal onClose={() => setSwapHistoryModalActive(false)}>
-	        <>
-		        <SwapHistory
-			        tokenA={"0x" + tokenA.hash}
-			        tokenB={"0x" + tokenB.hash}
-			        network={network}
-			        // Convert
-			        pairs={{
-				        ["0x" + tokenA.hash]: {
-					        ...data.pair[tokenA.hash],
-				        },
-				        ["0x" + tokenB.hash]: {
-					        ...data.pair[tokenB.hash],
-				        },
-			        }}
-		        />
-		        {/*<History tokenA={tokenA.hash} tokenB={tokenB.hash} />*/}
-	        </>
+          <>
+            <SwapHistory
+              tokenA={"0x" + tokenA.hash}
+              tokenB={"0x" + tokenB.hash}
+              network={network}
+              // Convert
+              pairs={{
+                ["0x" + tokenA.hash]: {
+                  ...data.pair[tokenA.hash],
+                },
+                ["0x" + tokenB.hash]: {
+                  ...data.pair[tokenB.hash],
+                },
+              }}
+            />
+            {/*<History tokenA={tokenA.hash} tokenB={tokenB.hash} />*/}
+          </>
         </Modal>
       ) : (
         <></>

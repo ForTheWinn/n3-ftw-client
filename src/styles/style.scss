@@ -89,17 +89,16 @@ For fixed top height
     z-index: 11;
   }
   @include desktop {
-    &.is-large{
+    &.is-large {
       .modal-content {
         width: 80%;
       }
     }
-
   }
 }
 
-.has-modal-page{
-  .box{
+.has-modal-page {
+  .box {
     padding: 0;
   }
 }
@@ -350,5 +349,18 @@ $timingFunction: ease;
     }
   }
 }
+
+.has-scroll-hide::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+
+//.scroll-container {
+//  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+//  scrollbar-width: none;  /* Firefox */
+//}
+//.scroll-container::-webkit-scrollbar {
+//  display: none;  /* Safari and Chrome */
+//}
 
 @include generateSlice();

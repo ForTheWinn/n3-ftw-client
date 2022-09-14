@@ -9,7 +9,10 @@ const SidebarNav = (props) => {
   const { network } = useWallet();
   const { toggleSidebar } = useApp();
   return (
-    <>
+    <div
+      className="has-scroll-hide"
+      style={{ paddingBottom: "50px", overflowY: "scroll" }}
+    >
       <aside className="menu p-5">
         <p className="menu-label">Menu</p>
         <ul className="menu-list">
@@ -66,14 +69,23 @@ const SidebarNav = (props) => {
               Documentation
             </a>
           </li>
+          <li>
+            <hr style={{ backgroundColor: "transparent" }} />
+            <div className="buttons">
+              <SocialLinkGroup />
+            </div>
+          </li>
         </ul>
       </aside>
-      <div className="p-5" style={{ position: "absolute", bottom: "40px" }}>
-        <div className="buttons">
-          <SocialLinkGroup />
-        </div>
-      </div>
-    </>
+      {/*<div*/}
+      {/*  className="p-5 is-hidden-mobile"*/}
+      {/*  style={{ position: "absolute", bottom: "40px" }}*/}
+      {/*>*/}
+      {/*  <div className="buttons">*/}
+      {/*    <SocialLinkGroup />*/}
+      {/*  </div>*/}
+      {/*</div>*/}
+    </div>
   );
 };
 

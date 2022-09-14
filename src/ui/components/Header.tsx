@@ -36,7 +36,7 @@ const Header = () => {
         >
           <div
             role="button"
-            className="navbar-burger is-center is-hidden-tablet"
+            className="navbar-burger is-center is-hidden-desktop"
             style={{ marginLeft: 0 }}
             onClick={toggleSidebar}
           >

@@ -134,6 +134,11 @@ export const NFT_ROUTE = {
       path: LP_TOKENS_PATH,
       network: [MAINNET],
     },
+    {
+      label: "Locker Keys",
+      path: LOCKER_SEARCH_PATH,
+      network: [MAINNET],
+    },
   ],
 };
 

@@ -63,7 +63,7 @@ const LockerSearch = () => {
   return (
     <>
       <div className="columns is-centered">
-        <div className="column is-8">
+        <div className="column is-half">
           <div className="box is-shadowless">
             {locker ? (
               <>
@@ -111,15 +111,8 @@ const LockerSearch = () => {
               </>
             ) : (
               <>
-                <div className="level is-mobile">
-                  <div className="level-left">
-                    <div className="level-item">
-                      <h1 className="title is-5 is-marginless">
-                        Search locker
-                      </h1>
-                    </div>
-                  </div>
-                </div>
+                <h1 className="title is-5">Search locker</h1>
+                <p className="subtitle is-7">Find FTWLocker key values by entering a locker no</p>
                 <div className="field has-addons">
                   <div className="control  is-expanded">
                     <input
