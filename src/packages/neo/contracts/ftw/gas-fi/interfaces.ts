@@ -10,6 +10,11 @@ export interface IStatusResult {
 	nextDrawingAt: number; // future
 }
 
+export interface IClaimableResult {
+	claimableAmount: number
+	claimableNumbers: number[]
+}
+
 export interface IStakeResult {
   position: number;
   amount: number;
@@ -21,6 +26,11 @@ export interface IDrawsResult {
   totalItems: number;
   totalPages: number;
   items: IDraw[];
+}
+
+export interface IClaim {
+	no: number;
+	reward: number;
 }
 
 export interface IDraw {

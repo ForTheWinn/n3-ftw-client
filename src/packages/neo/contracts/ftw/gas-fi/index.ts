@@ -7,7 +7,12 @@ import { parseMapValue } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
 import { BNEO_SCRIPT_HASH } from "../../../consts/nep17-list";
-import {IDrawsResult, IStakeResult, IStatusResult} from "./interfaces";
+import {
+  IClaimableResult,
+  IDrawsResult,
+  IStakeResult,
+  IStatusResult,
+} from "./interfaces";
 
 export class GasFiContract {
   network: INetworkType;
@@ -75,7 +80,7 @@ export class GasFiContract {
       connectedWallet.account.address
     );
     const invokeScript = {
-      operation: "createSnapshot",
+      operation: "draw",
       scriptHash: this.contractHash,
       args: [],
       signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
@@ -83,7 +88,10 @@ export class GasFiContract {
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
-  claim = async (connectedWallet: IConnectedWallet, drawNo: number): Promise<string> => {
+  claim = async (
+    connectedWallet: IConnectedWallet,
+    drawNo: number
+  ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
@@ -95,14 +103,61 @@ export class GasFiContract {
           type: "Hash160",
           value: senderHash,
         },
-	      {
-		      type: "Integer",
-		      value: drawNo,
-	      },
+        {
+          type: "Integer",
+          value: drawNo,
+        },
       ],
       signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+  };
+
+  claimAll = async (connectedWallet: IConnectedWallet): Promise<string> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
+    const invokeScript = {
+      operation: "claimAll",
+      scriptHash: this.contractHash,
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+      ],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+    };
+    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+  };
+
+  getClaimable = async (
+    connectedWallet: IConnectedWallet
+  ): Promise<IClaimableResult | undefined> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
+    const script = {
+      operation: "getClaimable",
+      scriptHash: this.contractHash,
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+      ],
+    };
+    const res = await Network.read(this.network, [script]);
+    if (res.state === "HALT") {
+      // Hard coding to part Array stack from the chain.
+      const obj: any = parseMapValue(res.stack[0] as any);
+      obj.claimableNumbers = obj.claimableNumbers.map((v) =>
+        parseFloat(v.value)
+      );
+      return obj;
+    } else {
+      return undefined;
+    }
   };
 
   getStatus = async (): Promise<IStatusResult> => {
@@ -112,7 +167,6 @@ export class GasFiContract {
       args: [],
     };
     const res = await Network.read(this.network, [stake]);
-    console.log(res);
     return parseMapValue(res.stack[0] as any);
   };
 
@@ -136,25 +190,49 @@ export class GasFiContract {
     }
   };
 
-	getDraws = async (page: number): Promise<IDrawsResult> => {
-		const script = {
-			scriptHash: this.contractHash,
-			operation: "getDraws",
-			args: [
-				{
-					type: "Integer",
-					value: "30",
-				},
-				{
-					type: "Integer",
-					value: page,
-				},
-			],
-		};
-		const res = await Network.read(this.network, [script]);
-		if (res.state === "FAULT") {
-			throw new Error(res.exception as string);
-		}
-		return parseMapValue(res.stack[0] as any);
-	};
+  getDraws = async (page: number): Promise<IDrawsResult> => {
+    const script = {
+      scriptHash: this.contractHash,
+      operation: "getDraws",
+      args: [
+        {
+          type: "Integer",
+          value: "30",
+        },
+        {
+          type: "Integer",
+          value: page,
+        },
+      ],
+    };
+    const res = await Network.read(this.network, [script]);
+    if (res.state === "FAULT") {
+      throw new Error(res.exception as string);
+    }
+    return parseMapValue(res.stack[0] as any);
+  };
+
+  getClaims = async (connectedWallet: IConnectedWallet): Promise<any> => {
+    const script = {
+      scriptHash: this.contractHash,
+      operation: "getClaims",
+      args: [
+        {
+          type: "Hash160",
+          value: connectedWallet.account.address,
+        },
+      ],
+    };
+    const res = await Network.read(this.network, [script]);
+		console.log(res)
+    if (res.state === "HALT") {
+      return res.stack[0] &&
+        res.stack[0].value &&
+        Array.isArray(res.stack[0].value)
+        ? res.stack[0].value.map((item: any) => parseMapValue(item))
+        : [];
+    } else {
+      return [];
+    }
+  };
 }

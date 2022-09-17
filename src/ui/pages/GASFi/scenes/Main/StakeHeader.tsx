@@ -1,10 +1,12 @@
-import React from "react";
-import { u } from "@cityofzion/neon-core";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import { GASFI_MY_STAKING_PATH, GASFI_STAKE_PATH } from "../../../../../consts";
 import { IMainData } from "./index";
 import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { withDecimal } from "../../../../../packages/neo/utils";
+import ModalCard from "../../../../components/Modal";
+import About from "./About";
 
 interface IStakeHeaderProps {
   isLoading: boolean;
@@ -17,6 +19,7 @@ const StakeHeader = ({
   connectedWallet,
 }: IStakeHeaderProps) => {
   const { toggleWalletSidebar } = useApp();
+	const [isInfoModalActive, setInfoModalActive] = useState(false);
   return (
     <div className="box is-shadowless">
       <div className="columns">
@@ -31,7 +34,7 @@ const StakeHeader = ({
               <strong>Total staked</strong>
               <br />
               {data
-                ? u.BigInteger.fromNumber(data.status.totalNEO).toDecimal(8)
+                ? withDecimal(data.status.totalNEO, 8, true)
                 : ""}{" "}
               bNEO
             </div>
@@ -44,23 +47,37 @@ const StakeHeader = ({
                       : GASFI_STAKE_PATH
                   }
                   className={`button ${
-                    isLoading ? "is-loading is-white" : "is-primary "
+                    isLoading ? "is-loading is-white" : "is-light"
                   }`}
                 >
                   {isLoading ? "" : data && data.staking ? "MyStake" : "Stake"}
                 </Link>
               ) : (
-                <button
-                  onClick={toggleWalletSidebar}
-                  className="button is-primary"
-                >
-                  Connect wallet to stake
-                </button>
+								<div className="buttons">
+									<button
+										onClick={toggleWalletSidebar}
+										className="button is-primary"
+									>
+										Stake
+									</button>
+									<button
+										onClick={() => setInfoModalActive(true)}
+										className="button is-light"
+									>
+										About
+									</button>
+								</div>
+
               )}
             </div>
           </div>
         </div>
       </div>
+	    {isInfoModalActive && (
+		    <ModalCard onClose={() => setInfoModalActive(false)}>
+			    <About />
+		    </ModalCard>
+	    )}
     </div>
   );
 };

@@ -5,8 +5,7 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { IDrawsResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import moment from "moment";
-import { IMainData } from "./index";
-import { toast } from "react-hot-toast";
+import { IMainData } from "../Main";
 import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
@@ -25,21 +24,21 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
   const [page, setPage] = useState(1);
   const [txid, setTxid] = useState("");
 
-  const onClaim = async (drawNo: number) => {
-    if (connectedWallet) {
-      try {
-        const tx = await new GasFiContract(network).claim(
-          connectedWallet,
-          drawNo
-        );
-        setTxid(tx);
-      } catch (e: any) {
-        toast.error(e.message);
-      }
-    } else {
-      // toggleWalletSidebar();
-    }
-  };
+  // const onClaim = async (drawNo: number) => {
+  //   if (connectedWallet) {
+  //     try {
+  //       const tx = await new GasFiContract(network).claim(
+  //         connectedWallet,
+  //         drawNo
+  //       );
+  //       setTxid(tx);
+  //     } catch (e: any) {
+  //       toast.error(e.message);
+  //     }
+  //   } else {
+  //     // toggleWalletSidebar();
+  //   }
+  // };
 
   const handleSuccess = () => {
     setTxid("");
@@ -63,17 +62,14 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
 
   return (
     <div>
-      <h6 className="title is-6">History</h6>
-
       <div className="table-container">
         <table className="table is-fullwidth is-striped">
           <thead>
             <tr>
-              <th>Draw no</th>
+              <th>Draw #</th>
               <th>Winning position</th>
               <th>Total GAS</th>
               <th>Created at</th>
-              <th />
             </tr>
           </thead>
           <tbody>
@@ -86,7 +82,6 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
             ) : drawHistory ? (
               drawHistory.items.length > 0 ? (
                 drawHistory.items.map((item, i) => {
-                  console.log(item);
                   return (
                     <tr key={`single-swap-${i}`}>
                       <td>{item.drawNo}</td>
@@ -95,23 +90,23 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
                         <>{`${withDecimal(item.totalReward, 8, true)} GAS`}</>
                       </td>
                       <td>{moment(item.createdAt).format("lll")}</td>
-                      {data && data.staking ? (
-                        <td>
-                          {data.staking.startAt <= item.drawNo &&
-                          data.staking.position === item.position ? (
-                            <button
-                              onClick={() => onClaim(item.drawNo)}
-                              className="button is-small is-primary"
-                            >
-                              Claim
-                            </button>
-                          ) : (
-                            <div></div>
-                          )}
-                        </td>
-                      ) : (
-                        <></>
-                      )}
+                      {/*{data && data.staking ? (*/}
+                      {/*  <td>*/}
+                      {/*    {data.staking.startAt <= item.drawNo &&*/}
+                      {/*    data.staking.position === item.position ? (*/}
+                      {/*      <button*/}
+                      {/*        onClick={() => onClaim(item.drawNo)}*/}
+                      {/*        className="button is-small is-primary"*/}
+                      {/*      >*/}
+                      {/*        Claim*/}
+                      {/*      </button>*/}
+                      {/*    ) : (*/}
+                      {/*      <div></div>*/}
+                      {/*    )}*/}
+                      {/*  </td>*/}
+                      {/*) : (*/}
+                      {/*  <></>*/}
+                      {/*)}*/}
                     </tr>
                   );
                 })
