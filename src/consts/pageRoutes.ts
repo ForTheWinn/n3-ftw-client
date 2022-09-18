@@ -3,6 +3,7 @@ import { MAINNET, PRIVATENET, TESTNET } from "../packages/neo/consts";
 export const HOME_PATH = "/";
 export const MIGRATION_PATH = "/migration";
 export const GALLERY_PATH = "/NFT/gallery";
+export const BOYZ_PATH = "/NFT/neo-boyz";
 export const TOURNAMENT_PATH = "/arena";
 export const IDO_PATH = "/ido";
 export const SMITH_PATH = "/smith";
