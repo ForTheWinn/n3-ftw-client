@@ -84,21 +84,6 @@ export class SwapContract {
           allowedContracts: [this.contractHash, tokenA, tokenB],
         },
       ],
-      // signers: [
-      //   {
-      //     account: senderHash,
-      //     scopes: tx.WitnessScope.WitnessRules,
-      //     rules: [
-      //       {
-      //         action: WitnessRuleAction.Allow,
-      //         condition: {
-      // 	        type: WitnessConditionType.And,
-      // 	        hash: this.contractHash,
-      //         }
-      //       }
-      //     ]
-      //   },
-      // ],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -294,7 +279,7 @@ export class SwapContract {
     if (res.state === "FAULT") {
       return "0";
     } else {
-      const { estimated, fee, decimals } = parseMapValue(res.stack[0] as any);
+      const { estimated, fee } = parseMapValue(res.stack[0] as any);
       console.log(
         "Fee: " + u.BigInteger.fromNumber(fee).toDecimal(swapTokenDecimals)
       );
@@ -311,10 +296,7 @@ export class SwapContract {
   ): string => {
     const tokenAAmount = u.BigInteger.fromDecimal(amount, Adecimals);
     let estimated = tokenAAmount.mul(reserveBAmount).div(reserveAAmount);
-    // (parseFloat(fixed8TokenAmount) * reserveBAmount) / reserveAAmount;
-    // estimated = Math.floor(estimated);
     return estimated.toDecimal(Bdecimals);
-    // return ((parseFloat(amount) * reserveBAmount) / reserveAAmount).toString();
   };
 
   getPathEstimated = async (): Promise<number> => {
@@ -334,7 +316,6 @@ export class SwapContract {
       ],
     };
     const res = await Network.read(this.network, [script]);
-    console.log(res);
     return res.stack[0].value as number;
   };
 

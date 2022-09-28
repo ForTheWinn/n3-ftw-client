@@ -66,11 +66,15 @@ export const withDecimal = (
   decimals: number,
   truncated?: boolean
 ): string => {
-  let val = u.BigInteger.fromNumber(num).toDecimal(decimals);
-  if (truncated) {
-    return numberTrim(parseFloat(val));
+  try {
+    let val = u.BigInteger.fromNumber(num).toDecimal(decimals);
+    if (truncated) {
+      return numberTrim(parseFloat(val));
+    }
+    return val;
+  } catch (e) {
+    return "";
   }
-  return val;
 };
 
 export const numberTrim = (no: number, decimals = 2): string => {
@@ -120,7 +124,6 @@ const hash160List = [
   "tokenOut",
   "bonusToken",
   "bonusTokenHash",
-
 ];
 const dateList = ["createdAt"];
 const intList = [
@@ -154,9 +157,16 @@ const intList = [
   "bonusRewardDebt",
   "accumulatedRewardsPerShare",
   "accumulatedBonusPerShare",
-	"lockedAmount",
-	"releasedAt",
-	"releaseAt",
+  "lockedAmount",
+  "releasedAt",
+  "releaseAt",
+  "nextDrawingAt",
+  "position",
+  "startAt",
+  "drawNo",
+  "totalReward",
+  "totalPosition",
+  "claimableAmount",
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {
@@ -211,6 +221,12 @@ export const parseMapValue = (stackItem: StackItemLike): any => {
           // @ts-ignore
           val = value.value.map((item) => {
             return parseMapValue(item);
+          });
+          break;
+        case "positions":
+          // @ts-ignore
+          val = value.value.map(({ value }) => {
+            return parseFloat(value);
           });
           break;
         default:

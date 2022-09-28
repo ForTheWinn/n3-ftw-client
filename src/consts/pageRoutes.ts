@@ -38,6 +38,9 @@ export const LOCKER_CONTRACT_PATH = "/locker/contracts";
 export const LOCKER_USER_PATH = "/locker/keys";
 export const LOCKER_CREATE_PATH = "/locker/create";
 export const LOCKER_SEARCH_PATH = "/locker/search";
+export const GASFI_PATH = "/gas-fi";
+export const GASFI_STAKE_PATH = "/gas-fi/stake";
+export const GASFI_MY_STAKING_PATH = "/gas-fi/staking";
 
 export const SWAP_PAGE_ROUTE = {
   label: "Swap",
@@ -70,6 +73,13 @@ export const LOCKER_PAGE_ROUTE = {
 export const SMITH_PAGE_ROUTE = {
   label: "Smith",
   path: SMITH_PATH,
+  network: [TESTNET, MAINNET],
+  category: [],
+};
+
+export const GASFI_PAGE_ROUTE = {
+  label: "GAS-Fi",
+  path: GASFI_PATH,
   network: [TESTNET, MAINNET],
   category: [],
 };
@@ -148,6 +158,7 @@ export const MENU = [
   FARM_V2_PAGE_ROUTE,
   SMITH_PAGE_ROUTE,
   LOCKER_PAGE_ROUTE,
+  GASFI_PAGE_ROUTE,
   ANALYTICS_ROUTE,
   DAO_PAGE_ROUTE,
   NFT_ROUTE,

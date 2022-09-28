@@ -12,7 +12,7 @@ import {
 	TOURNAMENT_PATH,
 	FARM_PATH,
 	DAO_PATH,
-	IDO_PATH, LOTTO_PATH, ANALYTICS_PATH, FARM_V2_PATH, LP_TOKENS_PATH, LOCKER_PATH,
+	IDO_PATH, LOTTO_PATH, ANALYTICS_PATH, FARM_V2_PATH, LP_TOKENS_PATH, LOCKER_PATH, GASFI_PATH,
 } from "../consts";
 import { WalletContextProvider } from "../packages/provider";
 import WalletSidebar from "./components/WalletSidebar";
@@ -34,6 +34,7 @@ import Analytics from "./pages/Analytics";
 import FarmV2 from "./pages/FarmV2";
 import LPTokens from "./pages/LPTokens";
 import Locker from "./pages/Locker";
+import GASFi from "./pages/GASFi";
 
 ReactGA.initialize("UA-114435339-1");
 
@@ -63,6 +64,7 @@ const App = () => {
 	      <Route path={LOTTO_PATH} component={Lotto} />
 	      <Route path={ANALYTICS_PATH} component={Analytics} />
 	      <Route path={LP_TOKENS_PATH} component={LPTokens} />
+	      <Route path={GASFI_PATH} component={GASFi} />
         <MobileMenuSlider />
         <WalletSidebar />
         <ReactGa />

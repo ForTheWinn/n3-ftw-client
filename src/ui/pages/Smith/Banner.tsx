@@ -1,25 +1,17 @@
 import React, { useState } from "react";
 import {
-  LOCKER_CREATE_PATH,
-  LOCKER_SEARCH_PATH,
-  LOCKER_USER_PATH,
   SMITH_CREATE_NEP11_PATH,
   SMITH_CREATE_NEP17_PATH,
-  SMITH_PATH,
-  SMITH_PATH_NEP11,
 } from "../../../consts";
 import { Link, useLocation } from "react-router-dom";
-import { FaCoins, FaInfoCircle, FaKey, FaPlus, FaSearch } from "react-icons/fa";
-import LockerTokenCard from "../Locker/Main/LockerTokenCard";
+import { FaInfoCircle } from "react-icons/fa";
 import ModalCard from "../../components/Modal";
-import LockerInfoPage from "../Locker/InfoPage";
 import SmithInfo from "./components/SmithInfo";
 
 const Banner = () => {
-  const location = useLocation();
   const [isInfoModalActive, setInfoModalActive] = useState(false);
   return (
-    < div className="box is-shadowless">
+    <div className="box is-shadowless">
       <div className="level">
         <div className="level-left">
           <div className="level-item">

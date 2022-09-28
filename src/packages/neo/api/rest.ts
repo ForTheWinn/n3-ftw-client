@@ -51,7 +51,6 @@ export class RestAPI {
   }
 
 	async getPrice(id): Promise<IPrice> {
-		console.log(id)
 		return this.fetchResult(this.endpoint + `/prices/${id}`);
 	}
 

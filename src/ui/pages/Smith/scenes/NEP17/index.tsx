@@ -8,7 +8,6 @@ import Banner from "../../Banner";
 import PageLayout from "../../../../components/PageLayout";
 import { SMITH_PATH, SMITH_PATH_NEP11 } from "../../../../../consts";
 import { Link, useLocation } from "react-router-dom";
-import { FaCoins } from "react-icons/fa";
 
 const NEP17Smith = () => {
   const location = useLocation();
