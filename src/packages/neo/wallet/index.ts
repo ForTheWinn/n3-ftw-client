@@ -47,24 +47,22 @@ export class WalletAPI {
     const instance = connectedWallet.instance;
     const walletType = connectedWallet.key;
     if (connectedWallet.key === NEON) {
+      const invocations = [invokeScript];
+      const signers = invokeScript.signers;
       const res = await instance.invokeFunction(
-        invokeScript,
-        invokeScript.signers
+        { invocations, signers }
       );
-      if (res && res.result.error) {
-        throw new Error(res.result.error.message);
-      }
       const submittedTx: ITransaction = {
         network: currentNetwork,
         wallet: walletType,
-        txid: res.result,
+        txid: res,
         contractHash: invokeScript.scriptHash,
         method: invokeScript.operation,
         args: invokeScript.args,
         createdAt: moment().format("lll"),
       };
       LocalStorage.addTransaction(submittedTx);
-      return res.result;
+      return res;
     } else {
       if (
         connectedWallet.network &&

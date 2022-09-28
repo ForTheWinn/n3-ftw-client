@@ -1,55 +1,49 @@
-import { WcSdk } from "@cityofzion/wallet-connect-sdk-core";
+import WcSdk from "@cityofzion/wallet-connect-sdk-core";
 // import QRCodeModal from "@walletconnect/qrcode-modal";
 
 import buffer from "buffer";
 import { dispatchEventNeonWalletDisconnected } from "../../neon/events";
 import { INetworkType } from "../network";
 import { MAINNET } from "../consts";
+import { SignClient } from "@walletconnect/sign-client";
 
 const getWcNeonWalletInstance = async (
   network: INetworkType
 ): Promise<WcSdk> => {
   // Set window.Buffer to solve ReferenceError: Buffer is not defined
   window.Buffer = buffer.Buffer;
-  const instance = new WcSdk();
-  await instance.initClient("error", "wss://relay.walletconnect.org");
+  const instance = new WcSdk(
+    await SignClient.init({
+      projectId: "b691f14b8343e73c585d305eac3f6804", // the ID of your project on Wallet Connect website
+      relayUrl: "wss://relay.walletconnect.com", // we are using walletconnect's official relay server
+      metadata: {
+        name: "FTW", // your application name to be displayed on the wallet
+        description: "All-in-one solution for crypto projects", // description to be shown on the wallet
+        url: "https://www.forthewin.network", // url to be linked on the wallet
+        icons: [
+          "https://www.forthewin.network/logo/FTW_512_512.svg",
+        ], // icon to be shown on the wallet
+      },
+    })
+  );
 
   // Subscribe to Wallet Connect events
-  instance.subscribeToEvents({
-    onProposal: (uri: string) => {
-      // QRCodeModal.open(uri, () => {});
-      // @ts-ignore
-      window.open(`https://neon.coz.io/connect?uri=${uri}`, "_blank").focus();
-    },
-    onDeleted: () => {
-      dispatchEventNeonWalletDisconnected();
-    },
+  instance.signClient.on("session_delete", async () => {
+    instance.session = null;
+    dispatchEventNeonWalletDisconnected();
   });
 
   // Load any existing connection, it should be called after the initialization
   await instance.loadSession();
 
   // Check if user has a session and get its accounts
-  if (!instance.session) {
-    await instance.connect({
-      chains: [network === MAINNET ? "neo3:mainnet" : "neo3:testnet"], // the blockchains your dapp accepts to connect
-      methods: [
-        // which RPC methods do you plan to call
-        "invokeFunction",
-        // "testInvoke",
-        // "signMessage",
-        // "verifyMessage",
-        // "getapplicationlog",
-      ],
-      appMetadata: {
-        name: "Forthewin Network", // your application name to be displayed on the wallet
-        description: "The hub of NEP-17", // description to be shown on the wallet
-        url: "https://forthewin.network/", // url to be linked on the wallet
-        icons: ["https://forthewin.network/logo/FTW_512_512.svg"], // icon to be shown on the wallet
-      },
-    });
+  if (!instance.isConnected()) {
+    const connectingNetwork = network === MAINNET ? "neo3:mainnet" : "neo3:testnet";
+    await instance.connect(
+      connectingNetwork // the blockchains your dapp accepts to connect
+    );
 
-    if (instance.session) {
+    if (instance.isConnected()) {
       if (process.env.NODE_ENV === "development") {
         console.log("NEON: Connected to New Session");
         console.log(instance.session);
@@ -57,7 +51,7 @@ const getWcNeonWalletInstance = async (
     } else {
       console.log("NEON: Cannot connect to Neon Wallet");
     }
-  } else if (instance.session) {
+  } else if (instance.isConnected()) {
     if (process.env.NODE_ENV === "development") {
       console.log("NEON: Session Loaded");
       console.log(instance.session);
@@ -68,9 +62,9 @@ const getWcNeonWalletInstance = async (
 
 export const initNeon = async (network: INetworkType) => {
   const instance = await getWcNeonWalletInstance(network);
-  if (instance.session) {
+  if (instance.isConnected() && instance.session) {
     const account = {
-      address: instance.accountAddress,
+      address: instance.getAccountAddress(),
       label: "Neon", // Neon not provide this info
     };
     return { account, instance };
