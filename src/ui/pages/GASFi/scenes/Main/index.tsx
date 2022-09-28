@@ -14,26 +14,15 @@ import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
 import History from "../History";
+import moment from "moment";
 
 export interface IMainData {
   status: IStatusResult;
   staking?: IStakeResult;
   claimable?: IClaimableResult;
+  bNEOBalance?: number;
 }
 
-const renderer = ({ hours, minutes, seconds, completed }) => {
-  if (completed) {
-    // Render a completed state
-    return <span className="has-text-info is-size-7">Drawing in progress</span>;
-  } else {
-    // Render a countdown
-    return (
-      <span className="has-text-info is-size-7">
-        Next drawing in {hours}:{minutes}:{seconds}
-      </span>
-    );
-  }
-};
 
 const Main = (props) => {
   const { network, connectedWallet } = useWallet();
@@ -42,7 +31,6 @@ const Main = (props) => {
   const [error, setError] = useState();
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
-
   const onClaimAll = async () => {
     if (connectedWallet) {
       try {
@@ -65,18 +53,8 @@ const Main = (props) => {
     async function fetch() {
       try {
         setLoading(true);
-        const res1 = await new GasFiContract(network).getStatus();
-        const res2 = connectedWallet
-          ? await new GasFiContract(network).getStake(connectedWallet)
-          : undefined;
-        const claimable = connectedWallet
-          ? await new GasFiContract(network).getClaimable(connectedWallet)
-          : undefined;
-        setData({
-          status: res1,
-          staking: res2,
-          claimable,
-        });
+        const res = await new GasFiContract(network).getStatus(connectedWallet);
+        setData(res);
         setLoading(false);
       } catch (e: any) {
         console.log(e);
@@ -86,7 +64,6 @@ const Main = (props) => {
     }
     fetch();
   }, [connectedWallet, network, refresh]);
-	console.log(data)
   return (
     <div>
       <div className="columns is-centered">
@@ -96,9 +73,30 @@ const Main = (props) => {
             data={data}
             connectedWallet={connectedWallet}
           />
+          {data && data.status ? (
+            <div className="columns is-hidden-mobile">
+              {data.status.positions.map((amount, i) => {
+                const percentage = (amount * 100) / data.status.totalNEO;
+                return (
+                  <div
+                    key={`positions${i}`}
+                    className="column has-text-centered"
+                  >
+                    <div className="box is-shadowless">
+                      <strong>{`Position ${i + 1}`}</strong> <br />
+                      {withDecimal(amount, 8, true)} ({Math.round(percentage)}%)
+                      bNEO
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div></div>
+          )}
 
           {connectedWallet && data && data.staking ? (
-            <div className="box">
+            <div className="box is-shadowless">
               <div className="columns is-mobile content has-text-centered">
                 <div className="column">
                   <div
@@ -120,6 +118,7 @@ const Main = (props) => {
                     </div>
                   </div>
                 </div>
+
                 {data.claimable ? (
                   <div
                     className="column"
@@ -130,7 +129,7 @@ const Main = (props) => {
                     }}
                   >
                     <button
-                      disabled={data.claimable.claimableAmount === 0}
+                      // disabled={data.claimable.claimableAmount === 0}
                       onClick={onClaimAll}
                       className="button is-primary"
                     >
@@ -147,29 +146,34 @@ const Main = (props) => {
           )}
 
           <div className="box is-shadowless">
-            <div className="level">
-              <div className="level-left">
-                <div className="level-item">
-                  <h6 className="title is-6">History</h6>
-                </div>
-              </div>
+	          <h6 className="title is-6">History</h6>
+            {/*<div className="level">*/}
+            {/*  <div className="level-left">*/}
+            {/*    <div className="level-item">*/}
+            {/*      <h6 className="title is-6">History</h6>*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
 
-              <div className="level-right">
-                <div className="level-item">
-                  {data ? (
-                    <Countdown
-                      // date={Date.now() + 500000}
-                      date={data && data.status.nextDrawingAt}
-                      renderer={renderer}
-                    >
-                      <DrawBtn />
-                    </Countdown>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </div>
-            </div>
+            {/*  <div className="level-right">*/}
+            {/*    <div className="level-item has-text-right">*/}
+            {/*      {data ? (*/}
+            {/*        <div className="has-text-info is-size-7">*/}
+            {/*          Next drawing after &nbsp;*/}
+            {/*          {moment(data.status.nextDrawingAt).format("lll")} <br />*/}
+            {/*          <Countdown*/}
+            {/*            // date={Date.now() + 500000}*/}
+            {/*            date={data && data.status.nextDrawingAt}*/}
+            {/*            renderer={renderer}*/}
+            {/*          >*/}
+            {/*            <DrawBtn />*/}
+            {/*          </Countdown>*/}
+            {/*        </div>*/}
+            {/*      ) : (*/}
+            {/*        <></>*/}
+            {/*      )}*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*</div>*/}
 
             <History />
           </div>

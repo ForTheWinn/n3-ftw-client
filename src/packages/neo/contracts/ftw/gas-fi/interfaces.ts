@@ -1,25 +1,29 @@
+export interface IGASFiStatus {
+  status: IStatusResult;
+  claimable?: IClaimableResult;
+  staking?: IStakeResult;
+  bNEOBalance?: number;
+}
 
 export interface IStatusResult {
   totalNEO: number; // current
-  position1: number; // current
-  position2: number; // current
-  position3: number; // current
   lastDrawNo: number; // past
   lastPosition: number; // past
   lastReward: number; // past
-	nextDrawingAt: number; // future
+  nextDrawingAt: number; // future
+  positions: number[];
 }
 
 export interface IClaimableResult {
-	claimableAmount: number
-	claimableNumbers: number[]
+  claimableAmount: number;
+  claimableNumbers: number[];
 }
 
 export interface IStakeResult {
   position: number;
   amount: number;
   startAt: number; // quality draw no from
-  stakeAt: number;
+  stakedAt: string;
 }
 
 export interface IDrawsResult {
@@ -29,8 +33,8 @@ export interface IDrawsResult {
 }
 
 export interface IClaim {
-	no: number;
-	reward: number;
+  no: number;
+  reward: number;
 }
 
 export interface IDraw {

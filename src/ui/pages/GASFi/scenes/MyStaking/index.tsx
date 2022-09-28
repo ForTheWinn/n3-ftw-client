@@ -10,6 +10,8 @@ import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
+import moment from "moment";
+import { DRAWING_FREQUENCY } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
 
 const MyStaking = (props) => {
   const history = useHistory();
@@ -52,6 +54,19 @@ const MyStaking = (props) => {
     }
     fetch();
   }, [connectedWallet, network]);
+  console.log(data);
+  let canUnstake = false;
+
+  if (data) {
+    const now = moment().valueOf();
+    const canUnstakeAfter = parseFloat(data.stakedAt) + DRAWING_FREQUENCY;
+    if (now > canUnstakeAfter) {
+      canUnstake = true;
+    }
+		console.log( parseFloat(data.stakedAt) + DRAWING_FREQUENCY)
+  }
+
+
 
   return (
     <div>
@@ -85,7 +100,9 @@ const MyStaking = (props) => {
                   </div>
                 </div>
               </div>
+              {data && !canUnstake ? <div className={" mb-5"}>You can unstake after {moment(parseFloat(data.stakedAt) + DRAWING_FREQUENCY).format("lll")}</div> : <></>}
               <button
+                disabled={!canUnstake}
                 onClick={onSubmit}
                 className="button is-danger is-fullwidth"
               >
@@ -119,7 +136,6 @@ const MyStaking = (props) => {
           />
         </Modal>
       )}
-
     </div>
   );
 };

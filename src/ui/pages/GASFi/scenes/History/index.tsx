@@ -14,7 +14,7 @@ const History = () => {
         <ul>
           {historyRoutes.map((r) => (
             <li key={r} className={route === r ? "is-active" : ""}>
-              <a onClick={() => setRoute(r)}>Past results</a>
+              <a onClick={() => setRoute(r)}>{r === historyRoutes[0] ? "Past results" : "My claims"}</a>
             </li>
           ))}
         </ul>

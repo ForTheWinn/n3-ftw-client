@@ -124,7 +124,7 @@ const hash160List = [
   "bonusToken",
   "bonusTokenHash",
 ];
-const dateList = ["createdAt", "stakedAt"];
+const dateList = ["createdAt"];
 const intList = [
   "start",
   "end",
@@ -165,7 +165,7 @@ const intList = [
   "drawNo",
   "totalReward",
   "totalPosition",
-	"claimableAmount"
+  "claimableAmount",
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {
@@ -220,6 +220,12 @@ export const parseMapValue = (stackItem: StackItemLike): any => {
           // @ts-ignore
           val = value.value.map((item) => {
             return parseMapValue(item);
+          });
+          break;
+        case "positions":
+          // @ts-ignore
+          val = value.value.map(({ value }) => {
+            return parseFloat(value);
           });
           break;
         default:

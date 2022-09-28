@@ -80,7 +80,7 @@ export const SMITH_PAGE_ROUTE = {
 export const GASFI_PAGE_ROUTE = {
   label: "GAS-Fi",
   path: GASFI_PATH,
-  network: [TESTNET],
+  network: [TESTNET, MAINNET],
   category: [],
 };
 

@@ -10,8 +10,8 @@ import { BNEO_SCRIPT_HASH } from "../../../consts/nep17-list";
 import {
   IClaimableResult,
   IDrawsResult,
+  IGASFiStatus,
   IStakeResult,
-  IStatusResult,
 } from "./interfaces";
 
 export class GasFiContract {
@@ -160,14 +160,70 @@ export class GasFiContract {
     }
   };
 
-  getStatus = async (): Promise<IStatusResult> => {
-    const stake = {
-      operation: "status",
-      scriptHash: this.contractHash,
-      args: [],
-    };
-    const res = await Network.read(this.network, [stake]);
-    return parseMapValue(res.stack[0] as any);
+  getStatus = async (
+    connectedWallet?: IConnectedWallet
+  ): Promise<IGASFiStatus> => {
+    const scripts: any = [
+      {
+        operation: "status",
+        scriptHash: this.contractHash,
+        args: [],
+      },
+    ];
+
+    if (connectedWallet) {
+      const senderHash = NeonWallet.getScriptHashFromAddress(
+        connectedWallet.account.address
+      );
+      const stake = {
+        operation: "getStake",
+        scriptHash: this.contractHash,
+        args: [
+          {
+            type: "Hash160",
+            value: senderHash,
+          },
+        ],
+      };
+      const claimable = {
+        operation: "getClaimable",
+        scriptHash: this.contractHash,
+        args: [
+          {
+            type: "Hash160",
+            value: senderHash,
+          },
+        ],
+      };
+      const bNEOBalance = {
+        operation: "balanceOf",
+        scriptHash: BNEO_SCRIPT_HASH[this.network],
+        args: [
+          {
+            type: "Hash160",
+            value: senderHash,
+          },
+        ],
+      };
+      scripts.push(stake);
+      scripts.push(claimable);
+      scripts.push(bNEOBalance);
+    }
+
+    const res = await Network.read(this.network, scripts);
+    const obj: IGASFiStatus = { status: parseMapValue(res.stack[0] as any) };
+    if (connectedWallet) {
+      obj.staking = res.stack[1].value
+        ? parseMapValue(res.stack[1] as any)
+        : undefined;
+      obj.claimable = res.stack[2].value
+        ? parseMapValue(res.stack[2] as any)
+        : undefined;
+      obj.bNEOBalance = parseFloat(
+        u.BigInteger.fromNumber(res.stack[3].value as any).toDecimal(8)
+      );
+    }
+    return obj;
   };
 
   getStake = async (connectedWallet): Promise<IStakeResult | undefined> => {
@@ -181,10 +237,11 @@ export class GasFiContract {
         },
       ],
     };
-    /* getStake throws exception if there is no staking data */
     const res = await Network.read(this.network, [stake]);
     if (res.state === "HALT") {
-      return parseMapValue(res.stack[0] as any);
+      return res.stack[0].value
+        ? parseMapValue(res.stack[0] as any)
+        : undefined;
     } else {
       return undefined;
     }
@@ -224,7 +281,7 @@ export class GasFiContract {
       ],
     };
     const res = await Network.read(this.network, [script]);
-		console.log(res)
+    console.log(res);
     if (res.state === "HALT") {
       return res.stack[0] &&
         res.stack[0].value &&

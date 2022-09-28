@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { POSITION_RANGE } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
 import { useWallet } from "../../../../../packages/provider";
@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useHistory } from "react-router-dom";
 import { GASFI_PATH } from "../../../../../consts";
+import { IMainData } from "../Main";
 
 const Stake = (props) => {
   const history = useHistory();
@@ -16,17 +17,19 @@ const Stake = (props) => {
   const [position, setPosition] = useState<number | undefined>();
   const [amount, setAmount] = useState<number | undefined>();
   const { connectedWallet, network } = useWallet();
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState<IMainData | undefined>(undefined);
+  const [error, setError] = useState();
   const [txid, setTxid] = useState("");
 
   const onSubmit = async () => {
     if (connectedWallet && amount && position) {
       try {
-	      const res = await new GasFiContract(network).getStake(connectedWallet);
-				console.log(res);
-				if(res){
-					toast.error("You already have staking.");
-					return false;
-				}
+        const res = await new GasFiContract(network).getStake(connectedWallet);
+        if (res) {
+          toast.error("You already have staking.");
+          return false;
+        }
         const tx = await new GasFiContract(network).stake(
           connectedWallet,
           amount,
@@ -46,12 +49,35 @@ const Stake = (props) => {
     history.push(GASFI_PATH);
   };
 
-  // const { isLoaded, error, data } = useOnChainData(() => {
-  //   return new GasFiContract(network).getStake(connectedWallet);
-  // }, [network]);
-  // if (connectedWallet && isLoaded && !data) {
-  // }
-  // console.log(data);
+  const handleClickBalance = () => {
+    if (data && data.bNEOBalance) {
+      setAmount(data.bNEOBalance);
+    }
+  };
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        setLoading(true);
+        const res = await new GasFiContract(network).getStatus(connectedWallet);
+        setData(res);
+        setLoading(false);
+      } catch (e: any) {
+        console.log(e);
+        setError(e.message);
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, [connectedWallet, network]);
+
+  const hasEnoughBalance = !!(
+    data &&
+    data.bNEOBalance &&
+    amount &&
+    data.bNEOBalance >= amount
+  );
+
   return (
     <div className="columns">
       <div className="column is-8 is-offset-2">
@@ -96,6 +122,16 @@ const Stake = (props) => {
                       setAmount(value.floatValue);
                     }}
                   />
+                  {connectedWallet && data && data.bNEOBalance ? (
+                    <p
+                      onClick={handleClickBalance}
+                      className="help has-text-right is-clickable"
+                    >
+                      {data.bNEOBalance} bNEO
+                    </p>
+                  ) : (
+                    <p className="help"></p>
+                  )}
                 </div>
               </div>
 
@@ -104,7 +140,7 @@ const Stake = (props) => {
               {connectedWallet ? (
                 <button
                   onClick={onSubmit}
-                  disabled={!amount || !position}
+                  disabled={!hasEnoughBalance || !position}
                   className="button is-primary"
                 >
                   Submit
