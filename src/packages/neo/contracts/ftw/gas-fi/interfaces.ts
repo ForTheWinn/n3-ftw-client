@@ -33,8 +33,8 @@ export interface IDrawsResult {
 }
 
 export interface IClaim {
-  no: number;
-  reward: number;
+  drawNo: number;
+  reward: string;
 }
 
 export interface IDraw {

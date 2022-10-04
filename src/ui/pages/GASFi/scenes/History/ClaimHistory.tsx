@@ -4,6 +4,7 @@ import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi"
 import { INetworkType } from "../../../../../packages/neo/network";
 import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
 import { withDecimal } from "../../../../../packages/neo/utils";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 export interface IClaimHistoryProps {
   network: INetworkType;
@@ -11,6 +12,7 @@ export interface IClaimHistoryProps {
 }
 
 const ClaimHistory = ({ connectedWallet, network }: IClaimHistoryProps) => {
+  const { toggleWalletSidebar } = useApp();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IClaim[]>([]);
   const [error, setError] = useState();
@@ -35,7 +37,10 @@ const ClaimHistory = ({ connectedWallet, network }: IClaimHistoryProps) => {
   if (!connectedWallet) {
     return (
       <div>
-        <button className="button is-fullwidth is-primary">
+        <button
+          onClick={toggleWalletSidebar}
+          className="button is-fullwidth is-primary"
+        >
           Connect wallet
         </button>
       </div>
@@ -62,7 +67,7 @@ const ClaimHistory = ({ connectedWallet, network }: IClaimHistoryProps) => {
               data.map((item, i) => {
                 return (
                   <tr key={`claim-${i}`}>
-                    <td>{item.no}</td>
+                    <td>{item.drawNo}</td>
                     <td>{withDecimal(item.reward, 8, true)}</td>
                   </tr>
                 );

@@ -281,12 +281,13 @@ export class GasFiContract {
       ],
     };
     const res = await Network.read(this.network, [script]);
-    console.log(res);
     if (res.state === "HALT") {
       return res.stack[0] &&
         res.stack[0].value &&
         Array.isArray(res.stack[0].value)
-        ? res.stack[0].value.map((item: any) => parseMapValue(item))
+        ? res.stack[0].value.map((item: any) => {
+					return parseMapValue(item)
+	      })
         : [];
     } else {
       return [];

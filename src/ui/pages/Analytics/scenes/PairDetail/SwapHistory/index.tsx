@@ -19,7 +19,6 @@ interface ISwapHistoryProps {
   };
 }
 const SwapHistory = ({ network, tokenA, tokenB, pairs }: ISwapHistoryProps) => {
-  console.log(pairs);
   const [page, setPage] = useState(1);
   const [data, setData] = useState<any>();
   const [isLoading, setLoading] = useState(true);
@@ -43,7 +42,6 @@ const SwapHistory = ({ network, tokenA, tokenB, pairs }: ISwapHistoryProps) => {
     }
     fetch();
   }, [network, page]);
-  console.log(data);
   return (
     <div>
       <div className="table-container">

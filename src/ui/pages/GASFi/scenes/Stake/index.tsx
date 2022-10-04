@@ -10,6 +10,7 @@ import { useApp } from "../../../../../common/hooks/use-app";
 import { useHistory } from "react-router-dom";
 import { GASFI_PATH } from "../../../../../consts";
 import { IMainData } from "../Main";
+import About from "../Main/About";
 
 const Stake = (props) => {
   const history = useHistory();
@@ -82,7 +83,12 @@ const Stake = (props) => {
     <div className="columns">
       <div className="column is-8 is-offset-2">
         <div className="columns">
-          <div className="column is-8">
+          <div className="column is-6">
+            <div className="box is-shadowless">
+              <About />
+            </div>
+          </div>
+          <div className="column is-6">
             <div className="box is-shadowless">
               <h5 className="title is-5">Stake bNEO</h5>
               <hr />
@@ -154,28 +160,6 @@ const Stake = (props) => {
                 </button>
               )}
             </div>
-          </div>
-          <div className="column is-4">
-            <>
-              <div className="box is-shadowless">
-                <div className="content is-small">
-                  <li>
-                    Fee is{" "}
-                    <span className="has-text-primary has-text-weight-bold">
-                      {" "}
-                      100 NEP
-                    </span>
-                  </li>
-                  <li>
-                    There is no way to get tokens back earlier than the release
-                    time.
-                  </li>
-                  <li>
-                    Do not use <strong>Emojis</strong>.
-                  </li>
-                </div>
-              </div>
-            </>
           </div>
         </div>
       </div>

@@ -30,9 +30,12 @@ const About = (props) => {
         <h6>Contract info</h6>
         <ul>
           <li>
-            <a target="_blank" href={"https://explorer.onegate.space/contractinfo/0xbc54874a9505e668bc0af9301ff261fcc4a640ee"}>
-	            0xbc54874a9505e668bc0af9301ff261fcc4a640ee
-            </a>
+	          <p>
+		          <a target="_blank" href={"https://explorer.onegate.space/contractinfo/0xbc54874a9505e668bc0af9301ff261fcc4a640ee"}>
+			          0xbc54874a9505e668bc0af9301ff261fcc4a640ee
+		          </a>
+	          </p>
+
           </li>
         </ul>
       </div>
