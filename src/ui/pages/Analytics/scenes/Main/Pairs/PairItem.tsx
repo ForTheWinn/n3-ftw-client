@@ -44,17 +44,17 @@ const PairItem = ({
       <td>
         <div className="is-flex" style={{ alignItems: "center" }}>
           <PairIcons
-            width="20px"
-            height="20px"
+            width="25px"
+            height="25px"
             network={network}
             tokenA={tokenA.slice(2)}
             tokenB={tokenB.slice(2)}
           />
-          <span className="ml-2">{`${tokenASymbol}-${tokenBSymbol}`}</span>
+          <strong className="ml-3">{`${tokenASymbol}-${tokenBSymbol}`}</strong>
         </div>
       </td>
-      <td>{data ? "$" + numberTrim(data.reserveUSD) : ""}</td>
-      <td>{data ? "$" + numberTrim(data.volumeUSD) : ""}</td>
+      <td>{data ? "$" + parseFloat(numberTrim(data.reserveUSD, 0)).toLocaleString() : ""}</td>
+      <td>{data ? "$" + parseFloat(numberTrim(data.volumeUSD, 0)).toLocaleString() : ""}</td>
       {/*<td>{data ? "$" + numberTrim(data.feesUSD) : ""}</td>*/}
       <td style={{ textAlign: "right" }}>
         <button onClick={onClick} className="button is-small is-white">

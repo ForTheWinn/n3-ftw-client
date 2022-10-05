@@ -41,12 +41,12 @@ const TokensAnalytics = (props) => {
   return (
     <div>
       <div className="table-container">
-        <table className="table is-fullwidth is-narrow">
+        <table className="table is-fullwidth">
           <thead>
             <tr>
               <th>Name</th>
               <th>Price</th>
-              {/*<th>24H %</th>*/}
+              <th>24H %</th>
               <th>7D %</th>
 	            <th>Volume 24H</th>
               <th>Liquidity</th>

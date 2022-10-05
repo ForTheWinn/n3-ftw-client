@@ -36,16 +36,16 @@ const TokenItem = ({ id, symbol, network, onClick }: ITokenItem) => {
         <SymbolWithLogo id={id} symbol={symbol} />
       </td>
       <td>
-        {data ? "$" + numberTrim(data.price, decimalCuts(symbol)) : ""}
+        {data ? "$" + parseFloat(numberTrim(data.price, decimalCuts(symbol))).toLocaleString() : ""}
       </td>
-	    {/*<td className={data && data.change24H >= 0 ? "has-text-success" : "has-text-danger"}>*/}
-		  {/*  {data ? data.change24H !== 0 ? numberTrim(data.change24H, 2) + "%" : "" : ""}*/}
-	    {/*</td>*/}
+	    <td className={data && data.change24H >= 0 ? "has-text-success" : "has-text-danger"}>
+		    {data ? data.change24H !== 0 ? numberTrim(data.change24H, 2) + "%" : "" : ""}
+	    </td>
 	    <td className={data && data.change7Days >= 0 ? "has-text-success" : "has-text-danger"}>
 		    {data ? data.change7Days !== 0 ? numberTrim(data.change7Days, 2) + "%" :"" : ""}
 	    </td>
-	    <td>{data ? "$" + numberTrim(data.tradeVolumeUSD, 0) : ""}</td>
-      <td>{data ? "$" + numberTrim(data.totalLiquidityUSD, 0) : ""}</td>
+	    <td>{data ? "$" + parseFloat(numberTrim(data.tradeVolumeUSD, 0)).toLocaleString() : ""}</td>
+      <td>{data ? "$" + parseFloat(numberTrim(data.totalLiquidityUSD, 0)).toLocaleString() : ""}</td>
       <td style={{ textAlign: "right" }}>
         <button
           onClick={() => onClick(id)}
