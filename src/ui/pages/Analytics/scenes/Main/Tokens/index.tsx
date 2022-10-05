@@ -46,8 +46,10 @@ const TokensAnalytics = (props) => {
             <tr>
               <th>Name</th>
               <th>Price</th>
+              {/*<th>24H %</th>*/}
+              <th>7D %</th>
+	            <th>Volume 24H</th>
               <th>Liquidity</th>
-              <th>Volume</th>
               <th></th>
             </tr>
           </thead>

@@ -10,8 +10,8 @@ const SymbolWithLogo = ({ id, symbol }) => {
     : UNKNOWN_TOKEN_IMAGE;
   return (
     <div className="is-flex" style={{alignItems:"center"}}>
-      <LogoIcon img={logo} width="20px" height="20px" />
-      <span className="ml-2">{symbol}</span>
+      <LogoIcon img={logo} width="25px" height="25px" />
+      <strong className="ml-3">{symbol}</strong>
     </div>
   );
 };

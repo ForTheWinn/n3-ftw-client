@@ -58,6 +58,10 @@ export class RestAPI {
     return this.fetchResult(this.endpoint + "/prices");
   }
 
+	async getPricesRange(tokenId): Promise<IPrices> {
+		return this.fetchResult(this.endpoint + `/prices/${tokenId}/range`);
+	}
+
   async getLiquidity(id, days): Promise<ILiquidityWithTimeRange> {
     return this.fetchResult(this.endpoint + `/tokens/liquidity/${id}/${days}`);
   }

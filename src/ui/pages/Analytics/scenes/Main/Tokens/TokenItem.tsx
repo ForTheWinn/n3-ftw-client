@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import { INetworkType } from "../../../../../../packages/neo/network";
-import { numberTrim } from "../../../../../../packages/neo/utils";
+import { decimalCuts, numberTrim } from "../../../../../../packages/neo/utils";
 import SymbolWithLogo from "./SymbolWithLogo";
 import { FaChartLine } from "react-icons/fa";
 
@@ -29,15 +29,23 @@ const TokenItem = ({ id, symbol, network, onClick }: ITokenItem) => {
     fetch();
   }, []);
   if (isLoading) return <></>;
-  if (data && data.tradeVolumeUSD === 0) return <></>;
+  if (data && data.totalLiquidityUSD === 0) return <></>;
   return (
     <tr>
       <td>
         <SymbolWithLogo id={id} symbol={symbol} />
       </td>
-      <td>{data ? "$" + numberTrim(data.price, 9) : ""}</td>
-      <td>{data ? "$" + numberTrim(data.totalLiquidityUSD) : ""}</td>
-      <td>{data ? "$" + numberTrim(data.tradeVolumeUSD) : ""}</td>
+      <td>
+        {data ? "$" + numberTrim(data.price, decimalCuts(symbol)) : ""}
+      </td>
+	    {/*<td className={data && data.change24H >= 0 ? "has-text-success" : "has-text-danger"}>*/}
+		  {/*  {data ? data.change24H !== 0 ? numberTrim(data.change24H, 2) + "%" : "" : ""}*/}
+	    {/*</td>*/}
+	    <td className={data && data.change7Days >= 0 ? "has-text-success" : "has-text-danger"}>
+		    {data ? data.change7Days !== 0 ? numberTrim(data.change7Days, 2) + "%" :"" : ""}
+	    </td>
+	    <td>{data ? "$" + numberTrim(data.tradeVolumeUSD, 0) : ""}</td>
+      <td>{data ? "$" + numberTrim(data.totalLiquidityUSD, 0) : ""}</td>
       <td style={{ textAlign: "right" }}>
         <button
           onClick={() => onClick(id)}

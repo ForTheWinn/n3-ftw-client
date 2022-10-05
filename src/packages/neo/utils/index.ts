@@ -77,6 +77,27 @@ export const withDecimal = (
   }
 };
 
+export const decimalCuts = (symbol: string): number => {
+	switch (symbol){
+		case "fUSDT":
+			return 0;
+		case "bNEO":
+			return 2;
+		case "GAS":
+			return 2;
+		case "fWBTC":
+			return 2;
+		case "fWETH":
+			return 2;
+		case "NEP":
+			return 4;
+		case "TTM":
+			return 4;
+		default:
+			return 9
+	}
+}
+
 export const numberTrim = (no: number, decimals = 2): string => {
   if (!no) return "0";
   return no
