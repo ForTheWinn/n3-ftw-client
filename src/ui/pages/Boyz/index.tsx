@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/PageLayout";
+import Slider from "react-slick";
 import toast from "react-hot-toast";
 import { useWallet } from "../../../packages/provider";
 import { NFTContract } from "../../../packages/neo/contracts";
 import { RUNE_PHASE_FILTER } from "../../../packages/neo/contracts/ftw/rune/consts";
 import { handleError } from "../../../packages/neo/utils/errors";
 
-const samples = ["0007", "0051", "0103", "0112"];
+const samples = ["0007", "0051", "0052", "0103", "0225", "0235", "0112"];
 const Boyz = () => {
   const [txid, setTxid] = useState("");
   const [filter, setFilter] = useState<string>(RUNE_PHASE_FILTER[0]);
@@ -52,90 +53,75 @@ const Boyz = () => {
   //   }
   //   fetchContractStatus();
   // }, [network, filter]);
+	const settings = {
+		dots: true,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		arrows: false
+	};
   return (
     <PageLayout>
       <div className="columns is-centered">
         <div className="column is-half">
-          <div className="box">
-            <h1 className="title">NEO Boyz</h1>
-            <p className="subtitle">Algorithms-generated NEO Boyz</p>
-            <div className="columns">
-              {samples.map((img) => {
-                return (
-                  <div key={img} className="column is-paddingless">
-                    <img src={`/boyz/${img}.png`} width="100%" />
-                  </div>
-                );
-              })}
-            </div>
+          <div className="box is-paddingless">
+	          <div className="p-5">
+		          <h1 className="title is-4">NEO Boyz</h1>
+		          <p className="subtitle is-6">250 unique collectible characters stored on the NEO blockchain</p>
+	          </div>
 
-            <div className="level">
-              <div className="level-left">
-                <div className="level-item is-block">
-                  <div className="heading">Total supply</div>
-                  <p>0/250</p>
-                </div>
-              </div>
+	          <Slider {...settings}>
+		          {samples.map((img) => {
+			          return (
+				          <div key={img}>
+					          <img src={`/boyz/${img}.png`} width="100%" />
+				          </div>
+			          );
+		          })}
+	          </Slider>
 
-              <div className="level-right">
-                <div className="level-item">
-	                <button className="button is-primary">Mint</button>
-                </div>
-              </div>
-            </div>
+	          <div className="p-5 has-text-centered mt-5">
+		          <button className="button is-dark is-outlined">Minting at 2022.10.16 10 PM (UTC)</button>
+	          </div>
+
+
+	          <div className="p-5">
+
+		          <div className="columns is-mobile">
+			          <div className="column">
+				          <div className="heading">Type</div>
+				          <p>Collectible</p>
+			          </div>
+		          	<div className="column">
+				          <div className="heading">Total supply</div>
+				          <p>250</p>
+		          	</div>
+		          	<div className="column">
+				          <div className="heading">Mint price</div>
+				          <p>3,000 NEP</p>
+		          	</div>
+		          </div>
+
+		          {/*<div className="level">*/}
+			        {/*  <div className="level-left">*/}
+				      {/*    <div className="level-item is-block">*/}
+					    {/*      <div className="heading">Total supply</div>*/}
+					    {/*      <p>0/250</p>*/}
+				      {/*    </div>*/}
+			        {/*  </div>*/}
+
+			        {/*  <div className="level-right">*/}
+				      {/*    <div className="level-item">*/}
+					    {/*      <button className="button is-primary">Mint</button>*/}
+				      {/*    </div>*/}
+			        {/*  </div>*/}
+		          {/*</div>*/}
+	          </div>
+
           </div>
         </div>
       </div>
-      {/*<Banner*/}
-      {/*  network={network}*/}
-      {/*  filter={filter}*/}
-      {/*  onFilterChange={onFilterChange}*/}
-      {/*  onMint={onMint}*/}
-      {/*/>*/}
-      {/*{isLoading ? (*/}
-      {/*  <PageLayout>*/}
-      {/*    <div>Loading..</div>*/}
-      {/*  </PageLayout>*/}
-      {/*) : error ? (*/}
-      {/*  <PageLayout>*/}
-      {/*    <div>{error}</div>*/}
-      {/*  </PageLayout>*/}
-      {/*) : (*/}
-      {/*  <div*/}
-      {/*    className="container"*/}
-      {/*    style={{*/}
-      {/*      display: "flex",*/}
-      {/*      flexFlow: "wrap",*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    {tokens.map((token) => (*/}
-      {/*      <figure*/}
-      {/*        style={{ width: "5%" }}*/}
-      {/*        key={token.tokenId}*/}
-      {/*        className="image rune"*/}
-      {/*        onClick={() => onPropertiesModalActive(token.tokenId.toString())}*/}
-      {/*      >*/}
-      {/*        <img src={token.image} />*/}
-      {/*      </figure>*/}
-      {/*    ))}*/}
-      {/*  </div>*/}
-      {/*)}*/}
-      {/*{propertiesModalActive && (*/}
-      {/*  <PropertiesModal*/}
-      {/*    tokenId={propertiesModalActive}*/}
-      {/*    onClose={() => setPropertiesModalActive(undefined)}*/}
-      {/*  />*/}
-      {/*)}*/}
-      {/*{txid && (*/}
-      {/*  <Modal onClose={() => setTxid("")}>*/}
-      {/*    <AfterTransactionSubmitted*/}
-      {/*      txid={txid}*/}
-      {/*      network={network}*/}
-      {/*      onSuccess={() => setTxid("")}*/}
-      {/*      onError={() => setTxid("")}*/}
-      {/*    />*/}
-      {/*  </Modal>*/}
-      {/*)}*/}
     </PageLayout>
   );
 };
