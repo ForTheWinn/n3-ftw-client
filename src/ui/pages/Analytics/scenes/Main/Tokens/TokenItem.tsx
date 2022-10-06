@@ -36,7 +36,7 @@ const TokenItem = ({ id, symbol, network, onClick }: ITokenItem) => {
         <SymbolWithLogo id={id} symbol={symbol} />
       </td>
       <td>
-        {data ? "$" + parseFloat(numberTrim(data.price, decimalCuts(symbol))).toLocaleString() : ""}
+        {data ? "$" + numberTrim(data.price, decimalCuts(symbol)) : ""}
       </td>
 	    <td className={data && data.change24H >= 0 ? "has-text-success" : "has-text-danger"}>
 		    {data ? data.change24H !== 0 ? numberTrim(data.change24H, 2) + "%" : "" : ""}
