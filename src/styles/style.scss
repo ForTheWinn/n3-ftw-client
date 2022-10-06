@@ -10,6 +10,8 @@ $submenu-bg-color: $light !important;
 $sidebar-width: 230px !important;
 @import "../../node_modules/react-pro-sidebar/dist/scss/styles";
 @import "../../node_modules/react-datepicker/dist/react-datepicker.css";
+@import "../../node_modules/slick-carousel/slick/slick.css";
+@import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
 @font-face {
   font-family: "VCR";

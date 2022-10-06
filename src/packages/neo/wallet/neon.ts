@@ -12,7 +12,8 @@ const getWcNeonWalletInstance = async (
 ): Promise<WcSdk> => {
   // Set window.Buffer to solve ReferenceError: Buffer is not defined
   window.Buffer = buffer.Buffer;
-  const instance = new WcSdk(
+	const instance = new WcSdk(
+		// @ts-ignore
     await SignClient.init({
       projectId: "b691f14b8343e73c585d305eac3f6804", // the ID of your project on Wallet Connect website
       relayUrl: "wss://relay.walletconnect.com", // we are using walletconnect's official relay server
