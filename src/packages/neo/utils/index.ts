@@ -90,9 +90,9 @@ export const decimalCuts = (symbol: string): number => {
 		case "fWETH":
 			return 2;
 		case "NEP":
-			return 4;
+			return 5;
 		case "TTM":
-			return 4;
+			return 5;
 		default:
 			return 9
 	}

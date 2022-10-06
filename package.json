@@ -19,6 +19,7 @@
     "bulma": "^0.9.3",
     "bulma-pagination-react": "^0.1.1",
     "chart.js": "^3.8.0",
+    "eslint": "8.22.0",
     "husky": "^8.0.1",
     "jquery": "^3.6.0",
     "lightweight-charts": "^3.8.0",

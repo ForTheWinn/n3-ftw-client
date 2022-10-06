@@ -55,6 +55,7 @@ const LPTokenList = ({
                 <LPTokenCard
                   network={network}
                   onStakeLP={onStakeLP}
+	                // @ts-ignore
                   {...item}
 	                // @ts-ignore
                   key={`${item.name}-${i}`}
