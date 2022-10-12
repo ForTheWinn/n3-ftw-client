@@ -61,7 +61,7 @@ const LockerMain = () => {
           ) : (
             <div className="columns is-multiline">
               {data &&
-                data.items.map((item) => {
+                data.items.reverse().map((item) => {
                   return (
                     <div key={item.contractHash} className="column is-3">
                       <LockerTokenCard {...item} network={network} />

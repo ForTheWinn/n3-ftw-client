@@ -3,6 +3,7 @@ import React from "react";
 import { ASSET_LIST } from "../../../../packages/neo/contracts/ftw/swap/consts";
 import { useHistory } from "react-router-dom";
 import { LOCKER_PATH } from "../../../../consts";
+import {UNKNOWN_TOKEN_IMAGE} from "../../../../packages/neo/consts";
 interface ILockerTokenCardProps {
   lockedAmount: number;
   decimals: number;
@@ -20,7 +21,7 @@ const LockerTokenCard = ({
   const history = useHistory();
   const logo = ASSET_LIST[network][contractHash]
     ? ASSET_LIST[network][contractHash].logo
-    : undefined;
+    : UNKNOWN_TOKEN_IMAGE;
   const amount = parseFloat(
     u.BigInteger.fromNumber(lockedAmount).toDecimal(decimals)
   );
