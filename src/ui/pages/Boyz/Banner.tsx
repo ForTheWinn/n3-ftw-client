@@ -1,14 +1,5 @@
 import React from "react";
-import { RUNE_PRICE } from "../../../packages/neo/contracts/ftw/rune/consts";
-import { INetworkType } from "../../../packages/neo/network";
-import DisplayRandomRune from "../../components/RandomRune";
-interface IBannerProps {
-  network: INetworkType;
-  filter: string;
-  onMint: () => void;
-  onFilterChange: (val: string) => void;
-}
-const Banner = ({ onMint, network }: IBannerProps) => {
+const Banner = () => {
   return (
     <section className="hero is-white">
       <div className="hero-body">
@@ -16,9 +7,9 @@ const Banner = ({ onMint, network }: IBannerProps) => {
           <div className="columns">
             <div className="column">
               <div>
-                <h1 className="title">FTW Runes</h1>
+                <h1 className="title has-text-primary">Neo Boyz</h1>
                 <p className="subtitle">
-                  Algorithms-generated, stored onchain NFT
+	                3333 unique collectible characters stored on Neo blockchain.
                 </p>
                 <div className="content is-small">
                   <p>
@@ -29,36 +20,6 @@ const Banner = ({ onMint, network }: IBannerProps) => {
                       href="https://explorer.onegate.space/contractinfo/0xbebd4eb7c09ca5b59004aa8b58c9bfc81270e5d6"
                     >
                       0xbebd4eb7c09ca5b59004aa8b58c9bfc81270e5d6
-                    </a>
-                  </p>
-                  <p>
-                    <strong>Max supply</strong>
-                    <br />
-                    500 runes (Sold out)
-                  </p>
-                  <p>
-                    <strong>Attribute #1</strong>
-                    <br />
-                    Dark, Light, Fire, Water, Wood, Earth, Metal
-                  </p>
-                  <p>
-                    <strong>Attribute #2</strong>
-                    <br /> Luck (1 ~ 10)
-                  </p>
-                  <p>
-                    <strong>Press</strong>
-                    <br />
-                    <a
-                      // className="has-text-dark is-size-7"
-                      href="https://neonewstoday.com/general/forthewin-network-launches-token-generator-and-ftw-rune-with-image-stored-onchain"
-                    >
-                      Article 1, &nbsp;
-                    </a>
-                    <a
-                      // className="has-text-dark is-size-7"
-                      href="https://neonewstoday.com/nft/ftw-arena-tickets-now-on-sale/"
-                    >
-                      Article 2
                     </a>
                   </p>
                   <p>
@@ -83,9 +44,9 @@ const Banner = ({ onMint, network }: IBannerProps) => {
 	          <div className="column is-flex" style={{ alignItems: "center" }}>
                 <figure
                   className="image"
-                  style={{ width: "250px", margin: "0 auto" }}
+                  style={{ width: "218px", margin: "0 auto" }}
                 >
-                  <img src="/logo/NEP_Logo_Runes.svg" />
+                  <img src="/boyz/FTWBoy.png" />
                 </figure>
             </div>
           </div>

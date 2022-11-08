@@ -12,7 +12,7 @@ interface IDisplayRuneProps {
   onClick: (obj) => void;
 }
 
-const DisplayRune = ({
+const DisplayBoyz = ({
   width,
   height,
   tokenId,
@@ -49,4 +49,4 @@ const DisplayRune = ({
   );
 };
 
-export default DisplayRune;
+export default DisplayBoyz;

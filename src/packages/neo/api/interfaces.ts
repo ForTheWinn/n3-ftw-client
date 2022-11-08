@@ -132,3 +132,11 @@ export interface IRuneProperties {
 	image: string;
 	luck: string;
 }
+
+export interface IBoyProperties {
+	_id: string;
+	no: number;
+	name: string;
+	attributes: object;
+	image: string;
+}

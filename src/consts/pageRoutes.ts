@@ -135,6 +135,11 @@ export const NFT_ROUTE = {
   path: GALLERY_PATH,
   network: [MAINNET],
   category: [
+	  {
+		  label: "Neo Boyz",
+		  path: BOYZ_PATH,
+		  network: [MAINNET],
+	  },
     {
       label: "Runes",
       path: GALLERY_PATH,

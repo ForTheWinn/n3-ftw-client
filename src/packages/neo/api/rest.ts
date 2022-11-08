@@ -100,4 +100,10 @@ export class RestAPI {
 			this.endpoint + `/tokens/swap/${tokenId}/${page}`
 		);
 	}
+
+	async getBoyz(page): Promise<ISwapHistoryResult> {
+		return this.fetchResult(
+			this.endpoint + `/boyz/all`
+		);
+	}
 }
