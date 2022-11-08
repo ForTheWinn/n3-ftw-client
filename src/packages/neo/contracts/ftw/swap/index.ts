@@ -287,6 +287,34 @@ export class SwapContract {
     }
   };
 
+	getSwapBEstimate = async (
+		tokenA,
+		tokenB,
+		tokenBDecimals,
+		amountOut,
+	): Promise<string> => {
+		const script = {
+			scriptHash: this.contractHash,
+			operation: "getSwapBEstimate",
+			args: [
+				{ type: "Hash160", value: tokenA },
+				{ type: "Hash160", value: tokenB },
+				{
+					type: "Integer",
+					value: u.BigInteger.fromDecimal(amountOut, tokenBDecimals).toString(),
+				},
+			],
+		};
+		const res = await Network.read(this.network, [script]);
+		console.log(res)
+		if (res.state === "FAULT") {
+			return "0";
+		} else {
+			const { estimated, decimals } = parseMapValue(res.stack[0] as any);
+			return u.BigInteger.fromNumber(estimated).toDecimal(decimals);
+		}
+	};
+
   getLPEstimate = (
     amount: string,
     Adecimals: number,

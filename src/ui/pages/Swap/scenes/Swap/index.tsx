@@ -22,7 +22,6 @@ import {
   SWAP_PATH_LIQUIDITY_ADD,
   SWAP_PATH_LIQUIDITY_REMOVE,
 } from "../../../../../consts";
-import ReactTooltip from "react-tooltip";
 import { useApp } from "../../../../../common/hooks/use-app";
 import Providers from "../Providers";
 import {

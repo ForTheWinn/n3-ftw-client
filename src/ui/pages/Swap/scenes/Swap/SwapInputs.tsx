@@ -4,7 +4,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 import { SwapContract } from "../../../../../packages/neo/contracts";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { ITokenState } from ".";
-import {GAS_SCRIPT_HASH} from "../../../../../packages/neo/consts/nep17-list";
+import { GAS_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
 
 interface ISwapInputsProps {
   network: INetworkType;
@@ -53,14 +53,26 @@ const SwapInputs = ({
           } else {
             setAmountALoading(true);
           }
-          const estimated = await new SwapContract(network).getSwapEstimate(
-            tokenA.hash,
-            tokenB.hash,
-            searchTerm.type === "A" ? tokenA.hash : tokenB.hash,
-            searchTerm.type === "A" ? tokenA.decimals : tokenB.decimals,
-            searchTerm.value,
-	          searchTerm.type === "A" ? tokenB.decimals : tokenA.decimals,
-          );
+
+          let estimated;
+          if (searchTerm.type === "A") {
+            estimated = await new SwapContract(network).getSwapEstimate(
+              tokenA.hash,
+              tokenB.hash,
+              tokenA.hash,
+              tokenA.decimals,
+              searchTerm.value,
+              tokenB.decimals
+            );
+          } else {
+            estimated = await new SwapContract(network).getSwapBEstimate(
+              tokenA.hash,
+              tokenB.hash,
+              tokenB.decimals,
+              searchTerm.value
+            );
+          }
+
           if (searchTerm.type === "A") {
             setAmountBLoading(false);
             setAmountB(+estimated);
@@ -74,6 +86,7 @@ const SwapInputs = ({
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
+
   return (
     <div className="pb-2">
       <Input
