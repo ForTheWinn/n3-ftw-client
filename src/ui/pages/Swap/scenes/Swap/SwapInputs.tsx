@@ -72,13 +72,12 @@ const SwapInputs = ({
               searchTerm.value
             );
           }
-
           if (searchTerm.type === "A") {
             setAmountBLoading(false);
-            setAmountB(+estimated);
+            setAmountB(estimated);
           } else {
             setAmountALoading(false);
-            setAmountA(+estimated);
+            setAmountA(estimated);
           }
         }
       }
