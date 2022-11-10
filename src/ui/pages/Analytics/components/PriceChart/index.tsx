@@ -76,9 +76,9 @@ const TokenPriceChart = ({ tokenId, days }: ITokenPriceChartProps) => {
           tokenId,
           days
         );
-        const lastPrice = await new RestAPI(network).getPrice(
-          tokenId
-        );
+        // const lastPrice = await new RestAPI(network).getPrice(
+        //   tokenId
+        // );
 				// res.
 				// console.log(lastPrice)
         setData(res);

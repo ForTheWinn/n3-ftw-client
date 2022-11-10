@@ -3,33 +3,33 @@ import React, { useEffect, useRef, useState } from "react";
 import DOTS from "vanta/dist/vanta.halo.min";
 import PageLayout from "../../components/PageLayout";
 // import * as THREE from "three";
-
+// <!--        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>-->
 const Migration = (props) => {
-  const [vantaEffect, setVantaEffect] = useState(0);
+  // const [vantaEffect, setVantaEffect] = useState(0);
   const myRef = useRef(null);
-  useEffect(() => {
-	  document.title = "FTW NEP5 Migration";
-    if (!vantaEffect) {
-      setVantaEffect(
-        DOTS({
-          el: myRef.current,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
-          minHeight: 200.0,
-          minWidth: 200.0,
-          backgroundColor: 0x80822,
-          size: 2.8,
-        })
-      );
-    }
-    return () => {
-      if (vantaEffect) {
-        // @ts-ignore
-        vantaEffect.destroy();
-      }
-    };
-  }, [vantaEffect]);
+  // useEffect(() => {
+  //   document.title = "FTW NEP5 Migration";
+  //   if (!vantaEffect) {
+  //     setVantaEffect(
+  //       DOTS({
+  //         el: myRef.current,
+  //         mouseControls: true,
+  //         touchControls: true,
+  //         gyroControls: false,
+  //         minHeight: 200.0,
+  //         minWidth: 200.0,
+  //         backgroundColor: 0x80822,
+  //         size: 2.8,
+  //       })
+  //     );
+  //   }
+  //   return () => {
+  //     if (vantaEffect) {
+  //       // @ts-ignore
+  //       vantaEffect.destroy();
+  //     }
+  //   };
+  // }, [vantaEffect]);
   return (
     <div>
       <section className="hero is-white">

@@ -58,17 +58,20 @@ export class RestAPI {
     return this.fetchResult(this.endpoint + "/prices");
   }
 
-	async getPricesRange(tokenId): Promise<IPrices> {
-		return this.fetchResult(this.endpoint + `/prices/${tokenId}/range`);
-	}
 
   async getLiquidity(id, days): Promise<ILiquidityWithTimeRange> {
     return this.fetchResult(this.endpoint + `/tokens/liquidity/${id}/${days}`);
   }
-
-  async getNEP(days): Promise<INEPInfoWithTimeRange> {
-    return this.fetchResult(this.endpoint + `/nep/${days}`);
-  }
+	/*
+		Deprecated because we can use getNumbersWithRange for those
+	 */
+  // async getNEP(days): Promise<INEPInfoWithTimeRange> {
+  //   return this.fetchResult(this.endpoint + `/nep/${days}`);
+  // }
+	//
+	// async getPricesRange(tokenId): Promise<IPrices> {
+	// 	return this.fetchResult(this.endpoint + `/prices/${tokenId}/range`);
+	// }
 
 	async getNumbersWithRange(id, days): Promise<INEPInfoWithTimeRange> {
 		return this.fetchResult(this.endpoint + `/tokens/numbers/${id}/${days}`);
