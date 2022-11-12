@@ -30,7 +30,10 @@ import {
 } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import PriceRatio from "./components/PriceRatio";
 import HistoryButtons from "./components/HistoryButtons";
-import { getAfterSlippage } from "../../../../../packages/neo/contracts/ftw/swap/helpers";
+import {
+	getAfterSlippage,
+	getMaxTokenAAmount,
+} from "../../../../../packages/neo/contracts/ftw/swap/helpers";
 import SwapDetails from "./components/SwapDetails";
 import { u } from "@cityofzion/neon-core";
 import { handleError } from "../../../../../packages/neo/utils/errors";
@@ -69,6 +72,7 @@ const Swap = () => {
   const [tokenB, setTokenB] = useState<ITokenState | undefined>();
   const [amountA, setAmountA] = useState<number | undefined>();
   const [amountB, setAmountB] = useState<number | undefined>();
+  const [swapType, setSwapType] = useState<"AtoB" | "BtoA" | undefined>();
   const [data, setData] = useState<IReserveData | undefined>();
   const [slippage, setSlippage] = useState<number | undefined>(
     DEFAULT_SLIPPAGE
@@ -130,18 +134,34 @@ const Swap = () => {
         data &&
         slippage &&
         tokenA &&
-        tokenB
+        tokenB &&
+        swapType
       ) {
         try {
-          const res = await new SwapContract(network).swap(
-            connectedWallet,
-            tokenA.hash,
-            tokenA.decimals,
-            amountA,
-            tokenB.hash,
-            tokenB.decimals,
-            getAfterSlippage(amountB, slippage)
-          );
+          console.log(swapType);
+          let res;
+          if (swapType === "AtoB") {
+            res = await new SwapContract(network).swap(
+              connectedWallet,
+              tokenA.hash,
+              tokenA.decimals,
+              amountA,
+              tokenB.hash,
+              tokenB.decimals,
+              getAfterSlippage(amountB, slippage)
+            );
+          } else {
+						const er= getMaxTokenAAmount(amountA, slippage);
+            res = await new SwapContract(network).swapBtoA(
+              connectedWallet,
+              tokenA.hash,
+              tokenA.decimals,
+              tokenB.hash,
+              tokenB.decimals,
+	            amountB,
+	            getMaxTokenAAmount(amountA, slippage)
+            );
+          }
           setTxid(res);
         } catch (e: any) {
           toast.error(handleError(e));
@@ -342,6 +362,7 @@ const Swap = () => {
       )}
 
       <SwapInputs
+        setSwapType={setSwapType}
         noLiquidity={noLiquidity}
         network={network}
         tokenA={tokenA}

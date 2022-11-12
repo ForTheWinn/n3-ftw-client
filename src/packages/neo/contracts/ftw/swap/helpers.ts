@@ -37,6 +37,12 @@ import { DEFAULT_SLIPPAGE } from "./consts";
 export const defaultDeadLine = () =>
   moment().utc().add("10", "minutes").valueOf();
 
+
 export const getAfterSlippage = (amountB: number, slippage: number) => {
   return amountB - (amountB * slippage) / 100;
+};
+
+// Slippage for swapB
+export const getMaxTokenAAmount = (amountA: any, slippage: number): number => {
+	return amountA + ((amountA * slippage) / 100);
 };

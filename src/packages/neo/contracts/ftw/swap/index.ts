@@ -169,6 +169,58 @@ export class SwapContract {
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
+	swapBtoA = async (
+		connectedWallet: IConnectedWallet,
+		tokenA: string,
+		tokenADecimals: number,
+		tokenB: string,
+		tokenBDecimals: number,
+		amountOut: number,
+		maxTokenAAmount: number
+	): Promise<string> => {
+		const senderHash = NeonWallet.getScriptHashFromAddress(
+			connectedWallet.account.address
+		);
+		const invokeScript = {
+			operation: "swapB",
+			scriptHash: this.contractHash,
+			args: [
+				{
+					type: "Hash160",
+					value: senderHash,
+				},
+				{
+					type: "Hash160",
+					value: tokenA,
+				},
+				{
+					type: "Hash160",
+					value: tokenB,
+				},
+				{
+					type: "Integer",
+					value: u.BigInteger.fromDecimal(amountOut, tokenBDecimals).toString(),
+				},
+				{
+					type: "Integer",
+					value: u.BigInteger.fromDecimal(maxTokenAAmount, tokenADecimals).toString(),
+				},
+				{
+					type: "Integer",
+					value: defaultDeadLine(),
+				},
+			],
+			signers: [
+				{
+					account: senderHash,
+					scopes: tx.WitnessScope.CustomContracts,
+					allowedContracts: [this.contractHash, tokenA],
+				},
+			],
+		};
+		return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+	};
+
   getReserve = async (
     tokenA: string,
     tokenB: string,

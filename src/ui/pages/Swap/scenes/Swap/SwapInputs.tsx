@@ -19,6 +19,7 @@ interface ISwapInputsProps {
   noLiquidity?: boolean;
   userTokenABalance?: number;
   userTokenBBalance?: number;
+	setSwapType: (type: "AtoB" | "BtoA") => void;
 }
 
 interface ISearchTerm {
@@ -27,6 +28,7 @@ interface ISearchTerm {
 }
 
 const SwapInputs = ({
+	setSwapType,
   network,
   tokenA,
   tokenB,
@@ -74,10 +76,10 @@ const SwapInputs = ({
           }
           if (searchTerm.type === "A") {
             setAmountBLoading(false);
-            setAmountB(estimated);
+            setAmountB(+estimated);
           } else {
             setAmountALoading(false);
-            setAmountA(estimated);
+            setAmountA(+estimated);
           }
         }
       }
@@ -101,6 +103,7 @@ const SwapInputs = ({
             type: "A",
             value,
           });
+					setSwapType("AtoB");
         }}
         decimals={tokenA ? tokenA.decimals : userTokenABalance}
         userBalance={userTokenABalance}
@@ -138,6 +141,7 @@ const SwapInputs = ({
             type: "B",
             value,
           });
+	        setSwapType("BtoA");
         }}
         decimals={tokenB ? tokenB.decimals : undefined}
         userBalance={userTokenBBalance}
