@@ -71,7 +71,7 @@ const Boyz = () => {
       <Banner filter={filter} setFilterActive={() => setFilterActive(true)} />
       <PageLayout>
         {isLoading ? (
-          <div></div>
+          <div>Loading boyz..</div>
         ) : (
           <div className="is-flex" style={{ flexWrap: "wrap" }}>
             {boyz.map((boy) => (
@@ -98,7 +98,7 @@ const Boyz = () => {
               setCurrentCategory={setCurrentCategory}
             />
             <hr />
-            <button onClick={onBrowse} className="button is-primary">
+            <button onClick={onBrowse} className="button is-black">
               Browse
             </button>
           </div>

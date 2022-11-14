@@ -30,22 +30,43 @@ const Banner = ({ filter, setFilterActive }: IBanner) => {
                   <p>
                     <strong>Markets</strong>
                     <br />
-                    <a
-                      href="https://ghostmarket.io/collection/neo-boyz/"
-                    >
-                      GM
-                    </a>
+                    <a href="https://ghostmarket.io/collection/neo-boyz/">GM</a>
                   </p>
                 </div>
-                <button onClick={setFilterActive} className="button is-primary">
-                  <span className="icon">
-                    <FaSearch />
-                  </span>
-                  <span>Filter</span>
-                </button>
+                <div className="notification">
+                  <div className="field is-grouped is-grouped-multiline">
+                    {Object.keys(filter).map((key) => {
+                      return filter[key].map((i, index) => {
+                        if (!i) return false;
+                        return (
+                          <div key={`${i}-${index}`} className="control">
+                            <div className="tags has-addons">
+                              <span className="tag is-primary is-light is-capitalized">
+                                {key}
+                              </span>
+                              <span className="tag is-white">{i}</span>
+                            </div>
+                          </div>
+                        );
+                      });
+                    })}
+                  </div>
+                  <button
+                    onClick={setFilterActive}
+                    className="button is-black"
+                  >
+                    <span className="icon">
+                      <FaSearch />
+                    </span>
+                    <span>Change filter</span>
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="column is-flex" style={{ alignItems: "center" }}>
+            <div
+              className="column is-flex is-hidden-mobile"
+              style={{ alignItems: "center" }}
+            >
               <figure
                 className="image"
                 style={{ width: "218px", margin: "0 auto" }}
@@ -53,25 +74,6 @@ const Banner = ({ filter, setFilterActive }: IBanner) => {
                 <img src="/boyz/FTWBoy.png" />
               </figure>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="hero-foot pb-5">
-        <div className="container">
-          <div className="field is-grouped is-grouped-multiline">
-            {Object.keys(filter).map((key) => {
-              return filter[key].map((i, index) => {
-                if (!i) return false;
-                return (
-                  <div key={`${i}-${index}`} className="control">
-                    <div className="tags has-addons">
-                      <span className="tag is-primary is-light is-capitalized">{key}</span>
-                      <span className="tag is-light">{i}</span>
-                    </div>
-                  </div>
-                );
-              });
-            })}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { BOYZ_RARITY } from "./consts";
+import {BOYZ_RARITY, BOYZ_RARITY_WITH_PERCENT} from "./consts";
 
 interface IRarityList {
   filter: object;
@@ -7,7 +7,7 @@ interface IRarityList {
   currentCategory: string;
   setCurrentCategory: (c: string) => void;
 }
-const rarities = Object.keys(BOYZ_RARITY);
+const rarities = Object.keys(BOYZ_RARITY_WITH_PERCENT);
 const RarityList = ({
   filter,
   setFilter,
@@ -42,25 +42,17 @@ const RarityList = ({
             className={rarity === currentCategory ? "" : "is-hidden"}
           >
             <div className="columns is-multiline">
-              {BOYZ_RARITY[rarity].map((i, index) => {
+              {BOYZ_RARITY_WITH_PERCENT[rarity].map((item, index) => {
                 return (
-                  <div key={`${i}${index}`} className="column is-4">
+                  <div key={`${item.value}${index}`} className="column is-4">
                     <span
-                      onClick={() => setFilter(rarity, i)}
+                      onClick={() => setFilter(rarity, item.value)}
                       className={`tag is-clickable ${
-                        filter[rarity].includes(i) ? "is-info" : "is-light"
+                        filter[rarity].includes(item.value) ? "is-primary" : "is-light"
                       }`}
                     >
-                      {i}
+                      {item.value} {item.rarity}%
                     </span>
-                    {/*<label className="checkbox">*/}
-                    {/*  <input*/}
-                    {/*    onClick={() => setFilter(rarity, i)}*/}
-                    {/*    type="checkbox"*/}
-                    {/*    checked={filter[rarity].includes(i)}*/}
-                    {/*  />{" "}*/}
-                    {/*  {i}*/}
-                    {/*</label>*/}
                   </div>
                 );
               })}
