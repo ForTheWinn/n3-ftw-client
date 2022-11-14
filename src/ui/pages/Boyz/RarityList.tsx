@@ -1,5 +1,5 @@
 import React from "react";
-import {BOYZ_RARITY, BOYZ_RARITY_WITH_PERCENT} from "./consts";
+import { BOYZ_RARITY_WITH_PERCENT} from "./consts";
 
 interface IRarityList {
   filter: object;

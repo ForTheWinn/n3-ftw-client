@@ -15,13 +15,13 @@ const Boyz = () => {
   >();
 
   const [filter, setFilter] = useState<any>({
-    eyes: ["Normal"],
+    eyes: [],
     body: [],
     clothing: [],
     accessory: [],
     head: [],
-    mouth: ["Smirk"],
-    background: ["Pink", "Mint"],
+    mouth: [],
+    background: [, "Mint"],
   });
   const [browseCount, setBrowseCount] = useState(0);
   const [currentCategory, setCurrentCategory] = useState<string>("clothing");
