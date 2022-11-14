@@ -1,27 +1,56 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/PageLayout";
 import { useWallet } from "../../../packages/provider";
-import { RUNE_PHASE_FILTER } from "../../../packages/neo/contracts/ftw/rune/consts";
 import Banner from "./Banner";
 import { RestAPI } from "../../../packages/neo/api";
+import Modal from "../../components/Modal";
+import RarityList from "./RarityList";
+import { IBoy } from "../../../packages/neo/contracts/ftw/boyz/interface";
+import PropertiesModal from "./PropertiesModal";
 
 const Boyz = () => {
-  const [txid, setTxid] = useState("");
-  const [filter, setFilter] = useState<string>(RUNE_PHASE_FILTER[0]);
-  const [boyz, setBoyz] = useState<any>([]);
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [propertiesModalActive, setPropertiesModalActive] = useState<string>();
-  const { connectedWallet, network, addPendingTransaction } = useWallet();
+  const [isFilterActive, setFilterActive] = useState(false);
+  const [isDetailModalActive, setDetailModalActive] = useState<
+    IBoy | undefined
+  >();
 
-  const onPropertiesModalActive = (tokenId: string) => {
-    setPropertiesModalActive(tokenId);
+  const [filter, setFilter] = useState<any>({
+    eyes: ["Normal"],
+    body: [],
+    clothing: [],
+    accessory: [],
+    head: [],
+    mouth: ["Smirk"],
+    background: ["Pink", "Mint"],
+  });
+  const [browseCount, setBrowseCount] = useState(0);
+  const [currentCategory, setCurrentCategory] = useState<string>("clothing");
+  const [boyz, setBoyz] = useState<any>([]);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { network } = useWallet();
+
+  const onBrowse = () => {
+    setFilterActive(false);
+    setBrowseCount(browseCount + 1);
   };
 
-  const onFilterChange = (val: string) => setFilter(val);
+  const onFilterChange = (key: string, val: string) => {
+    let arr = filter[key];
+    if (arr.includes(val)) {
+      arr = arr.filter((item) => item !== val);
+    } else {
+      arr.push(val);
+    }
+    filter[key] = arr;
+    setFilter({
+      ...filter,
+    });
+  };
 
   useEffect(() => {
     document.title = "FTW | NEO Boyz";
+
     async function fetchContractStatus() {
       setError("");
       setLoading(true);
@@ -35,18 +64,52 @@ const Boyz = () => {
       }
     }
     fetchContractStatus();
-  }, [network, filter]);
+  }, [network, browseCount]);
 
   return (
     <div>
-      <Banner />
+      <Banner filter={filter} setFilterActive={() => setFilterActive(true)} />
       <PageLayout>
-        <div className="is-flex" style={{ flexWrap: "wrap" }}>
-          {boyz.map((boy) => (
-            <img width="5%" src={boy.image} alt={boy.no} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div></div>
+        ) : (
+          <div className="is-flex" style={{ flexWrap: "wrap" }}>
+            {boyz.map((boy) => (
+              <>
+                <img
+	                className="is-clickable"
+                  onClick={() => setDetailModalActive(boy)}
+                  width="10%"
+                  src={boy.image}
+                  alt={boy.no}
+                />
+              </>
+            ))}
+          </div>
+        )}
       </PageLayout>
+      {isFilterActive && (
+        <Modal onClose={() => setFilterActive(false)}>
+          <div>
+            <RarityList
+              filter={filter}
+              setFilter={onFilterChange}
+              currentCategory={currentCategory}
+              setCurrentCategory={setCurrentCategory}
+            />
+            <hr />
+            <button onClick={onBrowse} className="button is-primary">
+              Browse
+            </button>
+          </div>
+        </Modal>
+      )}
+      {isDetailModalActive && (
+        <PropertiesModal
+	        data={isDetailModalActive}
+          onClose={() => setDetailModalActive(undefined)}
+        />
+      )}
     </div>
   );
 };

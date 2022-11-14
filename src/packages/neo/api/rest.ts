@@ -1,13 +1,17 @@
 import { INetworkType } from "../network";
 import { ENDPOINT } from "./consts";
 import {
-	ILiquidityWithTimeRange, INEPInfoWithTimeRange,
-	IPair, IPairDay,
-	IPairWithNumbers, IPrice, IPrices,
-	IRuneProperties,
-	ISwapHistoryResult,
-	IToken,
-	ITokenWithNumbers
+  ILiquidityWithTimeRange,
+  INEPInfoWithTimeRange,
+  IPair,
+  IPairDay,
+  IPairWithNumbers,
+  IPrice,
+  IPrices,
+  IRuneProperties,
+  ISwapHistoryResult,
+  IToken,
+  ITokenWithNumbers,
 } from "./interfaces";
 
 export class RestAPI {
@@ -50,32 +54,29 @@ export class RestAPI {
     return this.fetchResult(this.endpoint + "/farms");
   }
 
-	async getPrice(id): Promise<IPrice> {
-		return this.fetchResult(this.endpoint + `/prices/${id}`);
-	}
+  async getPrice(id): Promise<IPrice> {
+    return this.fetchResult(this.endpoint + `/prices/${id}`);
+  }
 
   async getPrices(): Promise<IPrices> {
     return this.fetchResult(this.endpoint + "/prices");
   }
 
+  async getPricesRange(tokenId): Promise<IPrices> {
+    return this.fetchResult(this.endpoint + `/prices/${tokenId}/range`);
+  }
 
   async getLiquidity(id, days): Promise<ILiquidityWithTimeRange> {
     return this.fetchResult(this.endpoint + `/tokens/liquidity/${id}/${days}`);
   }
-	/*
-		Deprecated because we can use getNumbersWithRange for those
-	 */
-  // async getNEP(days): Promise<INEPInfoWithTimeRange> {
-  //   return this.fetchResult(this.endpoint + `/nep/${days}`);
-  // }
-	//
-	// async getPricesRange(tokenId): Promise<IPrices> {
-	// 	return this.fetchResult(this.endpoint + `/prices/${tokenId}/range`);
-	// }
 
-	async getNumbersWithRange(id, days): Promise<INEPInfoWithTimeRange> {
-		return this.fetchResult(this.endpoint + `/tokens/numbers/${id}/${days}`);
-	}
+  async getNEP(days): Promise<INEPInfoWithTimeRange> {
+    return this.fetchResult(this.endpoint + `/nep/${days}`);
+  }
+
+  async getNumbersWithRange(id, days): Promise<INEPInfoWithTimeRange> {
+    return this.fetchResult(this.endpoint + `/tokens/numbers/${id}/${days}`);
+  }
 
   async getPairs(): Promise<IPair[]> {
     return this.fetchResult(this.endpoint + "/pairs");
@@ -95,15 +96,13 @@ export class RestAPI {
     );
   }
 
-	async getSingleSwapHistory(tokenId, page): Promise<ISwapHistoryResult> {
-		return this.fetchResult(
-			this.endpoint + `/tokens/swap/${tokenId}/${page}`
-		);
-	}
+  async getSingleSwapHistory(tokenId, page): Promise<ISwapHistoryResult> {
+    return this.fetchResult(this.endpoint + `/tokens/swap/${tokenId}/${page}`);
+  }
 
-	async getBoyz(page): Promise<ISwapHistoryResult> {
-		return this.fetchResult(
-			this.endpoint + `/boyz/all`
-		);
-	}
+  async getBoyz(filter): Promise<ISwapHistoryResult> {
+    const params = "?" + new URLSearchParams(filter).toString();
+    console.log(params);
+    return this.fetchResult(this.endpoint + `/boyz/all` + params);
+  }
 }

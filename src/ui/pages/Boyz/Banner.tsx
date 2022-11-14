@@ -1,5 +1,10 @@
 import React from "react";
-const Banner = () => {
+import { FaSearch } from "react-icons/fa";
+interface IBanner {
+  filter: any;
+  setFilterActive: () => void;
+}
+const Banner = ({ filter, setFilterActive }: IBanner) => {
   return (
     <section className="hero is-white">
       <div className="hero-body">
@@ -9,7 +14,7 @@ const Banner = () => {
               <div>
                 <h1 className="title has-text-primary">Neo Boyz</h1>
                 <p className="subtitle">
-	                3333 unique collectible characters stored on Neo blockchain.
+                  3333 unique collectible characters stored on Neo blockchain.
                 </p>
                 <div className="content is-small">
                   <p>
@@ -17,38 +22,56 @@ const Banner = () => {
                     <br />
                     <a
                       className="has-text-dark is-size-7"
-                      href="https://explorer.onegate.space/contractinfo/0xbebd4eb7c09ca5b59004aa8b58c9bfc81270e5d6"
+                      href="https://explorer.onegate.space/contractinfo/0xcab9f861120e6fe725995878c2024e66c0be1306"
                     >
-                      0xbebd4eb7c09ca5b59004aa8b58c9bfc81270e5d6
+                      0xcab9f861120e6fe725995878c2024e66c0be1306
                     </a>
                   </p>
                   <p>
                     <strong>Markets</strong>
                     <br />
                     <a
-                      // className="has-text-dark is-size-7"
-                      href="https://tothemoonuniverse.com/marketplace/rune"
-                    >
-                      TTM, &nbsp;
-                    </a>
-                    <a
-                      // className="has-text-dark is-size-7"
-                      href="https://ghostmarket.io/collection/forthewin-runes/"
+                      href="https://ghostmarket.io/collection/neo-boyz/"
                     >
                       GM
                     </a>
                   </p>
                 </div>
+                <button onClick={setFilterActive} className="button is-primary">
+                  <span className="icon">
+                    <FaSearch />
+                  </span>
+                  <span>Filter</span>
+                </button>
               </div>
             </div>
-	          <div className="column is-flex" style={{ alignItems: "center" }}>
-                <figure
-                  className="image"
-                  style={{ width: "218px", margin: "0 auto" }}
-                >
-                  <img src="/boyz/FTWBoy.png" />
-                </figure>
+            <div className="column is-flex" style={{ alignItems: "center" }}>
+              <figure
+                className="image"
+                style={{ width: "218px", margin: "0 auto" }}
+              >
+                <img src="/boyz/FTWBoy.png" />
+              </figure>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="hero-foot pb-5">
+        <div className="container">
+          <div className="field is-grouped is-grouped-multiline">
+            {Object.keys(filter).map((key) => {
+              return filter[key].map((i, index) => {
+                if (!i) return false;
+                return (
+                  <div key={`${i}-${index}`} className="control">
+                    <div className="tags has-addons">
+                      <span className="tag is-primary is-light is-capitalized">{key}</span>
+                      <span className="tag is-light">{i}</span>
+                    </div>
+                  </div>
+                );
+              });
+            })}
           </div>
         </div>
       </div>

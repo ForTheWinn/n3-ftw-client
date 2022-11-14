@@ -36,8 +36,6 @@ import LPTokens from "./pages/LPTokens";
 import Locker from "./pages/Locker";
 import Boyz from "./pages/Boyz";
 
-ReactGA.initialize("UA-114435339-1");
-
 const App = () => {
   return (
     <WalletContextProvider
