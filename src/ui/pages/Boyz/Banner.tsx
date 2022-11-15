@@ -3,8 +3,18 @@ import { FaSearch } from "react-icons/fa";
 interface IBanner {
   filter: any;
   setFilterActive: () => void;
+	setFilter: (newFilter: any) => void
 }
-const Banner = ({ filter, setFilterActive }: IBanner) => {
+const Banner = ({ filter, setFilter, setFilterActive }: IBanner) => {
+	const onFilterChange = (key: string, val: string) => {
+		let arr = [...filter[key]];
+		arr = arr.filter((item) => item !== val);
+		// newFilter[key] = arr;
+		setFilter({
+			...filter,
+			[key]: arr,
+		});
+	};
   return (
     <section className="hero is-white">
       <div className="hero-body">
@@ -45,6 +55,7 @@ const Banner = ({ filter, setFilterActive }: IBanner) => {
                                 {key}
                               </span>
                               <span className="tag is-white">{i}</span>
+	                            <span onClick={() => onFilterChange(key, i)} className="tag is-white is-delete"></span>
                             </div>
                           </div>
                         );

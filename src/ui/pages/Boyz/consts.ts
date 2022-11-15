@@ -181,7 +181,7 @@ export const BOYZ_RARITY_WITH_PERCENT = {
     { value: "Black Rune Sweater", rarity: 1.92 },
     { value: "White Rune Hoodie", rarity: 1.95 },
     { value: "Black Rune Hoodie", rarity: 2.01 },
-    { value: "Black Rune Sweater", rarity: 2.1 },
+    { value: "Black FTW Sweater", rarity: 2.1 },
     { value: "Colorful Sweater", rarity: 2.13 },
     { value: "None", rarity: 2.19 },
     { value: "White FTW Hoodie", rarity: 2.19 },

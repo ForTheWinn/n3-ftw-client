@@ -1,9 +1,9 @@
-import React from "react";
-import { BOYZ_RARITY_WITH_PERCENT} from "./consts";
+import React, { useState } from "react";
+import { BOYZ_RARITY_WITH_PERCENT } from "./consts";
 
 interface IRarityList {
   filter: object;
-  setFilter: (key: string, value: string) => void;
+  setFilter: (newFilter: any) => void;
   currentCategory: string;
   setCurrentCategory: (c: string) => void;
 }
@@ -14,6 +14,21 @@ const RarityList = ({
   currentCategory,
   setCurrentCategory,
 }: IRarityList) => {
+  const [newFilter, setNewFilter] = useState(filter);
+
+  const onFilterChange = (key: string, val: string) => {
+    let arr = [...newFilter[key]];
+    if (arr.includes(val)) {
+      arr = arr.filter((item) => item !== val);
+    } else {
+      arr.push(val);
+    }
+    // newFilter[key] = arr;
+    setNewFilter({
+      ...newFilter,
+      [key]: arr,
+    });
+  };
   return (
     <div>
       <div className="tabs">
@@ -46,9 +61,11 @@ const RarityList = ({
                 return (
                   <div key={`${item.value}${index}`} className="column is-4">
                     <span
-                      onClick={() => setFilter(rarity, item.value)}
+                      onClick={() => onFilterChange(rarity, item.value)}
                       className={`tag is-clickable ${
-                        filter[rarity].includes(item.value) ? "is-primary" : "is-light"
+                        newFilter[rarity].includes(item.value)
+                          ? "is-primary"
+                          : "is-light"
                       }`}
                     >
                       {item.value} {item.rarity}%
@@ -60,6 +77,10 @@ const RarityList = ({
           </div>
         );
       })}
+      <hr />
+      <button onClick={() => setFilter(newFilter)} className="button is-black">
+        Browse
+      </button>
     </div>
   );
 };

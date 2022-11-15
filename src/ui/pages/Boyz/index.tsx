@@ -21,31 +21,19 @@ const Boyz = () => {
     accessory: [],
     head: [],
     mouth: [],
-    background: [, "Mint"],
+    background: ["Mint"],
   });
-  const [browseCount, setBrowseCount] = useState(0);
   const [currentCategory, setCurrentCategory] = useState<string>("clothing");
   const [boyz, setBoyz] = useState<any>([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { network } = useWallet();
 
-  const onBrowse = () => {
-    setFilterActive(false);
-    setBrowseCount(browseCount + 1);
-  };
-
-  const onFilterChange = (key: string, val: string) => {
-    let arr = filter[key];
-    if (arr.includes(val)) {
-      arr = arr.filter((item) => item !== val);
-    } else {
-      arr.push(val);
-    }
-    filter[key] = arr;
+  const onFilterChange = (newFilter: any) => {
     setFilter({
-      ...filter,
+      ...newFilter,
     });
+    setFilterActive(false);
   };
 
   useEffect(() => {
@@ -64,11 +52,11 @@ const Boyz = () => {
       }
     }
     fetchContractStatus();
-  }, [network, browseCount]);
+  }, [network, filter]);
 
   return (
     <div>
-      <Banner filter={filter} setFilterActive={() => setFilterActive(true)} />
+      <Banner filter={filter} setFilter={setFilter} setFilterActive={() => setFilterActive(true)} />
       <PageLayout>
         {isLoading ? (
           <div>Loading boyz..</div>
@@ -77,7 +65,7 @@ const Boyz = () => {
             {boyz.map((boy) => (
               <>
                 <img
-	                className="is-clickable"
+                  className="is-clickable"
                   onClick={() => setDetailModalActive(boy)}
                   width="10%"
                   src={boy.image}
@@ -97,16 +85,12 @@ const Boyz = () => {
               currentCategory={currentCategory}
               setCurrentCategory={setCurrentCategory}
             />
-            <hr />
-            <button onClick={onBrowse} className="button is-black">
-              Browse
-            </button>
           </div>
         </Modal>
       )}
       {isDetailModalActive && (
         <PropertiesModal
-	        data={isDetailModalActive}
+          data={isDetailModalActive}
           onClose={() => setDetailModalActive(undefined)}
         />
       )}
