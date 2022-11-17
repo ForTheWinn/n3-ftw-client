@@ -201,7 +201,6 @@ export const BOYZ_RARITY_WITH_PERCENT = {
     { value: "Black Turtleneck", rarity: 3.06 },
     { value: "Green Collar", rarity: 3.09 },
     { value: "Neo Shirt", rarity: 3.21 },
-    { value: "Neo Shirt", rarity: 3.21 },
     { value: "White Turtleneck", rarity: 3.3 },
     { value: "Pink Hoodie", rarity: 3.78 },
     { value: "Tank Top", rarity: 3.81 },
