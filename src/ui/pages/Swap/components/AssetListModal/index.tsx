@@ -28,8 +28,10 @@ const AssetListModal = ({
 }: IAssetListModalProps) => {
   const { network } = useWallet();
   const [isCustomInputMode, setCustomInputMode] = useState(false);
-  let assets = SWAP_ASSET_LIST(network);
-  assets = assets.filter((asset) => {
+
+	let assets = SWAP_ASSET_LIST(network);
+
+	assets = assets.filter((asset) => {
     if (
       activeTokenInput === "A" &&
       tokenBHash &&

@@ -3,6 +3,7 @@ import { useWallet } from "../../../../../packages/provider";
 import { SwapContract } from "../../../../../packages/neo/contracts";
 import { toast } from "react-hot-toast";
 import AssetListModal from "../../components/AssetListModal";
+import _ from "underscore";
 import {
   FaCaretDown,
   FaCaretUp,
@@ -31,15 +32,21 @@ import {
 import PriceRatio from "./components/PriceRatio";
 import HistoryButtons from "./components/HistoryButtons";
 import {
-	getAfterSlippage,
-	getMaxTokenAAmount,
+  getAfterSlippage,
+  getMaxTokenAAmount,
 } from "../../../../../packages/neo/contracts/ftw/swap/helpers";
 import SwapDetails from "./components/SwapDetails";
 import { u } from "@cityofzion/neon-core";
 import { handleError } from "../../../../../packages/neo/utils/errors";
-import { GAS_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
+import {
+  BNEO_SCRIPT_HASH,
+  GAS_SCRIPT_HASH,
+  NEO_SCRIPT_HASH,
+} from "../../../../../packages/neo/consts/nep17-list";
 import Pairs from "../PairsFromServer";
 import SwapHistory from "../../../Analytics/scenes/PairDetail/SwapHistory";
+import { fakeNEOBNEOReserve } from "./helpers";
+import { BNEOContract } from "../../../../../packages/neo/contracts/ftw/bneo";
 
 export interface ITokenState {
   hash: string;
@@ -63,12 +70,15 @@ const Swap = () => {
   // TODO: Save pair history in local storage (Temporary disabled)
   // const cachedTokenA = LocalStorage.getSwapTokenA();
   // const cachedTokenB = LocalStorage.getSwapTokenB();
-
-  const [tokenA, setTokenA] = useState<ITokenState | undefined>({
-    hash: GAS_SCRIPT_HASH,
-    symbol: "GAS",
-    decimals: 8,
-  });
+  const [tokenA, setTokenA] = useState<ITokenState | undefined>(
+    _.isEmpty(params)
+      ? {
+          hash: GAS_SCRIPT_HASH,
+          symbol: "GAS",
+          decimals: 8,
+        }
+      : undefined
+  );
   const [tokenB, setTokenB] = useState<ITokenState | undefined>();
   const [amountA, setAmountA] = useState<number | undefined>();
   const [amountB, setAmountB] = useState<number | undefined>();
@@ -78,6 +88,7 @@ const Swap = () => {
     DEFAULT_SLIPPAGE
   );
   const [isSwapDetailActive, setSwapDetailActive] = useState(false);
+  const [totalLoadingCount, setTotalLoadingCount] = useState(0);
   const [isPairLoading, setPairLoading] = useState(false);
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
@@ -138,31 +149,49 @@ const Swap = () => {
         swapType
       ) {
         try {
-          console.log(swapType);
+          const bNEOHash = BNEO_SCRIPT_HASH[network];
           let res;
-          if (swapType === "AtoB") {
-            res = await new SwapContract(network).swap(
-              connectedWallet,
-              tokenA.hash,
-              tokenA.decimals,
-              amountA,
-              tokenB.hash,
-              tokenB.decimals,
-              getAfterSlippage(amountB, slippage)
-            );
-          } else {
-						const er= getMaxTokenAAmount(amountA, slippage);
-            res = await new SwapContract(network).swapBtoA(
-              connectedWallet,
-              tokenA.hash,
-              tokenA.decimals,
-              tokenB.hash,
-              tokenB.decimals,
-	            amountB,
-	            getMaxTokenAAmount(amountA, slippage)
-            );
+          if (
+            (tokenA.hash === NEO_SCRIPT_HASH && tokenB.hash === bNEOHash) ||
+            (tokenA.hash === bNEOHash && tokenB.hash === NEO_SCRIPT_HASH)
+          ) {
+            if (tokenA.hash === NEO_SCRIPT_HASH) {
+              res = await new BNEOContract(network).mint(
+                connectedWallet,
+                amountA
+              );
+            } else {
+              res = await new BNEOContract(network).redeem(
+                connectedWallet,
+                amountB
+              );
+            }
           }
-          setTxid(res);
+					else {
+            if (swapType === "AtoB") {
+              res = await new SwapContract(network).swap(
+                connectedWallet,
+                tokenA.hash,
+                tokenA.decimals,
+                amountA,
+                tokenB.hash,
+                tokenB.decimals,
+                getAfterSlippage(amountB, slippage)
+              );
+            } else {
+              res = await new SwapContract(network).swapBtoA(
+                connectedWallet,
+                tokenA.hash,
+                tokenA.decimals,
+                tokenB.hash,
+                tokenB.decimals,
+                amountB,
+                getMaxTokenAAmount(amountA, slippage)
+              );
+            }
+          }
+
+	        setTxid(res);
         } catch (e: any) {
           toast.error(handleError(e));
         }
@@ -178,8 +207,11 @@ const Swap = () => {
         let search = `?tokenA=${tokenB.hash}&tokenB=${tokenA.hash}`;
         history.push(search);
       }
-      setAmountA(amountB);
-      setAmountB(amountA);
+      /*
+			Let's reset amounts when user switch input
+			 */
+      setAmountA(undefined);
+      setAmountB(undefined);
     }
   };
 
@@ -193,31 +225,84 @@ const Swap = () => {
 
   useEffect(() => {
     async function load(tokenAHash, tokenBHash) {
-      try {
-        setError(undefined);
-        setPairLoading(true);
-        const res = await new SwapContract(network).getReserve(
-          tokenAHash,
-          tokenBHash,
-          connectedWallet
-        );
-        setData(res);
-        setTokenA({
-          hash: tokenAHash,
-          symbol: res.pair[tokenAHash].symbol,
-          decimals: res.pair[tokenAHash].decimals,
-        });
-        setTokenB({
-          hash: tokenBHash,
-          symbol: res.pair[tokenBHash].symbol,
-          decimals: res.pair[tokenBHash].decimals,
-        });
-        setPairLoading(false);
-      } catch (e: any) {
-        setError(e.message);
-        setPairLoading(false);
+      setError(undefined);
+      setPairLoading(true);
+
+      const bNEOHash = BNEO_SCRIPT_HASH[network];
+
+      if (
+        (tokenAHash === NEO_SCRIPT_HASH && tokenBHash === bNEOHash) ||
+        (tokenAHash === bNEOHash && tokenBHash === NEO_SCRIPT_HASH)
+      ) {
+        // bNEO converting
+        try {
+          let balances = await new SwapContract(network).getNEObNEOBalance(
+            connectedWallet
+          );
+
+          const res = fakeNEOBNEOReserve(bNEOHash, balances);
+
+          setData(res);
+          setTokenA({
+            hash: tokenAHash,
+            symbol: tokenAHash === NEO_SCRIPT_HASH ? "NEO" : "bNEO",
+            decimals: tokenAHash === NEO_SCRIPT_HASH ? 0 : 8,
+          });
+          setTokenB({
+            hash: tokenBHash,
+            symbol: tokenBHash === NEO_SCRIPT_HASH ? "NEO" : "bNEO",
+            decimals: tokenBHash === NEO_SCRIPT_HASH ? 0 : 8,
+          });
+          setPairLoading(false);
+        } catch (e: any) {
+          setError(e.message);
+          setPairLoading(false);
+        }
+      } else {
+        try {
+          let res = await new SwapContract(network).getReserve(
+            tokenAHash,
+            tokenBHash,
+            connectedWallet
+          );
+
+          if (
+            tokenAHash === NEO_SCRIPT_HASH ||
+            tokenBHash === NEO_SCRIPT_HASH
+          ) {
+            const oppositeTokenHash =
+              tokenAHash === NEO_SCRIPT_HASH ? tokenBHash : tokenAHash;
+            const bNEORes = await new SwapContract(network).getReserve(
+              tokenAHash === NEO_SCRIPT_HASH ? bNEOHash : tokenAHash,
+              tokenBHash === NEO_SCRIPT_HASH ? bNEOHash : tokenBHash,
+              connectedWallet
+            );
+            res.pair[NEO_SCRIPT_HASH].reserveAmount =
+              bNEORes.pair[bNEOHash].reserveAmount;
+            res.pair[oppositeTokenHash] = bNEORes.pair[oppositeTokenHash];
+            res.totalShare = bNEORes.totalShare;
+          }
+
+          console.log(res);
+          setData(res);
+          setTokenA({
+            hash: tokenAHash,
+            symbol: res.pair[tokenAHash].symbol,
+            decimals: res.pair[tokenAHash].decimals,
+          });
+          setTokenB({
+            hash: tokenBHash,
+            symbol: res.pair[tokenBHash].symbol,
+            decimals: res.pair[tokenBHash].decimals,
+          });
+          setPairLoading(false);
+        } catch (e: any) {
+          setError(e.message);
+          setPairLoading(false);
+        }
       }
     }
+
     if (params.tokenA && params.tokenB) {
       load(params.tokenA, params.tokenB);
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { FaAngleDown, FaInfoCircle } from "react-icons/fa";
+import { FaAngleDown } from "react-icons/fa";
 import NumberFormat from "react-number-format";
 import { useWallet } from "../../../../../packages/provider";
 import { ASSET_LIST } from "../../../../../packages/neo/contracts/ftw/swap/consts";
@@ -7,6 +7,7 @@ import LogoIcon from "../../../../components/LogoIcon";
 import { BsQuestionSquare } from "react-icons/bs";
 
 interface IInputProps {
+  swapInitiated?: boolean;
   contractHash: string;
   symbol?: string;
   logo?: string;
@@ -23,6 +24,7 @@ interface IInputProps {
   balanceOverflow?: boolean;
 }
 const Input = ({
+  swapInitiated,
   contractHash,
   isDisable,
   symbol,

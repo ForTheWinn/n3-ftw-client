@@ -15,7 +15,12 @@ import {
   ISwapsHistory,
 } from "./interfaces";
 import { SMITH_SCRIPT_HASH } from "../smith/consts";
-import { BNEO_SCRIPT_HASH, NEP_SCRIPT_HASH } from "../../../consts/nep17-list";
+import {
+  BNEO_SCRIPT_HASH,
+  GAS_SCRIPT_HASH,
+  NEO_SCRIPT_HASH,
+  NEP_SCRIPT_HASH,
+} from "../../../consts/nep17-list";
 
 export class SwapContract {
   network: INetworkType;
@@ -166,60 +171,68 @@ export class SwapContract {
         },
       ],
     };
+    console.log(tokenA);
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
-	swapBtoA = async (
-		connectedWallet: IConnectedWallet,
-		tokenA: string,
-		tokenADecimals: number,
-		tokenB: string,
-		tokenBDecimals: number,
-		amountOut: number,
-		maxTokenAAmount: number
-	): Promise<string> => {
-		const senderHash = NeonWallet.getScriptHashFromAddress(
-			connectedWallet.account.address
-		);
-		const invokeScript = {
-			operation: "swapB",
-			scriptHash: this.contractHash,
-			args: [
-				{
-					type: "Hash160",
-					value: senderHash,
-				},
-				{
-					type: "Hash160",
-					value: tokenA,
-				},
-				{
-					type: "Hash160",
-					value: tokenB,
-				},
-				{
-					type: "Integer",
-					value: u.BigInteger.fromDecimal(amountOut, tokenBDecimals).toString(),
-				},
-				{
-					type: "Integer",
-					value: u.BigInteger.fromDecimal(maxTokenAAmount, tokenADecimals).toString(),
-				},
-				{
-					type: "Integer",
-					value: defaultDeadLine(),
-				},
-			],
-			signers: [
-				{
-					account: senderHash,
-					scopes: tx.WitnessScope.CustomContracts,
-					allowedContracts: [this.contractHash, tokenA],
-				},
-			],
-		};
-		return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
-	};
+  swapBtoA = async (
+    connectedWallet: IConnectedWallet,
+    tokenA: string,
+    tokenADecimals: number,
+    tokenB: string,
+    tokenBDecimals: number,
+    amountOut: number,
+    maxTokenAAmount: number
+  ): Promise<string> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
+    const allowedContracts = [this.contractHash, tokenA];
+    if (tokenB === NEO_SCRIPT_HASH) {
+      allowedContracts.push(GAS_SCRIPT_HASH);
+    }
+    const invokeScript = {
+      operation: "swapB",
+      scriptHash: this.contractHash,
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+        {
+          type: "Hash160",
+          value: tokenA,
+        },
+        {
+          type: "Hash160",
+          value: tokenB,
+        },
+        {
+          type: "Integer",
+          value: u.BigInteger.fromDecimal(amountOut, tokenBDecimals).toString(),
+        },
+        {
+          type: "Integer",
+          value: u.BigInteger.fromDecimal(
+            maxTokenAAmount,
+            tokenADecimals
+          ).toString(),
+        },
+        {
+          type: "Integer",
+          value: defaultDeadLine(),
+        },
+      ],
+      signers: [
+        {
+          account: senderHash,
+          scopes: tx.WitnessScope.CustomContracts,
+          allowedContracts,
+        },
+      ],
+    };
+    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+  };
 
   getReserve = async (
     tokenA: string,
@@ -311,9 +324,9 @@ export class SwapContract {
     tokenB,
     swapToken,
     swapTokenDecimals,
-    amount,
-    desiredTokenDecimals
+    amount
   ): Promise<string> => {
+    console.log(swapTokenDecimals);
     const script = {
       scriptHash: this.contractHash,
       operation: "getSwapEstimate",
@@ -328,43 +341,44 @@ export class SwapContract {
       ],
     };
     const res = await Network.read(this.network, [script]);
+    console.log(res);
     if (res.state === "FAULT") {
       return "0";
     } else {
-      const { estimated, fee } = parseMapValue(res.stack[0] as any);
+      const { estimated, fee, decimals } = parseMapValue(res.stack[0] as any);
       console.log(
         "Fee: " + u.BigInteger.fromNumber(fee).toDecimal(swapTokenDecimals)
       );
-      return u.BigInteger.fromNumber(estimated).toDecimal(desiredTokenDecimals);
+      return u.BigInteger.fromNumber(estimated).toDecimal(decimals);
     }
   };
 
-	getSwapBEstimate = async (
-		tokenA,
-		tokenB,
-		tokenBDecimals,
-		amountOut,
-	): Promise<string> => {
-		const script = {
-			scriptHash: this.contractHash,
-			operation: "getSwapBEstimate",
-			args: [
-				{ type: "Hash160", value: tokenA },
-				{ type: "Hash160", value: tokenB },
-				{
-					type: "Integer",
-					value: u.BigInteger.fromDecimal(amountOut, tokenBDecimals).toString(),
-				},
-			],
-		};
-		const res = await Network.read(this.network, [script]);
-		if (res.state === "FAULT") {
-			return "0";
-		} else {
-			const { estimated, decimals } = parseMapValue(res.stack[0] as any);
-			return u.BigInteger.fromNumber(estimated).toDecimal(decimals);
-		}
-	};
+  getSwapBEstimate = async (
+    tokenA,
+    tokenB,
+    tokenBDecimals,
+    amountOut
+  ): Promise<string> => {
+    const script = {
+      scriptHash: this.contractHash,
+      operation: "getSwapBEstimate",
+      args: [
+        { type: "Hash160", value: tokenA },
+        { type: "Hash160", value: tokenB },
+        {
+          type: "Integer",
+          value: u.BigInteger.fromDecimal(amountOut, tokenBDecimals).toString(),
+        },
+      ],
+    };
+    const res = await Network.read(this.network, [script]);
+    if (res.state === "FAULT") {
+      return "0";
+    } else {
+      const { estimated, decimals } = parseMapValue(res.stack[0] as any);
+      return u.BigInteger.fromNumber(estimated).toDecimal(decimals);
+    }
+  };
 
   getLPEstimate = (
     amount: string,
@@ -601,5 +615,43 @@ export class SwapContract {
       throw new Error(res.exception as string);
     }
     return res.stack[0].value as boolean;
+  };
+
+  getNEObNEOBalance = async (
+    connectedWallet?: IConnectedWallet
+  ): Promise<{
+    neo: number;
+    bNEO: number;
+  }> => {
+    if (!connectedWallet) {
+      return {
+        neo: 0,
+        bNEO: 0,
+      };
+    }
+
+    const scripts = [
+      {
+        scriptHash: NEO_SCRIPT_HASH,
+        operation: "balanceOf",
+        args: [{ type: "Address", value: connectedWallet.account.address }],
+      },
+      {
+        scriptHash: BNEO_SCRIPT_HASH[this.network],
+        operation: "balanceOf",
+        args: [{ type: "Address", value: connectedWallet.account.address }],
+      },
+    ];
+    const res = await Network.read(this.network, scripts);
+    if (res.state === "FAULT") {
+      throw new Error(res.exception as string);
+    }
+    // @ts-ignore
+    return {
+      neo: parseFloat(res.stack[0].value as string),
+      bNEO: parseFloat(
+        u.BigInteger.fromNumber(res.stack[1].value as string).toDecimal(8)
+      ),
+    };
   };
 }

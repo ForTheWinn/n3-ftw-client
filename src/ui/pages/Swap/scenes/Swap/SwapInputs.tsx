@@ -4,7 +4,11 @@ import { FaExchangeAlt } from "react-icons/fa";
 import { SwapContract } from "../../../../../packages/neo/contracts";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { ITokenState } from ".";
-import { GAS_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
+import {
+  BNEO_SCRIPT_HASH,
+  GAS_SCRIPT_HASH,
+  NEO_SCRIPT_HASH,
+} from "../../../../../packages/neo/consts/nep17-list";
 
 interface ISwapInputsProps {
   network: INetworkType;
@@ -19,7 +23,7 @@ interface ISwapInputsProps {
   noLiquidity?: boolean;
   userTokenABalance?: number;
   userTokenBBalance?: number;
-	setSwapType: (type: "AtoB" | "BtoA") => void;
+  setSwapType: (type: "AtoB" | "BtoA") => void;
 }
 
 interface ISearchTerm {
@@ -28,7 +32,7 @@ interface ISearchTerm {
 }
 
 const SwapInputs = ({
-	setSwapType,
+  setSwapType,
   network,
   tokenA,
   tokenB,
@@ -47,45 +51,70 @@ const SwapInputs = ({
   const [isAmountBLoading, setAmountBLoading] = useState(false);
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(async () => {
-      if (tokenA && tokenB && searchTerm && searchTerm.value) {
-        if (searchTerm.value > 0) {
-          if (searchTerm.type === "A") {
-            setAmountBLoading(true);
-          } else {
-            setAmountALoading(true);
-          }
+    if (tokenA && tokenB && searchTerm && searchTerm.value) {
+      const bNEOHash = BNEO_SCRIPT_HASH[network];
 
-          let estimated;
-          if (searchTerm.type === "A") {
-            estimated = await new SwapContract(network).getSwapEstimate(
-              tokenA.hash,
-              tokenB.hash,
-              tokenA.hash,
-              tokenA.decimals,
-              searchTerm.value,
-              tokenB.decimals
-            );
-          } else {
-            estimated = await new SwapContract(network).getSwapBEstimate(
-              tokenA.hash,
-              tokenB.hash,
-              tokenB.decimals,
-              searchTerm.value
-            );
-          }
-          if (searchTerm.type === "A") {
-            setAmountBLoading(false);
-            setAmountB(+estimated);
-          } else {
-            setAmountALoading(false);
-            setAmountA(+estimated);
-          }
+      if (
+        (tokenA.hash === NEO_SCRIPT_HASH && tokenB.hash === bNEOHash) ||
+        (tokenA.hash === bNEOHash && tokenB.hash === NEO_SCRIPT_HASH)
+      ) {
+        if (searchTerm.type === "A") {
+          setAmountB(searchTerm.value);
+        } else {
+          setAmountA(searchTerm.value);
         }
-      }
-    }, 800);
+      } else {
 
-    return () => clearTimeout(delayDebounceFn);
+	      const delayDebounceFn = setTimeout(async () => {
+		      if (searchTerm.type === "A") {
+			      setAmountBLoading(true);
+		      } else {
+			      setAmountALoading(true);
+		      }
+
+		      let estimated;
+
+		      const tokenAHash =
+			      tokenA.hash === NEO_SCRIPT_HASH
+				      ? BNEO_SCRIPT_HASH[network]
+				      : tokenA.hash;
+
+		      const tokenBHash =
+			      tokenB.hash === NEO_SCRIPT_HASH
+				      ? BNEO_SCRIPT_HASH[network]
+				      : tokenB.hash;
+
+		      if (searchTerm.type === "A") {
+			      console.log(1);
+			      estimated = await new SwapContract(network).getSwapEstimate(
+				      tokenAHash,
+				      tokenBHash,
+				      tokenAHash,
+				      tokenA.hash === NEO_SCRIPT_HASH ? 8 : tokenA.decimals,
+				      searchTerm.value
+			      );
+		      } else {
+			      console.log(2);
+			      estimated = await new SwapContract(network).getSwapBEstimate(
+				      tokenAHash,
+				      tokenBHash,
+				      tokenB.hash === NEO_SCRIPT_HASH ? 8 : tokenB.decimals,
+				      searchTerm.value
+			      );
+		      }
+		      if (searchTerm.type === "A") {
+			      setAmountBLoading(false);
+			      setAmountB(+estimated);
+		      } else {
+			      setAmountALoading(false);
+			      setAmountA(+estimated);
+		      }
+	      }, 800);
+
+	      return () => clearTimeout(delayDebounceFn);
+      }
+    }
+
   }, [searchTerm]);
 
   return (
@@ -93,7 +122,9 @@ const SwapInputs = ({
       <Input
         contractHash={tokenA ? tokenA.hash : ""}
         symbol={tokenA ? tokenA.symbol : undefined}
-        isDisable={!tokenA || !tokenB || noLiquidity}
+        isDisable={
+          !tokenA || !tokenB || noLiquidity || tokenB.hash === NEO_SCRIPT_HASH
+        }
         heading="Sell"
         onClickAsset={() => onAssetChange("A")}
         val={amountA}
@@ -103,7 +134,7 @@ const SwapInputs = ({
             type: "A",
             value,
           });
-					setSwapType("AtoB");
+          setSwapType("AtoB");
         }}
         decimals={tokenA ? tokenA.decimals : userTokenABalance}
         userBalance={userTokenABalance}
@@ -129,7 +160,9 @@ const SwapInputs = ({
       <Input
         contractHash={tokenB ? tokenB.hash : ""}
         symbol={tokenB ? tokenB.symbol : undefined}
-        isDisable={!tokenA || !tokenB || noLiquidity}
+        isDisable={
+          !tokenA || !tokenB || noLiquidity || tokenA.hash === NEO_SCRIPT_HASH
+        }
         heading="Buy"
         onClickAsset={() => {
           onAssetChange("B");
@@ -141,7 +174,7 @@ const SwapInputs = ({
             type: "B",
             value,
           });
-	        setSwapType("BtoA");
+          setSwapType("BtoA");
         }}
         decimals={tokenB ? tokenB.decimals : undefined}
         userBalance={userTokenBBalance}
