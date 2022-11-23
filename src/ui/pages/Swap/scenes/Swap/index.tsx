@@ -176,6 +176,7 @@ const Swap = () => {
                   tokenB.decimals,
                   getAfterSlippage(amountB, slippage)
                 );
+								console.log(res)
               } else {
                 res = await new SwapContract(network).swap(
                   connectedWallet,
@@ -278,6 +279,7 @@ const Swap = () => {
           setPairLoading(false);
         }
       } else {
+
         try {
           let res = await new SwapContract(network).getReserve(
             tokenAHash,

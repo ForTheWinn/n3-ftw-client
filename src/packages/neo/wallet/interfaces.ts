@@ -22,6 +22,7 @@ export interface IBalance {
 }
 
 export interface ITransaction {
+	invokeScript?: any
   network: INetworkType;
   wallet: IWalletType;
   // status: "PENDING" | "SUBMITTED";

@@ -110,7 +110,7 @@ const Liquidity = () => {
             tokenA.hash === NEO_SCRIPT_HASH ||
             tokenB.hash === NEO_SCRIPT_HASH
           ) {
-            res = await new SwapContract(network).provideWithNEP17Payment(
+            res = await new SwapContract(network).provideWithNEO(
               connectedWallet,
               tokenA.hash === NEO_SCRIPT_HASH ? amountA : amountB,
               tokenB.hash === NEO_SCRIPT_HASH ? tokenA.hash : tokenB.hash,
