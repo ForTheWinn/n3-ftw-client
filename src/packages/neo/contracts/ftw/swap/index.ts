@@ -93,6 +93,90 @@ export class SwapContract {
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
+	provideWithNEP17Payment = async (
+		connectedWallet: IConnectedWallet,
+		neoAmount: number,
+		tokenB: string,
+		tokenBDecimals: number,
+		amountB: number,
+		lockUntil: number,
+		slippage: number
+	): Promise<string> => {
+		console.log(neoAmount)
+		console.log(tokenB)
+		console.log(tokenBDecimals)
+		console.log(amountB)
+		const senderHash = NeonWallet.getScriptHashFromAddress(
+			connectedWallet.account.address
+		);
+		const invokeScript = {
+			operation: "transfer",
+			scriptHash: NEO_SCRIPT_HASH,
+			args: [
+				{
+					type: "Hash160",
+					value: senderHash,
+				},
+				{
+					type: "Hash160",
+					value: this.contractHash,
+				},
+				{
+					type: "Integer",
+					value: neoAmount,
+				},
+				{
+					type: "Array",
+					value: [
+						{
+							type: "Hash160",
+							value: tokenB,
+						},
+						{
+							type: "Integer",
+							value: u.BigInteger.fromDecimal(
+								amountB,
+								tokenBDecimals
+							).toString(),
+						},
+						{
+							type: "Integer",
+							value: defaultDeadLine(),
+						},
+						{
+							type: "Integer",
+							value: lockUntil,
+						},
+						{
+							type: "Integer",
+							value: slippage,
+						},
+					],
+				},
+			],
+			// signers: [
+			// 	{
+			// 		account: senderHash,
+			// 		scopes: tx.WitnessScope.Global,
+			// 		// allowedContracts: [this.contractHash, NEO_SCRIPT_HASH, tokenB],
+			// 	},
+			// ],
+			signers: [
+				{
+					account: senderHash,
+					scopes: tx.WitnessScope.WitnessRules,
+					rules: [
+						{ action: "Allow", condition: { type: "CalledByEntry" } },
+						{ action: "Allow", condition: { type: "ScriptHash", hash: tokenB } },
+						{ action: "Allow", condition: { type: "ScriptHash", hash: this.contractHash } },
+					],
+				},
+			],
+		};
+		console.log(invokeScript);
+		return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+	};
+
   remove = async (
     connectedWallet: IConnectedWallet,
     tokenId: string
@@ -129,7 +213,7 @@ export class SwapContract {
     amountA: number,
     tokenB: string,
     tokenBDecimals: number,
-    amountB: number
+    amountB: number // Slippage
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
@@ -175,6 +259,58 @@ export class SwapContract {
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
+  swapWithNEO = async (
+    connectedWallet: IConnectedWallet,
+    neoAmount: number,
+    tokenB: string,
+    tokenBDecimals: number,
+    slippage: number
+  ): Promise<string> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
+    const invokeScript = {
+      operation: "transfer",
+      scriptHash: NEO_SCRIPT_HASH,
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+        {
+          type: "Hash160",
+          value: this.contractHash,
+        },
+        {
+          type: "Integer",
+          value: neoAmount,
+        },
+        {
+          type: "Array",
+          value: [
+            {
+              type: "Hash160",
+              value: tokenB,
+            },
+            {
+              type: "Integer",
+              value: u.BigInteger.fromDecimal(
+                slippage,
+                tokenBDecimals
+              ).toString(),
+            },
+            {
+              type: "Integer",
+              value: defaultDeadLine(),
+            },
+          ],
+        },
+      ],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+    };
+    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+  };
+
   swapBtoA = async (
     connectedWallet: IConnectedWallet,
     tokenA: string,
@@ -187,10 +323,6 @@ export class SwapContract {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
-    const allowedContracts = [this.contractHash, tokenA];
-    if (tokenB === NEO_SCRIPT_HASH) {
-      allowedContracts.push(GAS_SCRIPT_HASH);
-    }
     const invokeScript = {
       operation: "swapB",
       scriptHash: this.contractHash,
@@ -227,8 +359,80 @@ export class SwapContract {
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts,
+          allowedContracts: [this.contractHash, tokenA],
         },
+      ],
+    };
+    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+  };
+
+  swapBWithNEO = async (
+    connectedWallet: IConnectedWallet,
+    tokenA: string,
+    tokenADecimals: number,
+    neoOut: number,
+    maxTokenAAmount: number
+  ): Promise<string> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
+    const invokeScript = {
+      operation: "transfer",
+      scriptHash: GAS_SCRIPT_HASH,
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+        {
+          type: "Hash160",
+          value: this.contractHash,
+        },
+        {
+          type: "Integer",
+          value: neoOut * 100000,
+        },
+        {
+          type: "Array",
+          value: [
+            {
+              type: "Hash160",
+              value: tokenA,
+            },
+            {
+              type: "Integer",
+              value: u.BigInteger.fromDecimal(
+                maxTokenAAmount,
+                tokenADecimals
+              ).toString(),
+            },
+            {
+              type: "Integer",
+              value: defaultDeadLine(),
+            },
+          ],
+        },
+      ],
+      signers: [
+        // {
+        //   account: senderHash,
+        //   scopes: tx.WitnessScope.CustomContracts,
+        //   allowedContracts: [tokenA],
+        // },
+        {
+          account: senderHash,
+          scopes: tx.WitnessScope.WitnessRules,
+          rules: [
+            { action: "Allow", condition: { type: "CalledByEntry" } },
+            { action: "Allow", condition: { type: "ScriptHash", hash: tokenA } },
+            { action: "Allow", condition: { type: "ScriptHash", hash: this.contractHash } },
+          ],
+          // allowedContracts: [this.contractHash, tokenA],
+        },
+        // {
+        //   account: this.contractHash,
+        //   scopes: tx.WitnessScope.CalledByEntry,
+        // }
       ],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);

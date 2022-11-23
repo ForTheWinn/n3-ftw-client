@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import _ from "underscore";
 import { useWallet } from "../../../../../packages/provider";
 import { SwapContract } from "../../../../../packages/neo/contracts";
 import AssetListModal from "../../components/AssetListModal";
@@ -20,6 +21,11 @@ import SettingDropdown from "./SettingDropdown";
 import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import PriceRatio from "../Swap/components/PriceRatio";
 import { handleError } from "../../../../../packages/neo/utils/errors";
+import {
+  BNEO_SCRIPT_HASH,
+  NEO_SCRIPT_HASH,
+  NEP_SCRIPT_HASH,
+} from "../../../../../packages/neo/consts/nep17-list";
 
 export interface ITokenState {
   hash: string;
@@ -36,7 +42,15 @@ const Liquidity = () => {
     "A" | "B" | ""
   >("");
 
-  const [tokenA, setTokenA] = useState<ITokenState | undefined>();
+  const [tokenA, setTokenA] = useState<ITokenState | undefined>(
+    _.isEmpty(params)
+      ? {
+          hash: NEP_SCRIPT_HASH[network],
+          decimals: 8,
+          symbol: "NEP",
+        }
+      : undefined
+  );
   const [tokenB, setTokenB] = useState<ITokenState | undefined>();
   const [amountA, setAmountA] = useState<number>();
   const [amountB, setAmountB] = useState<number>();
@@ -48,6 +62,7 @@ const Liquidity = () => {
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [error, setError] = useState<string | undefined>();
+  const [bNEOAgree, setbNEOAgree] = useState<boolean>(false);
 
   const onAssetChange = (type: "A" | "B" | "") => {
     setAssetChangeModalActive(type);
@@ -89,17 +104,37 @@ const Liquidity = () => {
       if (tokenA && tokenB && amountA && amountB && data) {
         try {
           const deadlineMs = selectedLock ? moment(lockUntil).valueOf() : 0;
-          const res = await new SwapContract(network).provide(
-            connectedWallet,
-            tokenA.hash,
-            tokenA.decimals,
-            amountA,
-            tokenB.hash,
-            tokenB.decimals,
-            amountB,
-            deadlineMs,
-            slippage * 100
-          );
+          let res;
+
+          if (
+            tokenA.hash === NEO_SCRIPT_HASH ||
+            tokenB.hash === NEO_SCRIPT_HASH
+          ) {
+            res = await new SwapContract(network).provideWithNEP17Payment(
+              connectedWallet,
+              tokenA.hash === NEO_SCRIPT_HASH ? amountA : amountB,
+              tokenB.hash === NEO_SCRIPT_HASH ? tokenA.hash : tokenB.hash,
+              tokenB.hash === NEO_SCRIPT_HASH
+                ? tokenA.decimals
+                : tokenB.decimals,
+              tokenA.hash === NEO_SCRIPT_HASH ? amountB : amountA,
+              deadlineMs,
+              slippage * 100
+            );
+          } else {
+            res = await new SwapContract(network).provide(
+              connectedWallet,
+              tokenA.hash,
+              tokenA.decimals,
+              amountA,
+              tokenB.hash,
+              tokenB.decimals,
+              amountB,
+              deadlineMs,
+              slippage * 100
+            );
+          }
+
           setTxid(res);
         } catch (e: any) {
           toast.error(handleError(e));
@@ -107,19 +142,6 @@ const Liquidity = () => {
       }
     } else {
       toast.error("Please connect wallet");
-    }
-  };
-
-  const onSwitch = () => {
-    if (tokenA || tokenB) {
-      if (tokenA && tokenB) {
-        let search = `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`;
-        history.push(search);
-      }
-      setTokenB(tokenA);
-      setTokenA(tokenB);
-      setAmountB(amountA);
-      setAmountA(amountB);
     }
   };
 
@@ -131,12 +153,35 @@ const Liquidity = () => {
     try {
       setError(undefined);
       setPairLoading(true);
-      const res = await new SwapContract(network).getReserve(
-        tokenAHash,
-        tokenBHash,
-        connectedWallet
-      );
+      let res;
+      const bNEOHash = BNEO_SCRIPT_HASH[network];
+      if (tokenAHash === NEO_SCRIPT_HASH || tokenBHash === NEO_SCRIPT_HASH) {
+        res = await new SwapContract(network).getReserve(
+          tokenAHash === NEO_SCRIPT_HASH ? bNEOHash : tokenAHash,
+          tokenBHash === NEO_SCRIPT_HASH ? bNEOHash : tokenBHash,
+          connectedWallet
+        );
+
+        const balances = await new SwapContract(network).getNEObNEOBalance(
+          connectedWallet
+        );
+
+        res.pair[NEO_SCRIPT_HASH] = {
+          symbol: "NEO",
+          decimals: 0,
+          reserveAmount: res.pair[bNEOHash].reserveAmount,
+        };
+        res.userBalances[NEO_SCRIPT_HASH] = balances.neo;
+      } else {
+        res = await new SwapContract(network).getReserve(
+          tokenAHash,
+          tokenBHash,
+          connectedWallet
+        );
+      }
+
       setData(res);
+
       if (!tokenA) {
         setTokenA({
           hash: tokenAHash,
@@ -163,7 +208,16 @@ const Liquidity = () => {
       await getReserve(A, B);
     }
     if (params.tokenA && params.tokenB) {
-      load(params.tokenA, params.tokenB);
+      if (
+        (params.tokenA === NEO_SCRIPT_HASH &&
+          params.tokenB === BNEO_SCRIPT_HASH[network]) ||
+        (params.tokenB === NEO_SCRIPT_HASH &&
+          params.tokenA === BNEO_SCRIPT_HASH[network])
+      ) {
+        // bENO <> NEO cannot have liq pool
+      } else {
+        load(params.tokenA, params.tokenB);
+      }
     }
   }, [connectedWallet, refresh, params.tokenA, params.tokenB]);
 
@@ -218,35 +272,64 @@ const Liquidity = () => {
         <ErrorNotificationWithRefresh onRefresh={onRefresh} error={error} />
       )}
       <div className="is-relative">
-        <LPInputs
-          noLiquidity={noLiquidity}
-          network={network}
-          tokenA={tokenA}
-          tokenB={tokenB}
-          amountA={amountA}
-          amountB={amountB}
-          onAssetChange={onAssetChange}
-          onSwitch={onSwitch}
-          setAmountA={setAmountA}
-          setAmountB={setAmountB}
-          data={data}
-          userTokenABalance={
-            connectedWallet && tokenA && data
-              ? data.userBalances[tokenA.hash]
-              : undefined
-          }
-          userTokenBBalance={
-            connectedWallet && tokenB && data
-              ? data.userBalances[tokenB.hash]
-              : undefined
-          }
-        />
+        <div className="pb-2">
+          <LPInputs
+            noLiquidity={noLiquidity}
+            network={network}
+            tokenA={tokenA}
+            tokenB={tokenB}
+            amountA={amountA}
+            amountB={amountB}
+            onAssetChange={onAssetChange}
+            setAmountA={setAmountA}
+            setAmountB={setAmountB}
+            data={data}
+            userTokenABalance={
+              connectedWallet && tokenA && data
+                ? data.userBalances[tokenA.hash]
+                : undefined
+            }
+            userTokenBBalance={
+              connectedWallet && tokenB && data
+                ? data.userBalances[tokenB.hash]
+                : undefined
+            }
+          />
+        </div>
 
-        {connectedWallet ? (
-          tokenA && tokenB && amountA && amountB ? (
+        <hr />
+
+        {tokenA &&
+          tokenB &&
+          (tokenA.hash === NEO_SCRIPT_HASH ||
+            tokenB.hash === NEO_SCRIPT_HASH) && (
+            <div className="notification is-success is-light">
+              NEO are indivisible. We need to wrap your NEO to bNEO which means
+              you will be receiving bNEO when you withdraw your LP.
+              <br />
+              <a
+                className="is-size-7"
+                target="_blank"
+                href={"https://neoburger.io"}
+              >
+                [Learn more about bNEO]
+              </a>
+              <br />
+              <br />
+              <label className="checkbox has-text-weight-medium">
+                <input
+                  type="checkbox"
+                  checked={bNEOAgree}
+                  onClick={() => setbNEOAgree(!bNEOAgree)}
+                />
+                {"  "}I agree and understand about bNEO
+              </label>
+            </div>
+          )}
+
+        <>
+          {connectedWallet && tokenA && tokenB && amountA && amountB ? (
             <>
-              <hr />
-
               <div className="level">
                 <div className="level-left">
                   <div className="level-item">
@@ -270,35 +353,38 @@ const Liquidity = () => {
                   </div>
                 </div>
               </div>
-
-              <button
-                disabled={
-                  // isTokenAMaxGas ||
-                  // isTokenBMaxGas ||
-                  (tokenA &&
-                    tokenB &&
-                    data &&
-                    data.userBalances[tokenA.hash] < amountA) ||
-                  (tokenA &&
-                    tokenB &&
-                    data &&
-                    data.userBalances[tokenB.hash] < amountB)
-                }
-                onClick={onAddLiquidity}
-                className="button is-fullwidth is-primary"
-              >
-                Add Liquidity
-              </button>
             </>
           ) : (
-            <div />
-          )
-        ) : (
-          <>
-            <hr />
-            <ConnectWalletButton className="is-primary is-fullwidth" />
-          </>
-        )}
+            <></>
+          )}
+        </>
+
+        <button
+          disabled={
+            !tokenA ||
+            !tokenB ||
+            amountA === undefined ||
+            amountB === undefined ||
+            (tokenA &&
+              tokenB &&
+              data &&
+              true &&
+              data.userBalances[tokenA.hash] < amountA) ||
+            (tokenA &&
+              tokenB &&
+              data &&
+              true &&
+              data.userBalances[tokenB.hash] < amountB) ||
+            (tokenA.hash === NEO_SCRIPT_HASH && !bNEOAgree) ||
+            (tokenB.hash === NEO_SCRIPT_HASH && !bNEOAgree)
+          }
+          onClick={onAddLiquidity}
+          className={`button is-fullwidth is-primary ${
+            isPairLoading ? "is-loading" : ""
+          }`}
+        >
+          Add Liquidity
+        </button>
       </div>
 
       {txid && (
@@ -320,6 +406,7 @@ const Liquidity = () => {
           onAssetClick={onAssetClick}
           onClose={() => setAssetChangeModalActive("")}
           filterDecimals={true}
+          noNEOBNEO={true}
         />
       )}
     </>

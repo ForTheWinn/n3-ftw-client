@@ -6,7 +6,10 @@ import { IReserveData } from "../../../../../packages/neo/contracts/ftw/swap/int
 import { SwapContract } from "../../../../../packages/neo/contracts";
 import { ITokenState } from "./index";
 import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
-import {GAS_SCRIPT_HASH} from "../../../../../packages/neo/consts/nep17-list";
+import {
+  GAS_SCRIPT_HASH,
+  NEO_SCRIPT_HASH,
+} from "../../../../../packages/neo/consts/nep17-list";
 
 interface ILPInputsProps {
   network: INetworkType;
@@ -15,7 +18,6 @@ interface ILPInputsProps {
   amountA?: number;
   amountB?: number;
   onAssetChange: (type: "A" | "B") => void;
-  onSwitch: () => void;
   setAmountA: (val?: number) => void;
   setAmountB: (val?: number) => void;
   data?: IReserveData;
@@ -38,14 +40,18 @@ const LPInputs = ({
   userTokenABalance,
   userTokenBBalance,
 }: ILPInputsProps) => {
+  console.log(tokenA);
+  console.log(tokenB);
+  console.log(data);
+
   const handleChangeAmountA = (val) => {
     setAmountA(val);
     if (val !== undefined) {
       if (!noLiquidity && data && tokenA && tokenB) {
         const estimated = new SwapContract(network).getLPEstimate(
           val,
-          tokenA.decimals,
-          tokenB.decimals,
+          tokenA.hash === NEO_SCRIPT_HASH ? 8 : tokenA.decimals, // Use bNEO decimals here
+          tokenB.hash === NEO_SCRIPT_HASH ? 8 : tokenB.decimals,
           data.pair[tokenA.hash].reserveAmount,
           data.pair[tokenB.hash].reserveAmount
         );
@@ -57,14 +63,15 @@ const LPInputs = ({
       }
     }
   };
+
   const handleChangeAmountB = (val) => {
     setAmountB(val);
     if (val !== undefined) {
       if (!noLiquidity && data && tokenA && tokenB) {
         const estimated = new SwapContract(network).getLPEstimate(
           val,
-          tokenB.decimals,
-          tokenA.decimals,
+          tokenB.hash === NEO_SCRIPT_HASH ? 8 : tokenB.decimals,
+          tokenA.hash === NEO_SCRIPT_HASH ? 8 : tokenA.decimals,
           data.pair[tokenB.hash].reserveAmount,
           data.pair[tokenA.hash].reserveAmount
         );
@@ -80,7 +87,7 @@ const LPInputs = ({
   return (
     <>
       <Input
-        isDisable={!tokenA}
+        isDisable={!tokenA || (tokenB && tokenB.symbol === "NEO")}
         heading="Pair A"
         onClickAsset={() => {
           onAssetChange("A");
@@ -95,20 +102,20 @@ const LPInputs = ({
           !!(amountA && userTokenABalance && amountA > userTokenABalance)
         }
         errorMessage={
-	        tokenA &&
-	        tokenA.hash === GAS_SCRIPT_HASH &&
-	        amountA &&
-	        userTokenABalance &&
-	        amountA === userTokenABalance
-		        ? "You need to have more GAS for a tx fee"
-		        : undefined
+          tokenA &&
+          tokenA.hash === GAS_SCRIPT_HASH &&
+          amountA &&
+          userTokenABalance &&
+          amountA === userTokenABalance
+            ? "You need to have more GAS for a tx fee"
+            : undefined
         }
       />
       <div className="pt-4 pb-4 has-text-centered">
         <FaPlusSquare size={16} />
       </div>
       <Input
-        isDisable={!tokenB}
+        isDisable={!tokenB || (tokenA && tokenA.hash === NEO_SCRIPT_HASH)}
         heading="Pair B"
         onClickAsset={() => {
           onAssetChange("B");
@@ -120,16 +127,16 @@ const LPInputs = ({
         setValue={handleChangeAmountB}
         userBalance={userTokenBBalance}
         balanceOverflow={
-	        !!(amountB && userTokenBBalance && amountB > userTokenBBalance)
+          !!(amountB && userTokenBBalance && amountB > userTokenBBalance)
         }
         errorMessage={
-	        tokenB &&
-	        tokenB.hash === GAS_SCRIPT_HASH &&
-	        tokenB &&
-	        userTokenABalance &&
-	        amountB === userTokenBBalance
-		        ? "You need to have more GAS for a tx fee"
-		        : undefined
+          tokenB &&
+          tokenB.hash === GAS_SCRIPT_HASH &&
+          tokenB &&
+          userTokenABalance &&
+          amountB === userTokenBBalance
+            ? "You need to have more GAS for a tx fee"
+            : undefined
         }
       />
     </>

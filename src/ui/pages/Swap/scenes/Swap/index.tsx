@@ -47,6 +47,7 @@ import Pairs from "../PairsFromServer";
 import SwapHistory from "../../../Analytics/scenes/PairDetail/SwapHistory";
 import { fakeNEOBNEOReserve } from "./helpers";
 import { BNEOContract } from "../../../../../packages/neo/contracts/ftw/bneo";
+import { toDecimal } from "../../../../../packages/neo/utils";
 
 export interface ITokenState {
   hash: string;
@@ -88,7 +89,6 @@ const Swap = () => {
     DEFAULT_SLIPPAGE
   );
   const [isSwapDetailActive, setSwapDetailActive] = useState(false);
-  const [totalLoadingCount, setTotalLoadingCount] = useState(0);
   const [isPairLoading, setPairLoading] = useState(false);
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
@@ -166,32 +166,51 @@ const Swap = () => {
                 amountB
               );
             }
-          }
-					else {
+          } else {
             if (swapType === "AtoB") {
-              res = await new SwapContract(network).swap(
-                connectedWallet,
-                tokenA.hash,
-                tokenA.decimals,
-                amountA,
-                tokenB.hash,
-                tokenB.decimals,
-                getAfterSlippage(amountB, slippage)
-              );
+              if (tokenA.hash === NEO_SCRIPT_HASH) {
+                res = await new SwapContract(network).swapWithNEO(
+                  connectedWallet,
+                  amountA,
+                  tokenB.hash,
+                  tokenB.decimals,
+                  getAfterSlippage(amountB, slippage)
+                );
+              } else {
+                res = await new SwapContract(network).swap(
+                  connectedWallet,
+                  tokenA.hash,
+                  tokenA.decimals,
+                  amountA,
+                  tokenB.hash,
+                  tokenB.decimals,
+                  getAfterSlippage(amountB, slippage)
+                );
+              }
             } else {
-              res = await new SwapContract(network).swapBtoA(
-                connectedWallet,
-                tokenA.hash,
-                tokenA.decimals,
-                tokenB.hash,
-                tokenB.decimals,
-                amountB,
-                getMaxTokenAAmount(amountA, slippage)
-              );
+              if (tokenB.hash === NEO_SCRIPT_HASH) {
+                res = await new SwapContract(network).swapBWithNEO(
+                  connectedWallet,
+                  tokenA.hash,
+                  tokenA.decimals,
+                  amountB,
+                  getMaxTokenAAmount(amountA, slippage)
+                );
+              } else {
+                res = await new SwapContract(network).swapBtoA(
+                  connectedWallet,
+                  tokenA.hash,
+                  tokenA.decimals,
+                  tokenB.hash,
+                  tokenB.decimals,
+                  amountB,
+                  getMaxTokenAAmount(amountA, slippage)
+                );
+              }
             }
           }
 
-	        setTxid(res);
+          setTxid(res);
         } catch (e: any) {
           toast.error(handleError(e));
         }
@@ -529,8 +548,52 @@ const Swap = () => {
         <></>
       )}
 
-      <hr />
+      {tokenA &&
+        tokenA.hash === NEO_SCRIPT_HASH &&
+        tokenB &&
+        tokenB.hash === BNEO_SCRIPT_HASH[network] && (
+          <div className="notification is-success is-light">
+            We are converting using bNEO contract. It is not swapping through
+            our swap contract.
+            <br />
+            <a
+              className="is-size-7"
+              target="_blank"
+              href={"https://neoburger.io"}
+            >
+              [Learn more about bNEO]
+            </a>
+          </div>
+        )}
 
+      {tokenB && tokenB.hash === NEO_SCRIPT_HASH && (
+        <div className="notification is-success is-light">
+          NEO are indivisible. We are using bNEO behind the scene. You will be
+          paying extra gas fee for converting.
+          <br />
+          <a
+            className="is-size-7"
+            target="_blank"
+            href={"https://neoburger.io"}
+          >
+            [Learn more about bNEO]
+          </a>
+          {amountB ? (
+            <>
+              {" "}
+              <br />
+              <br />
+              <span className="has-text-weight-bold">{`Extra fee: ${toDecimal(
+                amountB * 100000
+              )} GAS`}</span>
+            </>
+          ) : (
+            ""
+          )}
+        </div>
+      )}
+
+      <hr />
       <button
         disabled={
           !amountA ||
@@ -541,7 +604,7 @@ const Swap = () => {
         onClick={connectedWallet ? onSwap : toggleWalletSidebar}
         className={`button is-fullwidth is-primary ${
           priceImpact > PRICE_IMPACT_LIMIT ? "is-danger" : ""
-        }`}
+        } ${isPairLoading ? "is-loading" : ""}`}
       >
         {connectedWallet
           ? priceImpact > PRICE_IMPACT_LIMIT
