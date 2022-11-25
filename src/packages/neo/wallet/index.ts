@@ -1,4 +1,5 @@
 import { IConnectedWallet, ITransaction, IWalletType } from "./interfaces";
+import { Argument, NeoDapi } from "@neongd/neo-dapi";
 import { MAINNET, NEO_LINE, NEON, O3, ONE_GATE, WALLET_LIST } from "../consts";
 import { u, wallet } from "@cityofzion/neon-core";
 import { INetworkType } from "../network";
@@ -187,33 +188,18 @@ export class WalletAPI {
     return submittedTx.txid;
   };
 
-  // invokeMulti = async (
-  //   currentNetwork: INetworkType,
-  //   invokeScript: any
-  // ): Promise<any> => {
-  //   const { instance, network } = await this.init();
-  //   if (network.defaultNetwork !== currentNetwork) {
-  //     throw new Error(
-  //       "Your wallet's network doesn't match with the app network setting."
-  //     );
-  //   }
-  //   try {
-  //     const res = await instance.invokeMultiple(invokeScript);
-  //     const submittedTx: ITransaction = {
-  //       network,
-  //       wallet: this.walletType,
-  //       txid: res.txid,
-  //       contractHash: "MultiInvoke",
-  //       method: "MultiInvoke",
-  //       args: invokeScript.invokeArgs,
-  //       createdAt: moment().format("lll"),
-  //     };
-  //     LocalStorage.addTransaction(submittedTx);
-  //     return res.txid;
-  //   } catch (e: any) {
-  //     if (e.description) {
-  //       throw new Error(e.description);
-  //     }
-  //   }
-  // };
+	private buildOneGateArgs = (args: Argument[]): Argument[] => {
+		// OneGate not support Address type, need to convert to Hash160
+		return args.map((param: any) => {
+			if (param.type === "Address") {
+				return {
+					type: "Hash160",
+					value: wallet.getScriptHashFromAddress(param.value),
+				};
+			} else {
+				return param;
+			}
+		});
+	};
+
 }

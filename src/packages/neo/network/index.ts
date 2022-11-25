@@ -8,11 +8,13 @@ import {
   TESTNET_CONFIG,
   TESTNET_CONFIG_2,
 } from "../consts";
-import { InvokeResult } from "@cityofzion/neon-core/lib/rpc";
+import { InvokeResult, Query } from "@cityofzion/neon-core/lib/rpc";
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc/Query";
 import { convertContractCallParam } from "../utils";
 
 export type INetworkType = typeof PRIVATENET | typeof MAINNET | typeof TESTNET;
+
+export const MAX_RPC_RESULT = 10000;
 
 export class Network {
   private static readonly READ_LOG_FREQUENCY = 6000;
@@ -145,7 +147,69 @@ export class Network {
     return parser(res);
   };
 
-  static sleep = (duration: number) => {
+
+	// traverseIterator is using only for get result of tokensOf (it return iterator)
+	// therefore, return result as string[] which contain tokenId
+	static traverseIterator = async (
+		network: INetworkType,
+		sessionId: string,
+		id: string
+	): Promise<string[]> => {
+		const rpcClient = Network.getRPCClient(network);
+		const traverseIteratorQuery = {
+			method: "traverseiterator",
+			params: [sessionId, id, MAX_RPC_RESULT],
+		};
+		let rpcRes: any[] = [];
+		try {
+			// neon-core 5.2.0 don't have support for traverseiterator.
+			// used execute with custom method instead
+			rpcRes = await rpcClient.execute(new Query(traverseIteratorQuery));
+		} catch (e: any) {
+			// in case that node support lower than MAX_RPC_RESULT, it will throw error.
+			// set count to default of 100 then re-execute.
+			if (e.message.includes("count")) {
+				traverseIteratorQuery.params[2] = 100;
+				rpcRes = await rpcClient.execute(new Query(traverseIteratorQuery));
+			}
+		}
+
+		const tokenIdList: string[] = [];
+		if (rpcRes.length > 0) {
+			// @ts-ignore
+			for (const item of rpcRes) {
+				const tokenId = u.HexString.fromBase64(item.value as string).toAscii();
+				tokenIdList.push(tokenId);
+			}
+		}
+		return tokenIdList;
+	};
+
+	static queryTraverseIterator = async (
+		network: INetworkType,
+		sessionId: string,
+		id: string
+	): Promise<any[]> => {
+		const rpcClient = Network.getRPCClient(network);
+		const traverseIteratorQuery = {
+			method: "traverseiterator",
+			params: [sessionId, id, MAX_RPC_RESULT],
+		};
+		let rpcRes: any[] = [];
+		try {
+			rpcRes = await rpcClient.execute(new Query(traverseIteratorQuery));
+		} catch (e: any) {
+			if (e.message.includes("count")) {
+				traverseIteratorQuery.params[2] = 100;
+				rpcRes = await rpcClient.execute(new Query(traverseIteratorQuery));
+			}
+		}
+
+		return rpcRes;
+	};
+
+
+	static sleep = (duration: number) => {
     return new Promise((resolve) => {
       setTimeout(resolve, duration);
     });

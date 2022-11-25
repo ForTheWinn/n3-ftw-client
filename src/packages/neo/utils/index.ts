@@ -134,7 +134,10 @@ const stringList = [
   "description",
   "author",
   "bonusTokenSymbol",
-	"image"
+	"image",
+	"1_tokenId",
+	"2_tokenId",
+	"3_tokenId",
 ];
 const addressList = ["owner", "account", "creator", "receiver"];
 const hash160List = [
@@ -146,7 +149,7 @@ const hash160List = [
   "bonusToken",
   "bonusTokenHash",
 ];
-const dateList = ["createdAt"];
+const dateList = ["createdAt", "1_createdAt", "2_createdAt", "3_createdAt"];
 const intList = [
   "start",
   "end",
