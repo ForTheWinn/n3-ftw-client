@@ -4,10 +4,10 @@ import { IConnectedWallet } from "../../../wallet/interfaces";
 import { wallet } from "../../../index";
 import { RUNE_SCRIPT_HASH } from "../rune";
 import { parsePlayer, parseHistory } from "./helpers";
-import { DEFAULT_WITNESS_SCOPE} from "../../../consts";
+import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 import { base64ToAddress, toDecimal } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
-import {GAS_SCRIPT_HASH} from "../../../consts/nep17-list";
+import { GAS_SCRIPT_HASH } from "../../../consts/nep17-list";
 
 export class TournamentContract {
   network: INetworkType;
@@ -228,6 +228,8 @@ export class TournamentContract {
     championTokenId: string,
     address: string
   ): Promise<any> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(address);
+
     const script = {
       scriptHash: this.contractHash,
       operation: "getBetsOnAccount",
@@ -235,7 +237,7 @@ export class TournamentContract {
         { type: "Integer", value: arenaNo },
         { type: "Integer", value: gameNo },
         { type: "String", value: championTokenId },
-        { type: "Address", value: address },
+        { type: "Hash160", value: senderHash },
       ],
     };
     const script1 = {
@@ -244,7 +246,7 @@ export class TournamentContract {
       args: [
         { type: "Integer", value: arenaNo },
         { type: "Integer", value: gameNo },
-        { type: "Address", value: address },
+        { type: "Hash160", value: address },
       ],
     };
     const res = await Network.read(this.network, [script, script1]);
@@ -278,6 +280,7 @@ export class TournamentContract {
     scripts.push(script);
 
     if (address) {
+      const senderHash = NeonWallet.getScriptHashFromAddress(address);
       const script1 = {
         scriptHash: this.contractHash,
         operation: "getBetsOnAccount",
@@ -285,7 +288,7 @@ export class TournamentContract {
           { type: "Integer", value: arenaNo },
           { type: "Integer", value: gameNo },
           { type: "String", value: tokenId },
-          { type: "Address", value: address },
+          { type: "Hash160", value: senderHash },
         ],
       };
       scripts.push(script1);

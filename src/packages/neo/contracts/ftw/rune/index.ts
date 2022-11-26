@@ -101,13 +101,14 @@ export class NFTContract {
   // };
 
   getTokensOf = async (ownerAddress: string): Promise<object[]> => {
+	  const senderHash = NeonWallet.getScriptHashFromAddress(ownerAddress);
     const script = {
       scriptHash: this.contractHash,
       operation: "tokensOf",
       args: [
         {
-          type: "Address",
-          value: ownerAddress,
+          type: "Hash160",
+          value: senderHash,
         },
       ],
     };

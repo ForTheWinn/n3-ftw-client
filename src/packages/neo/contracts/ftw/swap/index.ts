@@ -102,99 +102,102 @@ export class SwapContract {
     lockUntil: number,
     slippage: number
   ): Promise<string> => {
-    console.log(neoAmount);
-    console.log(tokenB);
-    console.log(tokenBDecimals);
-    console.log(amountB);
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
 
-	  const bNEOHash = BNEO_SCRIPT_HASH[this.network];
+    const bNEOHash = BNEO_SCRIPT_HASH[this.network];
 
-	  const bNEOScript = {
-		  operation: "transfer",
-		  scriptHash: NEO_SCRIPT_HASH,
-		  args: [
-			  {
-				  type: "Hash160",
-				  value: senderHash,
-			  },
-			  {
-				  type: "Hash160",
-				  value: bNEOHash,
-			  },
-			  {
-				  type: "Integer",
-				  value: neoAmount,
-			  },
-			  sc.ContractParam.any(),
-		  ],
-	  };
+    const bNEOScript = {
+      operation: "transfer",
+      scriptHash: NEO_SCRIPT_HASH,
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+        {
+          type: "Hash160",
+          value: bNEOHash,
+        },
+        {
+          type: "Integer",
+          value: neoAmount,
+        },
+        sc.ContractParam.any(),
+      ],
+    };
 
-	  const addLiquidityScript = {
-		  operation: "addLiquidity",
-		  scriptHash: this.contractHash,
-		  args: [
-			  {
-				  type: "Hash160",
-				  value: senderHash,
-			  },
-			  {
-				  type: "Hash160",
-				  value: bNEOHash,
-			  },
-			  {
-				  type: "Integer",
-				  value: neoAmount * 100000000,
-			  },
-			  {
-				  type: "Hash160",
-				  value: tokenB,
-			  },
-			  {
-				  type: "Integer",
-				  value: u.BigInteger.fromDecimal(amountB, tokenBDecimals).toString(),
-			  },
-			  {
-				  type: "Integer",
-				  value: defaultDeadLine(),
-			  },
-			  {
-				  type: "Integer",
-				  value: lockUntil,
-			  },
-			  {
-				  type: "Integer",
-				  value: slippage,
-			  },
-		  ],
-	  };
+    const addLiquidityScript = {
+      operation: "addLiquidity",
+      scriptHash: this.contractHash,
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+        {
+          type: "Hash160",
+          value: bNEOHash,
+        },
+        {
+          type: "Integer",
+          value: neoAmount * 100000000,
+        },
+        {
+          type: "Hash160",
+          value: tokenB,
+        },
+        {
+          type: "Integer",
+          value: u.BigInteger.fromDecimal(amountB, tokenBDecimals).toString(),
+        },
+        {
+          type: "Integer",
+          value: defaultDeadLine(),
+        },
+        {
+          type: "Integer",
+          value: lockUntil,
+        },
+        {
+          type: "Integer",
+          value: slippage,
+        },
+      ],
+    };
 
-	  const signers = [
-		  {
-			  account: senderHash,
-			  scopes: tx.WitnessScope.WitnessRules,
-			  rules: [
-				  { action: "Allow", condition: { type: "CalledByEntry" } },
-				  {
-					  action: "Allow",
-					  condition: { type: "ScriptHash", hash: bNEOHash },
-				  },
-				  {
-					  action: "Allow",
-					  condition: { type: "ScriptHash", hash: tokenB },
-				  },
-			  ],
-		  },
-	  ];
+    const signers = [
+      {
+    	  account: senderHash,
+    	  scopes: tx.WitnessScope.WitnessRules,
+    	  rules: [
+    		  { action: "Allow", condition: { type: "CalledByEntry" } },
+    		  {
+    			  action: "Allow",
+    			  condition: { type: "ScriptHash", hash: bNEOHash },
+    		  },
+    		  {
+    			  action: "Allow",
+    			  condition: { type: "ScriptHash", hash: tokenB },
+    		  },
+    	  ],
+      },
+    ];
 
-	  return wallet.WalletAPI.invokeMulti(
-		  connectedWallet,
-		  this.network,
-		  [bNEOScript, addLiquidityScript],
-		  signers
-	  );
+    // const signers = [
+    //   {
+    //     account: senderHash,
+    //     scopes: tx.WitnessScope.CustomContracts,
+    //     allowedContracts: [NEO_SCRIPT_HASH, this.contractHash, bNEOHash, tokenB],
+    //   },
+    // ];
+    return wallet.WalletAPI.invokeMulti(
+      connectedWallet,
+      this.network,
+      [bNEOScript, addLiquidityScript],
+      signers
+    );
   };
 
   remove = async (
@@ -485,26 +488,26 @@ export class SwapContract {
         sc.ContractParam.any(),
       ],
     };
-	  const signers = [
-		  {
-			  account: senderHash,
-			  scopes: tx.WitnessScope.WitnessRules,
-			  rules: [
-				  { action: "Allow", condition: { type: "CalledByEntry" } },
-				  {
-					  action: "Allow",
-					  condition: { type: "ScriptHash", hash: tokenA },
-				  },
-			  ],
-		  },
-	  ];
+    const signers = [
+      {
+        account: senderHash,
+        scopes: tx.WitnessScope.WitnessRules,
+        rules: [
+          { action: "Allow", condition: { type: "CalledByEntry" } },
+          {
+            action: "Allow",
+            condition: { type: "ScriptHash", hash: tokenA },
+          },
+        ],
+      },
+    ];
 
-	  return wallet.WalletAPI.invokeMulti(
-		  connectedWallet,
-		  this.network,
-		  [swapScript, bNEOScript],
-		  signers
-	  );
+    return wallet.WalletAPI.invokeMulti(
+      connectedWallet,
+      this.network,
+      [swapScript, bNEOScript],
+      signers
+    );
   };
 
   getReserve = async (
@@ -523,15 +526,18 @@ export class SwapContract {
     };
     scripts.push(script);
     if (connectedWallet) {
+      const senderHash = NeonWallet.getScriptHashFromAddress(
+        connectedWallet.account.address
+      );
       const script1 = {
         scriptHash: tokenA,
         operation: "balanceOf",
-        args: [{ type: "Address", value: connectedWallet.account.address }],
+        args: [{ type: "Hash160", value: senderHash }],
       };
       const script2 = {
         scriptHash: tokenB,
         operation: "balanceOf",
-        args: [{ type: "Address", value: connectedWallet.account.address }],
+        args: [{ type: "Hash160", value: senderHash }],
       };
       scripts.push(script1);
       scripts.push(script2);
@@ -860,11 +866,14 @@ export class SwapContract {
   getLPTokens = async (
     connectedWallet: IConnectedWallet
   ): Promise<ILPToken> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
     const scripts = [
       {
         scriptHash: this.contractHash,
         operation: "getLPTokensByUser",
-        args: [{ type: "Address", value: connectedWallet.account.address }],
+        args: [{ type: "Hash160", value: senderHash }],
       },
     ];
     const res = await Network.read(this.network, scripts);
@@ -902,17 +911,19 @@ export class SwapContract {
         bNEO: 0,
       };
     }
-
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
     const scripts = [
       {
         scriptHash: NEO_SCRIPT_HASH,
         operation: "balanceOf",
-        args: [{ type: "Address", value: connectedWallet.account.address }],
+        args: [{ type: "Hash160", value: senderHash }],
       },
       {
         scriptHash: BNEO_SCRIPT_HASH[this.network],
         operation: "balanceOf",
-        args: [{ type: "Address", value: connectedWallet.account.address }],
+        args: [{ type: "Hash160", value: senderHash }],
       },
     ];
     const res = await Network.read(this.network, scripts);

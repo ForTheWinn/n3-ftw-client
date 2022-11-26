@@ -178,11 +178,14 @@ export class StakingContract {
   getStakedLPTokens = async (
     connectedWallet: IConnectedWallet
   ): Promise<ILPTokens[]> => {
+	  const senderHash = NeonWallet.getScriptHashFromAddress(
+		  connectedWallet.account.address
+	  );
     const scripts = [
       {
         scriptHash: this.contractHash,
         operation: "getLPTokens",
-        args: [{ type: "Address", value: connectedWallet.account.address }],
+        args: [{ type: "Hash160", value: senderHash }],
       },
     ];
     const res = await Network.read(this.network, scripts);
@@ -198,11 +201,14 @@ export class StakingContract {
     if (!connectedWallet) {
       return [];
     } else {
+	    const senderHash = NeonWallet.getScriptHashFromAddress(
+		    connectedWallet.account.address
+	    );
       const scripts = [
         {
           scriptHash: this.contractHash,
           operation: "getClaimable",
-          args: [{ type: "Address", value: connectedWallet.account.address }],
+          args: [{ type: "Hash160", value: senderHash }],
         },
       ];
       const res = await Network.read(this.network, scripts);

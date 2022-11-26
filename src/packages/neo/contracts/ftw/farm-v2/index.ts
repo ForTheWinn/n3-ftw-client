@@ -221,11 +221,14 @@ export class FarmV2Contract {
   getStakedLPTokens = async (
     connectedWallet: IConnectedWallet
   ): Promise<ILPToken[]> => {
+	  const senderHash = NeonWallet.getScriptHashFromAddress(
+		  connectedWallet.account.address
+	  );
     const scripts = [
       {
         scriptHash: this.contractHash,
         operation: "getLPTokens",
-        args: [{ type: "Address", value: connectedWallet.account.address }],
+        args: [{ type: "Hash160", value: senderHash }],
       },
     ];
     const res: any = await Network.read(this.network, scripts);
@@ -243,11 +246,14 @@ export class FarmV2Contract {
     if (!connectedWallet) {
       return [];
     } else {
+	    const senderHash = NeonWallet.getScriptHashFromAddress(
+		    connectedWallet.account.address
+	    );
       const scripts = [
         {
           scriptHash: this.contractHash,
           operation: "getClaimable",
-          args: [{ type: "Address", value: connectedWallet.account.address }],
+          args: [{ type: "Hash160", value: senderHash }],
         },
       ];
       const res: any = await Network.read(this.network, scripts);
