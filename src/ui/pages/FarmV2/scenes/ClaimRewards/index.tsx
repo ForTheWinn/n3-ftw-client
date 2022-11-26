@@ -11,7 +11,7 @@ import { NEP_LOGO } from "../../../../../packages/neo/contracts/ftw/farm/consts"
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import ClaimList from "./ClaimList";
 import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
-import {IPrices} from "../../../../../packages/neo/api/interfaces";
+import { IPrices } from "../../../../../packages/neo/api/interfaces";
 
 interface IClaimRewardsProps {
   pRefresh: number;
@@ -65,7 +65,7 @@ const ClaimRewards = ({ pRefresh, prices }: IClaimRewardsProps) => {
 
       <div className="mb-3">
         <ClaimList
-	        prices={prices}
+          prices={prices}
           handleToggle={(item) => {}}
           isClaimNode={false}
           selectedItems={[]}
@@ -77,7 +77,7 @@ const ClaimRewards = ({ pRefresh, prices }: IClaimRewardsProps) => {
       </div>
 
       <button
-        disabled={isLoaded && data.length === 0}
+        disabled={connectedWallet && isLoaded && data.length === 0}
         onClick={() => {
           if (connectedWallet) {
             setClaimModalOpen(true);
@@ -92,7 +92,7 @@ const ClaimRewards = ({ pRefresh, prices }: IClaimRewardsProps) => {
 
       {isClaimModalOpen && (
         <ClaimModal
-	        prices={prices}
+          prices={prices}
           network={network}
           connectedWallet={connectedWallet}
           refresh={refresh}
