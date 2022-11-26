@@ -14,8 +14,7 @@ import SocialLinkGroup from "./SocialLinkGroup";
 
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar } = useApp();
-  const { connectedWallet, network, disConnectWallet } =
-    useWallet();
+  const { connectedWallet, network, disConnectWallet } = useWallet();
   const [isActive, setActive] = useState(false);
   const handleDisconnectWallet = () => {
     setActive(false);

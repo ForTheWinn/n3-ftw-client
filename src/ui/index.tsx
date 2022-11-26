@@ -1,18 +1,24 @@
 import React from "react";
-import ReactGA from "react-ga";
 import { HashRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header";
 import {
-	COLLECTION_PATH,
-	GALLERY_PATH,
-	HOME_PATH,
-	MIGRATION_PATH,
-	SMITH_PATH,
-	SWAP_PATH,
-	TOURNAMENT_PATH,
-	FARM_PATH,
-	DAO_PATH,
-	IDO_PATH, LOTTO_PATH, ANALYTICS_PATH, FARM_V2_PATH, LP_TOKENS_PATH, LOCKER_PATH, BOYZ_PATH,
+  COLLECTION_PATH,
+  GALLERY_PATH,
+  HOME_PATH,
+  MIGRATION_PATH,
+  SMITH_PATH,
+  SWAP_PATH,
+  TOURNAMENT_PATH,
+  FARM_PATH,
+  DAO_PATH,
+  IDO_PATH,
+  LOTTO_PATH,
+  ANALYTICS_PATH,
+  FARM_V2_PATH,
+  LP_TOKENS_PATH,
+  LOCKER_PATH,
+  BOYZ_PATH,
+  GASFI_PATH,
 } from "../consts";
 import { WalletContextProvider } from "../packages/provider";
 import WalletSidebar from "./components/WalletSidebar";
@@ -35,6 +41,7 @@ import FarmV2 from "./pages/FarmV2";
 import LPTokens from "./pages/LPTokens";
 import Locker from "./pages/Locker";
 import Boyz from "./pages/Boyz";
+import GASFi from "./pages/GASFi";
 
 const App = () => {
   return (
@@ -52,7 +59,7 @@ const App = () => {
         <Route path={BOYZ_PATH} component={Boyz} />
         <Route path={TOURNAMENT_PATH} component={Tournament} />
         <Route path={SMITH_PATH} component={Smith} />
-	      <Route path={LOCKER_PATH} component={Locker} />
+        <Route path={LOCKER_PATH} component={Locker} />
         <Route path={COLLECTION_PATH} component={MyCollection} />
         <Route path={SWAP_PATH} component={Swap} />
         <Route path={FARM_PATH} component={Farm} />
@@ -60,9 +67,10 @@ const App = () => {
         <Route path={DAO_PATH} component={DAO} />
         <Route path={IDO_PATH} component={IDO} />
         <Route exact path={MIGRATION_PATH} component={Migration} />
-	      <Route path={LOTTO_PATH} component={Lotto} />
-	      <Route path={ANALYTICS_PATH} component={Analytics} />
-	      <Route path={LP_TOKENS_PATH} component={LPTokens} />
+        <Route path={LOTTO_PATH} component={Lotto} />
+        <Route path={ANALYTICS_PATH} component={Analytics} />
+        <Route path={LP_TOKENS_PATH} component={LPTokens} />
+        <Route path={GASFI_PATH} component={GASFi} />
         <MobileMenuSlider />
         <WalletSidebar />
         <ReactGa />
