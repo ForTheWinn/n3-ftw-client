@@ -55,6 +55,7 @@ const AssetListModal = ({
     if (
       noNEOBNEO &&
       tokenAHash === NEO_SCRIPT_HASH &&
+	    activeTokenInput === "B" &&
       asset.contractHash === bNEOHash
     ) {
       return false;
@@ -62,6 +63,7 @@ const AssetListModal = ({
     if (
       noNEOBNEO &&
       tokenBHash === NEO_SCRIPT_HASH &&
+	    activeTokenInput === "A" &&
       asset.contractHash === bNEOHash
     ) {
       return false;
@@ -69,6 +71,7 @@ const AssetListModal = ({
     if (
       noNEOBNEO &&
       tokenAHash === bNEOHash &&
+	    activeTokenInput === "B" &&
       asset.contractHash === NEO_SCRIPT_HASH
     ) {
       return false;
@@ -76,6 +79,7 @@ const AssetListModal = ({
     if (
       noNEOBNEO &&
       tokenBHash === bNEOHash &&
+	    activeTokenInput === "A" &&
       asset.contractHash === NEO_SCRIPT_HASH
     ) {
       return false;

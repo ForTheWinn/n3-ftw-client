@@ -176,7 +176,6 @@ const Swap = () => {
                   tokenB.decimals,
                   getAfterSlippage(amountB, slippage)
                 );
-								console.log(res)
               } else {
                 res = await new SwapContract(network).swap(
                   connectedWallet,
@@ -279,7 +278,6 @@ const Swap = () => {
           setPairLoading(false);
         }
       } else {
-
         try {
           let res = await new SwapContract(network).getReserve(
             tokenAHash,
@@ -357,6 +355,7 @@ const Swap = () => {
     console.log("Total shares: " + data.totalShare);
     console.log("Price impact: " + priceImpact.toString());
   }
+
   return (
     <div>
       <div className="level is-mobile">
@@ -373,7 +372,16 @@ const Swap = () => {
                 to={{
                   pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
                   search:
-                    tokenA && tokenB
+                    tokenA &&
+                    tokenB &&
+                    !(
+                      tokenA.hash === NEO_SCRIPT_HASH &&
+                      tokenB.hash === BNEO_SCRIPT_HASH[network]
+                    ) &&
+                    !(
+                      tokenA.hash === BNEO_SCRIPT_HASH[network] &&
+                      tokenB.hash === NEO_SCRIPT_HASH
+                    )
                       ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
                       : "",
                 }}
