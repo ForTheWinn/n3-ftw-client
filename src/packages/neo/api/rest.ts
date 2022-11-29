@@ -102,7 +102,6 @@ export class RestAPI {
 
   async getBoyz(filter): Promise<ISwapHistoryResult> {
     const params = "?" + new URLSearchParams(filter).toString();
-    console.log(params);
     return this.fetchResult(this.endpoint + `/boyz/all` + params);
   }
 }

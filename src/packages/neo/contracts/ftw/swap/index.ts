@@ -605,7 +605,6 @@ export class SwapContract {
     swapTokenDecimals,
     amount
   ): Promise<string> => {
-    console.log(swapTokenDecimals);
     const script = {
       scriptHash: this.contractHash,
       operation: "getSwapEstimate",
@@ -620,7 +619,6 @@ export class SwapContract {
       ],
     };
     const res = await Network.read(this.network, [script]);
-    console.log(res);
     if (res.state === "FAULT") {
       return "0";
     } else {

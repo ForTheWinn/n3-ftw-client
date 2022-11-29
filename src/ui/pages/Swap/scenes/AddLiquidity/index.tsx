@@ -13,7 +13,6 @@ import moment from "moment";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import TimeLockInput from "./TimeLockInput";
 import LPRewardInfo from "./LPRewardInfo";
-import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPInputs from "./LPInputs";
 import { IReserveData } from "../../../../../packages/neo/contracts/ftw/swap/interfaces";
 import { FaAngleLeft } from "react-icons/fa";
@@ -39,8 +38,8 @@ const Liquidity = () => {
   const params = queryString.parse(location.search);
   const { network, connectedWallet } = useWallet();
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
-    "A" | "B" | ""
-  >("");
+    "A" | "B"
+  >();
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
     _.isEmpty(params)
@@ -54,6 +53,7 @@ const Liquidity = () => {
   const [tokenB, setTokenB] = useState<ITokenState | undefined>();
   const [amountA, setAmountA] = useState<number>();
   const [amountB, setAmountB] = useState<number>();
+  const [peg, setPeg] = useState<"A" | "B" | undefined>();
   const [slippage, setSlippage] = useState(DEFAULT_SLIPPAGE);
   const [selectedLock, setSelectedLock] = useState(false);
   const [lockUntil, setUntil] = useState(new Date());
@@ -64,7 +64,7 @@ const Liquidity = () => {
   const [error, setError] = useState<string | undefined>();
   const [bNEOAgree, setbNEOAgree] = useState<boolean>(false);
 
-  const onAssetChange = (type: "A" | "B" | "") => {
+  const onAssetChange = (type: "A" | "B") => {
     setAssetChangeModalActive(type);
   };
 
@@ -89,7 +89,7 @@ const Liquidity = () => {
     }
     setAmountA(undefined);
     setAmountB(undefined);
-    setAssetChangeModalActive("");
+    setAssetChangeModalActive(undefined);
   };
 
   const onSuccess = () => {
@@ -103,6 +103,7 @@ const Liquidity = () => {
     if (connectedWallet) {
       if (tokenA && tokenB && amountA && amountB && data) {
         try {
+					console.log(peg)
           const deadlineMs = selectedLock ? moment(lockUntil).valueOf() : 0;
           let res;
 
@@ -124,12 +125,12 @@ const Liquidity = () => {
           } else {
             res = await new SwapContract(network).provide(
               connectedWallet,
-              tokenA.hash,
-              tokenA.decimals,
-              amountA,
-              tokenB.hash,
-              tokenB.decimals,
-              amountB,
+              peg && peg === "B" ? tokenB.hash : tokenA.hash,
+              peg && peg === "B" ? tokenB.decimals : tokenA.decimals,
+              peg && peg === "B" ? amountB : amountA,
+              peg && peg === "B" ? tokenA.hash : tokenB.hash,
+              peg && peg === "B" ? tokenA.decimals : tokenB.decimals,
+              peg && peg === "B" ? amountA : amountB,
               deadlineMs,
               slippage * 100
             );
@@ -274,6 +275,7 @@ const Liquidity = () => {
       <div className="is-relative">
         <div className="pb-2">
           <LPInputs
+	          setPeg={setPeg}
             noLiquidity={noLiquidity}
             network={network}
             tokenA={tokenA}
@@ -404,7 +406,7 @@ const Liquidity = () => {
           tokenAHash={tokenA ? tokenA.hash : undefined}
           tokenBHash={tokenB ? tokenB.hash : undefined}
           onAssetClick={onAssetClick}
-          onClose={() => setAssetChangeModalActive("")}
+          onClose={() => setAssetChangeModalActive(undefined)}
           filterDecimals={true}
           noNEOBNEO={true}
         />

@@ -65,9 +65,9 @@ const Farm = () => {
               <div className="box">
                 <ClaimRewards pRefresh={refresh} prices={prices} />
               </div>
-	            <div className="box">
-		            <BoyzStaking />
-	            </div>
+	            {/*<div className="box">*/}
+		          {/*  <BoyzStaking />*/}
+	            {/*</div>*/}
             </div>
           </div>
         </div>

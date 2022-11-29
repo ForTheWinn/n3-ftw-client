@@ -85,7 +85,6 @@ const SwapInputs = ({
 				      : tokenB.hash;
 
 		      if (searchTerm.type === "A") {
-			      console.log(1);
 			      estimated = await new SwapContract(network).getSwapEstimate(
 				      tokenAHash,
 				      tokenBHash,
@@ -94,7 +93,6 @@ const SwapInputs = ({
 				      searchTerm.value
 			      );
 		      } else {
-			      console.log(2);
 			      estimated = await new SwapContract(network).getSwapBEstimate(
 				      tokenAHash,
 				      tokenBHash,

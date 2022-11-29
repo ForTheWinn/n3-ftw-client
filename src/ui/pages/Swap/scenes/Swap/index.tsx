@@ -302,7 +302,6 @@ const Swap = () => {
             res.totalShare = bNEORes.totalShare;
           }
 
-          console.log(res);
           setData(res);
           setTokenA({
             hash: tokenAHash,

@@ -24,6 +24,7 @@ interface ILPInputsProps {
   noLiquidity?: boolean;
   userTokenABalance?: number;
   userTokenBBalance?: number;
+	setPeg: (val: "A" | "B") => void;
 }
 
 const LPInputs = ({
@@ -39,10 +40,8 @@ const LPInputs = ({
   data,
   userTokenABalance,
   userTokenBBalance,
+	setPeg
 }: ILPInputsProps) => {
-  console.log(tokenA);
-  console.log(tokenB);
-  console.log(data);
 
   const handleChangeAmountA = (val) => {
     setAmountA(val);
@@ -56,6 +55,7 @@ const LPInputs = ({
           data.pair[tokenB.hash].reserveAmount
         );
         setAmountB(parseFloat(estimated));
+	      setPeg("A");
       }
     } else {
       if (!noLiquidity) {
@@ -76,6 +76,7 @@ const LPInputs = ({
           data.pair[tokenA.hash].reserveAmount
         );
         setAmountA(parseFloat(estimated));
+	      setPeg("B");
       }
     } else {
       if (!noLiquidity) {

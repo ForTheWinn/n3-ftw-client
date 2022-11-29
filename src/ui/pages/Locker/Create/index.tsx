@@ -52,7 +52,6 @@ const Create = () => {
 
   const onSubmit = async () => {
     if (connectedWallet && contract && receiver && amount) {
-      console.log(balances);
       if (!wallet.isAddress(receiver)) {
         toast.error("Please check receiver");
         return;

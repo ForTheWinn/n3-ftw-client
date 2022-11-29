@@ -73,7 +73,6 @@ export class WalletAPI {
       const invocations = [invokeScript];
       const signers = invokeScript.signers;
       const res = await instance.invokeFunction({ invocations, signers });
-			console.log(res)
 	    submittedTx.txid = res;
 
     } else {
@@ -104,7 +103,6 @@ export class WalletAPI {
     invokeArgs: object[],
     signers: object[]
   ): Promise<string> => {
-    console.log("multi");
 
     if (
       connectedWallet.network &&
