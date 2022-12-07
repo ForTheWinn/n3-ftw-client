@@ -1,52 +1,54 @@
 import React, { useState } from "react";
 import DisplayBoy from "../MyBoyz/DisplayBoy";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { ILotState } from "./interfaces";
 import MyBoyz from "../MyBoyz";
+import { IBoyStaked } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 
 interface IStakingModalProps {
-  lot: ILotState;
+  lot: IBoyStaked;
   network: INetworkType;
   onStake: (tokenId: string, lotNo: string) => void;
   onUnStake: (tokenId: string, lotNo: string) => void;
 }
-const StakingModal = ({ lot, network, onStake, onUnStake }: IStakingModalProps) => {
+const StakingModal = ({
+  lot,
+  network,
+  onStake,
+  onUnStake,
+}: IStakingModalProps) => {
   const [isDisplayTokensActive, setDisplayTokensActive] = useState(false);
   return (
     <div className="">
       {lot ? (
-        <div>
-          <div className="box">
-            <div className="media">
-              <div className="media-left">
-                <figure className="image is-128x128">
-                  <DisplayBoy
-                    onClick={() => {}}
-                    network={network}
-                    id={lot.tokenId}
-                  />
-                </figure>
-              </div>
-              <div className="media-content">
-                <div className="content">
-                  <h5>{`Slot #${lot.lotNo}`}</h5>
-                  {lot.tokenId ? (
-                    <>
-                      Id: {lot.tokenId}
-                      <br />
-                      Tier: {lot.tier}
-                      <br />
-                      Stake at: {lot.createdAt}
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  <p></p>
-                </div>
-              </div>
-            </div>
+        <div className="has-text-centered">
+          <figure
+            className="image is-128x128 mb-4"
+            style={{ margin: "auto" }}
+          >
+            <DisplayBoy onClick={() => {}} network={network} id={lot.tokenId} />
+          </figure>
+          <div className="content">
+            {lot.tokenId ? (
+              <>
+                <strong>{lot.tokenId}</strong>
+                {lot.tier !== "0" ? (
+                  <>
+                    <br />
+                    <span className="tag is-info">Tier {lot.tier}</span>
+                  </>
+                ) : (
+                  <></>
+                )}
+                <br />
+                <br />
+                Staked at: {lot.createdAt}
+              </>
+            ) : (
+              <></>
+            )}
+            <p></p>
           </div>
-          <div className="buttons">
+          <div className="buttons" style={{ justifyContent: "center" }}>
             <button
               onClick={() => setDisplayTokensActive(!isDisplayTokensActive)}
               className="button is-primary"
@@ -65,7 +67,7 @@ const StakingModal = ({ lot, network, onStake, onUnStake }: IStakingModalProps) 
             )}
           </div>
           {isDisplayTokensActive ? (
-            <div className="box">
+            <div className="">
               <MyBoyz
                 onStake={(tokenId) => {
                   onStake(tokenId, lot.lotNo);

@@ -28,7 +28,7 @@ const MyBoyz = ({ onStake }: IMyBoyzProps) => {
   return (
     <div>
       {isLoading ? (
-        <></>
+        <p>Loading..</p>
       ) : tokens.length > 0 ? (
         <>
           <h1 className="title is-5">Click a boy to stake</h1>

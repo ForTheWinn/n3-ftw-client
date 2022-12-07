@@ -32,13 +32,11 @@ const DisplayBoy = ({ id, network, onClick }: IDisplayBoyProps) => {
   }, [id]);
   if (isLoading) return <></>;
   return (
-    <div>
-      <img
-        className="is-clickable"
-        onClick={onClick}
-        src={data ? data.image : "/boyz/thumb.png"}
-      />
-    </div>
+    <img
+      className="is-clickable"
+      onClick={onClick}
+      src={data ? data.image : "/boyz/thumb.png"}
+    />
   );
 };
 

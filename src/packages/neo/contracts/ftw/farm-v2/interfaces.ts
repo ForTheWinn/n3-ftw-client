@@ -5,6 +5,7 @@ export interface IClaimableRewards {
   tokenBSymbol: string;
 	bonusToHarvest: number
 	bonusTokenHash: string
+	bonusTokenSymbol: string
 	rewardsToHarvest: number
 	share: number
 	tokensStaked: number
@@ -32,4 +33,11 @@ export interface ILPTokens {
   tokenB: string;
   tokenId: string;
   amount: number;
+}
+
+export interface IBoyStaked {
+	lotNo: string;
+	tokenId: string;
+	tier: string;
+	createdAt: string;
 }

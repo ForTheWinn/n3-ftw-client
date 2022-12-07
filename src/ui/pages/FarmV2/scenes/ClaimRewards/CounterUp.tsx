@@ -1,7 +1,8 @@
 import { u } from "@cityofzion/neon-core";
 import React, { useEffect, useState } from "react";
-import {numberTrim} from "../../../../../packages/neo/utils";
+import { numberTrim } from "../../../../../packages/neo/utils";
 interface ICounterUpProps {
+  bonus: number;
   claimable: number;
   rewardsPerSecond: number;
   tokensStaked: number;
@@ -16,6 +17,7 @@ const CounterUp = ({
   tokensStaked,
   share,
   pricePerToken,
+  bonus,
 }: ICounterUpProps) => {
   const [timeElapsed, setTimeElapsed] = useState(1);
   useEffect(() => {
@@ -32,10 +34,20 @@ const CounterUp = ({
     .mul(timeElapsed)
     .add(claimable)
     .toDecimal(8);
+
+  const bonusReward = parseFloat(rewards) * bonus / 100;
+
   return (
     <div className="has-text-right">
       {`${rewards} ${symbol}`}
-      <br />${numberTrim(parseFloat(rewards) * pricePerToken)}
+	    {bonus > 0?
+				<>
+					<br/>
+					{`+${numberTrim(bonusReward, 8)} ${symbol}`}
+				</>
+		    :<></>
+	    }
+      <br />${numberTrim((parseFloat(rewards) + bonusReward) * pricePerToken)}
     </div>
   );
 };

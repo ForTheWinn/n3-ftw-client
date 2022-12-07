@@ -1,39 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Modal from "../../../../components/Modal";
 import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 import { useWallet } from "../../../../../packages/provider";
 import DisplayBoy from "../MyBoyz/DisplayBoy";
 import StakingModal from "./StakingModal";
-import { ILotState } from "./interfaces";
 import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
 import toast from "react-hot-toast";
+import { IBoyStaked } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 
-const BoyzStaking = (props) => {
+interface IBoyzStakingProps {
+  boyz: IBoyStaked[];
+  increaseRefreshCnt: () => void;
+}
+const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
   const [isModalActive, setModalActive] = useState(false);
-  const [lot, setLot] = useState<ILotState>();
-  const [isLoading, setLoading] = useState(true);
+  const [lot, setLot] = useState<IBoyStaked>();
   const [txid, setTxid] = useState("");
-  const [refresh, setRefresh] = useState(0);
-  const [data, setData] = useState([
-    {
-      lotNo: "1",
-      tokenId: "",
-      tier: "",
-      createdAt: "",
-    },
-    {
-      lotNo: "2",
-      tokenId: "",
-      tier: "",
-      createdAt: "",
-    },
-    {
-      lotNo: "3",
-      tokenId: "",
-      tier: "",
-      createdAt: "",
-    },
-  ]);
   const { network, connectedWallet } = useWallet();
   const handleStake = async (tokenId: string, lotNo: string) => {
     if (connectedWallet) {
@@ -47,87 +29,67 @@ const BoyzStaking = (props) => {
       toast.error("Connect your wallet");
     }
   };
-	const handleUnStake = async (tokenId: string, lotNo: string) => {
-		if (connectedWallet) {
-			const res = await new FarmV2Contract(network).UnStakeBoy(
-				connectedWallet,
-				tokenId,
-				lotNo
-			);
-			setTxid(res);
-		} else {
-			toast.error("Connect your wallet");
-		}
-	};
-	const onSuccess = () => {
-		setRefresh(refresh + 1)
-		setModalActive(false);
-		setTxid("");
-	}
-
-  useEffect(() => {
-    async function fetch(w) {
-      setLoading(true);
-      try {
-        const res = await new FarmV2Contract(network).getBoyStakingStatus(w);
-        console.log(res);
-        setData([
-          {
-            lotNo: "1",
-            tokenId: res["1_tokenId"],
-            tier: res["1_tier"],
-            createdAt: res["1_createdAt"],
-          },
-          {
-            lotNo: "2",
-            tokenId: res["2_tokenId"],
-            tier: res["2_tier"],
-            createdAt: res["2_createdAt"],
-          },
-          {
-            lotNo: "3",
-            tokenId: res["3_tokenId"],
-            tier: res["3_tier"],
-            createdAt: res["3_createdAt"],
-          },
-        ]);
-        setLoading(false);
-      } catch (e: any) {
-        setLoading(false);
-      }
-    }
+  const handleUnStake = async (tokenId: string, lotNo: string) => {
     if (connectedWallet) {
-      fetch(connectedWallet);
+      const res = await new FarmV2Contract(network).UnStakeBoy(
+        connectedWallet,
+        tokenId,
+        lotNo
+      );
+      setTxid(res);
     } else {
-      setLoading(false);
+      toast.error("Connect your wallet");
     }
-  }, [network, connectedWallet, refresh]);
+  };
+  const onSuccess = () => {
+    increaseRefreshCnt();
+    setModalActive(false);
+    setTxid("");
+  };
+
   return (
     <>
-      {isLoading ? (
-        <></>
-      ) : (
-        <div className="columns">
-          {data.map((item) => {
-            return (
-              <div key={item.lotNo} className="column">
-                <DisplayBoy
-                  onClick={() => {
-                    setModalActive(true);
-                    setLot(item);
-                  }}
-                  network={network}
-                  id={item.tokenId}
-                />
-              </div>
-            );
-          })}
+      <div className="level is-mobile">
+        <div className="level-left">
+          <div className="">
+            <h1 className="title is-7 is-marginless">Stake Neo Boyz</h1>
+            <a
+              target="_blank"
+              href="https://docs.forthewin.network/boyz#utilities"
+              className="is-size-7 has-text-grey-light"
+            >
+              <small>Learn more</small>
+            </a>
+          </div>
         </div>
-      )}
+        <div className="level-right">
+          <div className="level-item">
+            {boyz.map((item) => {
+              return (
+                <div key={item.lotNo} className="image is-32x32">
+                  <DisplayBoy
+                    onClick={() => {
+                      setModalActive(true);
+                      setLot(item);
+                    }}
+                    network={network}
+                    id={item.tokenId}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
       {isModalActive && lot ? (
         <Modal onClose={() => setModalActive(false)}>
-          <StakingModal onStake={handleStake} onUnStake={handleUnStake} lot={lot} network={network} />
+          <StakingModal
+            onStake={handleStake}
+            onUnStake={handleUnStake}
+            lot={lot}
+            network={network}
+          />
         </Modal>
       ) : (
         <></>

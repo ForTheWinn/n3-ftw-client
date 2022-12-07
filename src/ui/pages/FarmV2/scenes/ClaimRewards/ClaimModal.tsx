@@ -7,18 +7,16 @@ import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/far
 import {IPrices} from "../../../../../packages/neo/api/interfaces";
 
 const ClaimModal = (props: {
+	bonus: number
   network: INetworkType;
-  connectedWallet?: IConnectedWallet;
-  refresh: number;
-  pRefresh: number;
-  isLoaded: boolean;
-  items: IClaimableRewards[];
+	isLoading: boolean;
+  rewards: IClaimableRewards[];
 	prices?: IPrices
   onClaim: (v: IClaimableRewards[]) => void;
   onClose: () => void;
 }) => {
   const [selectedItems, setSelectedItems] = useState<IClaimableRewards[]>(
-    props.items
+    props.rewards
   );
 
   const handleToggle = (v: IClaimableRewards) => {
@@ -45,13 +43,12 @@ const ClaimModal = (props: {
           <h1 className="title is-5">Claim rewards</h1>
           <div className="box">
             <ClaimList
+	            bonus={props.bonus}
+	            rewards={props.rewards}
               handleToggle={handleToggle}
               isClaimNode={true}
               selectedItems={selectedItems}
               network={props.network}
-              connectedWallet={props.connectedWallet}
-              refresh={props.pRefresh}
-              pRefresh={props.pRefresh}
               prices={props.prices}
             />
           </div>

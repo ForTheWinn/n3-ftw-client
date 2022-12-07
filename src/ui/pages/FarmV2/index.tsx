@@ -62,12 +62,7 @@ const Farm = () => {
               </div>
             </div>
             <div className="column is-4">
-              <div className="box">
-                <ClaimRewards pRefresh={refresh} prices={prices} />
-              </div>
-	            {/*<div className="box">*/}
-		          {/*  <BoyzStaking />*/}
-	            {/*</div>*/}
+              <ClaimRewards prices={prices} />
             </div>
           </div>
         </div>

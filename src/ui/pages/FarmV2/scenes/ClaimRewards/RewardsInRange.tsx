@@ -1,8 +1,9 @@
 import { u } from "@cityofzion/neon-core";
 import React from "react";
 import { DAILY, MONTHLY, YEARLY } from "./consts";
-import {numberTrim} from "../../../../../packages/neo/utils";
+import { numberTrim } from "../../../../../packages/neo/utils";
 interface ICounterUpProps {
+  bonus: number;
   claimable: number;
   rewardsPerSecond: number;
   timeRangeType: string;
@@ -12,6 +13,7 @@ interface ICounterUpProps {
   pricePerToken: number;
 }
 const RewardsInRange = ({
+  bonus,
   claimable,
   rewardsPerSecond,
   symbol,
@@ -28,17 +30,27 @@ const RewardsInRange = ({
   } else if (timeRangeType === YEARLY) {
     timeRange = 31536000;
   }
-  const reward = u.BigInteger.fromNumber(rewardsPerSecond)
+  const rewards = u.BigInteger.fromNumber(rewardsPerSecond)
     .mul(timeRange)
     .mul(share)
     .div(tokensStaked)
     .add(claimable)
     .toDecimal(8);
+
+  const bonusReward = (parseFloat(rewards) * bonus) / 100;
+
   return (
     <div className="has-text-right">
-      {`${reward} ${symbol}`}
-      <br />
-	    ${numberTrim(parseFloat(reward) * pricePerToken)}
+      {`${rewards} ${symbol}`}
+      {bonus > 0 ? (
+        <>
+          <br />
+          {`+${numberTrim(bonusReward, 8)} ${symbol}`}
+        </>
+      ) : (
+        <></>
+      )}
+      <br />${numberTrim((parseFloat(rewards) + bonusReward) * pricePerToken)}
     </div>
   );
 };
