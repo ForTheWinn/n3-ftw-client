@@ -42,6 +42,7 @@ export const LOCKER_SEARCH_PATH = "/locker/search";
 export const GASFI_PATH = "/gas-fi";
 export const GASFI_STAKE_PATH = "/gas-fi/stake";
 export const GASFI_MY_STAKING_PATH = "/gas-fi/staking";
+export const BRAND_KIT_PATH = "/brand-kit";
 
 export const SWAP_PAGE_ROUTE = {
   label: "Swap",

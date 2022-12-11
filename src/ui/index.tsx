@@ -2,23 +2,23 @@ import React from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header";
 import {
-  COLLECTION_PATH,
-  GALLERY_PATH,
-  HOME_PATH,
-  MIGRATION_PATH,
-  SMITH_PATH,
-  SWAP_PATH,
-  TOURNAMENT_PATH,
-  FARM_PATH,
-  DAO_PATH,
-  IDO_PATH,
-  LOTTO_PATH,
-  ANALYTICS_PATH,
-  FARM_V2_PATH,
-  LP_TOKENS_PATH,
-  LOCKER_PATH,
-  BOYZ_PATH,
-  GASFI_PATH,
+	COLLECTION_PATH,
+	GALLERY_PATH,
+	HOME_PATH,
+	MIGRATION_PATH,
+	SMITH_PATH,
+	SWAP_PATH,
+	TOURNAMENT_PATH,
+	FARM_PATH,
+	DAO_PATH,
+	IDO_PATH,
+	LOTTO_PATH,
+	ANALYTICS_PATH,
+	FARM_V2_PATH,
+	LP_TOKENS_PATH,
+	LOCKER_PATH,
+	BOYZ_PATH,
+	GASFI_PATH, BRAND_KIT_PATH,
 } from "../consts";
 import { WalletContextProvider } from "../packages/provider";
 import WalletSidebar from "./components/WalletSidebar";
@@ -42,6 +42,7 @@ import LPTokens from "./pages/LPTokens";
 import Locker from "./pages/Locker";
 import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
+import BrandKit from "./pages/BrandKit";
 
 const App = () => {
   return (
@@ -71,6 +72,7 @@ const App = () => {
         <Route path={ANALYTICS_PATH} component={Analytics} />
         <Route path={LP_TOKENS_PATH} component={LPTokens} />
         <Route path={GASFI_PATH} component={GASFi} />
+        <Route path={BRAND_KIT_PATH} component={BrandKit} />
         <MobileMenuSlider />
         <WalletSidebar />
         <ReactGa />
