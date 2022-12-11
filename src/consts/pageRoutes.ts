@@ -42,6 +42,14 @@ export const LOCKER_SEARCH_PATH = "/locker/search";
 export const GASFI_PATH = "/gas-fi";
 export const GASFI_STAKE_PATH = "/gas-fi/stake";
 export const GASFI_MY_STAKING_PATH = "/gas-fi/staking";
+export const BRIDGE_PATH = "/bridge";
+
+export const BRIDGE_PAGE_ROUTE = {
+  label: "Bridge",
+  path: BRIDGE_PATH,
+  network: [TESTNET, MAINNET],
+  category: [],
+};
 
 export const SWAP_PAGE_ROUTE = {
   label: "Swap",
@@ -135,11 +143,11 @@ export const NFT_ROUTE = {
   path: GALLERY_PATH,
   network: [MAINNET],
   category: [
-	  {
-		  label: "Neo Boyz",
-		  path: BOYZ_PATH,
-		  network: [MAINNET],
-	  },
+    {
+      label: "Neo Boyz",
+      path: BOYZ_PATH,
+      network: [MAINNET],
+    },
     {
       label: "Runes",
       path: GALLERY_PATH,
@@ -160,7 +168,8 @@ export const NFT_ROUTE = {
 
 export const MENU = [
   SWAP_PAGE_ROUTE,
-  FARM_PAGE_ROUTE,
+  BRIDGE_PAGE_ROUTE,
+  // FARM_PAGE_ROUTE,
   FARM_V2_PAGE_ROUTE,
   SMITH_PAGE_ROUTE,
   LOCKER_PAGE_ROUTE,

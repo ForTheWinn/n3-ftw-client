@@ -19,6 +19,7 @@ import {
   LOCKER_PATH,
   BOYZ_PATH,
   GASFI_PATH,
+  BRIDGE_PATH,
 } from "../consts";
 import { WalletContextProvider } from "../packages/provider";
 import WalletSidebar from "./components/WalletSidebar";
@@ -42,6 +43,7 @@ import LPTokens from "./pages/LPTokens";
 import Locker from "./pages/Locker";
 import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
+import Bridge from "./pages/Bridge";
 
 const App = () => {
   return (
@@ -71,6 +73,7 @@ const App = () => {
         <Route path={ANALYTICS_PATH} component={Analytics} />
         <Route path={LP_TOKENS_PATH} component={LPTokens} />
         <Route path={GASFI_PATH} component={GASFi} />
+        <Route path={BRIDGE_PATH} component={Bridge} />
         <MobileMenuSlider />
         <WalletSidebar />
         <ReactGa />

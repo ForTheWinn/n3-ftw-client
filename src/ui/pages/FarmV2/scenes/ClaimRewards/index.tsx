@@ -16,6 +16,8 @@ import {
   IBoyStaked,
   IClaimableRewards,
 } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
+import { Link } from "react-router-dom";
+import { FARM_PATH } from "../../../../../consts/pageRoutes";
 
 interface IClaimRewardsProps {
   prices?: IPrices;
@@ -152,6 +154,11 @@ const ClaimRewards = ({ prices }: IClaimRewardsProps) => {
           {connectedWallet ? "Claim" : "Connect wallet"}
         </button>
       </div>
+
+	    <div className="has-text-centered">
+		    <Link to={FARM_PATH} className="has-text-grey-light is-size-7">Go to legacy farm</Link>
+	    </div>
+
 
       {isClaimModalOpen && (
         <ClaimModal
