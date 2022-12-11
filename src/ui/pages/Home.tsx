@@ -156,6 +156,14 @@ const Home = () => {
 								    Farm
 							    </Link>
 						    </li>
+						    <li>
+							    <a
+								    href={"https://bridge.poly.network/"}
+								    className="has-text-white"
+							    >
+								    NEP Bridge
+							    </a>
+						    </li>
 					    </ul>
 				    </div>
 				    <div className="column is-2">
@@ -198,6 +206,14 @@ const Home = () => {
 								    Neo Boyz
 							    </Link>
 						    </li>
+						    <li>
+							    <a
+								    href={"https://tothemoonuniverse.com/fusion"}
+								    className="has-text-white"
+							    >
+								    Fusion portal
+							    </a>
+						    </li>
 					    </ul>
 				    </div>
 				    <div className="column is-2">
@@ -219,7 +235,16 @@ const Home = () => {
 								    Brand kit
 							    </Link>
 						    </li>
+						    <li>
+							    <Link
+								    to={"https://neonewstoday.com/?s=forthewin"}
+								    className="has-text-white"
+							    >
+								    Press
+							    </Link>
+						    </li>
 					    </ul>
+
 				    </div>
 			    </div>
 		    </div>

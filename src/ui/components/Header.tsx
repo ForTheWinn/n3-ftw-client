@@ -41,7 +41,7 @@ const Header = () => {
           >
             <FaBars />
           </div>
-          <Link className="has-text-white navbar-item is-center" to="/">
+          <Link className="has-text-white is-center" to="/">
             <Logo />
           </Link>
           <div
