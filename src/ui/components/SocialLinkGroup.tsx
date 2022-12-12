@@ -1,7 +1,10 @@
 import React from "react";
 import { FaDiscord, FaMedium, FaTwitter, FaGithub } from "react-icons/fa";
 
-const SocialLinkGroup = ({ inverted }: { inverted?: boolean }) => {
+interface ISocialLinkGroupProps {
+  inverted?: boolean;
+}
+const SocialLinkGroup = ({ inverted }: ISocialLinkGroupProps) => {
   return (
     <>
       <a
