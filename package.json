@@ -19,6 +19,7 @@
     "bulma": "^0.9.3",
     "bulma-pagination-react": "^0.1.1",
     "chart.js": "^3.8.0",
+    "ethers": "^5.7.2",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
     "neo3-dapi": "^1.0.1",
@@ -54,7 +55,8 @@
     "three": "^0.135.0",
     "underscore": "^1.13.1",
     "vanta": "^0.5.21",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "web3-react": "^5.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -93,6 +95,7 @@
     "@types/react-router-dom": "^5.3.1",
     "@types/react-sidebar": "^3.0.1",
     "eslint": "8.22.0",
+    "eslint-config-react-app": "^7.0.1",
     "gh-pages": "^4.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^12.4.1",
