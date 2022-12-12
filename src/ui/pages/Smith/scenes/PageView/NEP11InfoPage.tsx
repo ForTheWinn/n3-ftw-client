@@ -147,7 +147,7 @@ const NEP11InfoPage = () => {
                       href={`https://${
                         network === MAINNET
                           ? "explorer.onegate.space"
-                          : "testnet.explorer.onegate.space"
+                          : "testmagnet.explorer.onegate.space"
                       }/contractinfo/0x${contractHash}`}
                     >
                       <FaExternalLinkAlt />
