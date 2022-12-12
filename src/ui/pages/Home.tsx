@@ -161,7 +161,7 @@ const Home = () => {
 								    href={"https://bridge.poly.network/"}
 								    className="has-text-white"
 							    >
-								    NEP Bridge
+								    NEP bridge
 							    </a>
 						    </li>
 					    </ul>
