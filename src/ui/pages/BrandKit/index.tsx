@@ -78,7 +78,7 @@ const BrandKit = (props) => {
                   <div className="card-image">
                     <figure className="image">
                       <img
-                        src="/kit/FORTHEWIN_Black.png"
+                        src="/kit/FORTHEWIN_Black.svg"
                         alt="FORTHEWIN logo Black"
                       />
                     </figure>
