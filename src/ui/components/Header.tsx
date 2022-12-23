@@ -8,9 +8,9 @@ import { utils } from "../../packages/neo";
 import { MENU } from "../../consts";
 import WalletDropdown from "./WalletDropdown";
 import { getWalletIcon } from "../../packages/ui/Wallet/helpers";
-import NetworkSwitch from "./NetworkSwitch";
 import NetworkSwitch2 from "./NetworkSwitch2";
 import SocialLinkGroup from "./SocialLinkGroup";
+import { TESTNET } from "../../packages/neo/consts";
 
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar } = useApp();
@@ -41,8 +41,13 @@ const Header = () => {
           >
             <FaBars />
           </div>
-          <Link className="has-text-white is-center" to="/">
+          <Link className="is-center" to="/">
             <Logo />
+            {process.env.REACT_APP_NETWORK === TESTNET ? (
+              <span className="heading is-marginless has-text-danger">Testnet</span>
+            ) : (
+              <></>
+            )}
           </Link>
           <div
             role="button"
@@ -139,16 +144,12 @@ const Header = () => {
             className="navbar-item"
             href={"http://docs.forthewin.network/"}
           >
-            {/*<GrDocumentText />*/}
             <span className="ml-1">Docs</span>
           </a>
           <div className="navbar-item">
             <SocialLinkGroup />
           </div>
 
-          <div className="navbar-item">
-            <NetworkSwitch />
-          </div>
           {/*<PendingTransaction />*/}
           <div className="navbar-item">
             <div className="buttons">

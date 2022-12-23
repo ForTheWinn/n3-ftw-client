@@ -2,23 +2,24 @@ import React from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header";
 import {
-	COLLECTION_PATH,
-	GALLERY_PATH,
-	HOME_PATH,
-	MIGRATION_PATH,
-	SMITH_PATH,
-	SWAP_PATH,
-	TOURNAMENT_PATH,
-	FARM_PATH,
-	DAO_PATH,
-	IDO_PATH,
-	LOTTO_PATH,
-	ANALYTICS_PATH,
-	FARM_V2_PATH,
-	LP_TOKENS_PATH,
-	LOCKER_PATH,
-	BOYZ_PATH,
-	GASFI_PATH, BRAND_KIT_PATH,
+  COLLECTION_PATH,
+  GALLERY_PATH,
+  HOME_PATH,
+  MIGRATION_PATH,
+  SMITH_PATH,
+  SWAP_PATH,
+  TOURNAMENT_PATH,
+  FARM_PATH,
+  DAO_PATH,
+  IDO_PATH,
+  LOTTO_PATH,
+  ANALYTICS_PATH,
+  FARM_V2_PATH,
+  LP_TOKENS_PATH,
+  LOCKER_PATH,
+  BOYZ_PATH,
+  GASFI_PATH,
+  BRAND_KIT_PATH,
 } from "../consts";
 import { WalletContextProvider } from "../packages/provider";
 import WalletSidebar from "./components/WalletSidebar";
@@ -48,7 +49,6 @@ const App = () => {
   return (
     <WalletContextProvider
       options={{
-        useLocalStorage: true,
         useDevWallet: process.env.NODE_ENV === "development",
       }}
     >
