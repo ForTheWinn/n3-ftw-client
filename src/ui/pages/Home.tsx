@@ -164,7 +164,7 @@ const Home = () => {
                     href={"https://bridge.poly.network/"}
                     className="has-text-white"
                   >
-                    NEP bridge
+                    NEP Bridge
                   </a>
                 </li>
               </ul>
@@ -174,7 +174,7 @@ const Home = () => {
               <ul className="footer-links">
                 <li>
                   <Link to={SMITH_PATH} className="has-text-white">
-                    Token launcher
+                    Token Launcher
                   </Link>
                 </li>
                 <li>
@@ -202,7 +202,7 @@ const Home = () => {
                     href={"https://tothemoonuniverse.com/fusion"}
                     className="has-text-white"
                   >
-                    Fusion portal
+                    Fusion Portal
                   </a>
                 </li>
               </ul>
@@ -221,7 +221,7 @@ const Home = () => {
                 </li>
                 <li>
                   <Link to={BRAND_KIT_PATH} className="has-text-white">
-                    Brand kit
+                    Brand Kit
                   </Link>
                 </li>
                 <li>
@@ -233,6 +233,15 @@ const Home = () => {
                     Press
                   </a>
                 </li>
+	              <li>
+		              <a
+			              target="_blank"
+			              href={"https://test.forthewin.network"}
+			              className="has-text-white"
+		              >
+			              TestNet
+		              </a>
+	              </li>
               </ul>
             </div>
           </div>
