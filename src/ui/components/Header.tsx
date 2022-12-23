@@ -7,15 +7,17 @@ import { useWallet } from "../../packages/provider";
 import { utils } from "../../packages/neo";
 import { MENU } from "../../consts";
 import WalletDropdown from "./WalletDropdown";
-import { getWalletIcon } from "../../packages/ui/Wallet/NEOWallets/helpers";
-import NetworkSwitch from "./NetworkSwitch";
+import { getWalletIcon } from "../../packages/ui/Wallet/helpers";
 import NetworkSwitch2 from "./NetworkSwitch2";
 import SocialLinkGroup from "./SocialLinkGroup";
+import { TESTNET } from "../../packages/neo/consts";
 
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar } = useApp();
   const { connectedWallet, network, disConnectWallet } = useWallet();
+  const [isActive, setActive] = useState(false);
   const handleDisconnectWallet = () => {
+    setActive(false);
     disConnectWallet();
   };
 
@@ -39,20 +41,35 @@ const Header = () => {
           >
             <FaBars />
           </div>
-          <Link className="has-text-white navbar-item is-center" to="/">
+          <Link className="is-center" to="/">
             <Logo />
+            {process.env.REACT_APP_NETWORK === TESTNET ? (
+              <span className="heading is-marginless has-text-danger">Testnet</span>
+            ) : (
+              <></>
+            )}
           </Link>
           <div
             role="button"
             className={`navbar-burger is-center is-hidden-desktop`}
-            onClick={toggleWalletSidebar}
+            onClick={() => {
+              if (connectedWallet) {
+                setActive(!isActive);
+              } else {
+                toggleWalletSidebar();
+              }
+            }}
             style={{ marginLeft: 0 }}
           >
             <FaWallet />
           </div>
         </div>
         {connectedWallet && (
-          <div className={`navbar-menu  is-hidden-tablet`}>
+          <div
+            className={`navbar-menu  is-hidden-tablet ${
+              isActive && "is-active"
+            }`}
+          >
             <div className="navbar-start">
               <div className="navbar-item">
                 <div className="media" style={{ alignItems: "center" }}>
@@ -127,16 +144,12 @@ const Header = () => {
             className="navbar-item"
             href={"http://docs.forthewin.network/"}
           >
-            {/*<GrDocumentText />*/}
             <span className="ml-1">Docs</span>
           </a>
           <div className="navbar-item">
             <SocialLinkGroup />
           </div>
 
-          <div className="navbar-item">
-            <NetworkSwitch />
-          </div>
           {/*<PendingTransaction />*/}
           <div className="navbar-item">
             <div className="buttons">

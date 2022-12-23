@@ -70,10 +70,6 @@ export class RestAPI {
     return this.fetchResult(this.endpoint + `/tokens/liquidity/${id}/${days}`);
   }
 
-  async getNEP(days): Promise<INEPInfoWithTimeRange> {
-    return this.fetchResult(this.endpoint + `/nep/${days}`);
-  }
-
   async getNumbersWithRange(id, days): Promise<INEPInfoWithTimeRange> {
     return this.fetchResult(this.endpoint + `/tokens/numbers/${id}/${days}`);
   }

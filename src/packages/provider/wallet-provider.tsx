@@ -1,12 +1,11 @@
 import { ContextOptions, IWalletStates } from "./interfaces";
 import React, { createContext, useContext, useState } from "react";
 import { IConnectedWallet, IWalletType } from "../neo/wallet/interfaces";
-import { LocalStorage } from "../neo/local-storage";
 import { sc } from "@cityofzion/neon-core";
 import { WalletAPI } from "../neo/wallet";
 import toast from "react-hot-toast";
 import { INetworkType } from "../neo/network";
-import { NEON, TESTNET } from "../neo/consts";
+import { NEON } from "../neo/consts";
 import { handleError } from "../neo/utils/errors";
 
 export const WalletContext = createContext({} as IWalletStates);
@@ -14,12 +13,8 @@ export const WalletContextProvider = (props: {
   options: ContextOptions;
   children: any;
 }) => {
-  let initNetwork = LocalStorage.getNetwork();
-  if (window.location.href.indexOf("network=testnet") !== -1) {
-    initNetwork = TESTNET;
-    LocalStorage.setNetwork(TESTNET);
-  }
-  const [network, setNetwork] = useState(initNetwork);
+	console.log(process.env.REACT_APP_NETWORK)
+  const [network, setNetwork] = useState(process.env.REACT_APP_NETWORK as INetworkType);
   const [totalTxSubmit, setTotalTxSubmit] = useState(0);
 
   const [isWalletModalActive, setWalletModalActive] = useState(false);
@@ -31,10 +26,6 @@ export const WalletContextProvider = (props: {
   const [invokeScript, setInvokeScript] = useState<
     sc.ContractCallJson | undefined
   >();
-
-  // const [transactions, setTransactions] = useState(
-  //   props.options.useLocalStorage ? LocalStorage.initStorage(network) : []
-  // );
 
   const [pendingTransactions, setPendingTransactions] = useState<string[]>([]);
 
@@ -48,16 +39,12 @@ export const WalletContextProvider = (props: {
       setConnectedWallet(res);
       setWalletModalActive(false);
       toast.success("Wallet connected");
-      // if (props.options.useLocalStorage) {
-      // LocalStorage.setWallet(res);
-      // }
     } catch (e: any) {
       toast.error(handleError(e));
     }
   };
 
   const disConnectWallet = () => {
-    // LocalStorage.removeWallet();
     setConnectedWallet(undefined);
     if (connectedWallet && connectedWallet.key === NEON) {
       connectedWallet.instance.disconnect();
@@ -79,7 +66,6 @@ export const WalletContextProvider = (props: {
   const switchNetwork = (val: INetworkType) => {
     setConnectedWallet(undefined);
     setNetwork(val);
-    LocalStorage.setNetwork(val);
   };
 
   const removePendingTransaction = (txid: string) => {

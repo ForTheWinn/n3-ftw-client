@@ -48,7 +48,7 @@ const Tokens = ({ contractHash }: ITokensProps) => {
                   href={`https://${
                     network === MAINNET
                       ? "explorer.onegate.space"
-                      : "testnet.explorer.onegate.space"
+                      : "testmagnet.explorer.onegate.space"
                   }/NFTtokeninfo/0x${contractHash}`}
                 >
                   <span className="icon">
