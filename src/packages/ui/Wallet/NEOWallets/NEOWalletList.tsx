@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useWallet } from "../../provider";
+import { useWallet } from "../../../provider";
 import { getWalletIcon } from "./helpers";
-import { IWalletType } from "../../neo/wallet/interfaces";
-import Modal from "../../../ui/components/Modal";
+import { IWalletType } from "../../../neo/wallet/interfaces";
+import Modal from "../../../../ui/components/Modal";
 
-const WalletList = () => {
+const NEOWalletList = () => {
   const [neonWalletConnecting, setNeonWalletConnecting] = useState(false);
   const { connectWallet, list } = useWallet();
   const handleWalletConnect = async (walletType: IWalletType) => {
@@ -12,26 +12,23 @@ const WalletList = () => {
   };
   return (
     <>
-      <p className="subtitle is-6">
-        Connect with one of our available wallet info providers or create a new
-        one.
-      </p>
-      <nav className="panel">
-        {list.map((_wallet) => {
-          return (
-            <a
-              key={_wallet.key}
-              className="panel-block"
+      <h1 className="title is-6">NEO wallets</h1>
+      {list.map((_wallet) => {
+        return (
+          <div key={_wallet.key} className="mb-1">
+            <button
+              style={{ justifyContent: "flex-start" }}
+              className="button is-fullwidth"
               onClick={() => handleWalletConnect(_wallet.key)}
             >
               <span className="panel-icon">
                 <img src={getWalletIcon(_wallet.key)} />
               </span>
               {_wallet.label}
-            </a>
-          );
-        })}
-      </nav>
+            </button>
+          </div>
+        );
+      })}
 
       {neonWalletConnecting && (
         <Modal onClose={() => setNeonWalletConnecting(false)}>
@@ -47,4 +44,4 @@ const WalletList = () => {
   );
 };
 
-export default WalletList;
+export default NEOWalletList;

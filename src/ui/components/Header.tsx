@@ -7,7 +7,7 @@ import { useWallet } from "../../packages/provider";
 import { utils } from "../../packages/neo";
 import { MENU } from "../../consts";
 import WalletDropdown from "./WalletDropdown";
-import { getWalletIcon } from "../../packages/ui/Wallet/helpers";
+import { getWalletIcon } from "../../packages/ui/Wallet/NEOWallets/helpers";
 import NetworkSwitch from "./NetworkSwitch";
 import NetworkSwitch2 from "./NetworkSwitch2";
 import SocialLinkGroup from "./SocialLinkGroup";
@@ -15,9 +15,7 @@ import SocialLinkGroup from "./SocialLinkGroup";
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar } = useApp();
   const { connectedWallet, network, disConnectWallet } = useWallet();
-  const [isActive, setActive] = useState(false);
   const handleDisconnectWallet = () => {
-    setActive(false);
     disConnectWallet();
   };
 
@@ -47,24 +45,14 @@ const Header = () => {
           <div
             role="button"
             className={`navbar-burger is-center is-hidden-desktop`}
-            onClick={() => {
-              if (connectedWallet) {
-                setActive(!isActive);
-              } else {
-                toggleWalletSidebar();
-              }
-            }}
+            onClick={toggleWalletSidebar}
             style={{ marginLeft: 0 }}
           >
             <FaWallet />
           </div>
         </div>
         {connectedWallet && (
-          <div
-            className={`navbar-menu  is-hidden-tablet ${
-              isActive && "is-active"
-            }`}
-          >
+          <div className={`navbar-menu  is-hidden-tablet`}>
             <div className="navbar-start">
               <div className="navbar-item">
                 <div className="media" style={{ alignItems: "center" }}>

@@ -1,4 +1,4 @@
-import { CONST } from "../../neo";
+import { CONST } from "../../../neo";
 
 export const getWalletIcon = (key: string) => {
   let svg = "";

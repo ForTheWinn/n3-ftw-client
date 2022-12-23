@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 // tslint:disable-next-line:no-submodule-imports
 import { FaAngleDown } from "react-icons/fa";
-import { useApp } from "../../../common/hooks/use-app";
-import { useWallet } from "../../provider";
+import { useApp } from "../../../../common/hooks/use-app";
+import { useWallet } from "../../../provider";
 import { getWalletIcon } from "./helpers";
 
 const WalletDropdown = () => {
@@ -46,7 +46,7 @@ const WalletDropdown = () => {
         <div className="dropdown-content">
           <a
             onClick={handleDisconnectWallet}
-            href="#"
+            href="src/packages/ui/Wallet/NEOWallets/WalletDropdown#"
             className="dropdown-item"
           >
             Disconnect
