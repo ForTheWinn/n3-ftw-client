@@ -32,7 +32,6 @@ import Smith from "./pages/Smith";
 import Tournament from "./pages/Tournament";
 import Swap from "./pages/Swap";
 import Migration from "./pages/Migration";
-import ReactGa from "./components/ReactGa";
 import Farm from "./pages/Farm";
 import DAO from "./pages/DAO";
 import IDO from "./pages/IDO";
@@ -75,7 +74,6 @@ const App = () => {
         <Route path={BRAND_KIT_PATH} component={BrandKit} />
         <MobileMenuSlider />
         <WalletSidebar />
-        <ReactGa />
       </Router>
     </WalletContextProvider>
   );
