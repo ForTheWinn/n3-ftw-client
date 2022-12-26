@@ -1,4 +1,4 @@
-import {META_MASK} from "../../../eth/consts";
+import {META_MASK} from "../../../web3/consts";
 
 export const getWalletIcon = (key: string) => {
   let svg = "";

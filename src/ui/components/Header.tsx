@@ -7,10 +7,10 @@ import { useWallet } from "../../packages/provider";
 import { utils } from "../../packages/neo";
 import { MENU } from "../../consts";
 import WalletDropdown from "./WalletDropdown";
-import { getWalletIcon } from "../../packages/ui/Wallet/helpers";
 import NetworkSwitch2 from "./NetworkSwitch2";
 import SocialLinkGroup from "./SocialLinkGroup";
 import { TESTNET } from "../../packages/neo/consts";
+import { getWalletIcon } from "../../packages/ui/Wallet/NEOWallets/helpers";
 
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar } = useApp();
@@ -44,7 +44,9 @@ const Header = () => {
           <Link className="is-center" to="/">
             <Logo />
             {process.env.REACT_APP_NETWORK === TESTNET ? (
-              <span className="heading is-marginless has-text-danger">Testnet</span>
+              <span className="heading is-marginless has-text-danger">
+                Testnet
+              </span>
             ) : (
               <></>
             )}
@@ -52,49 +54,12 @@ const Header = () => {
           <div
             role="button"
             className={`navbar-burger is-center is-hidden-desktop`}
-            onClick={() => {
-              if (connectedWallet) {
-                setActive(!isActive);
-              } else {
-                toggleWalletSidebar();
-              }
-            }}
+            onClick={toggleWalletSidebar}
             style={{ marginLeft: 0 }}
           >
             <FaWallet />
           </div>
         </div>
-        {connectedWallet && (
-          <div
-            className={`navbar-menu  is-hidden-tablet ${
-              isActive && "is-active"
-            }`}
-          >
-            <div className="navbar-start">
-              <div className="navbar-item">
-                <div className="media" style={{ alignItems: "center" }}>
-                  <div className="media-left">
-                    <img
-                      width="32px"
-                      src={getWalletIcon(connectedWallet.key)}
-                    />
-                  </div>
-                  <div className="media-content">
-                    {utils.truncateAddress(connectedWallet.account.address)}
-                  </div>
-                </div>
-              </div>
-              <hr className="dropdown-divider" />
-              <div className="navbar-item">
-                <NetworkSwitch2 />
-              </div>
-              <hr className="dropdown-divider" />
-              <a onClick={handleDisconnectWallet} className="navbar-item">
-                Disconnect wallet
-              </a>
-            </div>
-          </div>
-        )}
 
         <div className="navbar-menu ml-3">
           <div className="navbar-start">
@@ -139,16 +104,17 @@ const Header = () => {
           </div>
         </div>
         <div className="navbar-end is-hidden-touch">
-          <a
-            target={"_blank"}
-            className="navbar-item"
-            href={"http://docs.forthewin.network/"}
-          >
-            <span className="ml-1">Docs</span>
-          </a>
-          <div className="navbar-item">
-            <SocialLinkGroup />
-          </div>
+          {/*<a*/}
+          {/*  target={"_blank"}*/}
+          {/*  className="navbar-item"*/}
+          {/*  href={"http://docs.forthewin.network/"}*/}
+          {/*>*/}
+          {/*  <span className="ml-1">Docs</span>*/}
+          {/*</a>*/}
+
+          {/*<div className="navbar-item">*/}
+          {/*  <SocialLinkGroup />*/}
+          {/*</div>*/}
 
           {/*<PendingTransaction />*/}
           <div className="navbar-item">

@@ -11,23 +11,6 @@ const Wallet = () => {
   >(NEO_WALLET);
   return (
     <div className="is-relative">
-      {/*<header className="level is-mobile p-3 is-marginless">*/}
-      {/*  <div className="level-left">*/}
-      {/*    <div className="level-item">*/}
-      {/*      <WalletDropdown />*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*  {connectedWallet && (*/}
-      {/*    <div className="level-right">*/}
-      {/*      <div className="level-item">*/}
-      {/*        <small>*/}
-      {/*          {utils.truncateAddress(connectedWallet.account.address)}*/}
-      {/*        </small>*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*  )}*/}
-      {/*</header>*/}
-      {/*<hr className="m-0" />*/}
       <section>
         <aside
           style={{
@@ -36,8 +19,6 @@ const Wallet = () => {
             position: "fixed",
             top: 0,
             left: 0,
-            // padding-top: 40px;
-            // background-color: lightblue;
           }}
         >
           <ul className="menu">
@@ -49,7 +30,7 @@ const Wallet = () => {
                   walletType === NEO_WALLET ? "is-active" : ""
                 } `}
               >
-                <img src={"/symbols/neo.svg"} />
+                <img alt="NEO wallets" src={"/symbols/neo.svg"} />
               </button>
             </li>
             <li>
@@ -61,6 +42,7 @@ const Wallet = () => {
                 } `}
               >
                 <img
+	                alt="ETH wallets"
                   style={{ width: "40px", height: "40px" }}
                   src={"/symbols/eth.svg"}
                 />
@@ -76,13 +58,6 @@ const Wallet = () => {
           {walletType === ETH_WALLET ? <ETHWallets /> : <></>}
         </div>
       </section>
-
-      {/*<div*/}
-      {/*  className="p-5"*/}
-      {/*  style={{ position: "absolute", bottom: "40px", width: "100%" }}*/}
-      {/*>*/}
-      {/*  <NetworkSwitch2 />*/}
-      {/*</div>*/}
     </div>
   );
 };

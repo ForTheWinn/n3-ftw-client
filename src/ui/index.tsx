@@ -44,41 +44,45 @@ import Locker from "./pages/Locker";
 import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
+import { connectors } from "../packages/web3/connectors";
+import { Web3ReactProvider } from "@web3-react/core";
 
 const App = () => {
   return (
-    <WalletContextProvider
-      options={{
-        useLocalStorage: true,
-        useDevWallet: process.env.NODE_ENV === "development",
-      }}
-    >
-      <Router>
-        <Toaster position="bottom-center" />
-        <Header />
-        <Route exact path={HOME_PATH} component={Home} />
-        <Route path={GALLERY_PATH} component={Gallery} />
-        <Route path={BOYZ_PATH} component={Boyz} />
-        <Route path={TOURNAMENT_PATH} component={Tournament} />
-        <Route path={SMITH_PATH} component={Smith} />
-        <Route path={LOCKER_PATH} component={Locker} />
-        <Route path={COLLECTION_PATH} component={MyCollection} />
-        <Route path={SWAP_PATH} component={Swap} />
-        <Route path={FARM_PATH} component={Farm} />
-        <Route path={FARM_V2_PATH} component={FarmV2} />
-        <Route path={DAO_PATH} component={DAO} />
-        <Route path={IDO_PATH} component={IDO} />
-        <Route exact path={MIGRATION_PATH} component={Migration} />
-        <Route path={LOTTO_PATH} component={Lotto} />
-        <Route path={ANALYTICS_PATH} component={Analytics} />
-        <Route path={LP_TOKENS_PATH} component={LPTokens} />
-        <Route path={GASFI_PATH} component={GASFi} />
-        <Route path={BRIDGE_PATH} component={Bridge} />
-        <MobileMenuSlider />
-        <WalletSidebar />
-        <ReactGa />
-      </Router>
-    </WalletContextProvider>
+    <Web3ReactProvider connectors={connectors}>
+      <WalletContextProvider
+        options={{
+          useLocalStorage: true,
+          useDevWallet: process.env.NODE_ENV === "development",
+        }}
+      >
+        <Router>
+          <Toaster position="bottom-center" />
+          <Header />
+          <Route exact path={HOME_PATH} component={Home} />
+          <Route path={GALLERY_PATH} component={Gallery} />
+          <Route path={BOYZ_PATH} component={Boyz} />
+          <Route path={TOURNAMENT_PATH} component={Tournament} />
+          <Route path={SMITH_PATH} component={Smith} />
+          <Route path={LOCKER_PATH} component={Locker} />
+          <Route path={COLLECTION_PATH} component={MyCollection} />
+          <Route path={SWAP_PATH} component={Swap} />
+          <Route path={FARM_PATH} component={Farm} />
+          <Route path={FARM_V2_PATH} component={FarmV2} />
+          <Route path={DAO_PATH} component={DAO} />
+          <Route path={IDO_PATH} component={IDO} />
+          <Route exact path={MIGRATION_PATH} component={Migration} />
+          <Route path={LOTTO_PATH} component={Lotto} />
+          <Route path={ANALYTICS_PATH} component={Analytics} />
+          <Route path={LP_TOKENS_PATH} component={LPTokens} />
+          <Route path={GASFI_PATH} component={GASFi} />
+          <Route path={BRIDGE_PATH} component={Bridge} />
+          <MobileMenuSlider />
+          <WalletSidebar />
+          <ReactGa />
+        </Router>
+      </WalletContextProvider>
+    </Web3ReactProvider>
   );
 };
 
