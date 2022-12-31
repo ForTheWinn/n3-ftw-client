@@ -10,10 +10,8 @@ const LockerInfoPage = ({ network }) => {
       <h5 className="title is-5">FTW locker</h5>
       <div className="content">
         <p>
-          FTW locker allows users to send NEP-17 tokens with timelock. It issues
-          a NFT to the receiver and it is used as the key to unlock. The key can
-          is transferable and the owner can unlock its locker by sending the key
-          to the locker contract.
+          FTW locker allows sending tokens with time-lock. A receiver receives a
+          key; it is NFT and transferable.
         </p>
         <h6>How to lock</h6>
         <p>
@@ -24,33 +22,32 @@ const LockerInfoPage = ({ network }) => {
         <ul>
           <li>
             Go to <Link to={LOCKER_USER_PATH}>Key page</Link>. It displays all
-            keys that the connected wallet has with unlock buttons.
+            keys that the connected wallet has.
           </li>
           <li>
-            Send your key to the locker contract. Address is{" "}
+            Or, send your key to the locker contract. Address is{" "}
             <strong>
               {wallet.getAddressFromScriptHash(LOCKER_SCRIPT_HASH[network])}
             </strong>
           </li>
-          <li>
-            Note that lockers only can be unlocked when it meets the release
-            timestamp.
-          </li>
         </ul>
+        <i>
+          Note that lockers only can be unlocked when it meets the release
+          timestamp.
+        </i>
+        <br />
+        <br />
         <h6>How to browse lockers</h6>
         <ul>
           <li>
-            Locker list by contract - Go to the main page to see contract list.
+            By locker no: <FaSearch /> button on the header.
           </li>
           <li>
-            Locker by locker no - Click <FaSearch /> button on the header.
-          </li>
-          <li>
-            key list by your wallet - Click <FaKey /> button on the header.
+            key list by your wallet: <FaKey /> button on the header.
           </li>
         </ul>
-        <h6>Contract hash</h6>
-        <p>0x{LOCKER_SCRIPT_HASH[network]}</p>
+        <h6>Locker contract hash</h6>
+        <p>0x{LOCKER_SCRIPT_HASH[network]} [<a href={`https://explorer.onegate.space/contractinfo/0x${LOCKER_SCRIPT_HASH[network]}`} target="_blank">Browse</a>]</p>
       </div>
     </div>
   );
