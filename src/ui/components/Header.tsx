@@ -8,7 +8,6 @@ import { utils } from "../../packages/neo";
 import { MENU } from "../../consts";
 import WalletDropdown from "./WalletDropdown";
 import { getWalletIcon } from "../../packages/ui/Wallet/helpers";
-import NetworkSwitch2 from "./NetworkSwitch2";
 import SocialLinkGroup from "./SocialLinkGroup";
 import { TESTNET } from "../../packages/neo/consts";
 
@@ -84,10 +83,10 @@ const Header = () => {
                   </div>
                 </div>
               </div>
-              <hr className="dropdown-divider" />
-              <div className="navbar-item">
-                <NetworkSwitch2 />
-              </div>
+              {/*<hr className="dropdown-divider" />*/}
+              {/*<div className="navbar-item">*/}
+              {/*  <NetworkSwitch2 />*/}
+              {/*</div>*/}
               <hr className="dropdown-divider" />
               <a onClick={handleDisconnectWallet} className="navbar-item">
                 Disconnect wallet

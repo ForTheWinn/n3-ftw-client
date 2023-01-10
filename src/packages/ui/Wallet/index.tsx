@@ -32,12 +32,12 @@ const Wallet = () => {
         {connectedWallet ? <></> : <WalletList />}
       </section>
 
-      <div
-        className="p-5"
-        style={{ position: "absolute", bottom: "40px", width: "100%" }}
-      >
-        <NetworkSwitch2 />
-      </div>
+      {/*<div*/}
+      {/*  className="p-5"*/}
+      {/*  style={{ position: "absolute", bottom: "40px", width: "100%" }}*/}
+      {/*>*/}
+      {/*  <NetworkSwitch2 />*/}
+      {/*</div>*/}
     </>
   );
 };
