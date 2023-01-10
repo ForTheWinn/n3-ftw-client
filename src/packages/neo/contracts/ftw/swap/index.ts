@@ -3,7 +3,7 @@ import { IConnectedWallet } from "../../../wallet/interfaces";
 import { wallet } from "../../../index";
 import { SWAP_SCRIPT_HASH } from "./consts";
 import { base64ToString, parseMapValue } from "../../../utils";
-import { sc, tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
+import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { defaultDeadLine } from "./helpers";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 import {
@@ -124,7 +124,10 @@ export class SwapContract {
           type: "Integer",
           value: neoAmount,
         },
-        sc.ContractParam.any(),
+	      {
+		      type: "Any",
+		      value: null,
+	      },
       ],
     };
 
@@ -291,9 +294,7 @@ export class SwapContract {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
-
     const bNEOHash = BNEO_SCRIPT_HASH[this.network];
-
     const bNEOScript = {
       operation: "transfer",
       scriptHash: NEO_SCRIPT_HASH,
@@ -310,7 +311,10 @@ export class SwapContract {
           type: "Integer",
           value: neoAmount,
         },
-        sc.ContractParam.any(),
+	      {
+		      type: "Any",
+		      value: null,
+	      },
       ],
     };
 
@@ -348,6 +352,8 @@ export class SwapContract {
     const signers = [
       {
         account: senderHash,
+	      // scopes: tx.WitnessScope.CustomContracts,
+	      // allowedContracts: [this.contractHash, bNEOHash, NEO_SCRIPT_HASH],
         scopes: tx.WitnessScope.WitnessRules,
         rules: [
           { action: "Allow", condition: { type: "CalledByEntry" } },
@@ -485,12 +491,17 @@ export class SwapContract {
           type: "Integer",
           value: neoOut * 100000,
         },
-        sc.ContractParam.any(),
+	      {
+		      type: "Any",
+		      value: null,
+	      },
       ],
     };
     const signers = [
       {
         account: senderHash,
+	      // scopes: tx.WitnessScope.CustomContracts,
+	      // allowedContracts: [this.contractHash, tokenA, GAS_SCRIPT_HASH],
         scopes: tx.WitnessScope.WitnessRules,
         rules: [
           { action: "Allow", condition: { type: "CalledByEntry" } },
