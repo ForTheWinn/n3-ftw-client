@@ -17,7 +17,7 @@ const Banner = () => {
           <div className="level-item">
             <div className="is-block">
               <h1 className="title is-5 is-marginless">Smith</h1>
-              <p>Create your token smart contracts without codes</p>
+              <p>Launch your tokens without codes</p>
             </div>
           </div>
         </div>

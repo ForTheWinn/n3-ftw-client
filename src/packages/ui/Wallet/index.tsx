@@ -1,11 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import NEOWalletList from "./NEOWallets/NEOWalletList";
-import {useWallet} from "../../provider";
-import {ETH_WALLET, NEO_WALLET} from "./consts";
+import { ETH_WALLET, NEO_WALLET } from "./consts";
 import ETHWallets from "./ETHWallets";
 
 const Wallet = () => {
-  const { connectedWallet } = useWallet();
   const [walletType, setWalletType] = useState<
     typeof NEO_WALLET | typeof ETH_WALLET
   >(NEO_WALLET);
@@ -24,7 +22,7 @@ const Wallet = () => {
           <ul className="menu">
             <li>
               <button
-	              onClick={() => setWalletType(NEO_WALLET)}
+                onClick={() => setWalletType(NEO_WALLET)}
                 style={{ width: "64px", height: "64px" }}
                 className={`button is-white is-radiusless ${
                   walletType === NEO_WALLET ? "is-active" : ""
@@ -35,14 +33,14 @@ const Wallet = () => {
             </li>
             <li>
               <button
-	              onClick={() => setWalletType(ETH_WALLET)}
+                onClick={() => setWalletType(ETH_WALLET)}
                 style={{ width: "64px", height: "64px" }}
                 className={`button is-white is-radiusless ${
-	                walletType === ETH_WALLET ? "is-active" : ""
+                  walletType === ETH_WALLET ? "is-active" : ""
                 } `}
               >
                 <img
-	                alt="ETH wallets"
+                  alt="ETH wallets"
                   style={{ width: "40px", height: "40px" }}
                   src={"/symbols/eth.svg"}
                 />
@@ -50,10 +48,7 @@ const Wallet = () => {
             </li>
           </ul>
         </aside>
-        <div
-          style={{ marginLeft: "64px" }}
-          className="p-5"
-        >
+        <div style={{ marginLeft: "64px" }} className="p-5">
           {walletType === NEO_WALLET ? <NEOWalletList /> : <></>}
           {walletType === ETH_WALLET ? <ETHWallets /> : <></>}
         </div>

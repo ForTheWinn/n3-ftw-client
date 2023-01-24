@@ -24,7 +24,7 @@ const Banner = ({ filter, setFilter, setFilterActive }: IBanner) => {
               <div>
                 <h1 className="title has-text-primary">Neo Boyz</h1>
                 <p className="subtitle">
-                  3333 unique collectible characters stored on Neo blockchain.
+                  1111 unique collectible characters stored on Neo blockchain.
                 </p>
                 <div className="content is-small">
                   <p>

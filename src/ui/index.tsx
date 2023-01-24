@@ -20,6 +20,7 @@ import {
   BOYZ_PATH,
   GASFI_PATH,
   BRIDGE_PATH,
+  BRAND_KIT_PATH,
 } from "../consts";
 import { WalletContextProvider } from "../packages/provider";
 import WalletSidebar from "./components/WalletSidebar";
@@ -32,7 +33,6 @@ import Smith from "./pages/Smith";
 import Tournament from "./pages/Tournament";
 import Swap from "./pages/Swap";
 import Migration from "./pages/Migration";
-import ReactGa from "./components/ReactGa";
 import Farm from "./pages/Farm";
 import DAO from "./pages/DAO";
 import IDO from "./pages/IDO";
@@ -46,13 +46,13 @@ import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
 import { connectors } from "../packages/web3/connectors";
 import { Web3ReactProvider } from "@web3-react/core";
+import BrandKit from "./pages/BrandKit";
 
 const App = () => {
   return (
     <Web3ReactProvider connectors={connectors}>
       <WalletContextProvider
         options={{
-          useLocalStorage: true,
           useDevWallet: process.env.NODE_ENV === "development",
         }}
       >
@@ -76,10 +76,10 @@ const App = () => {
           <Route path={ANALYTICS_PATH} component={Analytics} />
           <Route path={LP_TOKENS_PATH} component={LPTokens} />
           <Route path={GASFI_PATH} component={GASFi} />
+          <Route path={BRAND_KIT_PATH} component={BrandKit} />
           <Route path={BRIDGE_PATH} component={Bridge} />
           <MobileMenuSlider />
           <WalletSidebar />
-          <ReactGa />
         </Router>
       </WalletContextProvider>
     </Web3ReactProvider>
