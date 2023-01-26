@@ -37,7 +37,6 @@ const ETHWallets = (props) => {
         />
       ) : (
         <>
-          {" "}
           {ETH_WALLET_LIST.map((_wallet) => {
             return (
               <div key={_wallet.key} className="mb-1">
@@ -46,7 +45,10 @@ const ETHWallets = (props) => {
                   onClick={() => ETHWalletAPI.connect(_wallet.key)}
                 >
                   <span className="panel-icon">
-                    <img src={getWalletIcon(_wallet.key)} />
+                    <img
+                      alt={`${_wallet.key} logo`}
+                      src={getWalletIcon(_wallet.key)}
+                    />
                   </span>
                   {_wallet.label}
                 </button>

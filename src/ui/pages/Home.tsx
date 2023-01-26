@@ -63,7 +63,7 @@ const Home = () => {
     document.title = "FTW";
   }, []);
   return (
-    <div>
+    <>
       <section className="hero is-white is-fullheight-with-navbar is-relative">
         <div className="hero-body">
           <div className="container">
@@ -105,7 +105,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="hero-foot">
+
+        <div className="hero-foot is-hidden-mobile">
           <Wave
             fill="#000"
             paused={false}
@@ -160,6 +161,7 @@ const Home = () => {
                 </li>
                 <li>
                   <a
+                    rel="noreferrer"
                     target="_blank"
                     href={"https://bridge.poly.network/"}
                     className="has-text-white"
@@ -212,6 +214,7 @@ const Home = () => {
               <ul className="footer-links">
                 <li>
                   <a
+                    rel="noreferrer"
                     target="_blank"
                     href="https://docs.forthewin.network/"
                     className="has-text-white"
@@ -226,6 +229,7 @@ const Home = () => {
                 </li>
                 <li>
                   <a
+                    rel="noreferrer"
                     target="_blank"
                     href={"https://neonewstoday.com/?s=forthewin"}
                     className="has-text-white"
@@ -233,21 +237,22 @@ const Home = () => {
                     Press
                   </a>
                 </li>
-	              <li>
-		              <a
-			              target="_blank"
-			              href={"https://test.forthewin.network"}
-			              className="has-text-white"
-		              >
-			              TestNet
-		              </a>
-	              </li>
+                <li>
+                  <a
+                    rel="noreferrer"
+                    target="_blank"
+                    href={"https://test.forthewin.network"}
+                    className="has-text-white"
+                  >
+                    TestNet
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

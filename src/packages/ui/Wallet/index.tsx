@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import NEOWalletList from "./NEOWallets/NEOWalletList";
 import { ETH_WALLET, NEO_WALLET } from "./consts";
 import ETHWallets from "./ETHWallets";
+import { LocalStorage } from "../../neo/local-storage";
 
 const Wallet = () => {
   const [walletType, setWalletType] = useState<
     typeof NEO_WALLET | typeof ETH_WALLET
-  >(NEO_WALLET);
+    >(LocalStorage.getWalletSwitch());
+  console.log(LocalStorage.getWalletSwitch());
+  const handleWalletSwitchChange = (val) => {
+    console.log(val)
+    LocalStorage.setWalletSwitchType(val);
+    setWalletType(val);
+  }
   return (
     <div className="is-relative">
       <section>
@@ -22,7 +29,7 @@ const Wallet = () => {
           <ul className="menu">
             <li>
               <button
-                onClick={() => setWalletType(NEO_WALLET)}
+                onClick={() => handleWalletSwitchChange(NEO_WALLET)}
                 style={{ width: "64px", height: "64px" }}
                 className={`button is-white is-radiusless ${
                   walletType === NEO_WALLET ? "is-active" : ""
@@ -33,7 +40,7 @@ const Wallet = () => {
             </li>
             <li>
               <button
-                onClick={() => setWalletType(ETH_WALLET)}
+                onClick={() => handleWalletSwitchChange(ETH_WALLET)}
                 style={{ width: "64px", height: "64px" }}
                 className={`button is-white is-radiusless ${
                   walletType === ETH_WALLET ? "is-active" : ""

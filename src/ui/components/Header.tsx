@@ -5,6 +5,8 @@ import Logo from "./Logo";
 import { useApp } from "../../common/hooks/use-app";
 import { useWallet } from "../../packages/provider";
 import { utils } from "../../packages/neo";
+import { MENU } from "../../consts";
+import WalletDropdown from "./WalletDropdown";
 import { TESTNET } from "../../packages/neo/consts";
 import { getWalletIcon } from "../../packages/ui/Wallet/NEOWallets/helpers";
 
@@ -67,6 +69,7 @@ const Header = () => {
                 <div className="media" style={{ alignItems: "center" }}>
                   <div className="media-left">
                     <img
+                      alt="logo"
                       width="32px"
                       src={getWalletIcon(connectedWallet.key)}
                     />
@@ -77,12 +80,72 @@ const Header = () => {
                 </div>
               </div>
               <hr className="dropdown-divider" />
-              <a onClick={handleDisconnectWallet} className="navbar-item">
+              <button onClick={handleDisconnectWallet} className="navbar-item">
                 Disconnect wallet
-              </a>
+              </button>
             </div>
           </div>
         )}
+
+        <div className="navbar-menu ml-3">
+          <div className="navbar-start">
+            {MENU.map((route, i) => {
+              if (!route.network.includes(network)) return false;
+              if (route.category.length > 0) {
+                return (
+                  <div
+                    key={`header-${route.label}${i}`}
+                    className="navbar-item has-dropdown is-hoverable"
+                  >
+                    <div className="navbar-link">{route.label}</div>
+                    <div className="navbar-dropdown is-boxed">
+                      {route.category.map((item, index) => {
+                        return (
+                          <NavLink
+                            key={`category-${item.label}-${item.label}${index}`}
+                            activeClassName="is-active"
+                            to={item.path}
+                            className="navbar-item"
+                          >
+                            {item.label}
+                          </NavLink>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <NavLink
+                    key={`header-${route.label}${i}`}
+                    activeClassName="is-active"
+                    to={route.path}
+                    className="navbar-item"
+                  >
+                    {route.label}
+                  </NavLink>
+                );
+              }
+            })}
+          </div>
+        </div>
+        <div className="navbar-end is-hidden-touch">
+          {/*<PendingTransaction />*/}
+          <div className="navbar-item">
+            <div className="buttons">
+              {connectedWallet ? (
+                <WalletDropdown connectedWallet={connectedWallet} />
+              ) : (
+                <button
+                  onClick={toggleWalletSidebar}
+                  className="button is-small is-black is-rounded"
+                >
+                  Connect wallet
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   );
