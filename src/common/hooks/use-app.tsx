@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
-// import toast from "react-hot-toast";
+import { CHAINS, NEO_CHAIN } from "../../packages/chains/consts";
 
 interface IAppContext {
+  chain: CHAINS;
+  switchChain: (chain: CHAINS) => void;
   sidebarStatus: boolean;
   walletSidebarStatus: boolean;
   openSidebar: () => void;
@@ -13,6 +15,7 @@ interface IAppContext {
 export const AppContext = createContext({} as IAppContext);
 
 export const AppCContextProvider = (props: { children: any }) => {
+  const [chain, setChain] = useState<CHAINS>(NEO_CHAIN);
   const [sidebarStatus, setSidebarStatus] = useState(false);
   const [walletSidebarStatus, setWalletSidebarStatus] = useState(false);
   const openSidebar = () => setSidebarStatus(true);
@@ -29,8 +32,13 @@ export const AppCContextProvider = (props: { children: any }) => {
     }
     setWalletSidebarStatus(!walletSidebarStatus);
   };
+  const switchChain = (v: CHAINS) => {
+    setChain(v);
+  };
 
   const contextValue = {
+    chain,
+    switchChain,
     sidebarStatus,
     openSidebar,
     closeSidebar,

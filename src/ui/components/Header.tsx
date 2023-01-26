@@ -9,6 +9,7 @@ import { MENU } from "../../consts";
 import WalletDropdown from "./WalletDropdown";
 import { TESTNET } from "../../packages/neo/consts";
 import { getWalletIcon } from "../../packages/ui/Wallet/NEOWallets/helpers";
+import ChainSwitch from "./ChainSwitch";
 
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar } = useApp();
@@ -130,6 +131,9 @@ const Header = () => {
           </div>
         </div>
         <div className="navbar-end is-hidden-touch">
+          <div className="navbar-item">
+            <ChainSwitch />
+          </div>
           {/*<PendingTransaction />*/}
           <div className="navbar-item">
             <div className="buttons">
