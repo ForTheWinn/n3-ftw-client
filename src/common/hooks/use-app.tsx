@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
-import { CHAINS, NEO_CHAIN } from "../../packages/chains/consts";
+import { useLocation } from "react-router-dom";
+import { CHAINS } from "../../packages/chains/consts";
+import { LocalStorage } from "../../packages/neo/local-storage";
+import queryString from "query-string";
 
 interface IAppContext {
   chain: CHAINS;
@@ -15,7 +18,7 @@ interface IAppContext {
 export const AppContext = createContext({} as IAppContext);
 
 export const AppCContextProvider = (props: { children: any }) => {
-  const [chain, setChain] = useState<CHAINS>(NEO_CHAIN);
+  const [chain, setChain] = useState<CHAINS>(LocalStorage.getChain());
   const [sidebarStatus, setSidebarStatus] = useState(false);
   const [walletSidebarStatus, setWalletSidebarStatus] = useState(false);
   const openSidebar = () => setSidebarStatus(true);
@@ -33,6 +36,7 @@ export const AppCContextProvider = (props: { children: any }) => {
     setWalletSidebarStatus(!walletSidebarStatus);
   };
   const switchChain = (v: CHAINS) => {
+    LocalStorage.setChain(v);
     setChain(v);
   };
 

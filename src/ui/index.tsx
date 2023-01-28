@@ -1,4 +1,6 @@
 import React from "react";
+import { connectors } from "../packages/web3/connectors";
+import { Web3ReactProvider } from "@web3-react/core";
 import { HashRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header";
 import {
@@ -44,8 +46,6 @@ import Locker from "./pages/Locker";
 import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
-import { connectors } from "../packages/web3/connectors";
-import { Web3ReactProvider } from "@web3-react/core";
 import BrandKit from "./pages/BrandKit";
 
 const App = () => {

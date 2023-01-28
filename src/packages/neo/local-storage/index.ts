@@ -5,6 +5,7 @@ import { MAINNET } from "../consts";
 import { INetworkType } from "../network";
 import { validateConnectedWallet } from "./helpers";
 import { ETH_WALLET, NEO_WALLET } from "../../ui/Wallet/consts";
+import { CHAINS, NEO_CHAIN } from "../../chains/consts";
 
 const CONNECTED_WALLET = "CONNECTED_WALLET";
 const TRANSACTIONS = "TRANSACTIONS";
@@ -12,6 +13,7 @@ const NETWORK = "NETWORK";
 const SWAP_TOKEN_A = "SWAP_TOKEN_A";
 const SWAP_TOKEN_B = "SWAP_TOKEN_B";
 const WALLET_SWITCH = "WALLET_SWITCH";
+const CHAIN_SWITCH = "CHAIN_SWITCH";
 
 export class LocalStorage {
   public static initStorage = (network: string): ITransaction[] => {
@@ -80,8 +82,13 @@ export class LocalStorage {
   static setSwapTokenB = (val: string) => store.set(SWAP_TOKEN_B, val);
   static getSwapTokenA = () => store.get(SWAP_TOKEN_A);
   static getSwapTokenB = () => store.get(SWAP_TOKEN_B);
+
   static setWalletSwitchType = (val: typeof NEO_WALLET | typeof ETH_WALLET) =>
     store.set(WALLET_SWITCH, val);
   static getWalletSwitch = () =>
     store.get(WALLET_SWITCH) ? store.get(WALLET_SWITCH) : NEO_WALLET;
+
+  static setChain = (val: CHAINS) => store.set(CHAIN_SWITCH, val);
+  static getChain = () =>
+    store.get(CHAIN_SWITCH) ? store.get(CHAIN_SWITCH) : NEO_CHAIN;
 }

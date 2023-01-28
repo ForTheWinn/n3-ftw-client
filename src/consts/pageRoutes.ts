@@ -1,49 +1,85 @@
 import { MAINNET, PRIVATENET, TESTNET } from "../packages/neo/consts";
 
+/* 
+  Global
+*/
 export const HOME_PATH = "/";
-export const MIGRATION_PATH = "/migration";
-export const GALLERY_PATH = "/NFT/gallery";
-export const BOYZ_PATH = "/NFT/neo-boyz";
-export const TOURNAMENT_PATH = "/arena";
-export const IDO_PATH = "/ido";
+export const BRAND_KIT_PATH = "/brand-kit";
+/* 
+  Smith
+*/
 export const SMITH_PATH = "/smith";
 export const SMITH_CREATE_NEP17_PATH = "/smith/create/nep17";
 export const SMITH_CREATE_NEP11_PATH = "/smith/create/nep11";
 export const SMITH_CONTRACT_NEP17_PATH = "/smith/nep17/contract";
 export const SMITH_CONTRACT_NEP11_PATH = "/smith/nep11/contract";
 export const SMITH_PATH_NEP11 = "/smith/nep11";
-export const COLLECTION_PATH = "/NFT/collection";
+/* 
+  Swap
+*/
 export const SWAP_PATH = "/swap";
 export const SWAP_POOL_PATH = "/swap/pools";
 export const SWAP_PATH_HISTORY = "/swap/history";
 export const SWAP_PATH_LP_LIST = "/swap/providers";
 export const SWAP_PATH_LIQUIDITY_ADD = "/swap/liquidity/add";
 export const SWAP_PATH_LIQUIDITY_REMOVE = "/swap/liquidity/remove";
-export const FARM_PATH = "/farm";
-export const FARM_STAKE_PATH = "/farm/stake";
-export const FARM_STAKE_POSITIONS_PATH = "/farm/stake/positions";
-export const DAO_PATH = "/dao";
-export const DAO_CHANNEL_CREATE_PATH = "/dao/create";
-export const DAO_CHANNEL_PATH = "/dao/channel";
-export const LOTTO_PATH = "/lotto";
-export const LP_TOKENS_PATH = "/NFT/lp-tokens";
-export const ANALYTICS_PATH = "/analytics";
-export const ANALYTICS_PAIRS_PATH = "/analytics/pairs";
-export const ANALYTICS_TOKENS_PATH = "/analytics/tokens";
-export const ARCHIVE_PATH = "/archive";
+/* 
+  Double Farm
+*/
 export const FARM_V2_PATH = "/double-farm";
 export const FARM_V2_STAKE_PATH = "/double-farm/stake";
 export const FARM_V2_STAKE_POSITIONS_PATH = "/double-farm/stake/positions";
+/* 
+  Farm
+*/
+export const FARM_PATH = "/farm";
+export const FARM_STAKE_PATH = "/farm/stake";
+export const FARM_STAKE_POSITIONS_PATH = "/farm/stake/positions";
+/* 
+  Locker
+*/
 export const LOCKER_PATH = "/locker";
 export const LOCKER_CONTRACT_PATH = "/locker/contracts";
 export const LOCKER_USER_PATH = "/locker/keys";
 export const LOCKER_CREATE_PATH = "/locker/create";
 export const LOCKER_SEARCH_PATH = "/locker/search";
+/* 
+  NFT
+*/
+export const COLLECTION_PATH = "/NFT/collection";
+export const GALLERY_PATH = "/NFT/gallery";
+export const BOYZ_PATH = "/NFT/neo-boyz";
+export const LP_TOKENS_PATH = "/NFT/lp-tokens";
+/* 
+  GAS-FI
+*/
 export const GASFI_PATH = "/gas-fi";
 export const GASFI_STAKE_PATH = "/gas-fi/stake";
 export const GASFI_MY_STAKING_PATH = "/gas-fi/staking";
-export const BRAND_KIT_PATH = "/brand-kit";
+/* 
+  Bridge
+*/
 export const BRIDGE_PATH = "/bridge";
+/* 
+  Analytics
+*/
+export const ANALYTICS_PATH = "/analytics";
+export const ANALYTICS_PAIRS_PATH = "/analytics/pairs";
+export const ANALYTICS_TOKENS_PATH = "/analytics/tokens";
+/* 
+  Archive
+*/
+export const LOTTO_PATH = "/lotto";
+export const ARCHIVE_PATH = "/archive";
+export const MIGRATION_PATH = "/migration";
+export const TOURNAMENT_PATH = "/arena";
+export const IDO_PATH = "/ido";
+/* 
+  Deprecated
+*/
+export const DAO_PATH = "/dao";
+export const DAO_CHANNEL_CREATE_PATH = "/dao/create";
+export const DAO_CHANNEL_PATH = "/dao/channel";
 
 export const BRIDGE_PAGE_ROUTE = {
   label: "Bridge",
