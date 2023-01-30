@@ -47,10 +47,11 @@ import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
 import BrandKit from "./pages/BrandKit";
+import { POLYGON_SWAP_PATH } from "../consts/polygonRoutes";
 
 const App = () => {
   return (
-    <Web3ReactProvider connectors={connectors}>
+    <Web3ReactProvider connectors={connectors} network={80001}>
       <WalletContextProvider
         options={{
           useDevWallet: process.env.NODE_ENV === "development",
@@ -67,6 +68,10 @@ const App = () => {
           <Route path={LOCKER_PATH} component={Locker} />
           <Route path={COLLECTION_PATH} component={MyCollection} />
           <Route path={SWAP_PATH} component={Swap} />
+          <Route
+            path={POLYGON_SWAP_PATH}
+            component={() => <Swap path={POLYGON_SWAP_PATH} />}
+          />
           <Route path={FARM_PATH} component={Farm} />
           <Route path={FARM_V2_PATH} component={FarmV2} />
           <Route path={DAO_PATH} component={DAO} />
@@ -78,6 +83,7 @@ const App = () => {
           <Route path={GASFI_PATH} component={GASFi} />
           <Route path={BRAND_KIT_PATH} component={BrandKit} />
           <Route path={BRIDGE_PATH} component={Bridge} />
+
           <MobileMenuSlider />
           <WalletSidebar />
         </Router>

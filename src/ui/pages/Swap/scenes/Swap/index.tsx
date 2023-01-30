@@ -2,41 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useWallet } from "../../../../../packages/provider";
 import { SwapContract } from "../../../../../packages/neo/contracts";
 import { toast } from "react-hot-toast";
-import AssetListModal from "../../components/AssetListModal";
 import _ from "underscore";
-import {
-  FaCaretDown,
-  FaCaretUp,
-  FaListAlt,
-  FaMinus,
-  FaPlus,
-} from "react-icons/fa";
+
+import AssetListModal from "../../components/AssetListModal";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { IReserveData } from "../../../../../packages/neo/contracts/ftw/swap/interfaces";
-import NoLPInfo from "./components/NoLPInfo";
+import NoLPInfo from "./components/Notifications/NoLPInfo";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import SwapInputs from "./SwapInputs";
-import {
-  SWAP_PATH_LIQUIDITY_ADD,
-  SWAP_PATH_LIQUIDITY_REMOVE,
-} from "../../../../../consts";
-import { useApp } from "../../../../../common/hooks/use-app";
 import Providers from "../Providers";
-import {
-  DEFAULT_SLIPPAGE,
-  PRICE_IMPACT_LIMIT,
-} from "../../../../../packages/neo/contracts/ftw/swap/consts";
+import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import PriceRatio from "./components/PriceRatio";
 import HistoryButtons from "./components/HistoryButtons";
 import {
   getAfterSlippage,
   getMaxTokenAAmount,
 } from "../../../../../packages/neo/contracts/ftw/swap/helpers";
-import SwapDetails from "./components/SwapDetails";
-import { u } from "@cityofzion/neon-core";
+import SwapDetails from "./components/Notifications/SwapDetails";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import {
   BNEO_SCRIPT_HASH,
@@ -47,7 +33,13 @@ import Pairs from "../PairsFromServer";
 import SwapHistory from "../../../Analytics/scenes/PairDetail/SwapHistory";
 import { fakeNEOBNEOReserve } from "./helpers";
 import { BNEOContract } from "../../../../../packages/neo/contracts/ftw/bneo";
-import { toDecimal } from "../../../../../packages/neo/utils";
+import AddLiquidityButton from "./components/SwapNav/AddLiquidityButton";
+import RemoveLiquidityButton from "./components/SwapNav/RemoveLiquidityButton";
+import BNEOInfo from "./components/Notifications/BNEOInfo";
+import SwapButton from "./SwapButton";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../../../../packages/chains/consts";
+import { useWeb3React } from "@web3-react/core";
 
 export interface ITokenState {
   hash: string;
@@ -55,12 +47,16 @@ export interface ITokenState {
   symbol: string;
 }
 
-const Swap = () => {
+interface ISwapProps {
+  rootPath: string;
+}
+const Swap = ({ rootPath }: ISwapProps) => {
   const location = useLocation();
   const history = useHistory();
+  const web3 = useWeb3React();
   const params = queryString.parse(location.search);
+  const { chain } = useApp();
   const { network, connectedWallet } = useWallet();
-  const { toggleWalletSidebar } = useApp();
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
   >("");
@@ -243,7 +239,7 @@ const Swap = () => {
   };
 
   useEffect(() => {
-    async function load(tokenAHash, tokenBHash) {
+    async function loadNEO(tokenAHash, tokenBHash) {
       setError(undefined);
       setPairLoading(true);
 
@@ -321,10 +317,35 @@ const Swap = () => {
       }
     }
 
-    if (params.tokenA && params.tokenB) {
-      load(params.tokenA, params.tokenB);
+    async function loadPolygon(tokenAHash, tokenBHash) {
+       try {
+         const res = await web3.connector.activate(80001);
+         console.log(res);
+         console.log(web3.connector);
+         console.log(web3.provider);
+       } catch (e) {
+         console.log(e);
+       }
     }
-  }, [location, refresh, params.tokenA, params.tokenB, connectedWallet]);
+
+    if (params.tokenA && params.tokenB) {
+      if (chain === NEO_CHAIN) {
+        loadNEO(params.tokenA, params.tokenB);
+      } else if (chain === POLYGON_CHAIN) {
+        loadPolygon(params.tokenA, params.tokenB);
+      }
+    }
+    loadPolygon(123,123);
+
+  }, [
+    location,
+    refresh,
+    params.tokenA,
+    params.tokenB,
+    connectedWallet,
+    network,
+    chain
+  ]);
 
   const noLiquidity =
     (tokenA &&
@@ -338,128 +359,31 @@ const Swap = () => {
       data.pair[tokenB.hash] &&
       data.pair[tokenB.hash].reserveAmount === 0);
 
-  let priceImpact = 0;
-
-  if (tokenA && tokenB && data && amountB) {
-    const reserve = u.BigInteger.fromNumber(
-      data.pair[tokenB.hash].reserveAmount
-    ).toDecimal(tokenB.decimals);
-    priceImpact = (amountB / parseFloat(reserve)) * 100;
-    console.log(
-      tokenA.symbol + " reserve: " + data.pair[tokenA.hash].reserveAmount
-    );
-    console.log(
-      tokenB.symbol + " reserve: " + data.pair[tokenB.hash].reserveAmount
-    );
-    console.log("Total shares: " + data.totalShare);
-    console.log("Price impact: " + priceImpact.toString());
-  }
-
   return (
     <div>
       <div className="level is-mobile">
-        <div className="level-left">
+        <div className="level-left is-hidden-mobile">
           <div className="level-item">
             <h1 className="title is-5 is-marginless ">Swap</h1>
           </div>
         </div>
 
-        <div className="level-right is-hidden-mobile">
+        <div className="level-right">
           <div className="level-item">
             <div className="buttons">
-              <Link
-                to={{
-                  pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
-                  search:
-                    tokenA &&
-                    tokenB &&
-                    !(
-                      tokenA.hash === NEO_SCRIPT_HASH &&
-                      tokenB.hash === BNEO_SCRIPT_HASH[network]
-                    ) &&
-                    !(
-                      tokenA.hash === BNEO_SCRIPT_HASH[network] &&
-                      tokenB.hash === NEO_SCRIPT_HASH
-                    )
-                      ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
-                      : "",
-                }}
-                className="button is-small is-white"
-              >
-                <span className="icon">
-                  <FaPlus />
-                </span>
-                <span className="ml-1 is-hidden-mobile">Add Liquidity</span>
-              </Link>
+              <AddLiquidityButton
+                network={network}
+                rootPath={rootPath}
+                tokenA={tokenA}
+                tokenB={tokenB}
+              />
 
-              <Link
-                to={SWAP_PATH_LIQUIDITY_REMOVE}
-                data-tip
-                data-for="removeLiquidity"
-                className="button is-small is-white"
-              >
-                <span className="icon">
-                  <FaMinus />
-                </span>
-                <span className="ml-1 is-hidden-mobile">Withdraw</span>
-              </Link>
+              <RemoveLiquidityButton rootPath={rootPath} />
 
-              <button
-                onClick={() => setPoolListModalActive(true)}
-                className="button is-small is-white"
-              >
-                <span className="icon">
-                  <FaListAlt />
-                </span>
-                <span className="ml-1 is-hidden-mobile">Pools</span>
-              </button>
+              {/* <PoolListButton onClick={setPoolListModalActive} /> */}
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="tabs is-small is-hidden-tablet has-scroll-hide">
-        <ul>
-          <li>
-            <Link
-              to={{
-                pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
-                search:
-                  tokenA && tokenB
-                    ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
-                    : "",
-              }}
-              className="button is-small is-white"
-            >
-              <span className="icon">
-                <FaPlus />
-              </span>
-              <span className="ml-1">Add Liquidity</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to={SWAP_PATH_LIQUIDITY_REMOVE}
-              className="button is-small is-white"
-            >
-              <span className="icon">
-                <FaMinus />
-              </span>
-              <span className="ml-1">Withdraw</span>
-            </Link>
-          </li>
-          <li>
-            <button
-              onClick={() => setPoolListModalActive(true)}
-              className="button is-small is-white"
-            >
-              <span className="icon">
-                <FaListAlt />
-              </span>
-              <span className="ml-1">Pools</span>
-            </button>
-          </li>
-        </ul>
       </div>
 
       <hr className="is-hidden-mobile" />
@@ -475,6 +399,7 @@ const Swap = () => {
       )}
 
       <SwapInputs
+        chain={chain}
         setSwapType={setSwapType}
         noLiquidity={noLiquidity}
         network={network}
@@ -542,10 +467,10 @@ const Swap = () => {
           amountB &&
           isSwapDetailActive ? (
             <SwapDetails
-              symbolB={tokenB.symbol}
-              decimalsB={tokenB.decimals}
+              tokenA={tokenA}
+              tokenB={tokenB}
+              data={data}
               amountB={amountB}
-              priceImpact={priceImpact}
               slippage={slippage ? slippage : 0}
               setSlippage={setSlippage}
             />
@@ -557,70 +482,22 @@ const Swap = () => {
         <></>
       )}
 
-      {tokenA &&
-        tokenA.hash === NEO_SCRIPT_HASH &&
-        tokenB &&
-        tokenB.hash === BNEO_SCRIPT_HASH[network] && (
-          <div className="notification is-success is-light">
-            We are converting using bNEO contract. It is not swapping through
-            our swap contract.
-            <br />
-            <a
-              className="is-size-7"
-              target="_blank"
-              href={"https://neoburger.io"}
-            >
-              [Learn more about bNEO]
-            </a>
-          </div>
-        )}
-
-      {tokenB && tokenB.hash === NEO_SCRIPT_HASH && (
-        <div className="notification is-success is-light">
-          NEO are indivisible. We are using bNEO behind the scene. You will be
-          paying extra gas fee for converting.
-          <br />
-          <a
-            className="is-size-7"
-            target="_blank"
-            href={"https://neoburger.io"}
-          >
-            [Learn more about bNEO]
-          </a>
-          {amountB ? (
-            <>
-              {" "}
-              <br />
-              <br />
-              <span className="has-text-weight-bold">{`Extra fee: ${toDecimal(
-                amountB * 100000
-              )} GAS`}</span>
-            </>
-          ) : (
-            ""
-          )}
-        </div>
-      )}
+      <BNEOInfo
+        network={network}
+        tokenA={tokenA}
+        tokenB={tokenB}
+        amountB={amountB}
+      />
 
       <hr />
-      <button
-        disabled={
-          !amountA ||
-          !amountB ||
-          (tokenA && data && data.userBalances[tokenA.hash] < amountA) ||
-          priceImpact > PRICE_IMPACT_LIMIT
-        }
-        onClick={connectedWallet ? onSwap : toggleWalletSidebar}
-        className={`button is-fullwidth is-primary ${
-          priceImpact > PRICE_IMPACT_LIMIT ? "is-danger" : ""
-        } ${isPairLoading ? "is-loading" : ""}`}
-      >
-        {connectedWallet
-          ? priceImpact > PRICE_IMPACT_LIMIT
-            ? "Price impact is too high"
-            : "Swap"
-          : "Connect wallet"}
-      </button>
+
+      <SwapButton
+        data={data}
+        tokenA={tokenA}
+        amountA={amountA}
+        amountB={amountB}
+        isLoading={isPairLoading}
+      />
 
       {txid && (
         <Modal onClose={() => setTxid("")}>

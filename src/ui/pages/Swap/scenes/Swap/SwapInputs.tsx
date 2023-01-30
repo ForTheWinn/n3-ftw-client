@@ -9,8 +9,10 @@ import {
   GAS_SCRIPT_HASH,
   NEO_SCRIPT_HASH,
 } from "../../../../../packages/neo/consts/nep17-list";
+import { CHAINS } from "../../../../../packages/chains/consts";
 
 interface ISwapInputsProps {
+  chain: CHAINS;
   network: INetworkType;
   tokenA?: ITokenState;
   tokenB?: ITokenState;
@@ -32,6 +34,7 @@ interface ISearchTerm {
 }
 
 const SwapInputs = ({
+  chain,
   setSwapType,
   network,
   tokenA,
@@ -85,6 +88,7 @@ const SwapInputs = ({
 				      : tokenB.hash;
 
 		      if (searchTerm.type === "A") {
+            
 			      estimated = await new SwapContract(network).getSwapEstimate(
 				      tokenAHash,
 				      tokenBHash,

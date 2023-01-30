@@ -19,7 +19,7 @@ const ETHWallets = (props) => {
     hooks,
   } = useWeb3React();
   const walletKey = getKey(connector);
-	console.log(connector)
+  
   return (
     <div>
       <h1 className="title is-6">ETH wallets</h1>

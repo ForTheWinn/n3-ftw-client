@@ -32,7 +32,11 @@ export interface ITokenState {
   symbol: string;
 }
 
-const Liquidity = () => {
+interface ILiquidityProps {
+  rootPath: string;
+}
+
+const Liquidity = ({rootPath}: ILiquidityProps) => {
   const location = useLocation();
   const history = useHistory();
   const params = queryString.parse(location.search);
@@ -103,7 +107,7 @@ const Liquidity = () => {
     if (connectedWallet) {
       if (tokenA && tokenB && amountA && amountB && data) {
         try {
-					console.log(peg)
+          console.log(peg);
           const deadlineMs = selectedLock ? moment(lockUntil).valueOf() : 0;
           let res;
 
@@ -235,7 +239,7 @@ const Liquidity = () => {
       data.pair[tokenB.hash].reserveAmount === 0);
 
   const toMain = {
-    pathname: `${SWAP_PATH}`,
+    pathname: `${rootPath}`,
     search:
       tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : "",
   };
@@ -275,7 +279,7 @@ const Liquidity = () => {
       <div className="is-relative">
         <div className="pb-2">
           <LPInputs
-	          setPeg={setPeg}
+            setPeg={setPeg}
             noLiquidity={noLiquidity}
             network={network}
             tokenA={tokenA}
@@ -312,7 +316,7 @@ const Liquidity = () => {
               <a
                 className="is-size-7"
                 target="_blank"
-                href={"https://neoburger.io"}
+                href={"https://neoburger.io"} rel="noreferrer"
               >
                 [Learn more about bNEO]
               </a>

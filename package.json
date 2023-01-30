@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@alch/alchemy-web3": "^1.4.7",
     "@cityofzion/neon-core": "^5.0.0-next.16",
     "@cityofzion/wallet-connect-sdk-core": "^2.0.7",
     "@cityofzion/wallet-connect-sdk-react": "^1.4.1",
@@ -11,6 +12,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@maticnetwork/maticjs-web3": "^1.0.4",
     "@neongd/neo-dapi": "^1.0.1",
     "@ramonak/react-progress-bar": "^5.0.2",
     "@uiw/react-md-editor": "^3.14.1",
@@ -20,6 +22,7 @@
     "@web3-react/coinbase-wallet": "^8.0.34-beta.0",
     "@web3-react/core": "^8.0.35-beta.0",
     "@web3-react/metamask": "^8.0.28-beta.0",
+    "@web3-react/network": "^8.0.27-beta.0",
     "@web3-react/types": "^8.0.20-beta.0",
     "bulma": "^0.9.3",
     "bulma-pagination-react": "^0.1.1",

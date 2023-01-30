@@ -18,11 +18,11 @@ export const SMITH_PATH_NEP11 = "/smith/nep11";
   Swap
 */
 export const SWAP_PATH = "/swap";
-export const SWAP_POOL_PATH = "/swap/pools";
-export const SWAP_PATH_HISTORY = "/swap/history";
-export const SWAP_PATH_LP_LIST = "/swap/providers";
-export const SWAP_PATH_LIQUIDITY_ADD = "/swap/liquidity/add";
-export const SWAP_PATH_LIQUIDITY_REMOVE = "/swap/liquidity/remove";
+export const SWAP_POOL_PATH = "/pools";
+export const SWAP_PATH_HISTORY = "/history";
+export const SWAP_PATH_LP_LIST = "/providers";
+export const SWAP_PATH_LIQUIDITY_ADD = "/liquidity/add";
+export const SWAP_PATH_LIQUIDITY_REMOVE = "/liquidity/remove";
 /* 
   Double Farm
 */

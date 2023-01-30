@@ -8,9 +8,11 @@ import HeaderBetween from "../../../../components/HeaderBetween";
 import { SWAP_PATH } from "../../../../../consts";
 import LPTokenList from "./LPTokenList";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
-import {handleError} from "../../../../../packages/neo/utils/errors";
+import { handleError } from "../../../../../packages/neo/utils/errors";
+import { useRouteMatch } from "react-router-dom";
 
 const RemoveLiquidity = () => {
+  const { path } = useRouteMatch();
   const { network, connectedWallet } = useWallet();
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
@@ -24,7 +26,7 @@ const RemoveLiquidity = () => {
         );
         setTxid(res);
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet");
@@ -38,7 +40,7 @@ const RemoveLiquidity = () => {
 
   return (
     <>
-      <HeaderBetween path={SWAP_PATH} title={"Withdraw liquidity"} />
+      <HeaderBetween path={path + SWAP_PATH} title={"Withdraw liquidity"} />
       <hr />
       {connectedWallet ? (
         <LPTokenList

@@ -1,31 +1,52 @@
-import { u } from "@cityofzion/neon-core";
 import React from "react";
-import { getAfterSlippage } from "../../../../../../packages/neo/contracts/ftw/swap/helpers";
-import SettingDropdown from "./SettingDropdown";
-import { numberTrim } from "../../../../../../packages/neo/utils";
-import { priceImpactFormat } from "../helpers";
+import { u } from "@cityofzion/neon-core";
+import { getAfterSlippage } from "../../../../../../../packages/neo/contracts/ftw/swap/helpers";
+import { numberTrim } from "../../../../../../../packages/neo/utils";
+import { priceImpactFormat } from "../../helpers";
+
+import SettingDropdown from "../SettingDropdown";
 
 interface ISwapDetailsProps {
-  decimalsB: number;
+  tokenA: any;
+  tokenB: any;
+  data: any;
   amountB: number;
-  symbolB: string;
-  priceImpact: number;
   slippage: number;
   setSlippage: (val: number) => void;
 }
 const SwapDetails = ({
-  decimalsB,
+  data,
+  tokenA,
+  tokenB,
   amountB,
-  symbolB,
-  priceImpact,
   slippage,
   setSlippage,
 }: ISwapDetailsProps) => {
-  const tolerance = numberTrim(getAfterSlippage(amountB, slippage), decimalsB);
-  const expected = numberTrim(amountB, decimalsB);
+  let priceImpact = 0;
+  const reserve = u.BigInteger.fromNumber(
+    data.pair[tokenB.hash].reserveAmount
+  ).toDecimal(tokenB.decimals);
+
+  priceImpact = (amountB / parseFloat(reserve)) * 100;
+
+  console.log(
+    tokenA.symbol + " reserve: " + data.pair[tokenA.hash].reserveAmount
+  );
+  console.log(
+    tokenB.symbol + " reserve: " + data.pair[tokenB.hash].reserveAmount
+  );
+  console.log("Total shares: " + data.totalShare);
+  console.log("Price impact: " + priceImpact.toString());
+
+  const tolerance = numberTrim(
+    getAfterSlippage(amountB, slippage),
+    tokenB.decimals
+  );
+  const expected = numberTrim(amountB, tokenB.decimals);
+
   return (
     <div className="message content is-small">
-      <div className="message-body"  style={{ overflow: "scroll" }}>
+      <div className="message-body" style={{ overflow: "scroll" }}>
         <div className="level mb-1 is-mobile">
           <div className="level-left">
             <div className="level-item">Expected output</div>
@@ -34,7 +55,7 @@ const SwapDetails = ({
           <div className="level-right">
             <div className="level-item has-text-right">
               <span className="has-text-weight-semibold">
-                {expected} {symbolB}
+                {expected} {tokenB.symbol}
               </span>
             </div>
           </div>
@@ -58,7 +79,7 @@ const SwapDetails = ({
             <div className="level-item has-text-right">
               <SettingDropdown
                 amount={tolerance}
-                symbol={symbolB}
+                symbol={tokenB.symbol}
                 slippage={slippage}
                 setSlippage={setSlippage}
               />
