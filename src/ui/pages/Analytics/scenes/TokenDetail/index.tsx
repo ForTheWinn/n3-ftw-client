@@ -37,7 +37,7 @@ const TokenDetail = ({ tokenId }: ITokenDetailProps) => {
   if (!data) return <div></div>;
   const hash = tokenId.substring(2);
   const logo = ASSET_LIST[MAINNET][hash]
-    ? ASSET_LIST[MAINNET][hash].logo
+    ? ASSET_LIST[MAINNET][hash].icon
     : UNKNOWN_TOKEN_IMAGE;
   return (
     <div>

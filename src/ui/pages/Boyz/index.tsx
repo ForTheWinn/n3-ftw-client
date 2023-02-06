@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/PageLayout";
+import PageLayout from "../../components/Commons/PageLayout";
 import { useWallet } from "../../../packages/provider";
 import Banner from "./Banner";
 import { RestAPI } from "../../../packages/neo/api";
@@ -56,7 +56,11 @@ const Boyz = () => {
 
   return (
     <div>
-      <Banner filter={filter} setFilter={setFilter} setFilterActive={() => setFilterActive(true)} />
+      <Banner
+        filter={filter}
+        setFilter={setFilter}
+        setFilterActive={() => setFilterActive(true)}
+      />
       <PageLayout>
         {isLoading ? (
           <div>Loading boyz..</div>

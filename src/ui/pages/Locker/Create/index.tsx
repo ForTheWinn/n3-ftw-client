@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useWallet } from "../../../../packages/provider";
 import toast from "react-hot-toast";
 import Modal from "../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
 import DatePicker from "react-datepicker";
 import SelectTokenContract from "./SelectTokenContract";
 import NumberFormat from "react-number-format";
@@ -100,7 +100,7 @@ const Create = () => {
       try {
         if (params && params.contractHash) {
           const contract = await new LockerContract(network).getContract(
-	          params.contractHash
+            params.contractHash
           );
           setContractHash({
             assetHash: contract.contractHash,
@@ -119,7 +119,7 @@ const Create = () => {
         console.error(e);
       }
     }
-		fetch()
+    fetch();
   }, [network, connectedWallet]);
 
   return (

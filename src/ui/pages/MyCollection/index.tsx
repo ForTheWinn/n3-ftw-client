@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/PageLayout";
+import PageLayout from "../../components/Commons/PageLayout";
 import { useWallet } from "../../../packages/provider";
 import { NFTContract } from "../../../packages/neo/contracts";
 import PropertiesModal from "../Rune/PropertiesModal";

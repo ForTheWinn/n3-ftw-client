@@ -1,10 +1,10 @@
-import React, {useEffect} from "react";
-import PageLayout from "../../components/PageLayout";
+import React, { useEffect } from "react";
+import PageLayout from "../../components/Commons/PageLayout";
 
 const BrandKit = (props) => {
-	useEffect(() => {
-		document.title = "FTW's brand kit";
-	}, []);
+  useEffect(() => {
+    document.title = "FTW's brand kit";
+  }, []);
   return (
     <PageLayout>
       <div className="columns is-centered">
@@ -262,10 +262,7 @@ const BrandKit = (props) => {
               <div className="column is-6">
                 <div className="card mb-5">
                   <div className="card-image">
-                    <figure
-                      className="image"
-                      style={{ margin: "auto" }}
-                    >
+                    <figure className="image" style={{ margin: "auto" }}>
                       <img src="/kit/FTW_Logo_Black.png" alt="FTW Rune Logo" />
                     </figure>
                   </div>

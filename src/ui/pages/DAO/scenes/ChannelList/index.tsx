@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import Modal from "../../../../components/Modal";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import Index from "../CreateChannel";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useWallet } from "../../../../../packages/provider";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
@@ -33,10 +33,7 @@ const DAOChannelList = () => {
 
             <div className="level-right">
               <div className="level-item">
-                <Link
-	                to={DAO_CHANNEL_CREATE_PATH}
-                  className="button is-white"
-                >
+                <Link to={DAO_CHANNEL_CREATE_PATH} className="button is-white">
                   <FaPlus />
                 </Link>
               </div>
@@ -44,7 +41,6 @@ const DAOChannelList = () => {
           </div>
 
           <List isLoaded={isLoaded} data={data} error={error} />
-
         </div>
       </div>
     </PageLayout>

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useWallet } from "../../../../../packages/provider";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
-import HeaderBetween from "../../../../components/HeaderBetween";
+import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { GASFI_PATH } from "../../../../../consts";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
 import moment from "moment";
@@ -63,10 +63,8 @@ const MyStaking = (props) => {
     if (now > canUnstakeAfter) {
       canUnstake = true;
     }
-		console.log( parseFloat(data.stakedAt) + DRAWING_FREQUENCY)
+    console.log(parseFloat(data.stakedAt) + DRAWING_FREQUENCY);
   }
-
-
 
   return (
     <div>
@@ -100,7 +98,16 @@ const MyStaking = (props) => {
                   </div>
                 </div>
               </div>
-              {data && !canUnstake ? <div className={" mb-5"}>You can unstake after {moment(parseFloat(data.stakedAt) + DRAWING_FREQUENCY).format("lll")}</div> : <></>}
+              {data && !canUnstake ? (
+                <div className={" mb-5"}>
+                  You can unstake after{" "}
+                  {moment(parseFloat(data.stakedAt) + DRAWING_FREQUENCY).format(
+                    "lll"
+                  )}
+                </div>
+              ) : (
+                <></>
+              )}
               <button
                 disabled={!canUnstake}
                 onClick={onSubmit}

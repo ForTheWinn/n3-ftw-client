@@ -4,7 +4,7 @@ import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v
 import { useWallet } from "../../../../../packages/provider";
 import DisplayBoy from "../MyBoyz/DisplayBoy";
 import StakingModal from "./StakingModal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import toast from "react-hot-toast";
 import { IBoyStaked } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 

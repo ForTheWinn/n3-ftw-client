@@ -10,11 +10,11 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import NEP17UpdateFormModal from "./NEP17UpdateFormModal";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import { SMITH_PATH, SMITH_PATH_NEP11 } from "../../../../../consts";
-import {handleError} from "../../../../../packages/neo/utils/errors";
+import { handleError } from "../../../../../packages/neo/utils/errors";
 
 const NEP17InfoPage = () => {
   const params = useParams();
@@ -60,7 +60,7 @@ const NEP17InfoPage = () => {
           setTxid(res);
         }
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet.");
@@ -201,7 +201,7 @@ const NEP17InfoPage = () => {
 
       {isUpdateModalActive && (
         <NEP17UpdateFormModal
-	        manifest={manifest}
+          manifest={manifest}
           onUpdate={onUpdate}
           onClose={() => setUpdateModalActive(false)}
         />

@@ -1,56 +1,45 @@
 import React from "react";
-import { ETH_WALLET_LIST } from "../../../web3/consts";
 import { getWalletIcon } from "./helpers";
-import { useWallet } from "../../../provider";
-import { ETHWalletAPI } from "../../../web3";
-import { useWeb3React } from "@web3-react/core";
 import DisplayConnectedWallet from "./DisplayConnectedWallet";
-import { getKey } from "../../../web3/utils";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 
-const ETHWallets = (props) => {
-  const { connectETHWallet } = useWallet();
-  const {
-    connector,
-    account,
-    accounts,
-    isActive,
-    isActivating,
-    provider,
-    hooks,
-  } = useWeb3React();
-  const walletKey = getKey(connector);
-  
+const ETHWallets = () => {
+  const { address, connector, isConnected } = useAccount();
+  const { connect, connectors, error, isLoading, pendingConnector } =
+    useConnect();
+
+  const { disconnect } = useDisconnect();
+
   return (
     <div>
       <h1 className="title is-6">ETH wallets</h1>
-      {account && walletKey ? (
+      {isConnected && address && connector ? (
         <DisplayConnectedWallet
-          account={account}
-          walletKey={walletKey}
-          disConnectWallet={() => {
-	          if (connector?.deactivate) {
-		          void connector.deactivate()
-	          } else {
-		          void connector.resetState()
-	          }
-          }}
+          account={address}
+          connectorId={connector.id}
+          disConnectWallet={disconnect}
         />
       ) : (
         <>
-          {ETH_WALLET_LIST.map((_wallet) => {
+          {connectors.map((connector) => {
+            console.log(connector.id);
             return (
-              <div key={_wallet.key} className="mb-1">
+              <div key={connector.id} className="mb-1">
                 <button
                   className="button is-fullwidth"
-                  onClick={() => ETHWalletAPI.connect(_wallet.key)}
+                  onClick={() => connect({ connector })}
                 >
                   <span className="panel-icon">
                     <img
-                      alt={`${_wallet.key} logo`}
-                      src={getWalletIcon(_wallet.key)}
+                      alt={`${connector.name} logo`}
+                      src={getWalletIcon(connector.id)}
                     />
                   </span>
-                  {_wallet.label}
+                  {connector.name}
+                  {!connector.ready && " (unsupported)"}
+                  {isLoading &&
+                    connector.id === pendingConnector?.id &&
+                    " (connecting)"}
                 </button>
               </div>
             );

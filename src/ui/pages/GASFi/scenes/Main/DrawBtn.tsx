@@ -3,7 +3,7 @@ import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi"
 import { toast } from "react-hot-toast";
 import { useWallet } from "../../../../../packages/provider";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 
 const DrawBtn = () => {
   const { connectedWallet, network } = useWallet();

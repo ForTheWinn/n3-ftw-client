@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { TOURNAMENT_PATH } from "../../../../../consts";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import { useWallet } from "../../../../../packages/provider";
 import { MAINNET } from "../../../../../packages/neo/consts";
 

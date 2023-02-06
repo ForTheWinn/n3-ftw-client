@@ -13,7 +13,6 @@ import { INetworkType } from "../neo/network";
 import { NEON } from "../neo/consts";
 import { handleError } from "../neo/utils/errors";
 import { ETHWalletAPI } from "../web3";
-import { useWeb3React } from "@web3-react/core";
 
 export const WalletContext = createContext({} as IWalletStates);
 export const WalletContextProvider = (props: {

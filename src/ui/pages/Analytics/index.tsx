@@ -8,7 +8,7 @@ import {
 import AnalyticsMain from "./scenes/Main";
 import PairDetail from "./scenes/PairDetail";
 import TokenDetail from "./scenes/TokenDetail";
-import PageLayout from "../../components/PageLayout";
+import PageLayout from "../../components/Commons/PageLayout";
 
 const Analytics = (props) => {
   return (

@@ -1,8 +1,11 @@
 import React from "react";
-import { connectors } from "../packages/web3/connectors";
-import { Web3ReactProvider } from "@web3-react/core";
+import { WagmiConfig, createClient, configureChains } from "wagmi";
+import { avalanche, bsc, polygon, polygonMumbai } from "wagmi/chains";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { publicProvider } from "wagmi/providers/public";
 import { HashRouter as Router, Route } from "react-router-dom";
-import Header from "./components/Header";
+import { Toaster } from "react-hot-toast";
+
 import {
   COLLECTION_PATH,
   GALLERY_PATH,
@@ -24,12 +27,15 @@ import {
   BRIDGE_PATH,
   BRAND_KIT_PATH,
 } from "../consts";
+import { POLYGON_SWAP_PATH } from "../consts/polygonRoutes";
+
 import { WalletContextProvider } from "../packages/provider";
-import WalletSidebar from "./components/WalletSidebar";
-import { Toaster } from "react-hot-toast";
+
+import Header from "./components/Commons/Header/Header";
+import WalletSidebar from "./components/Commons/SideNavs/WalletSidebar";
 import MyCollection from "./pages/MyCollection";
 import Gallery from "./pages/Rune";
-import MobileMenuSlider from "./components/MobileMenuSlider";
+import MobileMenuSlider from "./components/Commons/SideNavs/MobileMenuSlider";
 import Home from "./pages/Home";
 import Smith from "./pages/Smith";
 import Tournament from "./pages/Tournament";
@@ -47,11 +53,22 @@ import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
 import BrandKit from "./pages/BrandKit";
-import { POLYGON_SWAP_PATH } from "../consts/polygonRoutes";
+
+const { chains, provider, webSocketProvider } = configureChains(
+  [polygonMumbai],
+  [publicProvider()]
+);
+
+const client = createClient({
+  autoConnect: true,
+  connectors: [new MetaMaskConnector({ chains })],
+  provider,
+  webSocketProvider,
+});
 
 const App = () => {
   return (
-    <Web3ReactProvider connectors={connectors} network={80001}>
+    <WagmiConfig client={client}>
       <WalletContextProvider
         options={{
           useDevWallet: process.env.NODE_ENV === "development",
@@ -88,7 +105,7 @@ const App = () => {
           <WalletSidebar />
         </Router>
       </WalletContextProvider>
-    </Web3ReactProvider>
+    </WagmiConfig>
   );
 };
 

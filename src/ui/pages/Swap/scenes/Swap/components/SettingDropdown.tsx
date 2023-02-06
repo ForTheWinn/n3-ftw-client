@@ -3,42 +3,48 @@ import NumberFormat from "react-number-format";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 
 interface ISettingDropdownProps {
-	symbol: string
-	amount: string
+  symbol: string;
+  amount: string;
   slippage?: number;
   setSlippage: (val: number) => void;
 }
 function useOutsideAlerter(ref, handler) {
-	useEffect(() => {
-		/**
-		 * Alert if clicked on outside of element
-		 */
-		function handleClickOutside(event) {
-			if (ref.current && !ref.current.contains(event.target)) {
-				handler()
-			}
-		}
-		// Bind the event listener
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			// Unbind the event listener on clean up
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [ref]);
+  useEffect(() => {
+    /**
+     * Alert if clicked on outside of element
+     */
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        handler();
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
 }
 
-const SettingDropdown = ({ amount, slippage, setSlippage, symbol }: ISettingDropdownProps) => {
+const SettingDropdown = ({
+  amount,
+  slippage,
+  setSlippage,
+  symbol,
+}: ISettingDropdownProps) => {
   const [isActive, setActive] = useState(false);
-	const wrapperRef = useRef(null);
-	useOutsideAlerter(wrapperRef, () => setActive(false));
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, () => setActive(false));
   return (
-    <div ref={wrapperRef} className={`dropdown is-up is-right ${isActive ? "is-active" : ""}`}>
+    <div
+      ref={wrapperRef}
+      className={`dropdown is-up is-right ${isActive ? "is-active" : ""}`}
+    >
       <div className="dropdown-trigger">
-        <span
-	        className="is-clickable"
-          onClick={() => setActive(!isActive)}
-        >
-	        {amount} {symbol}
+        <span className="is-clickable" onClick={() => setActive(!isActive)}>
+          {amount}
+          <br /> {symbol}
         </span>
       </div>
       <div className="dropdown-menu">
@@ -55,8 +61,8 @@ const SettingDropdown = ({ amount, slippage, setSlippage, symbol }: ISettingDrop
                 onValueChange={(value) => {
                   if (value.floatValue) {
                     setSlippage(value.floatValue);
-                  }else{
-	                  setSlippage(DEFAULT_SLIPPAGE);
+                  } else {
+                    setSlippage(DEFAULT_SLIPPAGE);
                   }
                 }}
                 isAllowed={(values) => {

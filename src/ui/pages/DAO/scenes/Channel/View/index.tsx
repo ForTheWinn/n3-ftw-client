@@ -7,7 +7,7 @@ import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data"
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import Modal from "../../../../../components/Modal";
 import toast from "react-hot-toast";
-import AfterTransactionSubmitted from "../../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import VoteList from "./VoteList";
 import VotingPeriod from "./components/VotingPeriod";
 import VotingProgress from "./components/VotingProgress";

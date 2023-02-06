@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useWallet } from "../../../packages/provider";
 import Modal from "../../components/Modal";
-import AfterTransactionSubmitted from "../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../components/NeoComponents/AfterTransactionSubmitted";
 import toast from "react-hot-toast";
 import { useApp } from "../../../common/hooks/use-app";
 import { LottoContract } from "../../../packages/neo/contracts/ftw/lotto";
@@ -76,7 +76,7 @@ const Main = () => {
       </div>
       <div className="block">
         <div className="notification is-primary">
-	        <strong>Drawing TX</strong>:{" "}
+          <strong>Drawing TX</strong>:{" "}
           <a
             target="_blank"
             href={

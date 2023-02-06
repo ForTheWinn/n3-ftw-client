@@ -1,5 +1,5 @@
 import React from "react";
-import PageLayout from "./PageLayout";
+import PageLayout from "./Commons/PageLayout";
 import { TESTNET } from "../../packages/neo/consts";
 import { useWallet } from "../../packages/provider";
 
@@ -26,7 +26,10 @@ const TestnetOnlyRoute = ({ title, date }: TestnetOnlyRouteProps) => {
         Before the launch, try it on our testnet.
         <br />
         <br />
-        <button className="button is-danger" onClick={() => switchNetwork(TESTNET)}>
+        <button
+          className="button is-danger"
+          onClick={() => switchNetwork(TESTNET)}
+        >
           Switch to Testnet
         </button>
       </div>

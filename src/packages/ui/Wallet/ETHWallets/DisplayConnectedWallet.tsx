@@ -4,12 +4,12 @@ import { IETHWalletType } from "../../../neo/wallet/interfaces";
 import { truncateAddress } from "../../../neo/utils";
 
 interface IDisplayConnectedWalletProps {
-  walletKey: IETHWalletType;
+  connectorId: string;
   account: string;
   disConnectWallet: () => void;
 }
 const DisplayConnectedWallet = ({
-  walletKey,
+  connectorId,
   account,
   disConnectWallet,
 }: IDisplayConnectedWalletProps) => {
@@ -29,7 +29,7 @@ const DisplayConnectedWallet = ({
             onClick={() => setActive(!isActive)}
           >
             <span className="panel-icon">
-              <img alt={walletKey} src={getWalletIcon(walletKey)} />
+              <img alt={connectorId} src={getWalletIcon(connectorId)} />
             </span>
             <span>{truncateAddress(account)}</span>
           </button>

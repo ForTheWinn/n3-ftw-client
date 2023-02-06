@@ -19,9 +19,30 @@ const BNEOInfo = ({ tokenA, tokenB, network, amountB }: IBNEOInfoProps) => {
         tokenA.hash === NEO_SCRIPT_HASH &&
         tokenB &&
         tokenB.hash === BNEO_SCRIPT_HASH[network] && (
+          <>
+            <hr />
+            <div className="notification is-success is-light">
+              We are converting using bNEO contract. It is not swapping through
+              our swap contract.
+              <br />
+              <a
+                className="is-size-7"
+                target="_blank"
+                href={"https://neoburger.io"}
+                rel="noreferrer"
+              >
+                [Learn more about bNEO]
+              </a>
+            </div>
+          </>
+        )}
+
+      {tokenB && tokenB.hash === NEO_SCRIPT_HASH && (
+        <>
+          <hr />
           <div className="notification is-success is-light">
-            We are converting using bNEO contract. It is not swapping through
-            our swap contract.
+            NEO are indivisible. We are using bNEO behind the scene. You will be
+            paying extra gas fee for converting.
             <br />
             <a
               className="is-size-7"
@@ -31,35 +52,19 @@ const BNEOInfo = ({ tokenA, tokenB, network, amountB }: IBNEOInfoProps) => {
             >
               [Learn more about bNEO]
             </a>
+            {amountB ? (
+              <>
+                <br />
+                <br />
+                <span className="has-text-weight-bold">{`Extra fee: ${toDecimal(
+                  amountB * 100000
+                )} GAS`}</span>
+              </>
+            ) : (
+              ""
+            )}
           </div>
-        )}
-
-      {tokenB && tokenB.hash === NEO_SCRIPT_HASH && (
-        <div className="notification is-success is-light">
-          NEO are indivisible. We are using bNEO behind the scene. You will be
-          paying extra gas fee for converting.
-          <br />
-          <a
-            className="is-size-7"
-            target="_blank"
-            href={"https://neoburger.io"}
-            rel="noreferrer"
-          >
-            [Learn more about bNEO]
-          </a>
-          {amountB ? (
-            <>
-              {" "}
-              <br />
-              <br />
-              <span className="has-text-weight-bold">{`Extra fee: ${toDecimal(
-                amountB * 100000
-              )} GAS`}</span>
-            </>
-          ) : (
-            ""
-          )}
-        </div>
+        </>
       )}
     </>
   );

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../../../../components/PageLayout";
+import PageLayout from "../../../../../components/Commons/PageLayout";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { DAO_CHANNEL_PATH } from "../../../../../../consts";
 import ChannelForm from "../../../components/ChannelForm";
 import Modal from "../../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useWallet } from "../../../../../../packages/provider";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";

@@ -1,23 +1,25 @@
-import { POSClient, use } from "@maticnetwork/maticjs";
-import { Web3ClientPlugin } from "@maticnetwork/maticjs-web3";
+import { NEP_LOGO } from "../neo/contracts/ftw/farm/consts";
 
-// install web3 plugin
-use(Web3ClientPlugin);
+interface IToken {
+  hash: string;
+  decimals: number;
+  symbol: string;
+  icon: string;
+}
 
-// const posClient = new POSClient();
-export const posClient = () => new POSClient().init({
-  network: "testnet",
-  version: "mumbai",
-//   parent: {
-//     provider: new HDWalletProvider(privateKey, mainRPC),
-//     defaultConfig: {
-//       from: fromAddress,
-//     },
-//   },
-//   child: {
-//     provider: new HDWalletProvider(privateKey, childRPC),
-//     defaultConfig: {
-//       from: fromAddress,
-//     },
-//   },
-});
+export const POLYGON_TOKENS: IToken[] = [
+  {
+    hash: "0x5fD762EED8228f2dc83E129713888bcD0fDc2376",
+    decimals: 8,
+    symbol: "NEP",
+    icon: NEP_LOGO,
+  },
+  {
+    hash: "0xfe4F5145f6e09952a5ba9e956ED0C25e3Fa4c7F1",
+    decimals: 18,
+    symbol: "GAS",
+    icon: "/symbols/gas.svg",
+  },
+];
+
+export const POLYGON_SWAP_CONTRACT_HASH = "0xED0fc36fa00df2723A0146900a1AEEd6A9D95b39";

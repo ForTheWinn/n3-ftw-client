@@ -1,8 +1,6 @@
 import React from "react";
 import { FaAngleDown } from "react-icons/fa";
 import NumberFormat from "react-number-format";
-import { useWallet } from "../../../../../packages/provider";
-import { ASSET_LIST } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import LogoIcon from "../../../../components/LogoIcon";
 import { BsQuestionSquare } from "react-icons/bs";
 
@@ -24,8 +22,6 @@ interface IInputProps {
   balanceOverflow?: boolean;
 }
 const Input = ({
-  swapInitiated,
-  contractHash,
   isDisable,
   symbol,
   logo,
@@ -40,16 +36,6 @@ const Input = ({
   decimals,
   balanceOverflow,
 }: IInputProps) => {
-  const { network } = useWallet();
-  let logoIcon;
-  if (logo) {
-    logoIcon = logo;
-  } else {
-    logoIcon = ASSET_LIST[network][contractHash]
-      ? ASSET_LIST[network][contractHash].logo
-      : undefined;
-  }
-  // const noFund = userBalance && val && val > userBalance
   return (
     <div>
       <div className="columns is-mobile" style={{ alignItems: "center" }}>
@@ -57,8 +43,8 @@ const Input = ({
           <div className="level is-mobile">
             <div className="level-left">
               <div className="level-item mr-4 is-hidden-mobile">
-                {logoIcon ? (
-                  <LogoIcon width="35px" height="35px" img={logoIcon} />
+                {logo ? (
+                  <LogoIcon width="35px" height="35px" img={logo} />
                 ) : (
                   <div
                     className="circular--portrait"
@@ -105,7 +91,9 @@ const Input = ({
               placeholder="0.00"
               decimalScale={decimals !== undefined ? decimals : 8}
               inputMode="decimal"
-              className={`input ${balanceOverflow ? "is-danger" : ""}`}
+              className={`input is-shadowless ${
+                balanceOverflow ? "is-danger" : ""
+              }`}
               value={val !== undefined ? val : ""}
               allowNegative={false}
               onValueChange={(value, e) => {
@@ -124,8 +112,7 @@ const Input = ({
                 <p
                   onClick={(e) => {
                     if (userBalance) {
-                      // @ts-ignore
-                      setValue(userBalance, e);
+                      setValue(userBalance);
                     }
                   }}
                   className={`help has-text-right ${

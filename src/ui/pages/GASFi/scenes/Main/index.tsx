@@ -12,7 +12,7 @@ import DrawBtn from "./DrawBtn";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import History from "../History";
 import moment from "moment";
 
@@ -22,7 +22,6 @@ export interface IMainData {
   claimable?: IClaimableResult;
   bNEOBalance?: number;
 }
-
 
 const Main = (props) => {
   const { network, connectedWallet } = useWallet();
@@ -146,7 +145,7 @@ const Main = (props) => {
           )}
 
           <div className="box is-shadowless">
-	          <h6 className="title is-6">History</h6>
+            <h6 className="title is-6">History</h6>
             {/*<div className="level">*/}
             {/*  <div className="level-left">*/}
             {/*    <div className="level-item">*/}

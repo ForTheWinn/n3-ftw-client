@@ -5,7 +5,7 @@ import { TournamentContract } from "../../../../../../packages/neo/contracts/ftw
 import NFTDetailModal from "./NFTDetailModal";
 import HistoryTable from "./HistoryTable";
 import Replay from "./Replay";
-import AfterTransactionSubmitted from "../../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import Modal from "../../../../../components/Modal";
 
 interface IHistoryProps {

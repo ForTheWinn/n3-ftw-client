@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { CHAINS } from "../../packages/chains/consts";
 import { LocalStorage } from "../../packages/neo/local-storage";
-import queryString from "query-string";
+import { INetworkType } from "../../packages/neo/network";
 
 interface IAppContext {
   chain: CHAINS;
@@ -18,6 +17,9 @@ interface IAppContext {
 export const AppContext = createContext({} as IAppContext);
 
 export const AppCContextProvider = (props: { children: any }) => {
+  const [network, setNetwork] = useState(
+    process.env.REACT_NETWORK as INetworkType
+  );
   const [chain, setChain] = useState<CHAINS>(LocalStorage.getChain());
   const [sidebarStatus, setSidebarStatus] = useState(false);
   const [walletSidebarStatus, setWalletSidebarStatus] = useState(false);

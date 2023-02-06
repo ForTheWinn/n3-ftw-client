@@ -1,6 +1,7 @@
 import React from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
-import AssetListModal from "../../Swap/components/AssetListModal";
+import AssetListModal from "../../Swap/scenes/Swap/NEO/TokenList";
+import { ITokenState } from "../../Swap/scenes/Swap/interfaces";
 import { IContractState } from "./index";
 
 interface ISelectTokenContractProps {
@@ -52,15 +53,11 @@ const SelectTokenContract = ({
           activeTokenInput={"A"}
           tokenAHash={undefined}
           tokenBHash={undefined}
-          onAssetClick={(
-            assetHash: string,
-            symbol: string,
-            decimals: number
-          ) => {
+          onAssetClick={(token: ITokenState) => {
             onContractChange({
-              assetHash,
-              symbol,
-              decimals,
+              assetHash: token.hash,
+              symbol: token.symbol,
+              decimals: token.decimals,
             });
             setModalActive(false);
           }}

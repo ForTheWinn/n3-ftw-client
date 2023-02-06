@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/PageLayout";
+import PageLayout from "../../components/Commons/PageLayout";
 import { Route } from "react-router-dom";
 import {
   FARM_PATH,

@@ -4,7 +4,7 @@ import { TOURNAMENT_PATH } from "../../../../../consts";
 import { useWallet } from "../../../../../packages/provider";
 import PlayButton from "../../components/PlayButton";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { ADMIN_FOR_PLAY } from "../../../../../packages/neo/contracts/ftw/arena/consts";
 
 interface IBanner {

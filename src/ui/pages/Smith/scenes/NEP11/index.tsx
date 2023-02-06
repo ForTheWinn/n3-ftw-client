@@ -5,7 +5,7 @@ import ContractCard from "./ContractCard";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import Pagination from "bulma-pagination-react";
 import Banner from "../../Banner";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import { SMITH_PATH, SMITH_PATH_NEP11 } from "../../../../../consts";
 import { Link, useLocation } from "react-router-dom";
 const NEP11Smith = () => {

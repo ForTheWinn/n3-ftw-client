@@ -4,10 +4,10 @@ import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { useWallet } from "../../../../../packages/provider";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { Link, useHistory } from "react-router-dom";
 import { DAO_PATH } from "../../../../../consts";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import VerifyContract from "./VerifyContract";
 import ChannelForm from "../../components/ChannelForm";
 

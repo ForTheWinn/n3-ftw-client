@@ -1,4 +1,6 @@
 import { NEO_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
+import { POLYGON_TOKENS } from "../../../../../packages/polygon";
+import { ITokenState } from "./interfaces";
 
 export const priceImpactFormat = (p: number) => {
   if (p < 0.01) {
@@ -6,6 +8,14 @@ export const priceImpactFormat = (p: number) => {
   } else {
     return p.toFixed(2) + "%";
   }
+};
+
+export const getTokenByHash = (list: ITokenState[], hash: string): ITokenState | undefined => {
+  const result = POLYGON_TOKENS.find((token) => token.hash === hash);
+  if (result) {
+    return result;
+  }
+  return undefined;
 };
 
 export const fakeNEOBNEOReserve = (

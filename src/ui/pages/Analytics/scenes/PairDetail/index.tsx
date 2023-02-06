@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../../../components/PageLayout";
 import SwapHistory from "./SwapHistory";
 import { useWallet } from "../../../../../packages/provider";
 import { RestAPI } from "../../../../../packages/neo/api";
@@ -39,13 +38,13 @@ const PairDetail = ({ id }: IPairDetailProps) => {
   }, [network]);
   const tokenALogo = data
     ? ASSET_LIST[MAINNET][data.tokenA.id.substring(2)]
-      ? ASSET_LIST[MAINNET][data.tokenA.id.substring(2)].logo
+      ? ASSET_LIST[MAINNET][data.tokenA.id.substring(2)].icon
       : UNKNOWN_TOKEN_IMAGE
     : undefined;
 
   const tokenBLogo = data
     ? ASSET_LIST[MAINNET][data.tokenB.id.substring(2)]
-      ? ASSET_LIST[MAINNET][data.tokenB.id.substring(2)].logo
+      ? ASSET_LIST[MAINNET][data.tokenB.id.substring(2)].icon
       : UNKNOWN_TOKEN_IMAGE
     : undefined;
   return (

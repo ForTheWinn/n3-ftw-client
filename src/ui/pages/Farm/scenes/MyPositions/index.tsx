@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import HeaderBetween from "../../../../components/HeaderBetween";
+import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { FARM_PATH } from "../../../../../consts";
 import { useWallet } from "../../../../../packages/provider";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
 import { handleError } from "../../../../../packages/neo/utils/errors";

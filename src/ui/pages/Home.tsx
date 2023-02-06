@@ -11,7 +11,7 @@ import {
   SWAP_PATH,
 } from "../../consts";
 import { Link } from "react-router-dom";
-import SocialLinkGroup from "../components/SocialLinkGroup";
+import SocialLinkGroup from "../components/Commons/SocialLinkGroup";
 
 const CARDS: {
   title: string;

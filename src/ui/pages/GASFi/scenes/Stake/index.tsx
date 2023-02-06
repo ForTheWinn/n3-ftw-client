@@ -4,7 +4,7 @@ import { POSITION_RANGE } from "../../../../../packages/neo/contracts/ftw/gas-fi
 import { useWallet } from "../../../../../packages/provider";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useHistory } from "react-router-dom";

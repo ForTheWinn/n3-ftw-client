@@ -4,10 +4,10 @@ import { useWallet } from "../../../../../packages/provider";
 import { toast } from "react-hot-toast";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
 import { SMITH_PATH_NEP11 } from "../../../../../consts";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
 

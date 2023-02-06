@@ -4,7 +4,7 @@ import Modal from "../../../../../../components/Modal";
 import { useWallet } from "../../../../../../../packages/provider";
 import BetButton from "../../../../components/BetButton";
 import LeaveButton from "../../../../components/LeaveButton";
-import AfterTransactionSubmitted from "../../../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { TournamentContract } from "../../../../../../../packages/neo/contracts/ftw/arena";
 import { toDecimal } from "../../../../../../../packages/neo/utils";
 import AdminLeaveButton from "../../../../components/AdminLeaveButton";
@@ -118,17 +118,17 @@ const PlayerModal = ({
               ) : (
                 <></>
               )}
-	            {process.env.NODE_ENV === "development" ? (
-		            <div className="column">
-			            <AdminLeaveButton
-				            setTxid={setTxid}
-				            arenaNo={arenaNo}
-				            tokenId={player.tokenId}
-			            />
-		            </div>
-	            ) : (
-		            <></>
-	            )}
+              {process.env.NODE_ENV === "development" ? (
+                <div className="column">
+                  <AdminLeaveButton
+                    setTxid={setTxid}
+                    arenaNo={arenaNo}
+                    tokenId={player.tokenId}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         )}

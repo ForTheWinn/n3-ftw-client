@@ -1,23 +1,14 @@
 import React, { useState } from "react";
-import {
-  payments,
-  TOTAL_TOKENS_FOR_SALE,
-} from "../../../packages/neo/contracts/ftw/ido/consts";
+import { payments } from "../../../packages/neo/contracts/ftw/ido/consts";
 import { useWallet } from "../../../packages/provider";
-import { useOnChainData } from "../../../common/hooks/use-onchain-data";
 import { IDOContract } from "../../../packages/neo/contracts/ftw/ido";
-import { u } from "@cityofzion/neon-core";
 import Tokenomics from "./components/Tokenomics";
 import PaymentSelection from "./components/PaymentSelection";
 import Modal from "../../components/Modal";
 import IDOInfo from "./components/IDOInfo";
-import Input from "../Swap/components/Input";
-import { FaArrowDown } from "react-icons/fa";
-import moment from "moment";
-import AfterTransactionSubmitted from "../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../components/NeoComponents/AfterTransactionSubmitted";
 import toast from "react-hot-toast";
-import { useApp } from "../../../common/hooks/use-app";
-import {handleError} from "../../../packages/neo/utils/errors";
+import { handleError } from "../../../packages/neo/utils/errors";
 
 const Main = () => {
   const { network, connectedWallet } = useWallet();
@@ -55,7 +46,7 @@ const Main = () => {
         );
         setTxid(res);
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     }
   };
@@ -68,9 +59,9 @@ const Main = () => {
   // const { isLoaded, data } = useOnChainData(() => {
   //   return new IDOContract(network).getIDOStatus(connectedWallet);
   // }, [network, connectedWallet, refresh]);
-	//
+  //
   // if (!isLoaded) return <div></div>;
-	//
+  //
   // const totalSales = parseFloat(
   //   u.BigInteger.fromNumber(data.totalSales).toDecimal(8)
   // );
@@ -93,9 +84,9 @@ const Main = () => {
   return (
     <>
       <IDOInfo
-        // launchAt={data.launchAt}
-        // totalSales={(TOTAL_TOKENS_FOR_SALE - availableNEP).toLocaleString()}
-        // totalSalesInPercentage={parseFloat(totalSalesInPercentage.toString())}
+      // launchAt={data.launchAt}
+      // totalSales={(TOTAL_TOKENS_FOR_SALE - availableNEP).toLocaleString()}
+      // totalSalesInPercentage={parseFloat(totalSalesInPercentage.toString())}
       />
 
       {/*{token ? (*/}

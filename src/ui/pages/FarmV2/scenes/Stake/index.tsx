@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { FARM_V2_PATH} from "../../../../../consts";
-import HeaderBetween from "../../../../components/HeaderBetween";
+import { FARM_V2_PATH } from "../../../../../consts";
+import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { useWallet } from "../../../../../packages/provider";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenList from "./LPTokenList";
 import { handleError } from "../../../../../packages/neo/utils/errors";
-import {FarmV2Contract} from "../../../../../packages/neo/contracts/ftw/farm-v2";
+import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 
 const Stake = ({ onRefresh }) => {
   const { network, connectedWallet } = useWallet();

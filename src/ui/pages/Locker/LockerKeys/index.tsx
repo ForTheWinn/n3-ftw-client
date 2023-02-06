@@ -6,7 +6,7 @@ import LockerKeyCard from "./LockerKeyCard";
 import ConnectWalletButton from "../../../components/ConnectWalletButton";
 import toast from "react-hot-toast";
 import Modal from "../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
 
 const LockerKeys = () => {
   const { network, connectedWallet } = useWallet();
@@ -85,7 +85,9 @@ const LockerKeys = () => {
                           );
                         })
                       ) : (
-	                      <tr><td colSpan={6}>No keys</td></tr>
+                        <tr>
+                          <td colSpan={6}>No keys</td>
+                        </tr>
                       )
                     ) : (
                       <></>

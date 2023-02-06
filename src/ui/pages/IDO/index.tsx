@@ -1,14 +1,13 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import { IDO_PATH } from "../../../consts";
-import PageLayout from "../../components/PageLayout";
+import PageLayout from "../../components/Commons/PageLayout";
 import Main from "./Main";
 
 const IDO = () => {
-	useEffect(() => {
-		document.title =
-			"FTW IDO";
-	}, []);
+  useEffect(() => {
+    document.title = "FTW IDO";
+  }, []);
   return (
     <div>
       <PageLayout>

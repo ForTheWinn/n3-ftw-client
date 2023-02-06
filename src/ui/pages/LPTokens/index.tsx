@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/PageLayout";
+import PageLayout from "../../components/Commons/PageLayout";
 import { SwapContract } from "../../../packages/neo/contracts";
 import { useWallet } from "../../../packages/provider";
 import { RestAPI } from "../../../packages/neo/api";
@@ -8,17 +8,19 @@ import { SpinnerRoundFilled } from "spinners-react";
 import MyLPTokenList from "./MyLPTokenList";
 import MyLPTokenCard from "./MyLPTokenCard";
 import queryString from "query-string";
-import {useHistory, useLocation} from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const LPTokens = () => {
   const location = useLocation();
-	const history = useHistory();
+  const history = useHistory();
   const params = queryString.parse(location.search);
 
   const { connectedWallet, network } = useWallet();
 
   const [prices, setPrices] = useState<any>();
-  const [id, setId] = useState<any>(params && params.id ? params.id : undefined);
+  const [id, setId] = useState<any>(
+    params && params.id ? params.id : undefined
+  );
   const [info, setInfo] = useState<any>();
   const [error, setError] = useState("");
   const [isSearching, setSearching] = useState(false);
@@ -64,8 +66,8 @@ const LPTokens = () => {
         tokenBUSD: tokenBAmount * tokenBPrice,
       });
       setSearching(false);
-	    let search = `?id=${id}`;
-	    history.push(search);
+      let search = `?id=${id}`;
+      history.push(search);
     } catch (e: any) {
       setSearching(false);
       setError(e.message);
@@ -76,11 +78,11 @@ const LPTokens = () => {
     async function fetch() {
       const res = await new RestAPI(network).getPrices();
       setPrices(res);
-	    if (params.id) {
-		    await handleSearch(params.id, res);
-	    }
+      if (params.id) {
+        await handleSearch(params.id, res);
+      }
     }
-	  fetch();
+    fetch();
   }, [network]);
 
   return (

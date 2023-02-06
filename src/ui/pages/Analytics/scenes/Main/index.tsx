@@ -3,7 +3,7 @@ import { ANALYTICS_ROUTE } from "../../../../../consts";
 import { useWallet } from "../../../../../packages/provider";
 import ProductNotSupportedInNetwork from "../../../../components/ProductNotSupportedInNetwork";
 import LiquidityChart from "./LiquidityChart";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import Pools from "./Pairs";
 import Tokens from "./Tokens";
 import PriceChart from "../../components/PriceChart";

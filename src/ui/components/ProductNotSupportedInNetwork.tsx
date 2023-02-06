@@ -1,5 +1,5 @@
 import React from "react";
-import PageLayout from "./PageLayout";
+import PageLayout from "./Commons/PageLayout";
 import { INetworkType } from "../../packages/neo/network";
 
 const ProductNotSupportedInNetwork = ({
@@ -12,7 +12,7 @@ const ProductNotSupportedInNetwork = ({
   return (
     <PageLayout>
       <div className="box is-shadowless">
-	      {title} is not supported in {network}. Check your network setting.
+        {title} is not supported in {network}. Check your network setting.
       </div>
     </PageLayout>
   );

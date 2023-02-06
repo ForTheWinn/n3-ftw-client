@@ -3,7 +3,7 @@ import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm"
 import { useWallet } from "../../../../../packages/provider";
 import ClaimModal from "./ClaimModal";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";

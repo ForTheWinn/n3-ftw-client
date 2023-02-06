@@ -1,5 +1,5 @@
 import React from "react";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import { Route } from "react-router-dom";
 import ProposalList from "./ProposalList";
 import Create from "./Create";
@@ -14,7 +14,7 @@ const DAOChannel = (props) => {
     <PageLayout>
       <Route exact={true} path={path} component={ProposalList} />
       <Route path={`${path}/create`} component={Create} />
-	    <Route path={`${path}/edit`} component={Edit} />
+      <Route path={`${path}/edit`} component={Edit} />
       <Route path={`${path}/proposal/:proposalNo`} component={ProposalView} />
     </PageLayout>
   );

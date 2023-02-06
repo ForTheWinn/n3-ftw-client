@@ -1,69 +1,30 @@
-import React, { useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
-import { SwapContract } from "../../../../../packages/neo/contracts";
-import { toast } from "react-hot-toast";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
-import HeaderBetween from "../../../../components/HeaderBetween";
-import { SWAP_PATH } from "../../../../../consts";
-import LPTokenList from "./LPTokenList";
-import ConnectWalletButton from "../../../../components/ConnectWalletButton";
-import { handleError } from "../../../../../packages/neo/utils/errors";
-import { useRouteMatch } from "react-router-dom";
+import React from "react";
+import { useApp } from "../../../../../common/hooks/use-app";
 
-const RemoveLiquidity = () => {
-  const { path } = useRouteMatch();
-  const { network, connectedWallet } = useWallet();
-  const [txid, setTxid] = useState("");
-  const [refresh, setRefresh] = useState(0);
+import {
+  NEO_CHAIN,
+  POLYGON_CHAIN,
+} from "../../../../../packages/chains/consts";
 
-  const onRemoveLiquidity = async (tokenId: string) => {
-    if (connectedWallet) {
-      try {
-        const res = await new SwapContract(network).remove(
-          connectedWallet,
-          tokenId
-        );
-        setTxid(res);
-      } catch (e: any) {
-        toast.error(handleError(e));
-      }
-    } else {
-      toast.error("Please connect wallet");
-    }
-  };
+import NEORemoveLiquidity from "./NEO";
+import PolygonRemoveLiquidity from "./NEO";
 
-  const onSuccess = () => {
-    setRefresh(refresh + 1);
-    setTxid("");
-  };
+interface IRemoveLiquidityProps {
+  rootPath: string;
+}
 
+const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
+  const { chain } = useApp();
   return (
-    <>
-      <HeaderBetween path={path + SWAP_PATH} title={"Withdraw liquidity"} />
-      <hr />
-      {connectedWallet ? (
-        <LPTokenList
-          connectedWallet={connectedWallet}
-          network={network}
-          refresh={refresh}
-          onRemoveLiquidity={onRemoveLiquidity}
-        />
-      ) : (
-        <ConnectWalletButton />
-      )}
+    <div>
+      {chain === NEO_CHAIN ? <NEORemoveLiquidity rootPath={rootPath} /> : false}
 
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
+      {chain === POLYGON_CHAIN ? (
+        <PolygonRemoveLiquidity rootPath={rootPath} />
+      ) : (
+        false
       )}
-    </>
+    </div>
   );
 };
 

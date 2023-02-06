@@ -8,7 +8,7 @@ import moment from "moment";
 import { IMainData } from "../Main";
 import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 
 export interface IDrawHistoryProps {
   network: INetworkType;

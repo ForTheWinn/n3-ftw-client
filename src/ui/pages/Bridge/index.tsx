@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import PageLayout from "../../components/PageLayout";
+import PageLayout from "../../components/Commons/PageLayout";
 import MarketStatus from "../Swap/components/CheckMarketStatus";
 import { Route } from "react-router-dom";
 import { BRIDGE_PATH } from "../../../consts";

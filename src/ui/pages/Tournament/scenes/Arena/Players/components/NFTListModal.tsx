@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Modal from "../../../../../../components/Modal";
 import { NFTContract } from "../../../../../../../packages/neo/contracts";
 import { useWallet } from "../../../../../../../packages/provider";
-import AfterTransactionSubmitted from "../../../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { TournamentContract } from "../../../../../../../packages/neo/contracts/ftw/arena";
 import { toast } from "react-hot-toast";
-import {handleError} from "../../../../../../../packages/neo/utils/errors";
+import { handleError } from "../../../../../../../packages/neo/utils/errors";
 
 interface INFTListModalModal {
   arenaNo: string;
@@ -29,7 +29,7 @@ const NFTListModal = ({ arenaNo, onClose }: INFTListModalModal) => {
         addPendingTransaction(res);
         setTxid(res);
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet.");

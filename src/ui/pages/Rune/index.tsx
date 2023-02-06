@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/PageLayout";
+import PageLayout from "../../components/Commons/PageLayout";
 import PropertiesModal from "./PropertiesModal";
 import toast from "react-hot-toast";
 import { useWallet } from "../../../packages/provider";
@@ -7,9 +7,9 @@ import { NFTContract } from "../../../packages/neo/contracts";
 import Banner from "./Banner";
 import { RestAPI } from "../../../packages/neo/api";
 import { RUNE_PHASE_FILTER } from "../../../packages/neo/contracts/ftw/rune/consts";
-import AfterTransactionSubmitted from "../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../components/NeoComponents/AfterTransactionSubmitted";
 import Modal from "../../components/Modal";
-import {handleError} from "../../../packages/neo/utils/errors";
+import { handleError } from "../../../packages/neo/utils/errors";
 
 const Gallery = () => {
   const [txid, setTxid] = useState("");
@@ -30,7 +30,7 @@ const Gallery = () => {
         addPendingTransaction(res);
         setTxid(res);
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet.");
@@ -38,8 +38,7 @@ const Gallery = () => {
   };
 
   useEffect(() => {
-    document.title =
-      "FTW | Runes";
+    document.title = "FTW | Runes";
     async function fetchContractStatus() {
       setError("");
       setLoading(true);

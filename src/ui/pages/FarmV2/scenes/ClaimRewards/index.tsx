@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useWallet } from "../../../../../packages/provider";
 import ClaimModal from "./ClaimModal";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import LogoIcon from "../../../../components/LogoIcon";
@@ -108,7 +108,11 @@ const ClaimRewards = ({ prices }: IClaimRewardsProps) => {
             </div>
             <div className="media-content">
               <h1 className="title is-7 is-marginless">Stake Neo Boyz</h1>
-              <a target="_blank" href="https://docs.forthewin.network/boyz#utilities" className="is-size-6 has-text-grey-light">
+              <a
+                target="_blank"
+                href="https://docs.forthewin.network/boyz#utilities"
+                className="is-size-6 has-text-grey-light"
+              >
                 <small>Learn more</small>
               </a>
             </div>
@@ -155,10 +159,11 @@ const ClaimRewards = ({ prices }: IClaimRewardsProps) => {
         </button>
       </div>
 
-	    <div className="has-text-centered">
-		    <Link to={FARM_PATH} className="has-text-grey-light is-size-7">Go to legacy farm</Link>
-	    </div>
-
+      <div className="has-text-centered">
+        <Link to={FARM_PATH} className="has-text-grey-light is-size-7">
+          Go to legacy farm
+        </Link>
+      </div>
 
       {isClaimModalOpen && (
         <ClaimModal
