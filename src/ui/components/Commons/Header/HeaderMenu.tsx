@@ -1,11 +1,11 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom';
-import { navRoutes } from '../../consts/navRoutes';
-import { CHAINS } from '../../packages/chains/consts';
-import { INetworkType } from '../../packages/neo/network';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { navRoutes } from "../../../../consts/navRoutes";
+import { CHAINS } from "../../../../packages/chains/consts";
+import { INetworkType } from "../../../../packages/neo/network";
 interface IHeaderMenuProps {
-  chain: CHAINS,
-  network: INetworkType
+  chain: CHAINS;
+  network: INetworkType;
 }
 export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
   return (

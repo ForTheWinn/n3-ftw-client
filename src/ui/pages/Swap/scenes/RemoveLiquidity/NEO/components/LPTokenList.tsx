@@ -1,9 +1,9 @@
 import React from "react";
-import { SwapContract } from "../../../../../../packages/neo/contracts";
+import { SwapContract } from "../../../../../../../packages/neo/contracts";
 import LPTokenItem from "./LPTokenItem";
-import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
-import { IConnectedWallet } from "../../../../../../packages/neo/wallet/interfaces";
-import { INetworkType } from "../../../../../../packages/neo/network";
+import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
+import { IConnectedWallet } from "../../../../../../../packages/neo/wallet/interfaces";
+import { INetworkType } from "../../../../../../../packages/neo/network";
 
 interface ILPTokenListProps {
   connectedWallet: IConnectedWallet;
@@ -34,7 +34,7 @@ const LPTokenList = ({
               return (
                 <LPTokenItem
                   {...item}
-	                network={network}
+                  network={network}
                   onRemove={onRemoveLiquidity}
                   key={`${item.name}-${i}`}
                 />

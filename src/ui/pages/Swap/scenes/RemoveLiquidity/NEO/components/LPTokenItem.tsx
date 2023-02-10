@@ -1,9 +1,9 @@
 import moment from "moment";
 import React from "react";
-import { ILPToken } from "../../../../../../packages/neo/contracts/ftw/swap/interfaces";
-import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
-import { SwapContract } from "../../../../../../packages/neo/contracts";
-import { INetworkType } from "../../../../../../packages/neo/network";
+import { ILPToken } from "../../../../../../../packages/neo/contracts/ftw/swap/interfaces";
+import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
+import { SwapContract } from "../../../../../../../packages/neo/contracts";
+import { INetworkType } from "../../../../../../../packages/neo/network";
 import { u } from "@cityofzion/neon-core";
 interface ILPTokenListProps extends ILPToken {
   onRemove: (tokenId: string) => void;

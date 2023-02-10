@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import HeaderBetween from "../../../../../components/Commons/HeaderBetween";
-import LPTokenList from "../components/LPTokenList";
+import LPTokenList from "./components/LPTokenList";
 import ConnectWalletButton from "../../../../../components/ConnectWalletButton";
 import { handleError } from "../../../../../../packages/neo/utils/errors";
 

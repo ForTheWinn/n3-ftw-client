@@ -1,16 +1,11 @@
 import React, { useEffect } from "react";
-import { utils } from "../../packages/neo";
-import { IConnectedWallet } from "../../packages/neo/wallet/interfaces";
-import { useWallet } from "../../packages/provider";
-import { useApp } from "../../common/hooks/use-app";
-import { NEO_LINE, O3 } from "../../packages/neo/consts";
+import { useWallet } from "../../../../../packages/provider";
+import { NEO_LINE, O3 } from "../../../../../packages/neo/consts";
 import neo3Dapi from "neo3-dapi";
-interface IWalletDropdownProps {
-  connectedWallet: IConnectedWallet;
-}
-const WalletDropdown = ({ connectedWallet }: IWalletDropdownProps) => {
+import { Avatar } from "antd";
+
+const NeoWalletConnected = ({ connectedWallet, style }) => {
   const { disConnectWallet } = useWallet();
-  const { toggleWalletSidebar } = useApp();
 
   useEffect(() => {
     // const refresh = () => {
@@ -22,7 +17,7 @@ const WalletDropdown = ({ connectedWallet }: IWalletDropdownProps) => {
       disConnectWallet();
     };
 
-    if (connectedWallet.key === NEO_LINE) {
+    if (connectedWallet && connectedWallet.key === NEO_LINE) {
       window.addEventListener(
         "NEOLine.NEO.EVENT.ACCOUNT_CHANGED",
         disconnected
@@ -47,7 +42,7 @@ const WalletDropdown = ({ connectedWallet }: IWalletDropdownProps) => {
         );
       };
     }
-    if (connectedWallet.key === O3) {
+    if (connectedWallet && connectedWallet.key === O3) {
       neo3Dapi.addEventListener(
         neo3Dapi.Constants.EventName.ACCOUNT_CHANGED,
         disconnected
@@ -78,18 +73,10 @@ const WalletDropdown = ({ connectedWallet }: IWalletDropdownProps) => {
         );
       };
     }
-  }, []);
-  return (
-    <div>
-      <button
-        onClick={toggleWalletSidebar}
-        className="button is-small is-black is-rounded"
-        aria-controls="dropdown-wallet"
-      >
-        <span>{utils.truncateAddress(connectedWallet.account.address)}</span>
-      </button>
-    </div>
-  );
+  }, [connectedWallet]);
+
+  if (!connectedWallet) return <></>;
+  return <Avatar src="/symbols/neo.svg" style={style} />;
 };
 
-export default WalletDropdown;
+export default NeoWalletConnected;

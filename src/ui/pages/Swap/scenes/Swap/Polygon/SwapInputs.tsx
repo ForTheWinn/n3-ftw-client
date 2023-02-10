@@ -12,6 +12,7 @@ interface ISwapInputsProps {
   swapInput?: ISwapInputState;
   isAmountALoading: boolean;
   isAmountBLoading: boolean;
+  noLiquidity?: boolean;
   onAssetChange: (type: "A" | "B") => void;
   onSwitch: () => void;
   setSwapInputChange: (val: ISwapInputState) => void;
@@ -26,6 +27,7 @@ const SwapInputs = ({
   swapInput,
   isAmountALoading,
   isAmountBLoading,
+  noLiquidity,
   onSwitch,
   setSwapInputChange,
   onAssetChange,
@@ -53,7 +55,7 @@ const SwapInputs = ({
         contractHash={tokenA ? tokenA.hash : ""}
         symbol={tokenA ? tokenA.symbol : undefined}
         logo={tokenA ? tokenA.icon : undefined}
-        isDisable={!tokenA || !tokenB}
+        isDisable={!tokenA || !tokenB || noLiquidity}
         heading="Sell"
         onClickAsset={() => onAssetChange("A")}
         val={amountA}
@@ -77,7 +79,7 @@ const SwapInputs = ({
         contractHash={tokenB ? tokenB.hash : ""}
         symbol={tokenB ? tokenB.symbol : undefined}
         logo={tokenB ? tokenB.icon : undefined}
-        isDisable={!tokenA || !tokenB}
+        isDisable={!tokenA || !tokenB || noLiquidity}
         heading="Buy"
         onClickAsset={() => {
           onAssetChange("B");

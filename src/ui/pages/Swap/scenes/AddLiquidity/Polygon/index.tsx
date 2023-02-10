@@ -4,27 +4,30 @@ import queryString from "query-string";
 import { toast } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
-import { fetchBalance, writeContract, getNetwork } from "@wagmi/core";
+import {
+  fetchBalance,
+  writeContract,
+  getNetwork,
+  waitForTransaction,
+} from "@wagmi/core";
 
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { getTokenByHash } from "../../Swap/helpers";
 import {
+  approve,
+  getAllowances,
   getLPEstimate,
   getReserves,
   provide,
-  swap,
 } from "../../../../../../packages/polygon/api";
 import { defaultDeadLine } from "../../../../../../packages/neo/contracts/ftw/swap/helpers";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 import { POLYGON_TOKENS } from "../../../../../../packages/polygon";
 
-import AssetListModal from "../../Swap/NEO/TokenList";
-import LPRewardInfo from "../components/LPRewardInfo";
+import AssetListModal from "../../Swap/Polygon/TokenList";
 import LPInputs from "./Inputs";
 import SwapButton from "../../../components/SwapButton";
 import Nav from "../components/Nav";
-import Modal from "../../../../../components/Modal";
-import HandleTxid from "../../../../../components/PolygonComponents/HandleTxid";
 
 import {
   IBalancesState,
@@ -32,6 +35,8 @@ import {
   ISwapInputState,
   ITokenState,
 } from "../../Swap/interfaces";
+import ProvideLPInfo from "../../../components/ProvideLPInfo";
+import ActionModal from "./ActionModal";
 
 interface ILiquidityProps {
   rootPath: string;
@@ -63,6 +68,14 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
   const [swapInput, setSwapInput] = useState<ISwapInputState>();
 
+  const [isActionModalActive, setActionModalActive] = useState(false);
+  const [isTokenAApproved, setTokenAApproved] = useState(false);
+  const [isTokenAApprving, setTokenAApproving] = useState(false);
+  const [isTokenBApproved, setTokenBApproved] = useState(false);
+  const [isTokenBApprving, setTokenBApproving] = useState(false);
+  const [isSwapDone, setSwapDone] = useState(false);
+  const [isSwapping, setSwapping] = useState(false);
+
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
   >("");
@@ -71,7 +84,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
   const [txid, setTxid] = useState<`0x${string}` | undefined>();
   const [error, setError] = useState<any>();
-  // const [refresh, setRefresh] = useState(0);
+  const [refresh, setRefresh] = useState(0);
 
   const onAssetChange = (type: "A" | "B" | "") => {
     setAssetChangeModalActive(type);
@@ -106,9 +119,9 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         );
         setAmountB(parseFloat(estimated));
       }
-      if (!val.value) {
-        setAmountB(undefined);
-      }
+      // if (!val.value) {
+      //   setAmountB(undefined);
+      // }
     } else if (val.type === "B") {
       setAmountB(val.value);
       if (tokenA && tokenB && reserves && val.value) {
@@ -121,65 +134,85 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         );
         setAmountA(parseFloat(estimated));
       }
-      if (!val.value) {
-        setAmountA(undefined);
-      }
+      // if (!val.value) {
+      //   setAmountA(undefined);
+      // }
     }
     setSwapInput(val);
   };
 
-  const onSuccess = () => {
-    setAmountA(undefined);
-    setAmountB(undefined);
+  const onReset = () => {
+    setRefresh(refresh + 1);
+    setTokenAApproved(false);
+    setTokenAApproving(false);
+    setTokenBApproved(false);
+    setTokenBApproving(false);
+    setSwapDone(false)
+    setSwapping(false)
     setTxid(undefined);
+    setActionModalActive(false)
   };
 
   const onProvide = async () => {
-    if (tokenA && tokenB && amountA && amountB && swapInput) {
-      const amountIn =
-        swapInput.type === "A"
-          ? ethers.utils
-              .parseUnits(amountA.toString(), tokenA.decimals)
-              .toString()
-          : ethers.utils
-              .parseUnits(amountA.toString(), tokenA.decimals)
-              .add(
-                ethers.utils
-                  .parseUnits(amountA.toString(), tokenA.decimals)
-                  .mul(slippage)
-                  .div(100)
-              )
-              .toString();
-      const amountOut =
-        swapInput.type === "A"
-          ? ethers.utils
-              .parseUnits(amountB.toString(), tokenB.decimals)
-              .toString()
-          : ethers.utils
-              .parseUnits(amountB.toString(), tokenB.decimals)
-              .sub(
-                ethers.utils
-                  .parseUnits(amountB.toString(), tokenB.decimals)
-                  .mul(slippage)
-                  .div(100)
-              )
-              .toString();
-
-      const args = [
-        tokenA.hash,
-        ethers.utils.parseUnits(amountA.toString(), tokenA.decimals).toString(),
-
-        tokenB.hash,
-        ethers.utils.parseUnits(amountB.toString(), tokenB.decimals).toString(),
-        slippage,
-        defaultDeadLine(),
-      ];
+    if (tokenA && tokenB && amountA && amountB && swapInput && address) {
+      setActionModalActive(true);
       try {
+        const args = [
+          tokenA.hash,
+          ethers.utils
+            .parseUnits(amountA.toString(), tokenA.decimals)
+            .toString(),
+
+          tokenB.hash,
+          ethers.utils
+            .parseUnits(amountB.toString(), tokenB.decimals)
+            .toString(),
+          slippage,
+          defaultDeadLine(),
+        ];
+
+        const allowances = await getAllowances(
+          address,
+          tokenA.hash,
+          tokenB.hash
+        );
+
+        if (allowances[0].toString() === "0") {
+          const config = await approve(tokenA.hash);
+          const res = await writeContract(config);
+          setTokenAApproving(true);
+          await res.wait();
+          setTokenAApproved(true);
+          setTokenAApproving(false);
+        } else {
+          setTokenAApproved(true);
+        }
+
+        if (allowances[1].toString() === "0") {
+          const config = await approve(tokenB.hash);
+          const res = await writeContract(config);
+          setTokenBApproving(true);
+          await res.wait();
+          setTokenBApproved(true);
+          setTokenBApproving(false);
+        } else {
+          setTokenBApproved(true);
+        }
+
         const config = await provide(args);
         const { hash } = await writeContract(config);
+        setSwapping(true);
         setTxid(hash);
+
+        const data = await waitForTransaction({
+          hash,
+        });
+        setSwapDone(true);
+        setSwapping(false);
+
       } catch (e: any) {
         if (e.reason) {
+          // setActionModalActive(false);
           toast.error(e.reason);
         }
       }
@@ -187,23 +220,22 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   };
 
   useEffect(() => {
-    const load = async (_tokenA, _tokenB) => {
+    const load = async (_tokenA: ITokenState, _tokenB: ITokenState) => {
       setError(undefined);
       try {
         const res = await getReserves(_tokenA, _tokenB);
         setReserve(res);
-        console.log(res);
 
         if (address) {
           const tokenAbalance = await fetchBalance({
             address,
-            token: _tokenA.hash,
+            token: _tokenA.hash as `0x${string}`,
           });
           console.log(tokenAbalance);
 
           const tokenBbalance = await fetchBalance({
             address,
-            token: _tokenB.hash,
+            token: _tokenB.hash as `0x${string}`,
           });
 
           setBalances({
@@ -225,11 +257,11 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
     if (tokenA && tokenB) {
       load(tokenA, tokenB);
     }
-  }, [address, tokenA, tokenB]);
+  }, [address, tokenA, tokenB, refresh]);
 
   let noLiquidity = false;
 
-  if (tokenA && tokenB && reserves && amountA && amountB && reserves) {
+  if (tokenA && tokenB && reserves) {
     noLiquidity = reserves.shares === "0";
     console.log(reserves);
   }
@@ -252,7 +284,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       />
       <hr />
 
-      {noLiquidity && <LPRewardInfo />}
+      {noLiquidity && <ProvideLPInfo />}
 
       <div className="is-relative">
         <div className="pb-2">
@@ -281,7 +313,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         />
       </div>
 
-      {txid && chain && (
+      {/* {txid && chain && (
         <Modal onClose={() => setTxid(undefined)}>
           <HandleTxid
             explorer={chain.blockExplorers?.default.url}
@@ -290,7 +322,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
             onError={() => setTxid(undefined)}
           />
         </Modal>
-      )}
+      )} */}
 
       {isAssetChangeModalActive && (
         <AssetListModal
@@ -299,8 +331,23 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           tokenBHash={tokenB ? tokenB.hash : undefined}
           onAssetClick={onAssetClick}
           onClose={() => setAssetChangeModalActive("")}
-          filterDecimals={true}
-          noNEOBNEO={true}
+        />
+      )}
+
+      {isActionModalActive && tokenA && tokenB && (
+        <ActionModal
+          title="Add Liquidity"
+          tokenA={tokenA}
+          tokenB={tokenB}
+          isTokenAApproved={isTokenAApproved}
+          isTokenBApproved={isTokenBApproved}
+          isTokenAApproving={isTokenAApprving}
+          isTokenBApproving={isTokenBApprving}
+          isSwapping={isSwapping}
+          isSwapDone={isSwapDone}
+          txid={txid}
+          explorer={chain ? chain.blockExplorers?.default.url : ""}
+          onClose={onReset}
         />
       )}
     </>

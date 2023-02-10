@@ -5,11 +5,11 @@ import Logo from "./Logo";
 import { useApp } from "../../../../common/hooks/use-app";
 import { useWallet } from "../../../../packages/provider";
 import { utils } from "../../../../packages/neo";
-import WalletDropdown from "../../WalletDropdown";
+import DisplayConnectedWallets from "./DisplayConnectedWallets";
 import { TESTNET } from "../../../../packages/neo/consts";
 import { getWalletIcon } from "../../../../packages/ui/Wallet/NEOWallets/helpers";
 import ChainSwitch from "./ChainSwitch";
-import { HeaderMenu } from "../../HeaderMenu";
+import { HeaderMenu } from "./HeaderMenu";
 
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar, chain } = useApp();
@@ -59,7 +59,7 @@ const Header = () => {
             <FaWallet />
           </div>
         </div>
-        {connectedWallet && (
+        {/* {connectedWallet && (
           <div
             className={`navbar-menu  is-hidden-tablet ${
               isActive && "is-active"
@@ -86,7 +86,7 @@ const Header = () => {
               </button>
             </div>
           </div>
-        )}
+        )} */}
 
         <div className="navbar-menu ml-3">
           <div className="navbar-start">
@@ -100,7 +100,9 @@ const Header = () => {
           {/*<PendingTransaction />*/}
           <div className="navbar-item">
             <div className="buttons">
-              {connectedWallet ? (
+              <DisplayConnectedWallets />
+
+              {/* {connectedWallet ? (
                 <WalletDropdown connectedWallet={connectedWallet} />
               ) : (
                 <button
@@ -109,7 +111,7 @@ const Header = () => {
                 >
                   Connect wallet
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         </div>

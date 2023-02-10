@@ -26,7 +26,7 @@ import AssetListModal from "./TokenList";
 
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import NoLPInfo from "../components/Notifications/NoLPInfo";
+import NoLPInfo from "../../../components/ProvideLPInfo";
 import ErrorNotificationWithRefresh from "../../../../../components/ErrorNotificationWithRefresh";
 import SwapInputs from "./SwapInputs";
 import BNEOInfo from "../components/Notifications/BNEOInfo";
@@ -37,6 +37,8 @@ import { IReserveData } from "../../../../../../packages/neo/contracts/ftw/swap/
 import { ITokenState } from "../interfaces";
 import SwapDetails from "../components/SwapDetails/SwapDetails";
 import { u } from "@cityofzion/neon-core";
+import ProvideLPInfo from "../../../components/ProvideLPInfo";
+import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../consts";
 
 interface ISwapProps {
   rootPath: string;
@@ -374,7 +376,15 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
       <hr className="is-hidden-mobile" />
 
       {noLiquidity && tokenA && tokenB ? (
-        <NoLPInfo tokenA={tokenA.hash} tokenB={tokenB.hash} />
+        <ProvideLPInfo
+          path={{
+            pathname: `${rootPath}${SWAP_PATH_LIQUIDITY_ADD}`,
+            search:
+              tokenA && tokenB
+                ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
+                : "",
+          }}
+        />
       ) : (
         <></>
       )}

@@ -49,7 +49,7 @@ const SettingDropdown = ({ slippage, setSlippage }: ISettingDropdownProps) => {
                 autoFocus={true}
                 decimalScale={2}
                 inputMode="decimal"
-                className="input is-small"
+                className="input is-small is-shadowless"
                 value={slippage}
                 onValueChange={(value) => {
                   if (value.floatValue) {

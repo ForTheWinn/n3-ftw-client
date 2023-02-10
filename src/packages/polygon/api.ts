@@ -1,4 +1,9 @@
-import { readContract, prepareWriteContract } from "@wagmi/core";
+import {
+  readContract,
+  prepareWriteContract,
+  erc20ABI,
+  multicall,
+} from "@wagmi/core";
 import { ethers } from "ethers";
 import { POLYGON_SWAP_CONTRACT_HASH } from ".";
 import {
@@ -39,6 +44,16 @@ export const getEstimated = (args) => {
   });
 };
 
+export const getLPTokens = (owner: string) => {
+  console.log(owner);
+  return readContract({
+    address: POLYGON_SWAP_CONTRACT_HASH,
+    abi: FTWSwapABI,
+    functionName: "getTokensOf",
+    args: [owner],
+  });
+};
+
 export const getLPEstimate = (
   amount: number,
   decimals: number,
@@ -68,5 +83,37 @@ export const provide = (args) => {
     abi: FTWSwapABI,
     functionName: "addLiquidity",
     args: args,
+  });
+};
+
+export const approve = (token) => {
+  return prepareWriteContract({
+    address: token,
+    abi: erc20ABI,
+    functionName: "approve",
+    args: [POLYGON_SWAP_CONTRACT_HASH, ethers.constants.MaxUint256],
+  });
+};
+
+export const getAllowances = (
+  address: string,
+  tokenA: string,
+  tokenB: string
+) => {
+  return multicall({
+    contracts: [
+      {
+        address: tokenA as `0x${string}`,
+        abi: erc20ABI,
+        functionName: "allowance",
+        args: [address as `0x${string}`, POLYGON_SWAP_CONTRACT_HASH],
+      },
+      {
+        address: tokenB as `0x${string}`,
+        abi: erc20ABI,
+        functionName: "allowance",
+        args: [address as `0x${string}`, POLYGON_SWAP_CONTRACT_HASH],
+      },
+    ],
   });
 };

@@ -7,7 +7,7 @@ import {
 } from "../../../../../packages/chains/consts";
 
 import NEORemoveLiquidity from "./NEO";
-import PolygonRemoveLiquidity from "./NEO";
+import PolygonRemoveLiquidity from "./Polygon";
 
 interface IRemoveLiquidityProps {
   rootPath: string;

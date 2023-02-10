@@ -11,7 +11,6 @@ import queryString from "query-string";
 import moment from "moment";
 import ErrorNotificationWithRefresh from "../../../../../components/ErrorNotificationWithRefresh";
 import TimeLockInput from "../components/TimeLockInput";
-import LPRewardInfo from "../components/LPRewardInfo";
 import LPInputs from "./LPInputs";
 import { IReserveData } from "../../../../../../packages/neo/contracts/ftw/swap/interfaces";
 import { FaAngleLeft } from "react-icons/fa";
@@ -25,6 +24,7 @@ import {
 } from "../../../../../../packages/neo/consts/nep17-list";
 import { ITokenState } from "../../Swap/interfaces";
 import PriceRatio from "../../Swap/components/SwapDetails/PriceRatio";
+import ProvideLPInfo from "../../../components/ProvideLPInfo";
 
 interface ILiquidityProps {
   rootPath: string;
@@ -264,7 +264,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       </div>
 
       <hr />
-      {noLiquidity && <LPRewardInfo />}
+      {noLiquidity && <ProvideLPInfo />}
       {error && (
         <ErrorNotificationWithRefresh onRefresh={onRefresh} error={error} />
       )}

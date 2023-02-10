@@ -9,7 +9,7 @@ import {
 import PageLayout from "../../components/Commons/PageLayout";
 import Liquidity from "./scenes/AddLiquidity";
 import Trade from "./scenes/Swap";
-import RemoveLiquidity from "./scenes/RemoveLiquidity/NEO";
+import RemoveLiquidity from "./scenes/RemoveLiquidity";
 // import MarketStatus from "./components/CheckMarketStatus";
 
 interface ISwapProps {

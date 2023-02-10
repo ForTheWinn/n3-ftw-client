@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { fetchBalance, writeContract, getNetwork } from "@wagmi/core";
+import {
+  fetchBalance,
+  writeContract,
+  getNetwork,
+  waitForTransaction,
+} from "@wagmi/core";
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { useAccount } from "wagmi";
 import { BigNumberish, ethers } from "ethers";
@@ -10,13 +15,11 @@ import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/s
 import { POLYGON_TOKENS } from "../../../../../../packages/polygon";
 
 import AssetListModal from "./TokenList";
-import Modal from "../../../../../components/Modal";
-import NoLPInfo from "../components/Notifications/NoLPInfo";
+import ProvideLPInfo from "../../../components/ProvideLPInfo";
 import SwapInputs from "./SwapInputs";
 import SwapDetails from "../components/SwapDetails/SwapDetails";
 import SwapButton from "../../../components/SwapButton";
 import SwapNav from "../components/SwapNav";
-import HandleTxid from "../../../../../components/PolygonComponents/HandleTxid";
 import ReservesFetchError from "../components/Notifications/ReservesFetchError";
 
 import {
@@ -27,13 +30,18 @@ import {
 } from "../interfaces";
 
 import {
+  approve,
+  getAllowances,
   getEstimated,
   getReserves,
   provide,
+  swap,
 } from "../../../../../../packages/polygon/api";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { getTokenByHash } from "../helpers";
+import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../consts";
+import ActionModal from "../../AddLiquidity/Polygon/ActionModal";
 
 interface ISwapProps {
   rootPath: string;
@@ -65,6 +73,14 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const [swapInput, setSwapInput] = useState<ISwapInputState>();
 
+  const [isActionModalActive, setActionModalActive] = useState(false);
+  const [isTokenAApproved, setTokenAApproved] = useState(false);
+  const [isTokenAApprving, setTokenAApproving] = useState(false);
+  const [isTokenBApproved, setTokenBApproved] = useState(false);
+  const [isTokenBApprving, setTokenBApproving] = useState(false);
+  const [isSwapDone, setSwapDone] = useState(false);
+  const [isSwapping, setSwapping] = useState(false);
+
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
   >("");
@@ -76,7 +92,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const [txid, setTxid] = useState<`0x${string}` | undefined>();
   const [error, setError] = useState<any>();
-  // const [refresh, setRefresh] = useState(0);
+  const [refresh, setRefresh] = useState(0);
 
   const onAssetChange = (type: "A" | "B" | "") => {
     setAssetChangeModalActive(type);
@@ -98,10 +114,6 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     setAssetChangeModalActive("");
   };
 
-  // const onRefresh = () => {
-  //   setRefresh(refresh + 1);
-  // };
-
   const onSwapInputChange = (val: ISwapInputState) => {
     if (val.type === "A") {
       setAmountA(val.value);
@@ -111,11 +123,16 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     setSwapInput(val);
   };
 
-  const onSuccess = () => {
-    setAmountA(undefined);
-    setAmountB(undefined);
-    // setRefresh(refresh + 1);
+  const onReset = () => {
+    setRefresh(refresh + 1);
+    setTokenAApproved(false);
+    setTokenAApproving(false);
+    setTokenBApproved(false);
+    setTokenBApproving(false);
+    setSwapDone(false);
+    setSwapping(false);
     setTxid(undefined);
+    setActionModalActive(false);
   };
 
   const onSwitch = async () => {
@@ -126,7 +143,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   };
 
   const onSwap = async () => {
-    if (tokenA && tokenB && amountA && amountB && swapInput) {
+    if (tokenA && tokenB && amountA && amountB && swapInput && address) {
       const amountIn =
         swapInput.type === "A"
           ? ethers.utils
@@ -165,9 +182,45 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         swapInput.type === "B",
       ];
       try {
-        const config = await provide(args);
+        setActionModalActive(true);
+        const allowances = await getAllowances(
+          address,
+          tokenA.hash,
+          tokenB.hash
+        );
+
+        if (allowances[0].toString() === "0") {
+          const config = await approve(tokenA.hash);
+          const res = await writeContract(config);
+          setTokenAApproving(true);
+          await res.wait();
+          setTokenAApproved(true);
+          setTokenAApproving(false);
+        } else {
+          setTokenAApproved(true);
+        }
+
+        if (allowances[1].toString() === "0") {
+          const config = await approve(tokenB.hash);
+          const res = await writeContract(config);
+          setTokenBApproving(true);
+          await res.wait();
+          setTokenBApproved(true);
+          setTokenBApproving(false);
+        } else {
+          setTokenBApproved(true);
+        }
+
+        const config = await swap(args);
         const { hash } = await writeContract(config);
+        setSwapping(true);
         setTxid(hash);
+
+        const data = await waitForTransaction({
+          hash,
+        });
+        setSwapDone(true);
+        setSwapping(false);
       } catch (e: any) {
         if (e.reason) {
           toast.error(e.reason);
@@ -215,7 +268,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     if (tokenA && tokenB) {
       load(tokenA, tokenB);
     }
-  }, [address, tokenA, tokenB]);
+  }, [address, tokenA, tokenB, refresh]);
 
   useEffect(() => {
     if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
@@ -272,9 +325,11 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   let noLiquidity = false;
   let priceImpact = 0;
 
-  if (tokenA && tokenB && reserves && amountA && amountB && reserves) {
+  if (tokenA && tokenB && reserves) {
     noLiquidity = reserves.shares === "0";
-    priceImpact = (amountB / parseFloat(reserves.reserveB)) * 100;
+    if (amountA && amountB && reserves) {
+      priceImpact = (amountB / parseFloat(reserves.reserveB)) * 100;
+    }
     console.log(reserves);
   }
 
@@ -292,7 +347,15 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
       <hr className="is-hidden-mobile" />
 
       {noLiquidity && tokenA && tokenB ? (
-        <NoLPInfo tokenA={tokenA.hash} tokenB={tokenB.hash} />
+        <ProvideLPInfo
+          path={{
+            pathname: `${rootPath}${SWAP_PATH_LIQUIDITY_ADD}`,
+            search:
+              tokenA && tokenB
+                ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
+                : "",
+          }}
+        />
       ) : (
         <></>
       )}
@@ -306,6 +369,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         swapInput={swapInput}
         isAmountALoading={isAmountALoading}
         isAmountBLoading={isAmountBLoading}
+        noLiquidity={noLiquidity}
         setSwapInputChange={onSwapInputChange}
         onSwitch={onSwitch}
         onAssetChange={onAssetChange}
@@ -337,17 +401,6 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         onClick={isConnected ? onSwap : toggleWalletSidebar}
       />
 
-      {txid && chain && (
-        <Modal onClose={() => setTxid(undefined)}>
-          <HandleTxid
-            explorer={chain.blockExplorers?.default.url}
-            txid={txid}
-            onSuccess={onSuccess}
-            onError={() => setTxid(undefined)}
-          />
-        </Modal>
-      )}
-
       {isAssetChangeModalActive && (
         <AssetListModal
           activeTokenInput={isAssetChangeModalActive}
@@ -355,6 +408,23 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
           tokenBHash={tokenB ? tokenB.hash : undefined}
           onAssetClick={onAssetClick}
           onClose={() => setAssetChangeModalActive("")}
+        />
+      )}
+
+      {isActionModalActive && tokenA && tokenB && (
+        <ActionModal
+          title="Swap"
+          tokenA={tokenA}
+          tokenB={tokenB}
+          isTokenAApproved={isTokenAApproved}
+          isTokenBApproved={isTokenBApproved}
+          isTokenAApproving={isTokenAApprving}
+          isTokenBApproving={isTokenBApprving}
+          isSwapping={isSwapping}
+          isSwapDone={isSwapDone}
+          txid={txid}
+          explorer={chain ? chain.blockExplorers?.default.url : ""}
+          onClose={onReset}
         />
       )}
     </div>

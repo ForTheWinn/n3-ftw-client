@@ -1,13 +1,16 @@
 import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../../consts";
-import { SWAP_FEE } from "../../../../../../../packages/neo/contracts/ftw/swap/consts";
+import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../consts";
+import { SWAP_FEE } from "../../../../packages/neo/contracts/ftw/swap/consts";
 
-const NoLPInfo = ({ tokenA, tokenB }) => {
-  const { path } = useRouteMatch();
+interface IProvideLPInfoProps {
+  path?: any;
+}
+const ProvideLPInfo = ({ path }: IProvideLPInfoProps) => {
+  // const { path } = useRouteMatch();
   return (
     <>
-      <div className="notification is-info">
+      <div className="notification is-info is-light">
         <strong>No liquidity with this pair</strong>
         <br />
         Liquidity providers earn a {SWAP_FEE}% fee on all trades proportional to
@@ -15,7 +18,14 @@ const NoLPInfo = ({ tokenA, tokenB }) => {
         and can be claimed by withdrawing your liquidity.
         <br />
         <br />
-        <Link
+        {path ? (
+          <Link className="button is-info is-inverted" to={path}>
+            Provide liquidity
+          </Link>
+        ) : (
+          <></>
+        )}
+        {/* <Link
           className="button is-info is-inverted"
           to={
             tokenA && tokenB
@@ -26,11 +36,11 @@ const NoLPInfo = ({ tokenA, tokenB }) => {
           }
         >
           Provide liquidity
-        </Link>
+        </Link> */}
       </div>
       <hr />
     </>
   );
 };
 
-export default NoLPInfo;
+export default ProvideLPInfo;
