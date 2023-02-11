@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import _ from "underscore";
+import { u } from "@cityofzion/neon-core";
 import { toast } from "react-hot-toast";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
@@ -26,7 +27,6 @@ import AssetListModal from "./TokenList";
 
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import NoLPInfo from "../../../components/ProvideLPInfo";
 import ErrorNotificationWithRefresh from "../../../../../components/ErrorNotificationWithRefresh";
 import SwapInputs from "./SwapInputs";
 import BNEOInfo from "../components/Notifications/BNEOInfo";
@@ -36,9 +36,10 @@ import SwapNav from "../components/SwapNav";
 import { IReserveData } from "../../../../../../packages/neo/contracts/ftw/swap/interfaces";
 import { ITokenState } from "../interfaces";
 import SwapDetails from "../components/SwapDetails/SwapDetails";
-import { u } from "@cityofzion/neon-core";
+
 import ProvideLPInfo from "../../../components/ProvideLPInfo";
 import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../consts";
+import SwapSettings from "../../../components/Settings";
 
 interface ISwapProps {
   rootPath: string;
@@ -74,6 +75,7 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
   const [amountB, setAmountB] = useState<number | undefined>();
   const [swapType, setSwapType] = useState<"AtoB" | "BtoA" | undefined>();
   const [data, setData] = useState<IReserveData | undefined>();
+  const [isSettingsActive, setSettingsActive] = useState(false);
   const [slippage, setSlippage] = useState<number | undefined>(
     DEFAULT_SLIPPAGE
   );
@@ -371,6 +373,7 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
             ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
             : undefined
         }
+        onSettingClick={() => setSettingsActive(true)}
       />
 
       <hr className="is-hidden-mobile" />
@@ -473,6 +476,13 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
           filterDecimals={true}
         />
       )}
+
+      <SwapSettings
+        isActive={isSettingsActive}
+        onClose={() => setSettingsActive(false)}
+        slippage={slippage}
+        onSlippageChange={setSlippage}
+      />
     </div>
   );
 };

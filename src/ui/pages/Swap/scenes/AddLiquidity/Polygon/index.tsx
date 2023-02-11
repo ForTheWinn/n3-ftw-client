@@ -13,6 +13,7 @@ import {
 
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { getTokenByHash } from "../../Swap/helpers";
+import { getChainId } from "../../../../../../packages/chains/helpers";
 import {
   approve,
   getAllowances,
@@ -20,7 +21,6 @@ import {
   getReserves,
   provide,
 } from "../../../../../../packages/polygon/api";
-import { defaultDeadLine } from "../../../../../../packages/neo/contracts/ftw/swap/helpers";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 import { POLYGON_TOKENS } from "../../../../../../packages/polygon";
 
@@ -28,6 +28,9 @@ import AssetListModal from "../../Swap/Polygon/TokenList";
 import LPInputs from "./Inputs";
 import SwapButton from "../../../components/SwapButton";
 import Nav from "../components/Nav";
+import ProvideLPInfo from "../../../components/ProvideLPInfo";
+import ActionModal from "./ActionModal";
+import SwapSettings from "../../../components/Settings";
 
 import {
   IBalancesState,
@@ -35,8 +38,6 @@ import {
   ISwapInputState,
   ITokenState,
 } from "../../Swap/interfaces";
-import ProvideLPInfo from "../../../components/ProvideLPInfo";
-import ActionModal from "./ActionModal";
 
 interface ILiquidityProps {
   rootPath: string;
@@ -45,9 +46,9 @@ interface ILiquidityProps {
 const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const location = useLocation();
   const params = queryString.parse(location.search);
-  const { toggleWalletSidebar } = useApp();
   const { address, isConnected } = useAccount();
-  const { chain } = getNetwork();
+  const network = getNetwork();
+  const { chain, toggleWalletSidebar } = useApp();
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
     params.tokenA
@@ -75,11 +76,15 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const [isTokenBApprving, setTokenBApproving] = useState(false);
   const [isSwapDone, setSwapDone] = useState(false);
   const [isSwapping, setSwapping] = useState(false);
+  const [hasTokenAApproveError, setTokenAApproveError] = useState(false);
+  const [hasTokenBApproveError, setTokenBApproveError] = useState(false);
+  const [hasSwappingError, setSwappingError] = useState(false);
 
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
   >("");
 
+  const [isSettingsActive, setSettingsActive] = useState(false);
   const [slippage, setSlippage] = useState<number>(DEFAULT_SLIPPAGE);
 
   const [txid, setTxid] = useState<`0x${string}` | undefined>();
@@ -147,74 +152,102 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
     setTokenAApproving(false);
     setTokenBApproved(false);
     setTokenBApproving(false);
-    setSwapDone(false)
-    setSwapping(false)
+    setSwapDone(false);
+    setSwapping(false);
+    setTokenAApproveError(false);
+    setTokenBApproveError(false);
+    setSwappingError(false);
     setTxid(undefined);
-    setActionModalActive(false)
+    setActionModalActive(false);
+    setAmountA(undefined);
+    setAmountB(undefined);
   };
 
   const onProvide = async () => {
-    if (tokenA && tokenB && amountA && amountB && swapInput && address) {
+    if (tokenA && tokenB && amountA && amountB && address) {
+      if (network.chain && getChainId(chain) !== network.chain.id) {
+        toast.error(
+          "Chain doesn't match. Please check your wallet's network setting."
+        );
+        return false;
+      }
+
       setActionModalActive(true);
+
+      let tokenAAllowance;
+      let tokenBAllowance;
       try {
-        const args = [
-          tokenA.hash,
-          ethers.utils
-            .parseUnits(amountA.toString(), tokenA.decimals)
-            .toString(),
-
-          tokenB.hash,
-          ethers.utils
-            .parseUnits(amountB.toString(), tokenB.decimals)
-            .toString(),
-          slippage,
-          defaultDeadLine(),
-        ];
-
         const allowances = await getAllowances(
           address,
           tokenA.hash,
           tokenB.hash
         );
+        tokenAAllowance = allowances[0];
+        tokenBAllowance = allowances[1];
+      } catch (e) {
+        toast.error("Failed to load data.");
+        onReset();
+      }
 
-        if (allowances[0].toString() === "0") {
+      if (tokenAAllowance.toString() === "0") {
+        setTokenAApproving(true);
+        try {
           const config = await approve(tokenA.hash);
           const res = await writeContract(config);
-          setTokenAApproving(true);
           await res.wait();
           setTokenAApproved(true);
-          setTokenAApproving(false);
-        } else {
-          setTokenAApproved(true);
+        } catch (e) {
+          setTokenAApproveError(true);
+          toast.error(`"Failed to approve ${tokenA.symbol}."`);
         }
+        setTokenAApproving(false);
+      } else {
+        setTokenAApproved(true);
+      }
 
-        if (allowances[1].toString() === "0") {
+      if (tokenBAllowance.toString() === "0") {
+        setTokenBApproving(true);
+        try {
           const config = await approve(tokenB.hash);
           const res = await writeContract(config);
-          setTokenBApproving(true);
           await res.wait();
           setTokenBApproved(true);
-          setTokenBApproving(false);
-        } else {
-          setTokenBApproved(true);
+        } catch (e) {
+          setTokenBApproveError(true);
+          toast.error(`"Failed to approve ${tokenA.symbol}."`);
         }
+        setTokenBApproving(false);
+      } else {
+        setTokenBApproved(true);
+      }
 
-        const config = await provide(args);
+      try {
+        const config = await provide([
+          tokenA.hash,
+          ethers.utils
+            .parseUnits(amountA.toString(), tokenA.decimals)
+            .toString(),
+          tokenB.hash,
+          ethers.utils
+            .parseUnits(amountB.toString(), tokenB.decimals)
+            .toString(),
+          slippage * 100,
+        ]);
+
         const { hash } = await writeContract(config);
+
         setSwapping(true);
         setTxid(hash);
 
         const data = await waitForTransaction({
           hash,
         });
+
         setSwapDone(true);
         setSwapping(false);
-
-      } catch (e: any) {
-        if (e.reason) {
-          // setActionModalActive(false);
-          toast.error(e.reason);
-        }
+      } catch (e) {
+        setSwappingError(true);
+        setSwapping(false);
       }
     }
   };
@@ -279,8 +312,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       <Nav
         path={toMain}
         title={title}
-        slippage={slippage}
-        setSlippage={setSlippage}
+        onSettingClick={() => setSettingsActive(true)}
       />
       <hr />
 
@@ -303,26 +335,13 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         <hr />
 
         <SwapButton
-          label={"Do it!"}
+          label={"Add liquidity"}
           isLoading={false}
           isWalletConnected={isConnected}
-          isActive={
-            !!tokenA || !!tokenB || !!amountA || !!amountB || !noLiquidity
-          }
-          onClick={onProvide}
+          isActive={!!tokenA && !!tokenB && !!amountA && !!amountB}
+          onClick={isConnected ? onProvide : toggleWalletSidebar}
         />
       </div>
-
-      {/* {txid && chain && (
-        <Modal onClose={() => setTxid(undefined)}>
-          <HandleTxid
-            explorer={chain.blockExplorers?.default.url}
-            txid={txid}
-            onSuccess={onSuccess}
-            onError={() => setTxid(undefined)}
-          />
-        </Modal>
-      )} */}
 
       {isAssetChangeModalActive && (
         <AssetListModal
@@ -345,11 +364,23 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           isTokenBApproving={isTokenBApprving}
           isSwapping={isSwapping}
           isSwapDone={isSwapDone}
+          hasTokenAError={hasTokenAApproveError}
+          hasTokenBError={hasTokenBApproveError}
+          hasSubmitError={hasSwappingError}
           txid={txid}
-          explorer={chain ? chain.blockExplorers?.default.url : ""}
+          explorer={
+            network.chain ? network.chain.blockExplorers?.default.url : ""
+          }
           onClose={onReset}
         />
       )}
+
+      <SwapSettings
+        isActive={isSettingsActive}
+        onClose={() => setSettingsActive(false)}
+        slippage={slippage}
+        onSlippageChange={setSlippage}
+      />
     </>
   );
 };

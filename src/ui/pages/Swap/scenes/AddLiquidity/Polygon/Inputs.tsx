@@ -1,6 +1,6 @@
 import React from "react";
 import Input from "../../../components/Input";
-import { FaPlusSquare } from "react-icons/fa";
+import { FaExchangeAlt, FaPlusSquare } from "react-icons/fa";
 import {
   IBalancesState,
   ISwapInputState,
@@ -62,30 +62,34 @@ const LPInputs = ({
     );
   return (
     <>
-      <Input
-        isLoading={false}
-        isDisable={!tokenA}
-        heading="Pair A"
-        onClickAsset={() => {
-          onAssetChange("A");
-        }}
-        contractHash={tokenA ? tokenA.hash : ""}
-        symbol={tokenA ? tokenA.symbol : ""}
-        logo={tokenA ? tokenA.icon : undefined}
-        decimals={tokenA ? tokenA.decimals : undefined}
-        val={amountA}
-        setValue={(value) => {
-          setSwapInputChange({
-            type: "A",
-            value,
-          });
-        }}
-        userBalance={balances ? parseFloat(balances.amountA) : undefined}
-        balanceOverflow={amountAOverflow}
-      />
+      <div className="pb-2">
+        <Input
+          isLoading={false}
+          isDisable={!tokenA}
+          heading="Pair A"
+          onClickAsset={() => {
+            onAssetChange("A");
+          }}
+          contractHash={tokenA ? tokenA.hash : ""}
+          symbol={tokenA ? tokenA.symbol : ""}
+          logo={tokenA ? tokenA.icon : undefined}
+          decimals={tokenA ? tokenA.decimals : undefined}
+          val={amountA}
+          setValue={(value) => {
+            setSwapInputChange({
+              type: "A",
+              value,
+            });
+          }}
+          userBalance={balances ? parseFloat(balances.amountA) : undefined}
+          balanceOverflow={amountAOverflow}
+        />
+      </div>
 
-      <div className="pt-4 pb-4 has-text-centered">
-        <FaPlusSquare size={16} />
+      <div className="pt-5 pb-5">
+        <button className="button is-white is-fullwidth">
+          <FaPlusSquare />
+        </button>
       </div>
 
       <Input

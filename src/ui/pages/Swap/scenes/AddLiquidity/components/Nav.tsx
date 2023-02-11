@@ -1,15 +1,13 @@
 import React from "react";
-import { FaAngleLeft } from "react-icons/fa";
+import { FaAngleLeft, FaCog } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import SettingDropdown from "./SettingDropdown";
 
 interface INavProps {
   title: string;
   path: any;
-  slippage: number;
-  setSlippage: (val) => void;
+  onSettingClick: () => void;
 }
-const Nav = ({ title, path, slippage, setSlippage }: INavProps) => {
+const Nav = ({ title, path, onSettingClick }: INavProps) => {
   return (
     <div
       style={{
@@ -31,7 +29,9 @@ const Nav = ({ title, path, slippage, setSlippage }: INavProps) => {
 
       <div className="is-relative" style={{ width: "50px" }}>
         <div className="is-pulled-right">
-          <SettingDropdown slippage={slippage} setSlippage={setSlippage} />
+          <button onClick={onSettingClick} className="button is-white is-small">
+            <FaCog />
+          </button>
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import React from "react";
 import Modal from "../../../../../components/Modal";
-import { Steps, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Steps } from "antd";
 import { ITokenState } from "../../Swap/interfaces";
+import LoadingWithText from "../../../../../components/Commons/LoadingWithText";
 
 interface IActionModalProps {
   title: string;
@@ -14,12 +14,13 @@ interface IActionModalProps {
   isTokenAApproving: boolean;
   isTokenBApproving: boolean;
   isSwapping: boolean;
+  hasTokenAError: boolean;
+  hasTokenBError: boolean;
+  hasSubmitError: boolean;
   txid?: `0x${string}`;
   explorer?: string;
   onClose: () => void;
 }
-
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const ActionModal = ({
   title,
@@ -31,6 +32,9 @@ const ActionModal = ({
   isTokenAApproving,
   isTokenBApproving,
   isSwapping,
+  hasTokenAError,
+  hasTokenBError,
+  hasSubmitError,
   txid,
   explorer,
   onClose,
@@ -57,8 +61,17 @@ const ActionModal = ({
                 title: tokenA.symbol,
                 description: (
                   <>
-                    {isTokenAApproving ? "Approving" : ""}
+                    {isTokenAApproving ? (
+                      <LoadingWithText title="Approving" />
+                    ) : (
+                      <></>
+                    )}
                     {isTokenAApproved ? "Approved" : ""}
+                    {hasTokenAError ? (
+                      <span className="has-text-danger">Error</span>
+                    ) : (
+                      ""
+                    )}
                   </>
                 ),
               },
@@ -66,8 +79,17 @@ const ActionModal = ({
                 title: tokenB.symbol,
                 description: (
                   <>
-                    {isTokenBApproving ? "Approving" : ""}
+                    {isTokenBApproving ? (
+                      <LoadingWithText title="Approving" />
+                    ) : (
+                      <></>
+                    )}
                     {isTokenBApproved ? "Approved" : ""}
+                    {hasTokenBError ? (
+                      <span className="has-text-danger">Error</span>
+                    ) : (
+                      ""
+                    )}
                   </>
                 ),
               },
@@ -75,8 +97,17 @@ const ActionModal = ({
                 title: "Action",
                 description: (
                   <>
-                    {isSwapping ? "Submitting" : ""}
+                    {isSwapping ? (
+                      <LoadingWithText title="Submitting" />
+                    ) : (
+                      <></>
+                    )}
                     {isSwapDone ? "Finished" : ""}
+                    {hasSubmitError ? (
+                      <span className="has-text-danger">Error</span>
+                    ) : (
+                      ""
+                    )}
                   </>
                 ),
               },
@@ -101,6 +132,18 @@ const ActionModal = ({
               </button>
             </div>
           </>
+        ) : (
+          <></>
+        )}
+
+        {hasSubmitError || hasTokenAError || hasTokenBError ? (
+          <div className="has-text-centered">
+            <hr />
+
+            <button onClick={onClose} className="button is-black">
+              Close
+            </button>
+          </div>
         ) : (
           <></>
         )}

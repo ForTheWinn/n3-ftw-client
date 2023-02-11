@@ -45,12 +45,29 @@ export const getEstimated = (args) => {
 };
 
 export const getLPTokens = (owner: string) => {
-  console.log(owner);
   return readContract({
     address: POLYGON_SWAP_CONTRACT_HASH,
     abi: FTWSwapABI,
     functionName: "getTokensOf",
     args: [owner],
+  });
+};
+
+// export const getLPTokenIds = (owner: string) => {
+//   return readContract({
+//     address: POLYGON_SWAP_CONTRACT_HASH,
+//     abi: FTWSwapABI,
+//     functionName: "tokenOfOwnerByIndex",
+//     args: [owner],
+//   });
+// };
+
+export const getTokenURI = (tokenId: number) => {
+  return readContract({
+    address: POLYGON_SWAP_CONTRACT_HASH,
+    abi: FTWSwapABI,
+    functionName: "tokenURI",
+    args: [tokenId],
   });
 };
 
@@ -73,7 +90,7 @@ export const swap = (args) => {
     address: POLYGON_SWAP_CONTRACT_HASH,
     abi: FTWSwapABI,
     functionName: "swap",
-    args: args,
+    args,
   });
 };
 
@@ -83,6 +100,15 @@ export const provide = (args) => {
     abi: FTWSwapABI,
     functionName: "addLiquidity",
     args: args,
+  });
+};
+
+export const removeLiquidity = (tokenId: string) => {
+  return prepareWriteContract({
+    address: POLYGON_SWAP_CONTRACT_HASH,
+    abi: FTWSwapABI,
+    functionName: "removeLiquidity",
+    args: [tokenId],
   });
 };
 
@@ -115,5 +141,23 @@ export const getAllowances = (
         args: [address as `0x${string}`, POLYGON_SWAP_CONTRACT_HASH],
       },
     ],
+  });
+};
+
+export const isApprovedForAll = (owner: string) => {
+  return readContract({
+    address: POLYGON_SWAP_CONTRACT_HASH,
+    abi: FTWSwapABI,
+    functionName: "isApprovedForAll",
+    args: [owner, POLYGON_SWAP_CONTRACT_HASH],
+  });
+};
+
+export const setApprovalForAll = () => {
+  return prepareWriteContract({
+    address: POLYGON_SWAP_CONTRACT_HASH,
+    abi: FTWSwapABI,
+    functionName: "setApprovalForAll",
+    args: [POLYGON_SWAP_CONTRACT_HASH, true],
   });
 };

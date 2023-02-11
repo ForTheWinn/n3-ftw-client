@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { u } from "@cityofzion/neon-core";
 import { getAfterSlippage } from "../../../../../../../packages/neo/contracts/ftw/swap/helpers";
 import { numberTrim } from "../../../../../../../packages/neo/utils";
 import { priceImpactFormat } from "../../helpers";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 
-import SettingDropdown from "../SettingDropdown";
 import { ITokenState } from "../../interfaces";
 import PriceRatio from "./PriceRatio";
 
@@ -38,7 +36,7 @@ const SwapDetails = ({
   return (
     <>
       <hr />
-      <div className="level">
+      <div className="level is-mobile">
         <div className="level-left">
           <div className="level-item">
             <PriceRatio
@@ -62,11 +60,10 @@ const SwapDetails = ({
       </div>
       {isActive && (
         <div className="notification content is-small">
-          <div className="level mb-1 is-mobile">
+          <div className="level">
             <div className="level-left">
               <div className="level-item">Expected output</div>
             </div>
-
             <div className="level-right">
               <div className="level-item has-text-right">
                 <span className="has-text-weight-semibold">
@@ -75,7 +72,7 @@ const SwapDetails = ({
               </div>
             </div>
           </div>
-          <div className="level mb-5 is-mobile">
+          <div className="level">
             <div className="level-left">
               <div className="level-item">Price impact</div>
             </div>
@@ -84,7 +81,7 @@ const SwapDetails = ({
             </div>
           </div>
 
-          <div className="level mb-1 is-mobile">
+          <div className="level">
             <div className="level-left">
               <div className="level-item">
                 Minimum received after slippage
@@ -93,24 +90,11 @@ const SwapDetails = ({
             </div>
             <div className="level-right">
               <div className="level-item has-text-right">
-                <SettingDropdown
-                  amount={tolerance}
-                  symbol={tokenB.symbol}
-                  slippage={slippage}
-                  setSlippage={setSlippage}
-                />
+                {tolerance}
+                <br /> {tokenB.symbol}
               </div>
             </div>
           </div>
-
-          {/* <div className="level mb-1 is-mobile">
-            <div className="level-left">
-              <div className="level-item">Liquidity provider fee</div>
-            </div>
-            <div className="level-right">
-              <div className="level-item">0.25%</div>
-            </div>
-          </div> */}
         </div>
       )}
     </>

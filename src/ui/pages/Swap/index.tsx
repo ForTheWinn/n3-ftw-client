@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { Route, useRouteMatch } from "react-router-dom";
+import { Route, useHistory, useRouteMatch } from "react-router-dom";
 
 import {
+  SWAP_PATH,
   SWAP_PATH_LIQUIDITY_ADD,
   SWAP_PATH_LIQUIDITY_REMOVE,
 } from "../../../consts";
@@ -10,6 +11,9 @@ import PageLayout from "../../components/Commons/PageLayout";
 import Liquidity from "./scenes/AddLiquidity";
 import Trade from "./scenes/Swap";
 import RemoveLiquidity from "./scenes/RemoveLiquidity";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../../packages/chains/consts";
+import { useApp } from "../../../common/hooks/use-app";
+import { POLYGON_SWAP_PATH } from "../../../consts/polygonRoutes";
 // import MarketStatus from "./components/CheckMarketStatus";
 
 interface ISwapProps {
@@ -17,12 +21,24 @@ interface ISwapProps {
 }
 
 const Swap = (props: ISwapProps) => {
-  useEffect(() => {
-    document.title = "FTW Swap";
-  }, []);
+  // useEffect(() => {
+  //   document.title = "FTW Swap";
+  // }, []);
+
   let { path } = useRouteMatch();
+  let history = useHistory();
+  const { chain, switchChain } = useApp();
+
   if (props.path) {
     path = props.path;
+  }
+
+  if (path !== SWAP_PATH && chain === NEO_CHAIN) {
+    history.push(SWAP_PATH);
+  }
+
+  if (path !== POLYGON_SWAP_PATH && chain === POLYGON_CHAIN) {
+      history.push(POLYGON_SWAP_PATH);
   }
 
   console.log(path);
@@ -31,8 +47,10 @@ const Swap = (props: ISwapProps) => {
       <PageLayout>
         <div className="columns is-centered">
           <div className="column is-half">
-            {/* <MarketStatus /> */}
-            <div className="box is-shadowless">
+            <div
+              className="box is-shadowless is-relative"
+              style={{ overflow: "hidden" }}
+            >
               <Route
                 exact={true}
                 path={path}

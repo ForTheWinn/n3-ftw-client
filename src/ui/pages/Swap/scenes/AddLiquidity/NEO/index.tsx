@@ -14,7 +14,6 @@ import TimeLockInput from "../components/TimeLockInput";
 import LPInputs from "./LPInputs";
 import { IReserveData } from "../../../../../../packages/neo/contracts/ftw/swap/interfaces";
 import { FaAngleLeft } from "react-icons/fa";
-import SettingDropdown from "../components/SettingDropdown";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 import { handleError } from "../../../../../../packages/neo/utils/errors";
 import {
@@ -25,6 +24,8 @@ import {
 import { ITokenState } from "../../Swap/interfaces";
 import PriceRatio from "../../Swap/components/SwapDetails/PriceRatio";
 import ProvideLPInfo from "../../../components/ProvideLPInfo";
+import Nav from "../components/Nav";
+import SwapSettings from "../../../components/Settings";
 
 interface ILiquidityProps {
   rootPath: string;
@@ -54,6 +55,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const [amountB, setAmountB] = useState<number>();
   const [peg, setPeg] = useState<"A" | "B" | undefined>();
   const [slippage, setSlippage] = useState(DEFAULT_SLIPPAGE);
+  const [isSettingsActive, setSettingsActive] = useState(false);
   const [selectedLock, setSelectedLock] = useState(false);
   const [lockUntil, setUntil] = useState(new Date());
   const [data, setData] = useState<IReserveData | undefined>();
@@ -238,30 +240,11 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const title = noLiquidity ? "Create a new pool" : "Provide liquidity";
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div style={{ width: "50px" }}>
-          <Link className="button is-white is-small" to={toMain}>
-            <span className="icon">
-              <FaAngleLeft />
-            </span>
-            <span className="is-hidden-mobile">Main</span>
-          </Link>
-        </div>
-
-        <h1 className="title is-5 is-marginless has-text-centered">{title}</h1>
-
-        <div className="is-relative" style={{ width: "50px" }}>
-          <div className="is-pulled-right">
-            <SettingDropdown slippage={slippage} setSlippage={setSlippage} />
-          </div>
-        </div>
-      </div>
+      <Nav
+        title={title}
+        path={toMain}
+        onSettingClick={() => setSettingsActive(true)}
+      />
 
       <hr />
       {noLiquidity && <ProvideLPInfo />}
@@ -408,6 +391,13 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           noNEOBNEO={true}
         />
       )}
+
+      <SwapSettings
+        isActive={isSettingsActive}
+        onClose={() => setSettingsActive(false)}
+        slippage={slippage}
+        onSlippageChange={setSlippage}
+      />
     </>
   );
 };

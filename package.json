@@ -25,6 +25,7 @@
     "@web3-react/network": "^8.0.27-beta.0",
     "@web3-react/types": "^8.0.20-beta.0",
     "antd": "^5.1.7",
+    "browserify": "^17.0.0",
     "bulma": "^0.9.3",
     "bulma-pagination-react": "^0.1.1",
     "chart.js": "^3.8.0",

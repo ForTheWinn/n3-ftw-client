@@ -2,8 +2,16 @@ import React, { useEffect, useState } from "react";
 import HeaderBetween from "../../../../../components/Commons/HeaderBetween";
 import ConnectWalletButton from "../../../../../components/ConnectWalletButton";
 import { useAccount } from "wagmi";
-import { getLPTokens } from "../../../../../../packages/polygon/api";
+import { writeContract, waitForTransaction } from "@wagmi/core";
+import {
+  getLPTokens,
+  isApprovedForAll,
+  removeLiquidity,
+  setApprovalForAll,
+} from "../../../../../../packages/polygon/api";
 import LPTokenCard from "./LPTokenCard";
+import toast from "react-hot-toast";
+import RemoveLiquidityModal from "./RemoveLiquidityModal";
 
 interface IRemoveLiquidityProps {
   rootPath: string;
@@ -13,36 +21,79 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
   const { isConnected, address } = useAccount();
   const [tokens, setTokens] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [txid, setTxid] = useState("");
+  const [txid, setTxid] = useState<string | undefined>();
   const [refresh, setRefresh] = useState(0);
 
+  const [isActionModalActive, setActionModalActive] = useState(false);
+  const [isApproved, setApproved] = useState(false);
+  const [isApproving, setApproving] = useState(false);
+  const [approveError, setApproveError] = useState(false);
+  const [isFinished, setFinished] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+
   const onRemoveLiquidity = async (tokenId: string) => {
-    // if (connectedWallet) {
-    //   try {
-    //     const res = await new SwapContract(network).remove(
-    //       connectedWallet,
-    //       tokenId
-    //     );
-    //     setTxid(res);
-    //   } catch (e: any) {
-    //     toast.error(handleError(e));
-    //   }
-    // } else {
-    //   toast.error("Please connect wallet");
-    // }
+    if (isConnected && address) {
+      setActionModalActive(true);
+
+      try {
+        setApproveError(false);
+        if (await isApprovedForAll(address)) {
+          setApproved(true);
+        } else {
+          setApproving(true);
+          const config = await setApprovalForAll();
+          const res = await writeContract(config);
+          await res.wait();
+          setApproved(true);
+          setApproving(false);
+        }
+      } catch (e: any) {
+        console.error(e);
+        setApproveError(true);
+        if (e.reason) {
+          toast.error(e.reason);
+        }
+      }
+      try {
+        setSubmitError(false);
+        const config = await removeLiquidity(tokenId);
+        const { hash } = await writeContract(config);
+        setSubmitting(true);
+        setTxid(hash);
+        const data = await waitForTransaction({
+          hash,
+        });
+        console.log(data);
+        setFinished(true);
+        setSubmitting(false);
+      } catch (e: any) {
+        console.error(e);
+        setSubmitError(true);
+        if (e.reason) {
+          toast.error(e.reason);
+        }
+      }
+    }
   };
 
-  // const onSuccess = () => {
-  //   setRefresh(refresh + 1);
-  //   setTxid("");
-  // };
+  const onReset = () => {
+    setRefresh(refresh + 1);
+    setApproved(false);
+    setApproving(false);
+    setApproveError(false);
+    setFinished(false);
+    setSubmitting(false);
+    setSubmitError(false)
+    setTxid(undefined);
+    setActionModalActive(false);
+  };
 
   useEffect(() => {
     const load = async (_address: string) => {
       setLoading(true);
       try {
         const res = await getLPTokens(_address);
-        console.log(res);
         setTokens(res as any);
       } catch (e) {
         console.log(e);
@@ -52,7 +103,7 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
     if (isConnected && address) {
       load(address);
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, refresh]);
 
   return (
     <>
@@ -63,14 +114,11 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
           {isLoading ? (
             <div>Loading..</div>
           ) : tokens.length > 0 ? (
-            tokens.map(({ tokenId, shares, tokenA, tokenB }: any) => {
+            tokens.map((tokenId: any) => {
               return (
                 <div key={tokenId}>
                   <LPTokenCard
                     tokenId={tokenId.toString()}
-                    sharePercentage={shares.toString()}
-                    tokenA={tokenA}
-                    tokenB={tokenB}
                     onClick={() => onRemoveLiquidity(tokenId.toString())}
                   />
                 </div>
@@ -82,6 +130,18 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
         </>
       ) : (
         <ConnectWalletButton />
+      )}
+
+      {isActionModalActive && (
+        <RemoveLiquidityModal
+          isApproved={isApproved}
+          isApproving={isApproving}
+          approveError={approveError}
+          isFinished={isFinished}
+          isRemoving={isSubmitting}
+          submitError={submitError}
+          onClose={onReset}
+        />
       )}
     </>
   );

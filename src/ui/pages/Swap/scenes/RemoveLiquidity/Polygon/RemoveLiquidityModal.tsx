@@ -2,18 +2,14 @@ import React from "react";
 import Modal from "../../../../../components/Modal";
 import { Steps, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { ITokenState } from "../../Swap/interfaces";
 
 interface IActionModalProps {
-  title: string;
-  tokenA: ITokenState;
-  tokenB: ITokenState;
-  isTokenAApproved: boolean;
-  isTokenBApproved: boolean;
-  isSwapDone: boolean;
-  isTokenAApproving: boolean;
-  isTokenBApproving: boolean;
-  isSwapping: boolean;
+  isApproved: boolean;
+  isApproving: boolean;
+  approveError: boolean;
+  isFinished: boolean;
+  isRemoving: boolean;
+  submitError: boolean;
   txid?: `0x${string}`;
   explorer?: string;
   onClose: () => void;
@@ -22,31 +18,25 @@ interface IActionModalProps {
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const RemoveLiquidityModal = ({
-  title,
-  tokenA,
-  tokenB,
-  isTokenAApproved,
-  isTokenBApproved,
-  isSwapDone,
-  isTokenAApproving,
-  isTokenBApproving,
-  isSwapping,
+  isApproved,
+  isApproving,
+  approveError,
+  isFinished,
+  isRemoving,
+  submitError,
   txid,
   explorer,
   onClose,
 }: IActionModalProps) => {
   let currentStep = 0;
-  if (isTokenAApproved) {
+  if (isApproved) {
     currentStep = 1;
-  }
-  if (isTokenBApproved) {
-    currentStep = 2;
   }
   return (
     <Modal onClose={onClose}>
       <div className="">
         <div className="block">
-          <h3 className="title is-5 has-text-centered">{title}</h3>
+          <h3 className="title is-5 has-text-centered">Remove liquidity</h3>
         </div>
         <div className="block">
           <Steps
@@ -54,20 +44,16 @@ const RemoveLiquidityModal = ({
             current={currentStep}
             items={[
               {
-                title: tokenA.symbol,
+                title: "Tranfsfer approval",
                 description: (
                   <>
-                    {isTokenAApproving ? "Approving" : ""}
-                    {isTokenAApproved ? "Approved" : ""}
-                  </>
-                ),
-              },
-              {
-                title: tokenB.symbol,
-                description: (
-                  <>
-                    {isTokenBApproving ? "Approving" : ""}
-                    {isTokenBApproved ? "Approved" : ""}
+                    {isApproving ? "Approving" : ""}
+                    {isApproved ? "Approved" : ""}
+                    {approveError ? (
+                      <span className="has-text-danger">Error</span>
+                    ) : (
+                      ""
+                    )}
                   </>
                 ),
               },
@@ -75,8 +61,13 @@ const RemoveLiquidityModal = ({
                 title: "Action",
                 description: (
                   <>
-                    {isSwapping ? "Submitting" : ""}
-                    {isSwapDone ? "Finished" : ""}
+                    {isRemoving ? "Submitting" : ""}
+                    {isFinished ? "Finished" : ""}
+                    {submitError ? (
+                      <span className="has-text-danger">Error</span>
+                    ) : (
+                      ""
+                    )}
                   </>
                 ),
               },
@@ -84,7 +75,7 @@ const RemoveLiquidityModal = ({
           />
         </div>
 
-        {txid && isSwapDone ? (
+        {txid && isFinished ? (
           <>
             <hr />
             <div className="buttons" style={{ justifyContent: "center" }}>
