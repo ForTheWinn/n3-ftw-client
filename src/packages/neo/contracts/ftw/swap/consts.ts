@@ -5,7 +5,6 @@ import {
   TOKEN_CATEGORY_GENERAL,
   TOKEN_CATEGORY_METAVERSE,
   TOKEN_CATEGORY_STARTUPS,
-  UNKNOWN_TOKEN_IMAGE,
 } from "../../../consts";
 
 import { INetworkType } from "../../../network";

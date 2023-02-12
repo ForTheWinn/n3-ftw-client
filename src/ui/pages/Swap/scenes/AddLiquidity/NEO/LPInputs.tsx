@@ -97,7 +97,7 @@ const LPInputs = ({
         symbol={tokenA ? tokenA.symbol : ""}
         logo={
           tokenA && ASSET_LIST[network][tokenA.hash]
-            ? ASSET_LIST[network][tokenA.hash].logo
+            ? ASSET_LIST[network][tokenA.hash].icon
             : undefined
         }
         decimals={tokenA ? tokenA.decimals : undefined}
@@ -130,7 +130,7 @@ const LPInputs = ({
         symbol={tokenB ? tokenB.symbol : ""}
         logo={
           tokenB && ASSET_LIST[network][tokenB.hash]
-            ? ASSET_LIST[network][tokenB.hash].logo
+            ? ASSET_LIST[network][tokenB.hash].icon
             : undefined
         }
         decimals={tokenB ? tokenB.decimals : undefined}

@@ -1,9 +1,7 @@
 import { ContextOptions, IWalletStates } from "./interfaces";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import {
-  IConnectedETHWallet,
   IConnectedWallet,
-  IETHWalletType,
   IWalletType,
 } from "../neo/wallet/interfaces";
 import { sc } from "@cityofzion/neon-core";
@@ -12,7 +10,6 @@ import toast from "react-hot-toast";
 import { INetworkType } from "../neo/network";
 import { NEON } from "../neo/consts";
 import { handleError } from "../neo/utils/errors";
-import { ETHWalletAPI } from "../web3";
 
 export const WalletContext = createContext({} as IWalletStates);
 export const WalletContextProvider = (props: {
@@ -23,16 +20,11 @@ export const WalletContextProvider = (props: {
     process.env.REACT_APP_NETWORK as INetworkType
   );
   const [totalTxSubmit, setTotalTxSubmit] = useState(0);
-  // const { connector } = useWeb3React();
 
   const [isWalletModalActive, setWalletModalActive] = useState(false);
 
   const [connectedWallet, setConnectedWallet] = useState<
     IConnectedWallet | undefined
-  >(undefined);
-
-  const [connectedETHWallet, setConnectedETHWallet] = useState<
-    IConnectedETHWallet | undefined
   >(undefined);
 
   const [invokeScript, setInvokeScript] = useState<
@@ -51,15 +43,6 @@ export const WalletContextProvider = (props: {
       setConnectedWallet(res);
       setWalletModalActive(false);
       toast.success("Wallet connected");
-    } catch (e: any) {
-      toast.error(handleError(e));
-    }
-  };
-
-  const connectETHWallet = async (walletType: IETHWalletType) => {
-    try {
-      await ETHWalletAPI.connect(walletType);
-      console.log(123);
     } catch (e: any) {
       toast.error(handleError(e));
     }
@@ -116,14 +99,7 @@ export const WalletContextProvider = (props: {
     switchNetwork,
     totalTxSubmit,
     increaseTotalTxSubmit,
-    connectETHWallet,
   };
-
-  // useEffect(() => {
-  //   if (connector && connector.connectEagerly) {
-  //     connector.connectEagerly();
-  //   }
-  // }, []);
 
   return (
     <WalletContext.Provider value={contextValue}>

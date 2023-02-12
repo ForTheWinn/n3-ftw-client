@@ -17,9 +17,6 @@ interface IAppContext {
 export const AppContext = createContext({} as IAppContext);
 
 export const AppCContextProvider = (props: { children: any }) => {
-  const [network, setNetwork] = useState(
-    process.env.REACT_NETWORK as INetworkType
-  );
   const [chain, setChain] = useState<CHAINS>(LocalStorage.getChain());
   const [sidebarStatus, setSidebarStatus] = useState(false);
   const [walletSidebarStatus, setWalletSidebarStatus] = useState(false);

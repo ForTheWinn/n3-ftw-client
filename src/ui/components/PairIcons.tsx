@@ -37,12 +37,12 @@ const PairIcons = ({
       <LogoIcon
         width={width}
         height={width}
-        img={token1 && token1.logo ? token1.logo : UNKNOWN_TOKEN_IMAGE}
+        img={token1 && token1.icon ? token1.icon : UNKNOWN_TOKEN_IMAGE}
       />
       <LogoIcon
         width={width}
         height={width}
-        img={token2 && token2.logo ? token2.logo : UNKNOWN_TOKEN_IMAGE}
+        img={token2 && token2.icon ? token2.icon : UNKNOWN_TOKEN_IMAGE}
       />
     </div>
   );

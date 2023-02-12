@@ -15,7 +15,6 @@ export interface IWalletStates {
   openWalletModal: () => void;
   closeWalletModal: () => void;
   connectWallet: (wallet: IWalletType) => void;
-	connectETHWallet: (wallet: IETHWalletType) => void;
   disConnectWallet: () => void;
   doInvoke: (invokeScript: sc.ContractCallJson) => void;
   addPendingTransaction: (txid: string) => void;

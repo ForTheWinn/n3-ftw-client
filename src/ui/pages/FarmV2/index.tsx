@@ -15,7 +15,6 @@ import { RestAPI } from "../../../packages/neo/api";
 import { MAINNET } from "../../../packages/neo/consts";
 import { useWallet } from "../../../packages/provider";
 import { IPrices } from "../../../packages/neo/api/interfaces";
-import BoyzStaking from "./components/BoyzStaking";
 
 const Farm = () => {
   const [refresh, setRefresh] = useState(0);

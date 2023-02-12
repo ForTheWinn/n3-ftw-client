@@ -17,9 +17,9 @@ const Dao = () => {
     document.title = "FTW DAO";
   }, []);
   const { network } = useWallet();
-  if (!DAO_PAGE_ROUTE.network.includes(network)) {
-    return <ProductNotSupportedInNetwork title={"DAO"} network={network} />;
-  }
+  // if (!DAO_PAGE_ROUTE.network.includes(network as any)) {
+  //   return <ProductNotSupportedInNetwork title={"DAO"} network={network} />;
+  // }
   return (
     <div>
       <Route exact={true} path={DAO_PATH} component={ChannelList} />

@@ -84,7 +84,7 @@ export const DAO_CHANNEL_PATH = "/dao/channel";
 export const BRIDGE_PAGE_ROUTE = {
   label: "Bridge",
   path: BRIDGE_PATH,
-  network: [TESTNET, MAINNET],
+  network: [],
   category: [],
 };
 
@@ -103,7 +103,7 @@ export const FARM_PAGE_ROUTE = {
 };
 
 export const FARM_V2_PAGE_ROUTE = {
-  label: "Double Farm",
+  label: "Farm",
   path: FARM_V2_PATH,
   network: [MAINNET, TESTNET],
   category: [],
@@ -126,14 +126,14 @@ export const SMITH_PAGE_ROUTE = {
 export const GASFI_PAGE_ROUTE = {
   label: "GAS-Fi",
   path: GASFI_PATH,
-  network: [TESTNET],
+  network: [],
   category: [],
 };
 
 export const DAO_PAGE_ROUTE = {
   label: "DAO",
   path: DAO_PATH,
-  network: [TESTNET],
+  network: [],
   category: [],
 };
 

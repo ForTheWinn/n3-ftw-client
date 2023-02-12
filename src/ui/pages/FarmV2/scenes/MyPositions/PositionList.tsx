@@ -17,22 +17,22 @@ const PositionList = ({
   refresh,
   onUnStake,
 }: IPositionListProps) => {
-
   const [data, setData] = useState<any>();
+  const [prices, setPrices] = useState<any>();
 
   useEffect(() => {
     async function getData(wallet) {
       try {
-        const tokens = await new FarmV2Contract(network).getStakedLPTokens(
-          wallet
-        );
-        const prices = await new RestAPI(network).getPrices();
-        setData({
-          tokens,
-          prices,
-        });
+        const res = await new FarmV2Contract(network).getStakedLPTokens(wallet);
+        setData(res);
       } catch (e: any) {
         console.log(e);
+      }
+
+      try {
+        const res = await new RestAPI(network).getPrices();
+        setPrices(res);
+      } catch (e: any) {
         console.log(e);
       }
     }
@@ -45,14 +45,14 @@ const PositionList = ({
     <div>
       {!data ? (
         <></>
-      ) : data.tokens.length > 0 ? (
+      ) : data.length > 0 ? (
         <div>
-          {data.tokens.map((item, i) => {
+          {data.map((item, i) => {
             return (
               <PositionCard
                 network={network}
                 key={"position" + i}
-                prices={data.prices}
+                prices={prices}
                 {...item}
                 onUnStake={onUnStake}
               />

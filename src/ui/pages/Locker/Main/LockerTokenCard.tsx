@@ -20,7 +20,7 @@ const LockerTokenCard = ({
 }: ILockerTokenCardProps) => {
   const history = useHistory();
   const logo = ASSET_LIST[network][contractHash]
-    ? ASSET_LIST[network][contractHash].logo
+    ? ASSET_LIST[network][contractHash].icon
     : UNKNOWN_TOKEN_IMAGE;
   const amount = parseFloat(
     u.BigInteger.fromNumber(lockedAmount).toDecimal(decimals)
