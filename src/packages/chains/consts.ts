@@ -12,9 +12,11 @@ export const chainThemes = {
   [NEO_CHAIN]: {
     label: "Neo",
     color: "primary",
+    icon: "/symbols/neo.svg",
   },
   [POLYGON_CHAIN]: {
     label: "Polygon",
     color: "danger",
+    icon: "/symbols/matic.png",
   },
 };

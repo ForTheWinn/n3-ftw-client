@@ -1,24 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { FaBars, FaWallet } from "react-icons/fa";
 import Logo from "./Logo";
 import { useApp } from "../../../../common/hooks/use-app";
 import { useWallet } from "../../../../packages/provider";
-import { utils } from "../../../../packages/neo";
 import DisplayConnectedWallets from "./DisplayConnectedWallets";
 import { TESTNET } from "../../../../packages/neo/consts";
-import { getWalletIcon } from "../../../../packages/ui/Wallet/NEOWallets/helpers";
 import ChainSwitch from "./ChainSwitch";
 import { HeaderMenu } from "./HeaderMenu";
+import DisplayCurrentChain from "./DisplayCurrentChain";
 
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar, chain } = useApp();
-  const { connectedWallet, network, disConnectWallet } = useWallet();
-  const [isActive, setActive] = useState(false);
-  const handleDisconnectWallet = () => {
-    setActive(false);
-    disConnectWallet();
-  };
+  const { network } = useWallet();
 
   return (
     <nav
@@ -40,7 +34,7 @@ const Header = () => {
           >
             <FaBars />
           </div>
-          <Link className="is-center" to="/">
+          <Link className="is-center is-hidden-touch" to="/">
             <Logo />
             {process.env.REACT_APP_NETWORK === TESTNET ? (
               <span className="heading is-marginless has-text-danger">
@@ -51,6 +45,13 @@ const Header = () => {
             )}
           </Link>
           <div
+            className={"is-hidden-desktop is-flex"}
+            style={{ alignItems: "center" }}
+          >
+            <DisplayCurrentChain />
+          </div>
+
+          <div
             role="button"
             className={`navbar-burger is-center is-hidden-desktop`}
             onClick={toggleWalletSidebar}
@@ -59,34 +60,6 @@ const Header = () => {
             <FaWallet />
           </div>
         </div>
-        {/* {connectedWallet && (
-          <div
-            className={`navbar-menu  is-hidden-tablet ${
-              isActive && "is-active"
-            }`}
-          >
-            <div className="navbar-start">
-              <div className="navbar-item">
-                <div className="media" style={{ alignItems: "center" }}>
-                  <div className="media-left">
-                    <img
-                      alt="logo"
-                      width="32px"
-                      src={getWalletIcon(connectedWallet.key)}
-                    />
-                  </div>
-                  <div className="media-content">
-                    {utils.truncateAddress(connectedWallet.account.address)}
-                  </div>
-                </div>
-              </div>
-              <hr className="dropdown-divider" />
-              <button onClick={handleDisconnectWallet} className="navbar-item">
-                Disconnect wallet
-              </button>
-            </div>
-          </div>
-        )} */}
 
         <div className="navbar-menu ml-3">
           <div className="navbar-start">
@@ -101,17 +74,6 @@ const Header = () => {
           <div className="navbar-item">
             <div className="buttons">
               <DisplayConnectedWallets />
-
-              {/* {connectedWallet ? (
-                <WalletDropdown connectedWallet={connectedWallet} />
-              ) : (
-                <button
-                  onClick={toggleWalletSidebar}
-                  className="button is-small is-black is-rounded"
-                >
-                  Connect wallet
-                </button>
-              )} */}
             </div>
           </div>
         </div>

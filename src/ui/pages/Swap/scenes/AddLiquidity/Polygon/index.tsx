@@ -176,12 +176,14 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
       let tokenAAllowance;
       let tokenBAllowance;
+
       try {
         const allowances = await getAllowances(
           address,
           tokenA.hash,
           tokenB.hash
         );
+        console.log(allowances);
         tokenAAllowance = allowances[0];
         tokenBAllowance = allowances[1];
       } catch (e) {
@@ -189,7 +191,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         onReset();
       }
 
-      if (tokenAAllowance.toString() === "0") {
+      if (!tokenAAllowance || tokenAAllowance.toString() === "0") {
         setTokenAApproving(true);
         try {
           const config = await approve(tokenA.hash);
@@ -199,13 +201,14 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         } catch (e) {
           setTokenAApproveError(true);
           toast.error(`"Failed to approve ${tokenA.symbol}."`);
+          return false;
         }
         setTokenAApproving(false);
       } else {
         setTokenAApproved(true);
       }
 
-      if (tokenBAllowance.toString() === "0") {
+      if (!tokenBAllowance || tokenBAllowance.toString() === "0") {
         setTokenBApproving(true);
         try {
           const config = await approve(tokenB.hash);
@@ -214,7 +217,8 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           setTokenBApproved(true);
         } catch (e) {
           setTokenBApproveError(true);
-          toast.error(`"Failed to approve ${tokenA.symbol}."`);
+          toast.error(`"Failed to approve ${tokenB.symbol}."`);
+          return false;
         }
         setTokenBApproving(false);
       } else {
@@ -248,6 +252,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       } catch (e) {
         setSwappingError(true);
         setSwapping(false);
+        return false;
       }
     }
   };

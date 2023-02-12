@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { getTokenURI } from "../../../../../../packages/polygon/api";
+import { ethers } from "ethers";
 import { Buffer } from "buffer";
+
+import { getTokenURI } from "../../../../../../packages/polygon/api";
+import LPTokenCard from "../components/LPTokenCard";
+
+import { ILPTokenURI } from "../../../../../../packages/polygon/interfaces";
 
 interface ILPTokenCard {
   tokenId: string;
   onClick: () => void;
 }
-const LPTokenCard = ({
-  tokenId,
-  onClick,
-}: ILPTokenCard) => {
-  const [token, setToken] = useState();
+const LPTokenDataLoader = ({ tokenId, onClick }: ILPTokenCard) => {
+  const [token, setToken] = useState<ILPTokenURI | undefined>();
   useEffect(() => {
     const load = async (_tokenId: string) => {
       // setLoading(true);
       try {
         const res: any = await getTokenURI(parseFloat(_tokenId));
         const json = Buffer.from(res.substring(29), "base64").toString();
-        console.log(json )
         const jsonObject = JSON.parse(json);
         setToken(jsonObject);
         console.log(jsonObject);
@@ -27,25 +28,22 @@ const LPTokenCard = ({
     };
     load(tokenId);
   }, [tokenId]);
-
+  if (!token) return <></>;
   return (
-    <div className="media">
-      {/* <div className="media-content">
-        <p className="mb-2">
-          <strong>{tokenId}</strong>
-          <br />
-          <small>Share of pool / {sharePercentage}%</small>
-          <br />
-          <small>{`${tokenA} / ${tokenB}`}</small>
-        </p>
-      </div> */}
-      <div className="media-right">
-        <button onClick={onClick} className="button is-light is-small">
-          Withdraw
-        </button>
-      </div>
-    </div>
+    <LPTokenCard
+      tokenId={tokenId}
+      sharePercentage={token.shares.toString()}
+      tokenAAmount={ethers.utils
+        .formatUnits(token.amountA, token.decimalsA)
+        .toString()}
+      tokenBAmount={ethers.utils
+        .formatUnits(token.amountB, token.decimalsB)
+        .toString()}
+      tokenASymbol={token.symbolA}
+      tokenBSymbol={token.symbolB}
+      onClick={onClick}
+    />
   );
 };
 
-export default LPTokenCard;
+export default LPTokenDataLoader;

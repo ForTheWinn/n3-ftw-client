@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "../../../../../components/Modal";
-import { Steps, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Steps } from "antd";
+import LoadingWithText from "../../../../../components/Commons/LoadingWithText";
 
 interface IActionModalProps {
   isApproved: boolean;
@@ -10,12 +10,10 @@ interface IActionModalProps {
   isFinished: boolean;
   isRemoving: boolean;
   submitError: boolean;
-  txid?: `0x${string}`;
+  txid?: string;
   explorer?: string;
   onClose: () => void;
 }
-
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const RemoveLiquidityModal = ({
   isApproved,
@@ -47,7 +45,11 @@ const RemoveLiquidityModal = ({
                 title: "Tranfsfer approval",
                 description: (
                   <>
-                    {isApproving ? "Approving" : ""}
+                    {isApproving ? (
+                      <LoadingWithText title="Approving" />
+                    ) : (
+                      <></>
+                    )}
                     {isApproved ? "Approved" : ""}
                     {approveError ? (
                       <span className="has-text-danger">Error</span>
@@ -61,7 +63,11 @@ const RemoveLiquidityModal = ({
                 title: "Action",
                 description: (
                   <>
-                    {isRemoving ? "Submitting" : ""}
+                    {isRemoving ? (
+                      <LoadingWithText title="Submitting" />
+                    ) : (
+                      <></>
+                    )}
                     {isFinished ? "Finished" : ""}
                     {submitError ? (
                       <span className="has-text-danger">Error</span>

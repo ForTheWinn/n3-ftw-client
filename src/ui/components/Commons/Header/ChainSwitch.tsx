@@ -13,15 +13,6 @@ const ChainSwitch = () => {
   const handleSwitch = async (v: CHAINS) => {
     switchChain(v);
     onActive();
-    // try {
-    //   const res = await web3.connector
-    //     .activate(80001);
-    //   console.log(res)
-    //   console.log(web3.connector);
-    //   console.log(web3.provider?.network);
-    // } catch (e) {
-    //   console.log(e)
-    // }
   };
   return (
     <div className={`dropdown is-right ${isActive ? "is-active" : ""}`}>
@@ -43,10 +34,10 @@ const ChainSwitch = () => {
             return (
               <div key={`chain${v}`} className="dropdown-item">
                 <button
-                  className={`button is-small is-rounded is-${chainThemes[v].color}`}
+                  className={`button is-fullwidth is-small is-rounded is-${chainThemes[v].color}`}
                   onClick={() => handleSwitch(v as CHAINS)}
                 >
-                  Switch to {v}
+                  Switch to {chainThemes[v].label}
                 </button>
               </div>
             );

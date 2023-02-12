@@ -84,7 +84,7 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
     setApproveError(false);
     setFinished(false);
     setSubmitting(false);
-    setSubmitError(false)
+    setSubmitError(false);
     setTxid(undefined);
     setActionModalActive(false);
   };
@@ -134,6 +134,7 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
 
       {isActionModalActive && (
         <RemoveLiquidityModal
+          txid={txid}
           isApproved={isApproved}
           isApproving={isApproving}
           approveError={approveError}
