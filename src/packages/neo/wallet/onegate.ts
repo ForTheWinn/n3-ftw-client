@@ -1,9 +1,9 @@
-import { BaseNeoDapi } from "@neongd/neo-dapi";
+import { BaseDapi } from "@neongd/neo-dapi";
 
 export const initOG = async () => {
   try {
     // @ts-ignore
-    const instance = new BaseNeoDapi(window.OneGate);
+    const instance = new BaseDapi(window.OneGate);
     const account = await instance.getAccount();
     return {
       instance,
