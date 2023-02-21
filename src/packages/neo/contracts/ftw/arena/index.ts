@@ -75,7 +75,7 @@ export class TournamentContract {
       connectedWallet,
       this.network,
       invokeScript,
-      "0.05"
+      "0.05" //TODO: Check extra fee later
     );
   };
 

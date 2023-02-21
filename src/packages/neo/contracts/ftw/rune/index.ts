@@ -51,7 +51,7 @@ export class NFTContract {
       connectedWallet,
       this.network,
       invokeScript,
-      "0.01"
+      "0.01" //TODO: Check extra fee later
     );
   };
 
