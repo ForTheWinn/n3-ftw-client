@@ -92,7 +92,6 @@ export class WalletAPI {
 	    submittedTx.txid = res.txid;
     }
 
-	  LocalStorage.addTransaction(submittedTx);
 	  return submittedTx.txid;
   };
 
@@ -129,35 +128,27 @@ export class WalletAPI {
     };
 
     if (connectedWallet.key === NEON) {
-      /**
-			NEON
-			 */
+    
       submittedTx.txid = await instance.invokeFunction({
         invocations: invokeArgs,
         signers,
       });
     } else if (connectedWallet.key === NEO_LINE) {
-      /**
-		Neo Line
-		 */
+ 
       const res = await instance.invokeMultiple({
         invokeArgs,
         signers,
       });
       submittedTx.txid = res.txid;
     } else if (connectedWallet.key === ONE_GATE) {
-      /**
-		OG
-	     */
+   
       const res = await instance.invokeMultiple({
         invocations: invokeArgs,
         signers,
       });
       submittedTx.txid = res.txid;
     } else {
-      /**
-		 O3
-	     */
+    
       const invokeRes = await instance.invokeMulti({
         invokeArgs,
         signers,
@@ -166,7 +157,6 @@ export class WalletAPI {
       submittedTx.txid = invokeRes.txid;
     }
 
-    LocalStorage.addTransaction(submittedTx);
     return submittedTx.txid;
   };
 }
