@@ -53,9 +53,10 @@ import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
 import BrandKit from "./pages/BrandKit";
+import { TESTNET } from "../packages/neo/consts";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [polygonMumbai],
+  [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygon],
   [publicProvider()]
 );
 
