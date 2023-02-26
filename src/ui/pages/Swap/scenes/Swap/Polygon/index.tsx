@@ -208,34 +208,12 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
       }
 
       try {
-        const amountIn =
-          swapInput.type === "A"
-            ? ethers.utils
-                .parseUnits(amountA.toString(), tokenA.decimals)
-                .toString()
-            : ethers.utils
-                .parseUnits(amountA.toString(), tokenA.decimals)
-                .add(
-                  ethers.utils
-                    .parseUnits(amountA.toString(), tokenA.decimals)
-                    .mul(slippage)
-                    .div(100)
-                )
-                .toString();
-        const amountOut =
-          swapInput.type === "A"
-            ? ethers.utils
-                .parseUnits(amountB.toString(), tokenB.decimals)
-                .toString()
-            : ethers.utils
-                .parseUnits(amountB.toString(), tokenB.decimals)
-                .sub(
-                  ethers.utils
-                    .parseUnits(amountB.toString(), tokenB.decimals)
-                    .mul(slippage)
-                    .div(100)
-                )
-                .toString();
+        const amountIn = ethers.utils
+          .parseUnits(amountA.toString(), tokenA.decimals)
+          .toString();
+        const amountOut = ethers.utils
+          .parseUnits(amountB.toString(), tokenB.decimals)
+          .toString();
 
         const config = await swap([
           tokenA.hash,
@@ -320,6 +298,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         let estimated;
 
         try {
+          console.log(swapInput.type === "B");
           if (swapInput.value) {
             const args = [
               tokenA.hash,
