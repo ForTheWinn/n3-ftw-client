@@ -19,7 +19,7 @@ const ChainSwitch = () => {
       <div className="dropdown-trigger">
         <button
           onClick={onActive}
-          className={`button is-small is-rounded is-outlined is-${chainThemes[chain].color}`}
+          className={`button is-small is-rounded is-${chainThemes[chain].color}`}
           aria-controls="dropdown-wallet"
         >
           {chainThemes[chain].label}

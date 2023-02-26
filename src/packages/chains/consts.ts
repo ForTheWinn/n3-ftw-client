@@ -16,7 +16,7 @@ export const chainThemes = {
   },
   [POLYGON_CHAIN]: {
     label: "Polygon",
-    color: "danger",
+    color: "info",
     icon: "/symbols/matic.png",
   },
 };
