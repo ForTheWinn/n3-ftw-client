@@ -71,7 +71,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "predeploy": "npm run build",
-    "deploy": "echo www.forthewin.network > ./build/CNAME && gh-pages -d build",
+    "deploy-testnet": "git push",
+    "deploy-mainnet": "echo www.forthewin.network > ./build/CNAME && gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
