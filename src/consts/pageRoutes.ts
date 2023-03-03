@@ -111,18 +111,6 @@ export const ARCHIVE_ROUTE = {
       network: [MAINNET],
     },
     {
-      label: "Sweepstake",
-      path: LOTTO_PATH,
-      network: [MAINNET],
-      category: [],
-    },
-    {
-      label: "IDO",
-      path: IDO_PATH,
-      network: [MAINNET],
-      category: [],
-    },
-    {
       label: "Migration",
       path: MIGRATION_PATH,
       network: [PRIVATENET],
@@ -136,11 +124,11 @@ export const NFT_ROUTE = {
   path: GALLERY_PATH,
   network: [MAINNET],
   category: [
-	  {
-		  label: "Neo Boyz",
-		  path: BOYZ_PATH,
-		  network: [MAINNET],
-	  },
+    {
+      label: "Neo Boyz",
+      path: BOYZ_PATH,
+      network: [MAINNET],
+    },
     {
       label: "Runes",
       path: GALLERY_PATH,

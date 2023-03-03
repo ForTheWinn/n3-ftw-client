@@ -34,8 +34,6 @@ import Swap from "./pages/Swap";
 import Migration from "./pages/Migration";
 import Farm from "./pages/Farm";
 import DAO from "./pages/DAO";
-import IDO from "./pages/IDO";
-import Lotto from "./pages/Lotto";
 import Analytics from "./pages/Analytics";
 import FarmV2 from "./pages/FarmV2";
 import LPTokens from "./pages/LPTokens";
@@ -65,9 +63,7 @@ const App = () => {
         <Route path={FARM_PATH} component={Farm} />
         <Route path={FARM_V2_PATH} component={FarmV2} />
         <Route path={DAO_PATH} component={DAO} />
-        <Route path={IDO_PATH} component={IDO} />
         <Route exact path={MIGRATION_PATH} component={Migration} />
-        <Route path={LOTTO_PATH} component={Lotto} />
         <Route path={ANALYTICS_PATH} component={Analytics} />
         <Route path={LP_TOKENS_PATH} component={LPTokens} />
         <Route path={GASFI_PATH} component={GASFi} />

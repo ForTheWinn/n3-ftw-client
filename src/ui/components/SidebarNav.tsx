@@ -5,7 +5,7 @@ import { MENU } from "../../consts";
 import { useWallet } from "../../packages/provider";
 import SocialLinkGroup from "./SocialLinkGroup";
 
-const SidebarNav = (props) => {
+const SidebarNav = () => {
   const { network } = useWallet();
   const { toggleSidebar } = useApp();
   return (
@@ -65,6 +65,7 @@ const SidebarNav = (props) => {
               target={"_blank"}
               className="navbar-item"
               href={"http://docs.forthewin.network/"}
+              rel="noreferrer"
             >
               Documentation
             </a>
