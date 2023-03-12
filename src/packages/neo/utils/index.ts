@@ -1,4 +1,5 @@
 import { sc, u, wallet } from "@cityofzion/neon-core";
+import { BigNumber } from "@ethersproject/bignumber";
 import moment from "moment";
 import { IBalance } from "../wallet/interfaces";
 import {
@@ -78,25 +79,25 @@ export const withDecimal = (
 };
 
 export const decimalCuts = (symbol: string): number => {
-	switch (symbol){
-		case "fUSDT":
-			return 0;
-		case "bNEO":
-			return 2;
-		case "GAS":
-			return 2;
-		case "fWBTC":
-			return 2;
-		case "fWETH":
-			return 2;
-		case "NEP":
-			return 5;
-		case "TTM":
-			return 5;
-		default:
-			return 9
-	}
-}
+  switch (symbol) {
+    case "fUSDT":
+      return 0;
+    case "bNEO":
+      return 2;
+    case "GAS":
+      return 2;
+    case "fWBTC":
+      return 2;
+    case "fWETH":
+      return 2;
+    case "NEP":
+      return 5;
+    case "TTM":
+      return 5;
+    default:
+      return 9;
+  }
+};
 
 export const numberTrim = (no: number, decimals = 2): string => {
   if (!no) return "0";
@@ -134,10 +135,10 @@ const stringList = [
   "description",
   "author",
   "bonusTokenSymbol",
-	"image",
-	"1_tokenId",
-	"2_tokenId",
-	"3_tokenId",
+  "image",
+  "1_tokenId",
+  "2_tokenId",
+  "3_tokenId",
 ];
 const addressList = ["owner", "account", "creator", "receiver"];
 const hash160List = [
@@ -191,7 +192,7 @@ const intList = [
   "totalReward",
   "totalPosition",
   "claimableAmount",
-	"estimated",
+  "estimated",
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {
@@ -263,3 +264,22 @@ export const parseMapValue = (stackItem: StackItemLike): any => {
   });
   return obj;
 };
+
+export function numberToByteString(num: string) {
+  const h = BigNumber.from(num).toHexString().substr(2);
+  let hex = h.length % 2 ? "0" + h : h;
+  const fc = hex.charAt(0);
+
+  if ((fc > "7" && fc <= "9") || (fc >= "a" && fc <= "f")) {
+    hex = "00" + hex;
+  }
+
+  return btoa(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    hex
+      .match(/.{1,2}/g)!
+      .reverse()
+      .map((v: any) => String.fromCharCode(parseInt(v, 16)))
+      .join("")
+  );
+}

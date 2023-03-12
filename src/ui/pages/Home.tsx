@@ -163,6 +163,7 @@ const Home = () => {
                     target="_blank"
                     href={"https://bridge.poly.network/"}
                     className="has-text-white"
+                    rel="noreferrer"
                   >
                     NEP Bridge
                   </a>
@@ -215,6 +216,7 @@ const Home = () => {
                     target="_blank"
                     href="https://docs.forthewin.network/"
                     className="has-text-white"
+                    rel="noreferrer"
                   >
                     Document
                   </a>
@@ -229,19 +231,21 @@ const Home = () => {
                     target="_blank"
                     href={"https://neonewstoday.com/?s=forthewin"}
                     className="has-text-white"
+                    rel="noreferrer"
                   >
                     Press
                   </a>
                 </li>
-	              <li>
-		              <a
-			              target="_blank"
-			              href={"https://test.forthewin.network"}
-			              className="has-text-white"
-		              >
-			              TestNet
-		              </a>
-	              </li>
+                <li>
+                  <a
+                    target="_blank"
+                    href={"https://test.forthewin.network"}
+                    className="has-text-white"
+                    rel="noreferrer"
+                  >
+                    TestNet
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

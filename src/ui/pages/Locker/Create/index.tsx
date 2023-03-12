@@ -35,6 +35,8 @@ const Create = () => {
     connectedWallet ? connectedWallet.account.address : ""
   );
   const [amount, setAmount] = useState<number | undefined>(0);
+  const [keys, setKeys] = useState<number | undefined>(1);
+  const [isMultiInvoke, setIsMultiInvoke] = useState(false);
   const [title, setTile] = useState("");
   const [description, setDescription] = useState("");
   const [releaseAt, setReleaseAt] = useState(
@@ -62,6 +64,11 @@ const Create = () => {
         return;
       }
 
+      if (keys === 0 || keys === undefined || keys > 10) {
+          toast.error("Lockers needs to be 1 ~ 10.");
+          return;
+      }
+
       try {
         const res = await new LockerContract(network).create(
           connectedWallet,
@@ -70,7 +77,8 @@ const Create = () => {
           amount,
           moment(releaseAt).valueOf(),
           title,
-          description
+          description,
+          keys
         );
         setTxid(res);
       } catch (e: any) {
@@ -100,7 +108,7 @@ const Create = () => {
       try {
         if (params && params.contractHash) {
           const contract = await new LockerContract(network).getContract(
-	          params.contractHash
+            params.contractHash
           );
           setContractHash({
             assetHash: contract.contractHash,
@@ -119,7 +127,7 @@ const Create = () => {
         console.error(e);
       }
     }
-		fetch()
+    fetch();
   }, [network, connectedWallet]);
 
   return (
@@ -182,6 +190,33 @@ const Create = () => {
                   minDate={releaseAt}
                 />
               </div>
+
+              {/* {isMultiInvoke ? (
+                <div className="field">
+                  <label className="label">Lockers</label>
+                  <div className="control">
+                    <NumberFormat
+                      max={10}
+                      disabled={!contract}
+                      allowLeadingZeros={false}
+                      allowNegative={false}
+                      decimalScale={0}
+                      className="input"
+                      value={keys}
+                      onValueChange={(value) => {
+                        setKeys(value.floatValue);
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setIsMultiInvoke(true)}
+                  className="button is-light is-small"
+                >
+                  Do you need more than 1 locker?
+                </button>
+              )} */}
 
               <hr />
 

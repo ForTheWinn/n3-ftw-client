@@ -34,13 +34,27 @@ export class LockerContract {
     amount: number,
     releaseAt: number,
     title: string,
-    description: string
+    description: string,
+    invokeCount
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
     receiver = NeonWallet.getScriptHashFromAddress(receiver);
-    const invokeScript = {
+
+    const signers = [
+      {
+        account: senderHash,
+        scopes: tx.WitnessScope.CustomContracts,
+        allowedContracts: [
+          contract.assetHash,
+          NEP_SCRIPT_HASH[this.network],
+          this.contractHash,
+        ],
+      },
+    ];
+
+    const invokeScript: any = {
       operation: "lock",
       scriptHash: this.contractHash,
       args: [
@@ -73,19 +87,28 @@ export class LockerContract {
           value: description,
         },
       ],
-      signers: [
-        {
-          account: senderHash,
-          scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [
-            contract.assetHash,
-            NEP_SCRIPT_HASH[this.network],
-            this.contractHash,
-          ],
-        },
-      ],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+
+    if (invokeCount === 1) {
+      invokeScript.signers = signers;
+      return wallet.WalletAPI.invoke(
+        connectedWallet,
+        this.network,
+        invokeScript
+      );
+    } else {
+      console.log(invokeCount)
+      const invokes: any[] = [];
+      for (var i = 0; i < invokeCount; ++i) {
+        invokes.push(invokeScript);
+      }
+      return wallet.WalletAPI.invokeMulti(
+        connectedWallet,
+        this.network,
+        invokes,
+        signers
+      );
+    }
   };
 
   unLock = async (connectedWallet, lockerNo): Promise<string> => {

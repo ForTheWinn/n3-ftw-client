@@ -1,3 +1,4 @@
+import { LOCKER_SCRIPT_HASH } from "../contracts/ftw/locker/consts";
 import { INetworkType } from "../network";
 import { ENDPOINT } from "./consts";
 import {
@@ -99,5 +100,45 @@ export class RestAPI {
   async getBoyz(filter): Promise<ISwapHistoryResult> {
     const params = "?" + new URLSearchParams(filter).toString();
     return this.fetchResult(this.endpoint + `/boyz/all` + params);
+  }
+
+  async getGMAssets(filter): Promise<any> {
+    const defaultFilters = {
+      collection: "ftw-locker",
+      "addressesChains[]": "n3",
+      listingState: "OnSaleNotExpired",
+      ...filter,
+    };
+
+    const params = "?" + new URLSearchParams(defaultFilters).toString();
+    return this.fetchResult(
+      `https://api.ghostmarket.io/api/v2/assets` + params
+    );
+  }
+
+  async getGMEvents(filter): Promise<any> {
+    const defaultFilters = {
+      collection: "ftw-locker",
+      "addressesChains[]": "n3",
+      ...filter,
+    };
+
+    const params = "?" + new URLSearchParams(defaultFilters).toString();
+    return this.fetchResult(
+      `https://api.ghostmarket.io/api/v2/events` + params
+    );
+  }
+
+  async getGMOrders(filter): Promise<any> {
+    const defaultFilters = {
+      chain: "n3",
+      contract: "0x" + LOCKER_SCRIPT_HASH[this.network],
+      ...filter,
+    };
+
+    const params = "?" + new URLSearchParams(defaultFilters).toString();
+    return this.fetchResult(
+      `https://api.ghostmarket.io/api/v2/asset/orders` + params
+    );
   }
 }

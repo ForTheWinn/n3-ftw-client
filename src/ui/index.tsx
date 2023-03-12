@@ -20,6 +20,7 @@ import {
   BOYZ_PATH,
   GASFI_PATH,
   BRAND_KIT_PATH,
+  NEP_KEYS_PATH,
 } from "../consts";
 import { WalletContextProvider } from "../packages/provider";
 import WalletSidebar from "./components/WalletSidebar";
@@ -41,6 +42,7 @@ import Locker from "./pages/Locker";
 import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
 import BrandKit from "./pages/BrandKit";
+import NEPKeys from "./pages/NEPKeys";
 
 const App = () => {
   return (
@@ -58,6 +60,7 @@ const App = () => {
         <Route path={TOURNAMENT_PATH} component={Tournament} />
         <Route path={SMITH_PATH} component={Smith} />
         <Route path={LOCKER_PATH} component={Locker} />
+        <Route path={NEP_KEYS_PATH} component={NEPKeys} />
         <Route path={COLLECTION_PATH} component={MyCollection} />
         <Route path={SWAP_PATH} component={Swap} />
         <Route path={FARM_PATH} component={Farm} />
