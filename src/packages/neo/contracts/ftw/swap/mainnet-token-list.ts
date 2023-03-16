@@ -18,6 +18,7 @@ import {
 	TTM_SCRIPT_HASH,
 	USDT_SCRIPT_HASH,
 	WATT_SCRIPT_HASH,
+  _7F_SCRIPT_HASH,
 } from "../../../consts/nep17-list";
 import {
   MAINNET,
@@ -40,13 +41,13 @@ export const MAINNET_TOKEN_LIST = {
     logo: "/symbols/bneo.jpeg",
     decimals: 8,
   },
-	[NEO_SCRIPT_HASH]: {
-		category: TOKEN_CATEGORY_GENERAL,
-		contractHash: NEO_SCRIPT_HASH,
-		symbol: "NEO",
-		logo: "/symbols/neo.svg",
-		decimals: 0,
-	},
+  [NEO_SCRIPT_HASH]: {
+    category: TOKEN_CATEGORY_GENERAL,
+    contractHash: NEO_SCRIPT_HASH,
+    symbol: "NEO",
+    logo: "/symbols/neo.svg",
+    decimals: 0,
+  },
   [GAS_SCRIPT_HASH]: {
     category: TOKEN_CATEGORY_GENERAL,
     contractHash: GAS_SCRIPT_HASH,
@@ -171,6 +172,13 @@ export const MAINNET_TOKEN_LIST = {
     contractHash: GLC_SCRIPT_HASH,
     symbol: "GLC",
     logo: "/symbols/glc.png",
+    decimals: 8,
+  },
+  [_7F_SCRIPT_HASH]: {
+    category: TOKEN_CATEGORY_STARTUPS,
+    contractHash: _7F_SCRIPT_HASH,
+    symbol: "7f",
+    logo: "/symbols/7f.png",
     decimals: 8,
   },
 };

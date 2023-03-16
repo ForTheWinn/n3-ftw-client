@@ -94,7 +94,16 @@ const NEPKeys = () => {
                     ) : (
                       <tr>
                         <td colSpan={8}>
-                          Soldout. New lockers will be released soon.
+                          Sold out! New lockers will be released soon. Please
+                          check the link below for future release plans.
+                          <br />
+                          <a
+                            target="_blank"
+                            href="https://docs.google.com/spreadsheets/d/1yE_jx2BDaZZdxxyrvuZfIWElO3Y9bQKt6Vdd2mxhCGI/edit?usp=sharing"
+                            rel="noreferrer"
+                          >
+                            Release plans
+                          </a>
                         </td>
                       </tr>
                     )}
