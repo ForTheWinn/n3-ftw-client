@@ -39,7 +39,7 @@ const NEPKeys = () => {
         toast.error(e.message);
       }
     } else {
-      toggleWalletSidebar()
+      toggleWalletSidebar();
     }
   };
 
@@ -77,7 +77,7 @@ const NEPKeys = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data &&
+                    {data && data.assets ? (
                       data.assets.map((evt) => {
                         return (
                           <KeyCard
@@ -90,7 +90,14 @@ const NEPKeys = () => {
                             lockerId={evt.tokenId}
                           />
                         );
-                      })}
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan={8}>
+                          Soldout. New lockers will be released soon.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
