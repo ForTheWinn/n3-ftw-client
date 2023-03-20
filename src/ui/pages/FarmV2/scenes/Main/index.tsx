@@ -7,32 +7,24 @@ import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificati
 import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
+import { CHAINS } from "../../../../../packages/chains/consts";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { getPoolList, getPrices } from "../../services";
 
 interface IStakingMainProps {
+  chain: CHAINS;
   prices?: IPrices;
 }
-const StakingMain = ({ prices }: IStakingMainProps) => {
+const StakingMain = ({ prices, chain }: IStakingMainProps) => {
   const { network } = useWallet();
   const [refresh, setRefresh] = useState(0);
-  const [data, setData] = useState<any>();
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const handleRefresh = () => setRefresh(refresh + 1);
-  useEffect(() => {
-    async function fetch() {
-      setError("");
-      setLoading(true);
-      try {
-        const pools = await new FarmV2Contract(network).getPools();
-        setData(pools);
-        setLoading(false);
-      } catch (e: any) {
-        setLoading(false);
-        setError(e.message);
-      }
-    }
-    fetch();
-  }, [refresh, network]);
+
+  const { data, error } = useOnChainData(
+    () => getPoolList(chain, network),
+    [refresh, network]
+  );
+
   return (
     <div>
       <div className="level is-mobile">
@@ -56,7 +48,7 @@ const StakingMain = ({ prices }: IStakingMainProps) => {
       </div>
       <hr />
       <div>
-        {isLoading ? (
+        {!data ? (
           <div>Loading..</div>
         ) : error ? (
           <ErrorNotificationWithRefresh
@@ -81,7 +73,9 @@ const StakingMain = ({ prices }: IStakingMainProps) => {
                     {...item}
                     tokenAPrice={prices ? prices["0x" + item.tokenA] : 0}
                     tokenBPrice={prices ? prices["0x" + item.tokenB] : 0}
-                    nepPrice={prices ? prices["0x" + NEP_SCRIPT_HASH[network]] : 0}
+                    nepPrice={
+                      prices ? prices["0x" + NEP_SCRIPT_HASH[network]] : 0
+                    }
                     bonusTokenPrice={
                       prices ? prices["0x" + item.bonusToken] : 0
                     }

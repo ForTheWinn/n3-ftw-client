@@ -27,8 +27,8 @@ export const SWAP_PATH_LIQUIDITY_REMOVE = "/liquidity/remove";
   Double Farm
 */
 export const FARM_V2_PATH = "/double-farm";
-export const FARM_V2_STAKE_PATH = "/double-farm/stake";
-export const FARM_V2_STAKE_POSITIONS_PATH = "/double-farm/stake/positions";
+export const FARM_V2_STAKE_PATH = "/stake";
+export const FARM_V2_STAKE_POSITIONS_PATH = `${FARM_V2_STAKE_PATH}/positions"`;
 /* 
   Farm
 */

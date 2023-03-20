@@ -5,10 +5,7 @@ interface IUseOnChainDataResult {
   data: any;
   error?: string;
 }
-export const useOnChainData = (
-  fn: () => Promise<any>,
-  deps: any[]
-): IUseOnChainDataResult => {
+export const useOnChainData = (fn, deps: any[]): IUseOnChainDataResult => {
   const [data, setData] = useState<any>();
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -17,6 +14,7 @@ export const useOnChainData = (
     async function fetch() {
       try {
         const res = await fn();
+        console.log(res)
         setData(res);
       } catch (e: any) {
         setError(e.message);

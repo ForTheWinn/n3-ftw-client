@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { CHAINS } from "../../packages/chains/consts";
 import { LocalStorage } from "../../packages/neo/local-storage";
-import { INetworkType } from "../../packages/neo/network";
 
 interface IAppContext {
   chain: CHAINS;
