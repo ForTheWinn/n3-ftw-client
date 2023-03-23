@@ -12,15 +12,15 @@ import { fakeNEOBNEOReserve } from "../helpers";
 import { handleError } from "../../../../../../packages/neo/utils/errors";
 import {
   getAfterSlippage,
-  getMaxTokenAAmount,
+  getMaxTokenAAmount
 } from "../../../../../../packages/neo/contracts/ftw/swap/helpers";
 
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 import {
   BNEO_SCRIPT_HASH,
   GAS_SCRIPT_HASH,
-  NEO_SCRIPT_HASH,
-} from "../../../../../../packages/neo/consts/nep17-list";
+  NEO_SCRIPT_HASH
+} from "../../../../../../packages/neo/consts/neo-token-hashes";
 import { BNEOContract } from "../../../../../../packages/neo/contracts/ftw/bneo";
 
 import AssetListModal from "./TokenList";
@@ -66,7 +66,7 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
           hash: GAS_SCRIPT_HASH,
           symbol: "GAS",
           decimals: 8,
-          icon: "/symbols/gas.svg",
+          icon: "/symbols/gas.svg"
         }
       : undefined
   );
@@ -252,13 +252,13 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
             hash: tokenAHash,
             symbol: tokenAHash === NEO_SCRIPT_HASH ? "NEO" : "bNEO",
             decimals: tokenAHash === NEO_SCRIPT_HASH ? 0 : 8,
-            icon: "",
+            icon: ""
           });
           setTokenB({
             hash: tokenBHash,
             symbol: tokenBHash === NEO_SCRIPT_HASH ? "NEO" : "bNEO",
             decimals: tokenBHash === NEO_SCRIPT_HASH ? 0 : 8,
-            icon: "",
+            icon: ""
           });
           setPairLoading(false);
         } catch (e: any) {
@@ -295,13 +295,13 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
             hash: tokenAHash,
             symbol: res.pair[tokenAHash].symbol,
             decimals: res.pair[tokenAHash].decimals,
-            icon: "",
+            icon: ""
           });
           setTokenB({
             hash: tokenBHash,
             symbol: res.pair[tokenBHash].symbol,
             decimals: res.pair[tokenBHash].decimals,
-            icon: "",
+            icon: ""
           });
           setPairLoading(false);
         } catch (e: any) {
@@ -321,7 +321,7 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
     params.tokenB,
     connectedWallet,
     network,
-    chain,
+    chain
   ]);
 
   const noLiquidity =
@@ -385,7 +385,7 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
             search:
               tokenA && tokenB
                 ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
-                : "",
+                : ""
           }}
         />
       ) : (

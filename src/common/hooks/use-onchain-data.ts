@@ -14,7 +14,6 @@ export const useOnChainData = (fn, deps: any[]): IUseOnChainDataResult => {
     async function fetch() {
       try {
         const res = await fn();
-        console.log(res)
         setData(res);
       } catch (e: any) {
         setError(e.message);

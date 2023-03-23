@@ -1,15 +1,6 @@
-import {
-  BNEO_SCRIPT_HASH,
-  GAS_SCRIPT_HASH,
-  HOOD_SCRIPT_HASH,
-	NEO_SCRIPT_HASH,
-  NEP_SCRIPT_HASH,
-} from "../../../consts/nep17-list";
-import {
-  TESTNET,
-  TOKEN_CATEGORY_GENERAL,
-  UNKNOWN_TOKEN_IMAGE,
-} from "../../../consts";
+import { TESTNET, TOKEN_CATEGORY_GENERAL } from ".";
+import { BNEO_SCRIPT_HASH, GAS_SCRIPT_HASH, NEO_SCRIPT_HASH, NEP_SCRIPT_HASH } from "./neo-token-hashes";
+
 export const TESTNET_TOKEN_LIST = {
   [BNEO_SCRIPT_HASH[TESTNET]]: {
     category: TOKEN_CATEGORY_GENERAL,

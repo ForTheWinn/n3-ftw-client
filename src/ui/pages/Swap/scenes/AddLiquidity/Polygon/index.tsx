@@ -8,7 +8,7 @@ import {
   fetchBalance,
   writeContract,
   getNetwork,
-  waitForTransaction,
+  waitForTransaction
 } from "@wagmi/core";
 
 import { useApp } from "../../../../../../common/hooks/use-app";
@@ -19,8 +19,8 @@ import {
   getAllowances,
   getLPEstimate,
   getReserves,
-  provide,
-} from "../../../../../../packages/polygon/api";
+  provide
+} from "../../../../../../packages/polygon/swap";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 import { POLYGON_TOKENS } from "../../../../../../packages/polygon";
 
@@ -36,7 +36,7 @@ import {
   IBalancesState,
   IReservesState,
   ISwapInputState,
-  ITokenState,
+  ITokenState
 } from "../../Swap/interfaces";
 
 interface ILiquidityProps {
@@ -235,7 +235,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           ethers.utils
             .parseUnits(amountB.toString(), tokenB.decimals)
             .toString(),
-          slippage * 100,
+          slippage * 100
         ]);
 
         const { hash } = await writeContract(config);
@@ -244,7 +244,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         setTxid(hash);
 
         const data = await waitForTransaction({
-          hash,
+          hash
         });
 
         setSwapDone(true);
@@ -267,18 +267,18 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         if (address) {
           const tokenAbalance = await fetchBalance({
             address,
-            token: _tokenA.hash as `0x${string}`,
+            token: _tokenA.hash as `0x${string}`
           });
           console.log(tokenAbalance);
 
           const tokenBbalance = await fetchBalance({
             address,
-            token: _tokenB.hash as `0x${string}`,
+            token: _tokenB.hash as `0x${string}`
           });
 
           setBalances({
             amountA: tokenAbalance.formatted,
-            amountB: tokenBbalance.formatted,
+            amountB: tokenBbalance.formatted
           });
 
           window.history.replaceState(
@@ -307,7 +307,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const toMain = {
     pathname: `${rootPath}`,
     search:
-      tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : "",
+      tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : ""
   };
 
   const title = noLiquidity ? "Create a new pool" : "Provide liquidity";

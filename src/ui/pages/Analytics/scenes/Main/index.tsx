@@ -7,7 +7,7 @@ import PageLayout from "../../../../components/Commons/PageLayout";
 import Pools from "./Pairs";
 import Tokens from "./Tokens";
 import PriceChart from "../../components/PriceChart";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
+import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-token-hashes";
 
 const AnalyticsMain = () => {
   const { network } = useWallet();
@@ -43,7 +43,7 @@ const AnalyticsMain = () => {
             style={{
               height: "600px",
               width: "100%",
-              overflowY: "scroll",
+              overflowY: "scroll"
             }}
           >
             <h1 className="title is-6">Tokens</h1>
@@ -56,7 +56,7 @@ const AnalyticsMain = () => {
             style={{
               height: "600px",
               width: "100%",
-              overflowY: "scroll",
+              overflowY: "scroll"
             }}
           >
             <h1 className="title is-6">Pairs</h1>

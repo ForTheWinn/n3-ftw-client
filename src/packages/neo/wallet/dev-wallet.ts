@@ -1,22 +1,18 @@
-import {
-  DEV_WALLET_PRIVATE_KEY,
-
-
-} from "../consts";
+import { DEV_WALLET_PRIVATE_KEY } from "../consts";
 import { CONST, rpc, sc, tx, u, wallet } from "@cityofzion/neon-core";
 // tslint:disable-next-line:no-submodule-imports
 import { BigInteger } from "@cityofzion/neon-core/lib/u";
 import { INetworkType, Network } from "../network";
 import { IBalance } from "./interfaces";
 import { convertContractCallParam } from "../utils";
-import {GAS_SCRIPT_HASH, NEO_SCRIPT_HASH} from "../consts/nep17-list";
+import { GAS_SCRIPT_HASH, NEO_SCRIPT_HASH } from "../consts/neo-token-hashes";
 
 export class DevWallet {
   static account = new wallet.Account(DEV_WALLET_PRIVATE_KEY);
   static async getAccount() {
     return {
       address: DevWallet.account.address,
-      label: "DEV",
+      label: "DEV"
     };
   }
 
@@ -27,7 +23,7 @@ export class DevWallet {
       website: "https://",
       // @ts-ignore
       compatibility: [],
-      extra: { currency: "USD", theme: "" },
+      extra: { currency: "USD", theme: "" }
     };
   }
 
@@ -35,7 +31,7 @@ export class DevWallet {
     return {
       chainId: 4,
       defaultNetwork: network,
-      networks: ["MainNet", "TestNet", "N3MainNet", "N3TestNet"],
+      networks: ["MainNet", "TestNet", "N3MainNet", "N3TestNet"]
     };
   }
 
@@ -58,7 +54,7 @@ export class DevWallet {
       balances.push({
         contract: item.assethash,
         amount,
-        symbol,
+        symbol
       });
     });
     return balances;
@@ -91,7 +87,7 @@ export class DevWallet {
     // );
     return {
       txid,
-      nodeUrl: rpcClient.url,
+      nodeUrl: rpcClient.url
     };
   }
 
@@ -101,7 +97,7 @@ export class DevWallet {
       operation: invokeScript.operation,
       args: invokeScript.args
         ? invokeScript.args.map((param: any) => convertContractCallParam(param))
-        : [],
+        : []
     });
   };
 
@@ -127,7 +123,7 @@ export class DevWallet {
     const transaction = new tx.Transaction({
       validUntilBlock: currentHeight + 1,
       script,
-      signers: invokeScript.signers,
+      signers: invokeScript.signers
     });
 
     transaction.networkFee = await DevWallet.calculateNetworkFee(

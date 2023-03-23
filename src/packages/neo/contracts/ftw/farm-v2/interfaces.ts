@@ -3,14 +3,14 @@ export interface IClaimableRewards {
   tokenB: string;
   tokenASymbol: string;
   tokenBSymbol: string;
-	bonusToHarvest: number
-	bonusTokenHash: string
-	bonusTokenSymbol: string
-	rewardsToHarvest: number
-	share: number
-	tokensStaked: number
-	nepTokensPerSecond: number;
-	bonusTokensPerSecond: number;
+  bonusToHarvest: number;
+  bonusTokenHash: string;
+  bonusTokenSymbol: string;
+  rewardsToHarvest: number;
+  share: number;
+  tokensStaked: number;
+  nepTokensPerSecond: number;
+  bonusTokensPerSecond: number;
 }
 
 export interface IPool {
@@ -18,13 +18,21 @@ export interface IPool {
   tokenB: string;
   tokenASymbol: string;
   tokenBSymbol: string;
-	lastRewardedAt: string;
-	tokensStaked: number;
-	nepTokensPerSecond: number;
-	bonusToken: string;
-	bonusTokenSymbol: string;
-	bonusTokenDecimals: number;
-	bonusTokensPerSecond: number;
+  lastRewardedAt: string;
+  tokensStaked: number;
+  nepTokensPerSecond: number;
+  bonusToken: string;
+  bonusTokenSymbol: string;
+  bonusTokenDecimals: number;
+  bonusTokensPerSecond: number;
+}
+
+export interface IPoolEnhanced extends IPool {
+  nepRewardsPerDay: string;
+  bonusRewardsPerDay: string;
+  hasBonusRewards: boolean;
+  tokenALogo: string
+  tokenBLogo: string
 }
 
 export interface ILPTokens {
@@ -36,8 +44,8 @@ export interface ILPTokens {
 }
 
 export interface IBoyStaked {
-	lotNo: string;
-	tokenId: string;
-	tier: string;
-	createdAt: string;
+  lotNo: string;
+  tokenId: string;
+  tier: string;
+  createdAt: string;
 }

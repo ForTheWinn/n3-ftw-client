@@ -10,7 +10,11 @@ import PositionList from "./PositionList";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 
-const MyPositions = ({ onRefresh }) => {
+interface IMyPositionsProps {
+  path: string;
+  onRefresh: () => void;
+}
+const MyPositions = ({ path, onRefresh }: IMyPositionsProps) => {
   const { network, connectedWallet } = useWallet();
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
@@ -39,7 +43,7 @@ const MyPositions = ({ onRefresh }) => {
 
   return (
     <div>
-      <HeaderBetween path={FARM_V2_PATH} title={`My staking`} />
+      <HeaderBetween path={`${path}${FARM_V2_PATH}`} title={`My staking`} />
       <hr />
       {connectedWallet ? (
         <PositionList

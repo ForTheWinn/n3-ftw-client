@@ -8,14 +8,15 @@ import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import {
   BNEO_SCRIPT_HASH,
-  GAS_SCRIPT_HASH,
-} from "../../../../../packages/neo/consts/nep17-list";
+  GAS_SCRIPT_HASH
+} from "../../../../../packages/neo/consts/neo-token-hashes";
 
 const StakingPairCard = (props: IStakingPairs) => {
   const history = useHistory();
   const { network } = useWallet();
   const isBNEOAndGAS =
-    props.tokenA === BNEO_SCRIPT_HASH[network] && props.tokenB === GAS_SCRIPT_HASH;
+    props.tokenA === BNEO_SCRIPT_HASH[network] &&
+    props.tokenB === GAS_SCRIPT_HASH;
 
   const { isLoaded, error, data } = useOnChainData(() => {
     return new StakingContract(network).getTVL(props.tokenA, props.tokenB);

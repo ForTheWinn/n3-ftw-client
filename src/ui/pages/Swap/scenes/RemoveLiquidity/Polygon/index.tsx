@@ -7,8 +7,8 @@ import {
   getLPTokens,
   isApprovedForAll,
   removeLiquidity,
-  setApprovalForAll,
-} from "../../../../../../packages/polygon/api";
+  setApprovalForAll
+} from "../../../../../../packages/polygon/swap";
 import LPTokenCard from "./LPTokenCard";
 import toast from "react-hot-toast";
 import RemoveLiquidityModal from "./RemoveLiquidityModal";
@@ -62,7 +62,7 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
         setSubmitting(true);
         setTxid(hash);
         const data = await waitForTransaction({
-          hash,
+          hash
         });
         console.log(data);
         setFinished(true);

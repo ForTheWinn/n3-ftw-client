@@ -5,7 +5,7 @@ import { withDecimal } from "../../../../../../packages/neo/utils";
 import TruncatedAddress from "../../../../../components/TruncatedAddress";
 import Pagination from "bulma-pagination-react";
 import moment from "moment";
-import { MAINNET_TOKEN_LIST } from "../../../../../../packages/neo/contracts/ftw/swap/mainnet-token-list";
+import { MAINNET_TOKEN_LIST } from "../../../../../../packages/neo/consts/mainnet-token-list";
 
 interface ISwapHistoryProps {
   id: string;

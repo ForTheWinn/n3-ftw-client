@@ -1,21 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FARM_V2_STAKE_POSITIONS_PATH } from "../../../../../consts";
-import StakingPairCard from "./StakingPairCard";
+import {
+  FARM_V2_STAKE_PATH,
+  FARM_V2_STAKE_POSITIONS_PATH
+} from "../../../../../consts";
 import { useWallet } from "../../../../../packages/provider";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
-import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import { CHAINS } from "../../../../../packages/chains/consts";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { getPoolList, getPrices } from "../../services";
+import { getPoolList } from "../../services";
+import { IPoolEnhanced } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
+import { Avatar, Space } from "antd";
+import DisplayAPR from "../../components/DisplayAPR";
 
 interface IStakingMainProps {
   chain: CHAINS;
   prices?: IPrices;
+  nepPrice?: number;
+  path: string;
 }
-const StakingMain = ({ prices, chain }: IStakingMainProps) => {
+
+const TableHeader = () => (
+  <thead>
+    <tr>
+      <th>Pool</th>
+      <th>Reward Tokens</th>
+      <th>APR</th>
+      <th></th>
+    </tr>
+  </thead>
+);
+
+const StakingMain = ({ prices, chain, nepPrice, path }: IStakingMainProps) => {
   const { network } = useWallet();
   const [refresh, setRefresh] = useState(0);
   const handleRefresh = () => setRefresh(refresh + 1);
@@ -24,6 +41,9 @@ const StakingMain = ({ prices, chain }: IStakingMainProps) => {
     () => getPoolList(chain, network),
     [refresh, network]
   );
+
+    console.log(error);
+
 
   return (
     <div>
@@ -37,7 +57,7 @@ const StakingMain = ({ prices, chain }: IStakingMainProps) => {
           <div className="level-item">
             <div className="buttons">
               <Link
-                to={FARM_V2_STAKE_POSITIONS_PATH}
+                to={`${path}${FARM_V2_STAKE_POSITIONS_PATH}`}
                 className="button is-light is-small is-rounded"
               >
                 My positions
@@ -58,28 +78,48 @@ const StakingMain = ({ prices, chain }: IStakingMainProps) => {
         ) : (
           <div className="table-container">
             <table className="table is-fullwidth">
-              <thead>
-                <tr>
-                  <th>Pool</th>
-                  <th>Reward tokens</th>
-                  <th>APR</th>
-                  <th></th>
-                </tr>
-              </thead>
+              <TableHeader />
               <tbody>
-                {data.map((item, i) => (
-                  <StakingPairCard
-                    key={"sc" + i}
-                    {...item}
-                    tokenAPrice={prices ? prices["0x" + item.tokenA] : 0}
-                    tokenBPrice={prices ? prices["0x" + item.tokenB] : 0}
-                    nepPrice={
-                      prices ? prices["0x" + NEP_SCRIPT_HASH[network]] : 0
-                    }
-                    bonusTokenPrice={
-                      prices ? prices["0x" + item.bonusToken] : 0
-                    }
-                  />
+                {data.map((pool: IPoolEnhanced, i) => (
+                  <tr key={"pool-farm-" + i}>
+                    <td>
+                      <Space>
+                        <Avatar size="small" src={pool.tokenALogo} />
+                        <Avatar size="small" src={pool.tokenBLogo} />
+                        <small>
+                          {pool.tokenASymbol} / {pool.tokenBSymbol}
+                        </small>
+                      </Space>
+                    </td>
+                    <td>
+                      {`${pool.nepRewardsPerDay} NEP`}
+                      <br />
+                      {pool.hasBonusRewards && (
+                        <>{`${pool.bonusRewardsPerDay} ${pool.bonusTokenSymbol}`}</>
+                      )}
+                    </td>
+                    <td>
+                      {prices && nepPrice ? (
+                        <DisplayAPR
+                          chain={chain}
+                          network={network}
+                          prices={prices}
+                          nepPrice={nepPrice}
+                          {...pool}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </td>
+                    <td className="has-text-right">
+                      <Link
+                        to={`${path}${FARM_V2_STAKE_PATH}?tokenA=${pool.tokenA}&tokenB=${pool.tokenB}&tokenASymbol=${pool.tokenASymbol}&tokenBSymbol=${pool.tokenBSymbol}`}
+                        className="button is-primary is-small"
+                      >
+                        Stake
+                      </Link>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>

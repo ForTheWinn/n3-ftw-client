@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
 
-import { getTokenURI } from "../../../../../../packages/polygon/api";
+import { getTokenURI } from "../../../../../../packages/polygon/swap";
 import LPTokenCard from "../components/LPTokenCard";
 
 import { ILPTokenURI } from "../../../../../../packages/polygon/interfaces";

@@ -6,8 +6,8 @@ import { INetworkType } from "../../../../../../packages/neo/network";
 import {
   BNEO_SCRIPT_HASH,
   GAS_SCRIPT_HASH,
-  NEO_SCRIPT_HASH,
-} from "../../../../../../packages/neo/consts/nep17-list";
+  NEO_SCRIPT_HASH
+} from "../../../../../../packages/neo/consts/neo-token-hashes";
 import { ITokenState } from "../interfaces";
 import { ASSET_LIST } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 
@@ -45,7 +45,7 @@ const SwapInputs = ({
   userTokenBBalance,
   setAmountA,
   setAmountB,
-  noLiquidity,
+  noLiquidity
 }: ISwapInputsProps) => {
   const [searchTerm, setSearchTerm] = useState<ISearchTerm>();
   const [isAmountALoading, setAmountALoading] = useState(false);
@@ -134,7 +134,7 @@ const SwapInputs = ({
           setAmountA(value);
           setSearchTerm({
             type: "A",
-            value,
+            value
           });
           setSwapType("AtoB");
         }}
@@ -179,7 +179,7 @@ const SwapInputs = ({
           setAmountB(value);
           setSearchTerm({
             type: "B",
-            value,
+            value
           });
           setSwapType("BtoA");
         }}

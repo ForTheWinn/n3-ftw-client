@@ -5,7 +5,7 @@ import { wallet } from "../../../index";
 import { LOTTO_SCRIPT_HASH } from "./consts";
 import { IReserve } from "../swap/interfaces";
 import { parseMapValue } from "../../../utils";
-import {GAS_SCRIPT_HASH} from "../../../consts/nep17-list";
+import { GAS_SCRIPT_HASH } from "../../../consts/neo-token-hashes";
 
 export class LottoContract {
   network: INetworkType;
@@ -31,10 +31,10 @@ export class LottoContract {
           allowedContracts: [
             "6e644dda08a62f3fc9d14e824d1a3bd816a0c2d5",
             GAS_SCRIPT_HASH,
-            this.contractHash,
-          ],
-        },
-      ],
+            this.contractHash
+          ]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -47,10 +47,10 @@ export class LottoContract {
         args: [
           {
             type: "Hash160",
-            value: this.contractHash,
-          },
-        ],
-      },
+            value: this.contractHash
+          }
+        ]
+      }
     ];
     if (connectedWallet) {
       const senderHash = NeonWallet.getScriptHashFromAddress(
@@ -62,9 +62,9 @@ export class LottoContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       const script3 = {
         scriptHash: this.contractHash,
@@ -72,9 +72,9 @@ export class LottoContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       script.push(script2 as any);
       script.push(script3 as any);
@@ -89,7 +89,7 @@ export class LottoContract {
         u.BigInteger.fromNumber(res.stack[0].value as string).toDecimal(8)
       ),
       isAddressParticipated: connectedWallet ? res.stack[1].value : undefined,
-      votePrice: connectedWallet ? res.stack[2].value : undefined,
+      votePrice: connectedWallet ? res.stack[2].value : undefined
     };
   };
 
@@ -100,9 +100,9 @@ export class LottoContract {
         operation: "getTicketList",
         args: [
           { type: "Integer", value: "10" },
-          { type: "Integer", value: "1" },
-        ],
-      },
+          { type: "Integer", value: "1" }
+        ]
+      }
     ];
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {

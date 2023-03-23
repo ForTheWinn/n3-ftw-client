@@ -45,7 +45,7 @@ export const base64ToAddress = (str: string): string =>
   wallet.getAddressFromScriptHash(base64ToHash160(str));
 
 export const base64ToHash160 = (str: string): string =>
-  u.reverseHex(u.base642hex(str));
+  "0x" + u.reverseHex(u.base642hex(str));
 
 export const base64ToString = (str: string): string =>
   u.HexString.fromBase64(str).toAscii().toString();

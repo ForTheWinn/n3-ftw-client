@@ -3,7 +3,7 @@ import {
   fetchBalance,
   writeContract,
   getNetwork,
-  waitForTransaction,
+  waitForTransaction
 } from "@wagmi/core";
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { useAccount } from "wagmi";
@@ -25,7 +25,7 @@ import {
   IBalancesState,
   IReservesState,
   ISwapInputState,
-  ITokenState,
+  ITokenState
 } from "../interfaces";
 
 import {
@@ -33,8 +33,8 @@ import {
   getAllowances,
   getEstimated,
   getReserves,
-  swap,
-} from "../../../../../../packages/polygon/api";
+  swap
+} from "../../../../../../packages/polygon/swap";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { getTokenByHash } from "../helpers";
@@ -220,7 +220,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
           tokenB.hash,
           amountIn,
           amountOut,
-          swapInput.type === "B",
+          swapInput.type === "B"
         ]);
 
         const { hash } = await writeContract(config);
@@ -229,7 +229,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         setTxid(hash);
 
         const data = await waitForTransaction({
-          hash,
+          hash
         });
 
         setSwapDone(true);
@@ -255,18 +255,18 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         if (address) {
           const tokenAbalance = await fetchBalance({
             address,
-            token: _tokenA.hash,
+            token: _tokenA.hash
           });
           console.log(tokenAbalance);
 
           const tokenBbalance = await fetchBalance({
             address,
-            token: _tokenB.hash,
+            token: _tokenB.hash
           });
 
           setBalances({
             amountA: tokenAbalance.formatted,
-            amountB: tokenBbalance.formatted,
+            amountB: tokenBbalance.formatted
           });
 
           window.history.replaceState(
@@ -309,7 +309,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
                   swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
                 )
                 .toString(),
-              swapInput.type === "B",
+              swapInput.type === "B"
             ];
             const data = await getEstimated(args);
 
@@ -370,7 +370,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
             search:
               tokenA && tokenB
                 ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
-                : "",
+                : ""
           }}
         />
       ) : (

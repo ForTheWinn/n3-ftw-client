@@ -7,7 +7,7 @@ import { parsePlayer, parseHistory } from "./helpers";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 import { base64ToAddress, toDecimal } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
-import { GAS_SCRIPT_HASH } from "../../../consts/nep17-list";
+import { GAS_SCRIPT_HASH } from "../../../consts/neo-token-hashes";
 
 export class TournamentContract {
   network: INetworkType;
@@ -32,23 +32,23 @@ export class TournamentContract {
       args: [
         {
           type: "Hash160",
-          value: this.contractHash,
+          value: this.contractHash
         },
         {
           type: "String",
-          value: tokenId,
+          value: tokenId
         },
         {
           type: "Array",
           value: [
             {
               type: "Integer",
-              value: arenaNo,
-            },
-          ],
-        },
+              value: arenaNo
+            }
+          ]
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -66,10 +66,10 @@ export class TournamentContract {
       args: [
         {
           type: "Integer",
-          value: arenaNo,
-        },
+          value: arenaNo
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(
       connectedWallet,
@@ -93,14 +93,14 @@ export class TournamentContract {
       args: [
         {
           type: "Integer",
-          value: arenaNo,
+          value: arenaNo
         },
         {
           type: "String",
-          value: tokenId,
-        },
+          value: tokenId
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -119,14 +119,14 @@ export class TournamentContract {
       args: [
         {
           type: "Integer",
-          value: arenaNo,
+          value: arenaNo
         },
         {
           type: "String",
-          value: tokenId,
-        },
+          value: tokenId
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -147,17 +147,17 @@ export class TournamentContract {
         { type: "Hash160", value: this.contractHash },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(SUPPORT_TICKET_PRICE, 8).toString(),
+          value: u.BigInteger.fromDecimal(SUPPORT_TICKET_PRICE, 8).toString()
         },
         {
           type: "Array",
           value: [
             { type: "Integer", value: arenaNo },
-            { type: "String", value: tokenId },
-          ],
-        },
+            { type: "String", value: tokenId }
+          ]
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -175,9 +175,9 @@ export class TournamentContract {
       scriptHash: this.contractHash,
       args: [
         { type: "Integer", value: arenaNo },
-        { type: "Integer", value: gameNo },
+        { type: "Integer", value: gameNo }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -189,9 +189,9 @@ export class TournamentContract {
       args: [
         {
           type: "Integer",
-          value: arenaNo,
-        },
-      ],
+          value: arenaNo
+        }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     // @ts-ignore
@@ -204,8 +204,8 @@ export class TournamentContract {
       operation: "getHistoryPaginate",
       args: [
         { type: "Integer", value: arenaNo },
-        { type: "Integer", value: page },
-      ],
+        { type: "Integer", value: page }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     return parseHistory(res.stack[0].value);
@@ -215,7 +215,7 @@ export class TournamentContract {
     const script = {
       scriptHash: this.contractHash,
       operation: "getGameHeight",
-      args: [{ type: "Integer", value: arenaNo }],
+      args: [{ type: "Integer", value: arenaNo }]
     };
     const res = await Network.read(this.network, [script]);
     // @ts-ignore
@@ -237,8 +237,8 @@ export class TournamentContract {
         { type: "Integer", value: arenaNo },
         { type: "Integer", value: gameNo },
         { type: "String", value: championTokenId },
-        { type: "Hash160", value: senderHash },
-      ],
+        { type: "Hash160", value: senderHash }
+      ]
     };
     const script1 = {
       scriptHash: this.contractHash,
@@ -246,15 +246,15 @@ export class TournamentContract {
       args: [
         { type: "Integer", value: arenaNo },
         { type: "Integer", value: gameNo },
-        { type: "Hash160", value: address },
-      ],
+        { type: "Hash160", value: address }
+      ]
     };
     const res = await Network.read(this.network, [script, script1]);
     return {
       // @ts-ignore
       betAmount: parseFloat(res.stack[0].value),
       // @ts-ignore
-      isClaimed: res.stack[1].value,
+      isClaimed: res.stack[1].value
     };
   };
 
@@ -274,8 +274,8 @@ export class TournamentContract {
       args: [
         { type: "Integer", value: arenaNo },
         { type: "Integer", value: gameNo },
-        { type: "String", value: tokenId },
-      ],
+        { type: "String", value: tokenId }
+      ]
     };
     scripts.push(script);
 
@@ -288,15 +288,15 @@ export class TournamentContract {
           { type: "Integer", value: arenaNo },
           { type: "Integer", value: gameNo },
           { type: "String", value: tokenId },
-          { type: "Hash160", value: senderHash },
-        ],
+          { type: "Hash160", value: senderHash }
+        ]
       };
       scripts.push(script1);
     }
     const res = await Network.read(this.network, scripts);
     return {
       totalBets: res.stack[0].value as string,
-      userBets: res.stack[1] ? (res.stack[1].value as string) : "",
+      userBets: res.stack[1] ? (res.stack[1].value as string) : ""
     };
   };
 
@@ -311,28 +311,28 @@ export class TournamentContract {
     const script = {
       scriptHash: this.contractHash,
       operation: "getCurrentPrize",
-      args: [{ type: "Integer", value: arenaNo }],
+      args: [{ type: "Integer", value: arenaNo }]
     };
     const script1 = {
       scriptHash: this.contractHash,
       operation: "getGameHeight",
-      args: [{ type: "Integer", value: arenaNo }],
+      args: [{ type: "Integer", value: arenaNo }]
     };
     const script2 = {
       scriptHash: this.contractHash,
       operation: "getPreviousWinner",
-      args: [{ type: "Integer", value: arenaNo }],
+      args: [{ type: "Integer", value: arenaNo }]
     };
     const script3 = {
       scriptHash: this.contractHash,
       operation: "getTimeElapsed",
-      args: [{ type: "Integer", value: arenaNo }],
+      args: [{ type: "Integer", value: arenaNo }]
     };
     const res = await Network.read(this.network, [
       script,
       script1,
       script2,
-      script3,
+      script3
     ]);
     return {
       prize: toDecimal(res.stack[0].value as string),
@@ -342,7 +342,7 @@ export class TournamentContract {
         : undefined,
       timeElapsedFromPreviousGame: res.stack[3].value
         ? (res.stack[3].value as string)
-        : undefined,
+        : undefined
     };
   };
 }

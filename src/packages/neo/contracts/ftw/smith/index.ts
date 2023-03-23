@@ -7,13 +7,16 @@ import {
   ISmithNEP11Info,
   ISmithNEP11RecordPaginate,
   ISmithNEP17Info,
-  ISmithNEP17RecordPaginate,
+  ISmithNEP17RecordPaginate
 } from "./interfaces";
 import { parseSmithProperties } from "./helpers";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { IRuneMeta } from "../rune/interfaces";
 import { parseMapValue } from "../../../utils";
-import { GAS_SCRIPT_HASH, NEP_SCRIPT_HASH } from "../../../consts/nep17-list";
+import {
+  GAS_SCRIPT_HASH,
+  NEP_SCRIPT_HASH
+} from "../../../consts/neo-token-hashes";
 
 export class SmithContract {
   network: INetworkType;
@@ -43,48 +46,48 @@ export class SmithContract {
       args: [
         {
           type: "String",
-          value: "v3",
+          value: "v3"
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Integer",
-          value: totalSupply,
+          value: totalSupply
         },
         {
           type: "Integer",
-          value: decimals,
+          value: decimals
         },
         {
           type: "String",
-          value: symbol,
+          value: symbol
         },
         {
           type: "String",
-          value: contractName,
+          value: contractName
         },
         {
           type: "String",
-          value: author,
+          value: author
         },
         {
           type: "String",
-          value: description,
+          value: description
         },
         {
           type: "String",
-          value: email,
-        },
+          value: email
+        }
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, NEP_SCRIPT_HASH[this.network]],
-        },
-      ],
+          allowedContracts: [this.contractHash, NEP_SCRIPT_HASH[this.network]]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -107,40 +110,40 @@ export class SmithContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "String",
-          value: contractName,
+          value: contractName
         },
         {
           type: "String",
-          value: author,
+          value: author
         },
         {
           type: "String",
-          value: description,
+          value: description
         },
         {
           type: "String",
-          value: symbol,
+          value: symbol
         },
         {
           type: "Integer",
-          value: totalSupply,
+          value: totalSupply
         },
         {
           type: "Integer",
-          value: decimals,
-        },
+          value: decimals
+        }
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, NEP_SCRIPT_HASH[this.network]],
-        },
-      ],
+          allowedContracts: [this.contractHash, NEP_SCRIPT_HASH[this.network]]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -162,40 +165,40 @@ export class SmithContract {
       args: [
         {
           type: "String",
-          value: "v1",
+          value: "v1"
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "String",
-          value: symbol,
+          value: symbol
         },
         {
           type: "String",
-          value: contractName,
+          value: contractName
         },
         {
           type: "String",
-          value: description,
+          value: description
         },
         {
           type: "String",
-          value: author,
+          value: author
         },
         {
           type: "String",
-          value: email,
-        },
+          value: email
+        }
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, NEP_SCRIPT_HASH[this.network]],
-        },
-      ],
+          allowedContracts: [this.contractHash, NEP_SCRIPT_HASH[this.network]]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -217,22 +220,22 @@ export class SmithContract {
       args: [
         {
           type: "String",
-          value: name,
+          value: name
         },
         {
           type: "String",
-          value: description,
+          value: description
         },
         {
           type: "String",
-          value: image,
+          value: image
         },
         {
           type: "String",
-          value: json,
-        },
+          value: json
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -252,18 +255,18 @@ export class SmithContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
+          value: contractHash
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "String",
-          value: manifest,
-        },
+          value: manifest
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -283,14 +286,14 @@ export class SmithContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
+          value: contractHash
         },
         {
           type: "String",
-          value: manifest,
-        },
+          value: manifest
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -304,13 +307,13 @@ export class SmithContract {
       args: [
         {
           type: "Integer",
-          value: "30",
+          value: "30"
         },
         {
           type: "Integer",
-          value: page,
-        },
-      ],
+          value: page
+        }
+      ]
     };
     const res = await Network.read(this.network, [records]);
     if (res.state === "FAULT") {
@@ -328,13 +331,13 @@ export class SmithContract {
       args: [
         {
           type: "Integer",
-          value: "30",
+          value: "30"
         },
         {
           type: "Integer",
-          value: page,
-        },
-      ],
+          value: page
+        }
+      ]
     };
     const scripts = [records];
     const res = await Network.read(this.network, scripts);
@@ -348,7 +351,7 @@ export class SmithContract {
     const script = {
       scriptHash: contract,
       operation: "tokens",
-      args: [],
+      args: []
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -364,7 +367,7 @@ export class SmithContract {
     const script = {
       scriptHash: contract,
       operation: "totalSupply",
-      args: [],
+      args: []
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -383,9 +386,9 @@ export class SmithContract {
       args: [
         {
           type: "String",
-          value: tokenId,
-        },
-      ],
+          value: tokenId
+        }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -404,9 +407,9 @@ export class SmithContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
-        },
-      ],
+          value: contractHash
+        }
+      ]
     };
 
     const res = await Network.read(this.network, [script]);
@@ -425,9 +428,9 @@ export class SmithContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
-        },
-      ],
+          value: contractHash
+        }
+      ]
     };
 
     const scripts = [script];
@@ -445,9 +448,9 @@ export class SmithContract {
       args: [
         {
           type: "String",
-          value: symbol,
-        },
-      ],
+          value: symbol
+        }
+      ]
     };
 
     const scripts = [script];
@@ -465,9 +468,9 @@ export class SmithContract {
       args: [
         {
           type: "String",
-          value: symbol,
-        },
-      ],
+          value: symbol
+        }
+      ]
     };
 
     const scripts = [script];
@@ -493,9 +496,9 @@ export class SmithContract {
       args: [
         {
           type: "Hash160",
-          value: ownerHash,
-        },
-      ],
+          value: ownerHash
+        }
+      ]
     };
     const script2 = {
       scriptHash: NEP_SCRIPT_HASH[this.network],
@@ -503,9 +506,9 @@ export class SmithContract {
       args: [
         {
           type: "Hash160",
-          value: ownerHash,
-        },
-      ],
+          value: ownerHash
+        }
+      ]
     };
     const res = await Network.read(this.network, [script1, script2]);
     if (res.state === "FAULT") {
@@ -513,7 +516,7 @@ export class SmithContract {
     }
     return {
       gasBalance: parseFloat(res.stack[0].value as string),
-      nepBalance: parseFloat(res.stack[1].value as string),
+      nepBalance: parseFloat(res.stack[1].value as string)
     };
   };
 }

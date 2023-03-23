@@ -1,9 +1,13 @@
+import { u } from "@cityofzion/neon-core";
+
 export interface IReserveData {
   pair: {
     [key: string]: {
       symbol: string;
       decimals: number;
       reserveAmount: number;
+      reserveAmountFormatted: string;
+      reserve: u.BigInteger;
     };
   };
   userBalances: {

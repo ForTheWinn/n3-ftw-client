@@ -12,8 +12,8 @@ import {
   GM_SCRIPT_HASH,
   LRB_SCRIPT_HASH,
   NEO_SCRIPT_HASH,
-  NEP_SCRIPT_HASH,
-} from "../../../consts/nep17-list";
+  NEP_SCRIPT_HASH
+} from "../../../consts/neo-token-hashes";
 
 export class IDOContract {
   network: INetworkType;
@@ -39,22 +39,22 @@ export class IDOContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Hash160",
-          value: this.contractHash,
+          value: this.contractHash
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amount, decimals).toString(),
+          value: u.BigInteger.fromDecimal(amount, decimals).toString()
         },
         {
           type: "String",
-          value: "1",
-        },
+          value: "1"
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -64,12 +64,12 @@ export class IDOContract {
   ): Promise<IIDOStatus> => {
     const script1 = {
       scriptHash: this.contractHash,
-      operation: "getTotalMint",
+      operation: "getTotalMint"
     };
 
     const script2 = {
       scriptHash: this.contractHash,
-      operation: "getLaunchDate",
+      operation: "getLaunchDate"
     };
 
     const script3 = {
@@ -78,9 +78,9 @@ export class IDOContract {
       args: [
         {
           type: "Hash160",
-          value: this.contractHash,
-        },
-      ],
+          value: this.contractHash
+        }
+      ]
     };
 
     const scripts = [script1, script2, script3];
@@ -95,9 +95,9 @@ export class IDOContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       const script5 = {
         scriptHash: GAS_SCRIPT_HASH,
@@ -105,9 +105,9 @@ export class IDOContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       const script6 = {
         scriptHash: BNEO_SCRIPT_HASH[this.network],
@@ -115,9 +115,9 @@ export class IDOContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       const script7 = {
         scriptHash: FLM_SCRIPT_HASH[this.network],
@@ -125,9 +125,9 @@ export class IDOContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       const script8 = {
         scriptHash: GM_SCRIPT_HASH[this.network],
@@ -135,9 +135,9 @@ export class IDOContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       const script9 = {
         scriptHash: LRB_SCRIPT_HASH[this.network],
@@ -145,9 +145,9 @@ export class IDOContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       scripts.push(script4);
       scripts.push(script5);
@@ -182,8 +182,8 @@ export class IDOContract {
           : 0,
         [LRB_SCRIPT_HASH[this.network]]: connectedWallet
           ? parseFloat(res.stack[8].value as string)
-          : 0,
-      },
+          : 0
+      }
     };
   };
 }

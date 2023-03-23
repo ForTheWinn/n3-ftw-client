@@ -6,8 +6,8 @@ import { IReserveData } from "../../../../../../packages/neo/contracts/ftw/swap/
 import { SwapContract } from "../../../../../../packages/neo/contracts";
 import {
   GAS_SCRIPT_HASH,
-  NEO_SCRIPT_HASH,
-} from "../../../../../../packages/neo/consts/nep17-list";
+  NEO_SCRIPT_HASH
+} from "../../../../../../packages/neo/consts/neo-token-hashes";
 import { ASSET_LIST } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 import { ITokenState } from "../../Swap/interfaces";
 
@@ -24,7 +24,7 @@ interface ILPInputsProps {
   noLiquidity?: boolean;
   userTokenABalance?: number;
   userTokenBBalance?: number;
-	setPeg: (val: "A" | "B") => void;
+  setPeg: (val: "A" | "B") => void;
 }
 
 const LPInputs = ({
@@ -40,9 +40,8 @@ const LPInputs = ({
   data,
   userTokenABalance,
   userTokenBBalance,
-	setPeg
+  setPeg
 }: ILPInputsProps) => {
-
   const handleChangeAmountA = (val) => {
     setAmountA(val);
     if (val !== undefined) {
@@ -55,7 +54,7 @@ const LPInputs = ({
           data.pair[tokenB.hash].reserveAmount
         );
         setAmountB(parseFloat(estimated));
-	      setPeg("A");
+        setPeg("A");
       }
     } else {
       if (!noLiquidity) {
@@ -76,7 +75,7 @@ const LPInputs = ({
           data.pair[tokenA.hash].reserveAmount
         );
         setAmountA(parseFloat(estimated));
-	      setPeg("B");
+        setPeg("B");
       }
     } else {
       if (!noLiquidity) {

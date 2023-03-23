@@ -19,8 +19,8 @@ import { handleError } from "../../../../../../packages/neo/utils/errors";
 import {
   BNEO_SCRIPT_HASH,
   NEO_SCRIPT_HASH,
-  NEP_SCRIPT_HASH,
-} from "../../../../../../packages/neo/consts/nep17-list";
+  NEP_SCRIPT_HASH
+} from "../../../../../../packages/neo/consts/neo-token-hashes";
 import { ITokenState } from "../../Swap/interfaces";
 import PriceRatio from "../../Swap/components/SwapDetails/PriceRatio";
 import ProvideLPInfo from "../../../components/ProvideLPInfo";
@@ -46,7 +46,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           hash: NEP_SCRIPT_HASH[network],
           decimals: 8,
           symbol: "NEP",
-          icon: "/symbols/nep.png",
+          icon: "/symbols/nep.png"
         }
       : undefined
   );
@@ -166,7 +166,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         res.pair[NEO_SCRIPT_HASH] = {
           symbol: "NEO",
           decimals: 0,
-          reserveAmount: res.pair[bNEOHash].reserveAmount,
+          reserveAmount: res.pair[bNEOHash].reserveAmount
         };
         res.userBalances[NEO_SCRIPT_HASH] = balances.neo;
       } else {
@@ -184,7 +184,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           hash: tokenAHash,
           symbol: res.pair[tokenAHash].symbol,
           decimals: res.pair[tokenAHash].decimals,
-          icon: "",
+          icon: ""
         });
       }
       if (!tokenB) {
@@ -192,7 +192,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           hash: tokenBHash,
           symbol: res.pair[tokenBHash].symbol,
           decimals: res.pair[tokenBHash].decimals,
-          icon: "",
+          icon: ""
         });
       }
       setPairLoading(false);
@@ -235,7 +235,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const toMain = {
     pathname: `${rootPath}`,
     search:
-      tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : "",
+      tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : ""
   };
   const title = noLiquidity ? "Create a new pool" : "Provide liquidity";
   return (

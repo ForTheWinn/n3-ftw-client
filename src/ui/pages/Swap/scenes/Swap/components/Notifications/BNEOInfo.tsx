@@ -1,8 +1,8 @@
 import React from "react";
 import {
   BNEO_SCRIPT_HASH,
-  NEO_SCRIPT_HASH,
-} from "../../../../../../../packages/neo/consts/nep17-list";
+  NEO_SCRIPT_HASH
+} from "../../../../../../../packages/neo/consts/neo-token-hashes";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { toDecimal } from "../../../../../../../packages/neo/utils";
 

@@ -1173,10 +1173,10 @@
   "resolved" "https://registry.npmjs.org/@cityofzion/neon-api/-/neon-api-5.2.0.tgz"
   "version" "5.2.0"
 
-"@cityofzion/neon-core@^5.0.0", "@cityofzion/neon-core@^5.0.0-next.16", "@cityofzion/neon-core@^5.2.0":
-  "integrity" "sha512-wGlZJduEXt4Ar1VuP0+x/RzNvkG83isfHk+yF2+uS+BjJ6LwZzm1Z0hnIaj54+YqeygWHktHouCHNnnbghdx7w=="
-  "resolved" "https://registry.npmjs.org/@cityofzion/neon-core/-/neon-core-5.2.0.tgz"
-  "version" "5.2.0"
+"@cityofzion/neon-core@^5.0.0", "@cityofzion/neon-core@^5.2.0", "@cityofzion/neon-core@^5.3.0":
+  "integrity" "sha512-iOHY7rFuDZavH87klFIxOYpu3PnPm6pS1xY7qhkFrRtcuTqRBMzhoZstE70XLDh01ujC5y2+gXvgz4OOpzgdXQ=="
+  "resolved" "https://registry.npmjs.org/@cityofzion/neon-core/-/neon-core-5.3.0.tgz"
+  "version" "5.3.0"
   dependencies:
     "abort-controller" "3.0.0"
     "bn.js" "5.2.0"

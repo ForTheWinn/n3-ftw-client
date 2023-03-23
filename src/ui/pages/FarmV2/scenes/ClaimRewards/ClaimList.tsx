@@ -4,7 +4,7 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { DISPLAY_OPTIONS, REALTIME } from "./consts";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import RewardsInRange from "./RewardsInRange";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
+import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-token-hashes";
 import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 interface IClaimListProps {
   bonus: number;
@@ -22,7 +22,7 @@ const ClaimList = ({
   handleToggle,
   selectedItems,
   prices,
-  rewards,
+  rewards
 }: IClaimListProps) => {
   const [rewardDisplayType, setRewardDisplayType] = useState<string>(REALTIME);
   return (

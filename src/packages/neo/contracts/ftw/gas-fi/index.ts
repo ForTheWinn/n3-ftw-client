@@ -6,12 +6,12 @@ import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 import { parseMapValue } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
-import { BNEO_SCRIPT_HASH } from "../../../consts/nep17-list";
+import { BNEO_SCRIPT_HASH } from "../../../consts/neo-token-hashes";
 import {
   IClaimableResult,
   IDrawsResult,
   IGASFiStatus,
-  IStakeResult,
+  IStakeResult
 } from "./interfaces";
 
 export class GasFiContract {
@@ -37,22 +37,22 @@ export class GasFiContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Hash160",
-          value: this.contractHash,
+          value: this.contractHash
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amount, 8).toString(),
+          value: u.BigInteger.fromDecimal(amount, 8).toString()
         },
         {
           type: "Integer",
-          value: position,
-        },
+          value: position
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -67,10 +67,10 @@ export class GasFiContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
-        },
+          value: senderHash
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -83,7 +83,7 @@ export class GasFiContract {
       operation: "draw",
       scriptHash: this.contractHash,
       args: [],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -101,14 +101,14 @@ export class GasFiContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Integer",
-          value: drawNo,
-        },
+          value: drawNo
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -123,10 +123,10 @@ export class GasFiContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
-        },
+          value: senderHash
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -143,9 +143,9 @@ export class GasFiContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
-        },
-      ],
+          value: senderHash
+        }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "HALT") {
@@ -167,8 +167,8 @@ export class GasFiContract {
       {
         operation: "status",
         scriptHash: this.contractHash,
-        args: [],
-      },
+        args: []
+      }
     ];
 
     if (connectedWallet) {
@@ -181,9 +181,9 @@ export class GasFiContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       const claimable = {
         operation: "getClaimable",
@@ -191,9 +191,9 @@ export class GasFiContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       const bNEOBalance = {
         operation: "balanceOf",
@@ -201,9 +201,9 @@ export class GasFiContract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
+            value: senderHash
+          }
+        ]
       };
       scripts.push(stake);
       scripts.push(claimable);
@@ -233,9 +233,9 @@ export class GasFiContract {
       args: [
         {
           type: "Hash160",
-          value: connectedWallet.account.address,
-        },
-      ],
+          value: connectedWallet.account.address
+        }
+      ]
     };
     const res = await Network.read(this.network, [stake]);
     if (res.state === "HALT") {
@@ -254,13 +254,13 @@ export class GasFiContract {
       args: [
         {
           type: "Integer",
-          value: "30",
+          value: "30"
         },
         {
           type: "Integer",
-          value: page,
-        },
-      ],
+          value: page
+        }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -276,9 +276,9 @@ export class GasFiContract {
       args: [
         {
           type: "Hash160",
-          value: connectedWallet.account.address,
-        },
-      ],
+          value: connectedWallet.account.address
+        }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "HALT") {
@@ -286,8 +286,8 @@ export class GasFiContract {
         res.stack[0].value &&
         Array.isArray(res.stack[0].value)
         ? res.stack[0].value.map((item: any) => {
-					return parseMapValue(item)
-	      })
+            return parseMapValue(item);
+          })
         : [];
     } else {
       return [];

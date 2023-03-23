@@ -26,7 +26,7 @@ import {
   BRIDGE_PATH,
   BRAND_KIT_PATH,
 } from "../consts";
-import { POLYGON_SWAP_PATH } from "../consts/polygonRoutes";
+import { POLYGON_FARM_PATH, POLYGON_SWAP_PATH } from "../consts/polygonRoutes";
 
 import { WalletContextProvider } from "../packages/provider";
 
@@ -54,7 +54,7 @@ import BrandKit from "./pages/BrandKit";
 import { TESTNET } from "../packages/neo/consts";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygon],
+  [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygonMumbai],
   [publicProvider()]
 );
 
@@ -90,6 +90,10 @@ const App = () => {
           />
           <Route path={FARM_PATH} component={Farm} />
           <Route path={FARM_V2_PATH} component={FarmV2} />
+          <Route
+            path={POLYGON_FARM_PATH}
+            component={() => <FarmV2 path={POLYGON_FARM_PATH} />}
+          />
           <Route path={DAO_PATH} component={DAO} />
           <Route path={IDO_PATH} component={IDO} />
           <Route exact path={MIGRATION_PATH} component={Migration} />
