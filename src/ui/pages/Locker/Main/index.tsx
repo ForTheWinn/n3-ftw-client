@@ -13,6 +13,7 @@ import { FaInfoCircle, FaKey, FaPlus, FaSearch } from "react-icons/fa";
 import SearchLockerModal from "./SearchLockerModal";
 import ModalCard from "../../../components/Modal";
 import LockerInfoPage from "../InfoPage";
+import Level from "../../../components/Level";
 
 const LockerMain = () => {
   const { network } = useWallet();
@@ -26,37 +27,33 @@ const LockerMain = () => {
       <div className="columns is-centered">
         <div className="column is-8">
           <div className="box is-shadowless">
-            <div className="level is-mobile">
-              <div className="level-left">
-                <div className="level-item">
-                  <div className="is-block">
-                    <h1 className="title is-5 is-marginless">Lockers</h1>
-                    <p>Send your tokens with a timelock</p>
-                  </div>
+            <Level
+              left={
+                <div className="is-block">
+                  <h1 className="title is-5 is-marginless">Lockers</h1>
+                  <p>Send your tokens with a timelock</p>
                 </div>
-              </div>
-              <div className="level-right">
-                <div className="level-item">
-                  <div className="buttons">
-                    <Link to={LOCKER_CREATE_PATH} className="button is-white">
-                      <FaPlus />
-                    </Link>
-                    <Link to={LOCKER_SEARCH_PATH} className="button is-white">
-                      <FaSearch />
-                    </Link>
-                    <Link to={LOCKER_USER_PATH} className="button is-white">
-                      <FaKey />
-                    </Link>
-                    <button
-                      onClick={() => setInfoModalActive(true)}
-                      className="button is-white"
-                    >
-                      <FaInfoCircle />
-                    </button>
-                  </div>
+              }
+              right={
+                <div className="buttons">
+                  <Link to={LOCKER_CREATE_PATH} className="button is-white">
+                    <FaPlus />
+                  </Link>
+                  <Link to={LOCKER_SEARCH_PATH} className="button is-white">
+                    <FaSearch />
+                  </Link>
+                  <Link to={LOCKER_USER_PATH} className="button is-white">
+                    <FaKey />
+                  </Link>
+                  <button
+                    onClick={() => setInfoModalActive(true)}
+                    className="button is-white"
+                  >
+                    <FaInfoCircle />
+                  </button>
                 </div>
-              </div>
-            </div>
+              }
+            />
           </div>
           {!isLoaded ? (
             <div>Loading..</div>

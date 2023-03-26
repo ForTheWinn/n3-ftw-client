@@ -11,11 +11,38 @@ import Modal from "../../components/Modal";
 import PageLayout from "../../components/PageLayout";
 import KeyCard from "./components/KeyCard";
 
+const KeysLoading = () => {
+  return (
+    <tr>
+      <td colSpan={8}>Loading..</td>
+    </tr>
+  );
+};
+
+const KeysSoldout = () => {
+  return (
+    <tr>
+      <td colSpan={8}>
+        Sold out! New lockers will be released soon. Please check the link below
+        for future release plans.
+        <br />
+        <a
+          target="_blank"
+          href="https://docs.google.com/spreadsheets/d/1yE_jx2BDaZZdxxyrvuZfIWElO3Y9bQKt6Vdd2mxhCGI/edit?usp=sharing"
+          rel="noreferrer"
+        >
+          Release plans
+        </a>
+      </td>
+    </tr>
+  );
+};
+
 const NEPKeys = () => {
   const { network, connectedWallet } = useWallet();
   const { toggleWalletSidebar } = useApp();
   const [txid, setTxid] = useState("");
-  const { data } = useOnChainData(
+  const { data, isLoaded } = useOnChainData(
     () =>
       new RestAPI(network).getGMAssets({
         "creators[]": "NYqGJqeAKCdzqZBjhSTtsLwnsRTrhDsHsC",
@@ -42,7 +69,6 @@ const NEPKeys = () => {
       toggleWalletSidebar();
     }
   };
-
   return (
     <>
       <PageLayout>
@@ -50,7 +76,6 @@ const NEPKeys = () => {
           <div className="column is-8">
             <div className="box is-shadowless">
               <Level
-                isMobile
                 left={
                   <div className="is-block">
                     <h1 className="title is-5 is-marginless">NEP Keys</h1>
@@ -77,7 +102,9 @@ const NEPKeys = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data && data.assets ? (
+                    {!isLoaded ? (
+                      <KeysLoading />
+                    ) : data && data.assets ? (
                       data.assets.map((evt) => {
                         return (
                           <KeyCard
@@ -92,20 +119,7 @@ const NEPKeys = () => {
                         );
                       })
                     ) : (
-                      <tr>
-                        <td colSpan={8}>
-                          Sold out! New lockers will be released soon. Please
-                          check the link below for future release plans.
-                          <br />
-                          <a
-                            target="_blank"
-                            href="https://docs.google.com/spreadsheets/d/1yE_jx2BDaZZdxxyrvuZfIWElO3Y9bQKt6Vdd2mxhCGI/edit?usp=sharing"
-                            rel="noreferrer"
-                          >
-                            Release plans
-                          </a>
-                        </td>
-                      </tr>
+                      <KeysSoldout />
                     )}
                   </tbody>
                 </table>
