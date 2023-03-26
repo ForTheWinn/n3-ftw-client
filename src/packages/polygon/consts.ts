@@ -1,5 +1,4 @@
-import { TOKEN_CATEGORY_GENERAL } from "../neo/consts";
-import { NEP_LOGO } from "../neo/contracts/ftw/farm/consts";
+
 
 interface IToken {
   hash: string;
@@ -37,12 +36,11 @@ const TEST_TOKEN = {
 export const POLYGON_TOKENS: IToken[] = [NEP_TOKEN, TEST_TOKEN];
 
 export const POLYGON_TOKEN_LIST = {
-  [NEP_TOKEN.hash]: {
-    category: TOKEN_CATEGORY_GENERAL,
+  [POLYGON_NEP_CONTRACT_HASH]: {
     ...NEP_TOKEN
   },
-  [TEST_TOKEN.hash]: {
-    category: TOKEN_CATEGORY_GENERAL,
+  [POLYGON_DERC_CONTRACT_HASH]: {
     ...TEST_TOKEN
   }
 };
+

@@ -13,11 +13,11 @@ import ClaimRewards from "./scenes/ClaimRewards";
 import CheckMarketStatus from "./components/CheckMarketStatus";
 import { useApp } from "../../../common/hooks/use-app";
 import { useOnChainData } from "../../../common/hooks/use-onchain-data";
-import { getPrices } from "./services";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../../../packages/chains/consts";
 import { POLYGON_FARM_PATH } from "../../../consts/polygonRoutes";
 import { NEP_SCRIPT_HASH } from "../../../packages/neo/consts/neo-token-hashes";
 import { useWallet } from "../../../packages/provider";
+import { farmRouter } from "../../../common/routers";
 
 interface IFarmProps {
   path?: string;
@@ -28,7 +28,7 @@ const Farm = (props: IFarmProps) => {
   const { network } = useWallet();
   const [refresh, setRefresh] = useState(0);
   let nepPrice = undefined;
-  const { data } = useOnChainData(() => getPrices(chain), [refresh]);
+  const { data } = useOnChainData(() => farmRouter.getPrices(chain), [refresh]);
 
   let { path } = useRouteMatch();
   let history = useHistory();
@@ -43,7 +43,7 @@ const Farm = (props: IFarmProps) => {
     if (path !== FARM_V2_PATH) {
       history.push(FARM_V2_PATH);
     }
-    nepPrice = data[ NEP_SCRIPT_HASH[network]];
+    nepPrice = data[NEP_SCRIPT_HASH[network]];
   }
 
   if (chain === POLYGON_CHAIN) {
@@ -51,7 +51,7 @@ const Farm = (props: IFarmProps) => {
       history.push(POLYGON_FARM_PATH);
     }
     //TODO::change later
-    nepPrice = data[ NEP_SCRIPT_HASH[network]];
+    nepPrice = data[NEP_SCRIPT_HASH[network]];
   }
 
   return (
@@ -78,13 +78,20 @@ const Farm = (props: IFarmProps) => {
                   exact={true}
                   path={`${path}${FARM_V2_STAKE_PATH}`}
                   component={() => (
-                    <Stake onRefresh={() => setRefresh(refresh + 1)} />
+                    <Stake
+                      chain={chain}
+                      network={network}
+                      onRefresh={() => setRefresh(refresh + 1)}
+                    />
                   )}
                 />
                 <Route
                   path={`${path}${FARM_V2_STAKE_POSITIONS_PATH}`}
                   component={() => (
-                    <MyPositions path={path} onRefresh={() => setRefresh(refresh + 1)} />
+                    <MyPositions
+                      path={path}
+                      onRefresh={() => setRefresh(refresh + 1)}
+                    />
                   )}
                 />
               </div>

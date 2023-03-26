@@ -5,12 +5,15 @@ import {
   multicall,
 } from "@wagmi/core";
 import { ethers } from "ethers";
+import { Buffer } from "buffer";
 import { POLYGON_SWAP_CONTRACT_HASH } from ".";
 import {
   IReservesState,
   ITokenState,
 } from "../../ui/pages/Swap/scenes/Swap/interfaces";
+import { ILPToken } from "../neo/contracts/ftw/swap/interfaces";
 import FTWSwapABI from "./FTWSwap.json";
+import { IFarmLPToken } from "../../common/routers/farm/interfaces";
 
 export const getReserves = async (
   tokenA: ITokenState,
@@ -25,14 +28,26 @@ export const getReserves = async (
   return {
     reserveA:
       res.tokenA === tokenA.hash
-        ? ethers.utils.formatUnits(res.amountA, tokenA.decimals).toString()
-        : ethers.utils.formatUnits(res.amountB, tokenA.decimals).toString(),
+        ? ethers.utils.formatUnits(res.amountA, tokenA.decimals)
+        : ethers.utils.formatUnits(res.amountB, tokenA.decimals),
     reserveB:
       res.tokenB === tokenB.hash
-        ? ethers.utils.formatUnits(res.amountB, tokenB.decimals).toString()
-        : ethers.utils.formatUnits(res.amountA, tokenB.decimals).toString(),
+        ? ethers.utils.formatUnits(res.amountB, tokenB.decimals)
+        : ethers.utils.formatUnits(res.amountA, tokenB.decimals),
     shares: res.shares.toString(),
   };
+};
+
+export const getReserve = async (
+  tokenA: string,
+  tokenB: string
+): Promise<any> => {
+  return readContract({
+    address: POLYGON_SWAP_CONTRACT_HASH,
+    abi: FTWSwapABI,
+    functionName: "getReserves",
+    args: [tokenA, tokenB],
+  });
 };
 
 export const getEstimated = (args) => {
@@ -44,13 +59,33 @@ export const getEstimated = (args) => {
   });
 };
 
-export const getLPTokens = (owner: string) => {
-  return readContract({
+export const getLPTokens = async (owner: string): Promise<IFarmLPToken[]> => {
+  const res: any = await readContract({
     address: POLYGON_SWAP_CONTRACT_HASH,
     abi: FTWSwapABI,
     functionName: "getTokensOf",
     args: [owner],
   });
+  const tokens: IFarmLPToken[] = [];
+
+  for (const tokenId of res) {
+    const token = await getTokenURI(tokenId.toString()) as string;
+    const json = Buffer.from(token.substring(29), "base64").toString();
+    const jsonObject = JSON.parse(json);
+    console.log(jsonObject)
+
+    tokens.push({
+      name: jsonObject.name,
+      tokenA: jsonObject.tokenA,
+      tokenB: jsonObject.tokenB,
+      tokenId: tokenId.toString(),
+      tokenAAmount: jsonObject.amountA,
+      tokenBAmount: jsonObject.amountB, 
+      sharesPercentage: (parseFloat(jsonObject.shares) / 10000).toString(), // BPS
+    })
+  }
+
+  return tokens;
 };
 
 // export const getLPTokenIds = (owner: string) => {

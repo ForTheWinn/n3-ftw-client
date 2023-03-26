@@ -9,10 +9,10 @@ import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificati
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import { CHAINS } from "../../../../../packages/chains/consts";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { getPoolList } from "../../services";
 import { IPoolEnhanced } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { Avatar, Space } from "antd";
 import DisplayAPR from "../../components/DisplayAPR";
+import { farmRouter } from "../../../../../common/routers";
 
 interface IStakingMainProps {
   chain: CHAINS;
@@ -38,12 +38,11 @@ const StakingMain = ({ prices, chain, nepPrice, path }: IStakingMainProps) => {
   const handleRefresh = () => setRefresh(refresh + 1);
 
   const { data, error } = useOnChainData(
-    () => getPoolList(chain, network),
+    () => farmRouter.getPoolList(chain, network),
     [refresh, network]
   );
 
-    console.log(error);
-
+  console.log(error);
 
   return (
     <div>

@@ -7,7 +7,6 @@ export interface IReserveData {
       decimals: number;
       reserveAmount: number;
       reserveAmountFormatted: string;
-      reserve: u.BigInteger;
     };
   };
   userBalances: {
@@ -39,23 +38,6 @@ export interface ILPHistory {
     };
   };
 }
-//
-// export interface IPairInfo {
-//   reserve: IReserve;
-//   pair: Balance;
-//   balances: Balance;
-// }
-//
-// interface Balance {
-//   [key: string]: number;
-// }
-
-// export interface ILPTokens {
-//   name: string;
-//   tokenId: string;
-//   lockUntil: string;
-//   amount: number;
-// }
 
 export interface IReserve {
   tokenA: string;

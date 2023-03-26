@@ -2,8 +2,8 @@ import { CONST as NEON_CONST } from "@cityofzion/neon-core";
 import { MAINNET, PRIVATENET, TESTNET } from "./index";
 
 /* Contract hashes */
-export const GAS_SCRIPT_HASH = "0x" + NEON_CONST.NATIVE_CONTRACT_HASH.GasToken;
-export const NEO_SCRIPT_HASH = "0x" + NEON_CONST.NATIVE_CONTRACT_HASH.NeoToken;
+export const GAS_SCRIPT_HASH = `0x${NEON_CONST.NATIVE_CONTRACT_HASH.GasToken}`;
+export const NEO_SCRIPT_HASH = `0x${NEON_CONST.NATIVE_CONTRACT_HASH.NeoToken}`; 
 export const USDT_SCRIPT_HASH = "0xcd48b160c1bbc9d74997b803b9a7ad50a4bef020";
 export const FWBTC_SCRIPT_HASH = "0xd6abe115ecb75e1fa0b42f5e85934ce8c1ae2893";
 export const FWETH_SCRIPT_HASH = "0xc14b601252aa5dfa6166cf35fe5ccd2e35f3fdf5";

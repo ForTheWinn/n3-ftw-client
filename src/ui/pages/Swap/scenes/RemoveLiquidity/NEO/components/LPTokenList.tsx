@@ -18,7 +18,7 @@ const LPTokenList = ({
   onRemoveLiquidity,
 }: ILPTokenListProps) => {
   const { isLoaded, error, data } = useOnChainData(() => {
-    return new SwapContract(network).getLPTokens(connectedWallet);
+    return new SwapContract(network).getLPTokens(connectedWallet.account.address);
   }, [connectedWallet, network, refresh]);
 
   return (

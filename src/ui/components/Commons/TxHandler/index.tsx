@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { INetworkType, Network } from "../../../../packages/neo/network";
 import { TESTNET } from "../../../../packages/neo/consts";
-import TxReceipt from "../../Commons/TxHandler/TxReceipt";
+import TxReceipt from "./TxReceipt";
 
 interface IAfterTransactionSubmittedProps {
   txid: string;
@@ -9,7 +9,7 @@ interface IAfterTransactionSubmittedProps {
   onSuccess: () => void;
   onError: () => void;
 }
-const AfterTransactionSubmitted = ({
+const TxHandler = ({
   txid,
   network,
   onSuccess,
@@ -46,4 +46,4 @@ const AfterTransactionSubmitted = ({
   );
 };
 
-export default AfterTransactionSubmitted;
+export default TxHandler;

@@ -883,12 +883,8 @@ export class SwapContract {
     return parseMapValue(res.stack[0] as any);
   };
 
-  getLPTokens = async (
-    connectedWallet: IConnectedWallet
-  ): Promise<ILPToken> => {
-    const senderHash = NeonWallet.getScriptHashFromAddress(
-      connectedWallet.account.address
-    );
+  getLPTokens = async (address: string): Promise<ILPToken[]> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(address);
     const scripts = [
       {
         scriptHash: this.contractHash,
@@ -897,9 +893,15 @@ export class SwapContract {
       }
     ];
     const res = await Network.read(this.network, scripts);
-    if (res.state === "FAULT") {
-      throw new Error(res.exception as string);
+    if (
+      res.state === "FAULT" ||
+      !res.stack[0] ||
+      !res.stack[0].value ||
+      !Array.isArray(res.stack[0].value)
+    ) {
+      throw new Error(res.exception ? res.exception : "Something went wrong.");
     }
+
     // @ts-ignore
     return res.stack[0].value.map((item) => parseMapValue(item));
   };

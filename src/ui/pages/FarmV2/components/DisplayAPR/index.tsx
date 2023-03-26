@@ -1,12 +1,12 @@
 import { u } from "@cityofzion/neon-core";
 import React from "react";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { farmRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../packages/chains/consts";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import { IPoolEnhanced } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { numberTrim } from "../../../../../packages/neo/utils";
-import { getReserves } from "../../services";
 
 interface IDisplayAPRProps extends IPoolEnhanced {
   tokenA: string;
@@ -33,7 +33,7 @@ const DisplayAPR = ({
 }: IDisplayAPRProps) => {
   console.log(tokenA);
   const { data, error } = useOnChainData(
-    () => getReserves(chain, network, tokenA, tokenB),
+    () => farmRouter.getReserves(chain, network, tokenA, tokenB),
     []
   );
 

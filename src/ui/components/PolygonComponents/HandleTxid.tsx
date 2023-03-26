@@ -1,6 +1,6 @@
 import React from "react";
 import { useWaitForTransaction } from "wagmi";
-import TxReceipt from "../Commons/TxReceipt";
+import TxReceipt from "../Commons/TxHandler/TxReceipt";
 
 interface IAfterTransactionSubmittedProps {
   explorer?: string;
@@ -12,10 +12,10 @@ const HandleTxid = ({
   explorer,
   txid,
   onSuccess,
-  onError,
+  onError
 }: IAfterTransactionSubmittedProps) => {
   const { isLoading, isSuccess, error } = useWaitForTransaction({
-    hash: txid,
+    hash: txid
   });
   console.log(error);
 

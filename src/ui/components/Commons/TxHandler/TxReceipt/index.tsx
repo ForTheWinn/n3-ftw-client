@@ -1,6 +1,6 @@
 import React from "react";
 import { FaExclamationCircle } from "react-icons/fa";
-import CheckMark from "../../../pages/Tournament/scenes/Arena/Players/components/CheckMark";
+import CheckMark from "../../../../pages/Tournament/scenes/Arena/Players/components/CheckMark";
 import CubeLoading from "./CubeLoading";
 
 interface ITxReceiptProps {
@@ -17,7 +17,7 @@ const TxReceipt = ({
   txid,
   onError,
   onSuccess,
-  explorer,
+  explorer
 }: ITxReceiptProps) => {
   return (
     <div>
@@ -28,7 +28,7 @@ const TxReceipt = ({
           margin: "auto",
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "center"
         }}
         className=""
       >

@@ -1,10 +1,4 @@
-import {
-  readContract,
-  prepareWriteContract,
-  erc20ABI,
-  multicall
-} from "@wagmi/core";
-import { ethers } from "ethers";
+import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
 import { POLYGON_FARM_CONTRACT_HASH } from ".";
 import { TOKEN_LIST } from "../../consts/tokens";
 import { POLYGON_CHAIN } from "../chains/consts";
@@ -44,12 +38,12 @@ export const getPools = async (): Promise<any> => {
       bonusTokensPerSecond: pool.bonusTokensPerSecond,
       nepRewardsPerDay: withDecimal(pool.nepTokensPerSecond * 86400, 8, true),
       bonusRewardsPerDay: hasBonusRewards
-          ? withDecimal(
-              pool.bonusTokensPerSecond * 86400,
-              pool.bonusTokenDecimals,
-              true
-            )
-          : "0",
+        ? withDecimal(
+            pool.bonusTokensPerSecond * 86400,
+            pool.bonusTokenDecimals,
+            true
+          )
+        : "0",
       hasBonusRewards: hasBonusRewards,
       tokenALogo: TOKEN_LIST[POLYGON_CHAIN][pool.tokenA].icon,
       tokenBLogo: TOKEN_LIST[POLYGON_CHAIN][pool.tokenB].icon
@@ -57,4 +51,15 @@ export const getPools = async (): Promise<any> => {
   }
 
   return pools;
+};
+
+export const stake = async (tokenId: string): Promise<string> => {
+  const config = await prepareWriteContract({
+    address: POLYGON_FARM_CONTRACT_HASH,
+    abi: FTWFarmABI,
+    functionName: "stake",
+    args: [tokenId]
+  });
+  const { hash } = await writeContract(config);
+  return hash as string;
 };
