@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import ContractCard from "./ContractCard";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";

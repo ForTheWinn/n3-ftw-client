@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { detectEmojiInString } from "../../../Smith/helpers";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { Link, useHistory } from "react-router-dom";
@@ -23,7 +23,7 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
     contractHash: "",
     decimals: "",
     minTokens: "",
-    logo: "",
+    logo: ""
   });
 
   const hasEmoji = detectEmojiInString(values) !== 0;
@@ -31,7 +31,7 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
 
@@ -44,14 +44,14 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
       ...values,
       contractHash,
       symbol,
-      decimals,
+      decimals
     });
   };
 
   const handleAddChannel = async () => {
     if (connectedWallet) {
       const manifest = JSON.stringify({
-        logo: values.logo,
+        logo: values.logo
       });
       const txid = await new DaoContract(network).createChannel(
         connectedWallet,

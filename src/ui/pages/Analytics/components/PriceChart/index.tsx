@@ -8,10 +8,10 @@ import {
   Title,
   Tooltip,
   Filler,
-  Legend,
+  Legend
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../packages/neo/api";
 import { numberTrim } from "../../../../../packages/neo/utils";
 
@@ -30,34 +30,34 @@ export const options = {
   responsive: true,
   elements: {
     point: {
-      radius: 0,
-    },
+      radius: 0
+    }
   },
   plugins: {
     legend: {
-      display: false,
+      display: false
     },
     tooltip: {
-      enabled: false,
-    },
+      enabled: false
+    }
   },
   scales: {
     y: {
       grid: {
-        color: "white",
+        color: "white"
       },
       ticks: {
         callback: (value) => {
           return "$" + numberTrim(value, 4);
-        },
-      },
+        }
+      }
     },
     x: {
       grid: {
-        color: "white",
-      },
-    },
-  },
+        color: "white"
+      }
+    }
+  }
 };
 
 interface ITokenPriceChartProps {
@@ -79,12 +79,12 @@ const TokenPriceChart = ({ tokenId, days }: ITokenPriceChartProps) => {
         // const lastPrice = await new RestAPI(network).getPrice(
         //   tokenId
         // );
-				// res.
-				// console.log(lastPrice)
+        // res.
+        // console.log(lastPrice)
         setData(res);
         setLoading(false);
       } catch (e: any) {
-				console.log(e)
+        console.log(e);
         setLoading(false);
         // setError(e.message);
       }
@@ -100,9 +100,9 @@ const TokenPriceChart = ({ tokenId, days }: ITokenPriceChartProps) => {
           label: "Price",
           data: data && data.prices ? data.prices : [],
           borderColor: "#b23bff",
-          backgroundColor: "#b23bff",
-        },
-      ],
+          backgroundColor: "#b23bff"
+        }
+      ]
     };
   }, [data]);
   return (

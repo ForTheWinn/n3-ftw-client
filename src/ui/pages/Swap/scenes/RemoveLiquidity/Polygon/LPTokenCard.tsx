@@ -5,23 +5,19 @@ import { Buffer } from "buffer";
 import { getTokenURI } from "../../../../../../packages/polygon/swap";
 import LPTokenCard from "../components/LPTokenCard";
 
-import { ILPTokenURI } from "../../../../../../packages/polygon/interfaces";
+import { IFarmLPToken } from "../../../../../../common/routers/farm/interfaces";
 
 interface ILPTokenCard {
   tokenId: string;
   onClick: () => void;
 }
 const LPTokenDataLoader = ({ tokenId, onClick }: ILPTokenCard) => {
-  const [token, setToken] = useState<ILPTokenURI | undefined>();
+  const [token, setToken] = useState<IFarmLPToken | undefined>();
   useEffect(() => {
     const load = async (_tokenId: string) => {
-      // setLoading(true);
       try {
-        const res: any = await getTokenURI(parseFloat(_tokenId));
-        const json = Buffer.from(res.substring(29), "base64").toString();
-        const jsonObject = JSON.parse(json);
-        setToken(jsonObject);
-        console.log(jsonObject);
+        const res: any = await getTokenURI(_tokenId);
+        setToken(res);
       } catch (e) {
         console.log(e);
       }
@@ -32,13 +28,9 @@ const LPTokenDataLoader = ({ tokenId, onClick }: ILPTokenCard) => {
   return (
     <LPTokenCard
       tokenId={tokenId}
-      sharePercentage={token.shares.toString()}
-      tokenAAmount={ethers.utils
-        .formatUnits(token.amountA, token.decimalsA)
-        .toString()}
-      tokenBAmount={ethers.utils
-        .formatUnits(token.amountB, token.decimalsB)
-        .toString()}
+      sharePercentage={token.sharesPercentage}
+      tokenAAmount={token.amountA}
+      tokenBAmount={token.amountB}
       tokenASymbol={token.symbolA}
       tokenBSymbol={token.symbolB}
       onClick={onClick}

@@ -6,7 +6,7 @@ import { IDrawsResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/i
 import { withDecimal } from "../../../../../packages/neo/utils";
 import moment from "moment";
 import { IMainData } from "../Main";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 

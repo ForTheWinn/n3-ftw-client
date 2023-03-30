@@ -1,94 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { ILPToken } from "../../../../../packages/neo/contracts/ftw/swap/interfaces";
-import { u } from "@cityofzion/neon-core";
-import { SwapContract } from "../../../../../packages/neo/contracts";
-import { INetworkType } from "../../../../../packages/neo/network";
+import React from "react";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
-import { numberTrim } from "../../../../../packages/neo/utils";
+import { IFarmLPToken } from "../../../../../common/routers/farm/interfaces";
 
-interface IPositionCardProps extends ILPToken {
-  network: INetworkType;
-  TVL: number;
-  createdAt: string;
+interface IPositionCardProps {
   onUnStake: (tokenId: string) => void;
   prices?: IPrices;
+  token: IFarmLPToken;
 }
-const PositionCard = ({
-  network,
-  tokenA,
-  tokenB,
-  tokenId,
-  amount,
-  onUnStake,
-  prices,
-  createdAt,
-}: IPositionCardProps) => {
-  const [reserves, setReserves] = useState<any>();
-  useEffect(() => {
-    async function getReserves() {
-      try {
-        const reserve = await new SwapContract(network).getReserve(
-          tokenA,
-          tokenB
-        );
-        const tokenAPrice = prices ? prices["0x" + tokenA] : 0;
-        const tokenBPrice = prices ? prices["0x" + tokenB] : 0;
-        let tokenAReserve = reserve.pair[tokenA].reserveAmount;
-        let tokenBReserve = reserve.pair[tokenB].reserveAmount;
-        let tokenAAmount = parseFloat(
-          u.BigInteger.fromNumber(tokenAReserve)
-            .mul(amount)
-            .div(reserve.totalShare)
-            .toDecimal(reserve.pair[tokenA].decimals)
-        );
-        let tokenBAmount = parseFloat(
-          u.BigInteger.fromNumber(tokenBReserve)
-            .mul(amount)
-            .div(reserve.totalShare)
-            .toDecimal(reserve.pair[tokenB].decimals)
-        );
-        setReserves({
-          tokenASymbol: reserve.pair[tokenA].symbol,
-          tokenBSymbol: reserve.pair[tokenB].symbol,
-          tokenAAmount,
-          tokenBAmount,
-          tokenAUSD: tokenAAmount * tokenAPrice,
-          tokenBUSD: tokenBAmount * tokenBPrice,
-        });
-      } catch (e: any) {
-        console.log(e);
-      }
-    }
-    getReserves();
-  }, []);
-
+const PositionCard = ({ token, prices, onUnStake }: IPositionCardProps) => {
   return (
     <div className="media">
       <div className="media-content">
-        <strong>{tokenId}</strong>
+        {token.name}
         <br />
-        {reserves ? (
-          <small>
-            {`${numberTrim(reserves.tokenAAmount)} ${
-              reserves.tokenASymbol
-            } ($${numberTrim(reserves.tokenAUSD)})`}
-            <br />
-            {`${numberTrim(reserves.tokenBAmount)} ${
-              reserves.tokenBSymbol
-            } ($${numberTrim(reserves.tokenBUSD)})`}
-            <br />
-            {`$${numberTrim(reserves.tokenAUSD + reserves.tokenBUSD)}`}
-          </small>
-        ) : (
-          <></>
-        )}
-        {/*<small>Share of pool: {((amount / TVL) * 100).toFixed(2)}%</small>*/}
-        <br />
-        <br />
-        <small>Staked at {createdAt}</small>
+        <div className="content is-small">
+          {`${token.amountA} ${token.symbolA}`}
+          <br />
+          {`${token.amountB} ${token.symbolB}`}
+          <br />
+        </div>
       </div>
       <div className="media-right">
-        <button onClick={() => onUnStake(tokenId)} className="button is-light">
+        <button
+          onClick={() => onUnStake(token.tokenId)}
+          className="button is-light is-small"
+        >
           Withdraw
         </button>
       </div>

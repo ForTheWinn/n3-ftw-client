@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { u } from "@cityofzion/neon-core";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import {
   ILockerContract,
-  ILockerKeyToken,
+  ILockerKeyToken
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import { INetworkType } from "../../../../packages/neo/network";

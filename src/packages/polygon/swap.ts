@@ -11,7 +11,6 @@ import {
   IReservesState,
   ITokenState,
 } from "../../ui/pages/Swap/scenes/Swap/interfaces";
-import { ILPToken } from "../neo/contracts/ftw/swap/interfaces";
 import FTWSwapABI from "./FTWSwap.json";
 import { IFarmLPToken } from "../../common/routers/farm/interfaces";
 
@@ -69,41 +68,35 @@ export const getLPTokens = async (owner: string): Promise<IFarmLPToken[]> => {
   const tokens: IFarmLPToken[] = [];
 
   for (const tokenId of res) {
-    const token = await getTokenURI(tokenId.toString()) as string;
-    const json = Buffer.from(token.substring(29), "base64").toString();
-    const jsonObject = JSON.parse(json);
-    console.log(jsonObject)
-
-    tokens.push({
-      name: jsonObject.name,
-      tokenA: jsonObject.tokenA,
-      tokenB: jsonObject.tokenB,
-      tokenId: tokenId.toString(),
-      tokenAAmount: jsonObject.amountA,
-      tokenBAmount: jsonObject.amountB, 
-      sharesPercentage: (parseFloat(jsonObject.shares) / 10000).toString(), // BPS
-    })
+    const token = await getTokenURI(tokenId.toString());
+    tokens.push(token)
   }
 
   return tokens;
 };
 
-// export const getLPTokenIds = (owner: string) => {
-//   return readContract({
-//     address: POLYGON_SWAP_CONTRACT_HASH,
-//     abi: FTWSwapABI,
-//     functionName: "tokenOfOwnerByIndex",
-//     args: [owner],
-//   });
-// };
-
-export const getTokenURI = (tokenId: number) => {
-  return readContract({
+export const getTokenURI = async (tokenId: string): Promise<IFarmLPToken> => {
+  console.log(tokenId)
+  const res = await readContract({
     address: POLYGON_SWAP_CONTRACT_HASH,
     abi: FTWSwapABI,
     functionName: "tokenURI",
     args: [tokenId],
-  });
+  }) as string;
+   const json = Buffer.from(res.substring(29), "base64").toString();
+  const jsonObject = JSON.parse(json);
+  console.log(jsonObject)
+   return{
+      name: jsonObject.name,
+      tokenA: jsonObject.tokenA,
+      tokenB: jsonObject.tokenB,
+      symbolA: jsonObject.symbolA,
+      symbolB: jsonObject.symbolB,
+      tokenId: tokenId.toString(),
+      amountA: ethers.utils.formatUnits(jsonObject.amountA, jsonObject.decimalsA),
+      amountB: ethers.utils.formatUnits(jsonObject.amountB, jsonObject.decimalsB), 
+      sharesPercentage: (parseFloat(jsonObject.shares) / 10000).toString(), // BPS
+    }
 };
 
 export const getLPEstimate = (
@@ -179,20 +172,20 @@ export const getAllowances = (
   });
 };
 
-export const isApprovedForAll = (owner: string) => {
+export const isApprovedForAll = (owner: string, contractHash: string) => {
   return readContract({
     address: POLYGON_SWAP_CONTRACT_HASH,
     abi: FTWSwapABI,
     functionName: "isApprovedForAll",
-    args: [owner, POLYGON_SWAP_CONTRACT_HASH],
+    args: [owner, contractHash],
   });
 };
 
-export const setApprovalForAll = () => {
+export const setApprovalForAll = (contractHash: string) => {
   return prepareWriteContract({
     address: POLYGON_SWAP_CONTRACT_HASH,
     abi: FTWSwapABI,
     functionName: "setApprovalForAll",
-    args: [POLYGON_SWAP_CONTRACT_HASH, true],
+    args: [contractHash, true],
   });
 };

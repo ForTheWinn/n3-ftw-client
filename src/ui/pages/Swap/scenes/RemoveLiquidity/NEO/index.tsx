@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { SwapContract } from "../../../../../../packages/neo/contracts";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../../components/Modal";

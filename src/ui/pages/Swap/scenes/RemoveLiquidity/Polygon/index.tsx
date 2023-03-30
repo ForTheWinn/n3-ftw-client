@@ -12,6 +12,7 @@ import {
 import LPTokenCard from "./LPTokenCard";
 import toast from "react-hot-toast";
 import RemoveLiquidityModal from "./RemoveLiquidityModal";
+import { POLYGON_SWAP_CONTRACT_HASH } from "../../../../../../packages/polygon";
 
 interface IRemoveLiquidityProps {
   rootPath: string;
@@ -38,11 +39,11 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
 
       try {
         setApproveError(false);
-        if (await isApprovedForAll(address)) {
+        if (await isApprovedForAll(address, POLYGON_SWAP_CONTRACT_HASH)) {
           setApproved(true);
         } else {
           setApproving(true);
-          const config = await setApprovalForAll();
+          const config = await setApprovalForAll(POLYGON_SWAP_CONTRACT_HASH);
           const res = await writeContract(config);
           await res.wait();
           setApproved(true);
@@ -114,11 +115,11 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
           {isLoading ? (
             <div>Loading..</div>
           ) : tokens.length > 0 ? (
-            tokens.map((tokenId: any) => {
+            tokens.map(({ tokenId }: any) => {
               return (
                 <div key={tokenId}>
                   <LPTokenCard
-                    tokenId={tokenId.toString()}
+                    tokenId={tokenId}
                     onClick={() => onRemoveLiquidity(tokenId.toString())}
                   />
                 </div>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SwapHistory from "./SwapHistory";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../packages/neo/api";
 import LiquidityChart from "../Main/LiquidityChart";
 import { ASSET_LIST } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import {
   MAINNET,
-  UNKNOWN_TOKEN_IMAGE,
+  UNKNOWN_TOKEN_IMAGE
 } from "../../../../../packages/neo/consts";
 
 interface IPairDetailProps {
@@ -94,11 +94,11 @@ const PairDetail = ({ id }: IPairDetailProps) => {
                   network={network}
                   pairs={{
                     [data.tokenA.id]: {
-                      ...data.tokenA,
+                      ...data.tokenA
                     },
                     [data.tokenB.id]: {
-                      ...data.tokenB,
-                    },
+                      ...data.tokenB
+                    }
                   }}
                 />
               </div>

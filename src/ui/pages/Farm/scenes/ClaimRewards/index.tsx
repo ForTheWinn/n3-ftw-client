@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import ClaimModal from "./ClaimModal";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";

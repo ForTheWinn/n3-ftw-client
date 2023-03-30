@@ -1,15 +1,12 @@
 import { ContextOptions, IWalletStates } from "./interfaces";
 import React, { createContext, useContext, useState } from "react";
-import {
-  IConnectedWallet,
-  IWalletType,
-} from "../neo/wallet/interfaces";
+import { IConnectedWallet, IWalletType } from "../wallets/interfaces";
 import { sc } from "@cityofzion/neon-core";
-import { WalletAPI } from "../neo/wallet";
+import { WalletAPI } from "../wallets";
 import toast from "react-hot-toast";
-import { INetworkType } from "../neo/network";
-import { NEON } from "../neo/consts";
-import { handleError } from "../neo/utils/errors";
+import { INetworkType } from "../network";
+import { NEON } from "../consts";
+import { handleError } from "../utils/errors";
 
 export const WalletContext = createContext({} as IWalletStates);
 export const WalletContextProvider = (props: {
@@ -98,7 +95,7 @@ export const WalletContextProvider = (props: {
     pendingTransactions,
     switchNetwork,
     totalTxSubmit,
-    increaseTotalTxSubmit,
+    increaseTotalTxSubmit
   };
 
   return (

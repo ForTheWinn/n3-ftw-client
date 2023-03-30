@@ -1,8 +1,8 @@
 import React from "react";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import { TournamentContract } from "../../../../packages/neo/contracts/ftw/arena";
 import toast from "react-hot-toast";
-import {handleError} from "../../../../packages/neo/utils/errors";
+import { handleError } from "../../../../packages/neo/utils/errors";
 
 interface ILeaveButtonProps {
   arenaNo: string;
@@ -22,7 +22,7 @@ const LeaveButton = ({ arenaNo, tokenId, setTxid }: ILeaveButtonProps) => {
         addPendingTransaction(res);
         setTxid(res);
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet.");

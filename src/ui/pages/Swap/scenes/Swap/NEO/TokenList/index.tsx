@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "../../../../../../components/Modal";
-import { useWallet } from "../../../../../../../packages/provider";
+import { useWallet } from "../../../../../../../packages/neo/provider";
 import {
   SWAP_ASSET_CATEGORY,
   SWAP_ASSET_LIST

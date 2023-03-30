@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BoyzContract } from "../../../../../packages/neo/contracts/ftw/boyz";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import DisplayBoy from "./DisplayBoy";
 
 interface IMyBoyzProps {

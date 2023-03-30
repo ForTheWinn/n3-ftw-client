@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import { toast } from "react-hot-toast";
 import { ILocker } from "../../../../packages/neo/contracts/ftw/locker/interface";
 

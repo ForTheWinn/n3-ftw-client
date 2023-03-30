@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import DisplayNFT from "./DisplayNFT";
 import _ from "underscore";
 import { MAINNET } from "../../../../../packages/neo/consts";

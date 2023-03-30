@@ -1,5 +1,5 @@
 import { INetworkType, Network } from "../../../network";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { toast } from "react-hot-toast";
 import NumberFormat from "react-number-format";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
@@ -23,7 +23,7 @@ const NEP17FormModal = () => {
     nepBalance: number;
   }>({
     gasBalance: 0,
-    nepBalance: 0,
+    nepBalance: 0
   });
   const [values, setValues] = useState({
     name: "",
@@ -32,12 +32,12 @@ const NEP17FormModal = () => {
     totalSupply: "",
     author: "",
     description: "",
-    email: "",
+    email: ""
   });
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
   const hasEmoji = detectEmojiInString(values) !== 0;

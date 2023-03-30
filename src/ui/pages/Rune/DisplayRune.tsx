@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NFTContract } from "../../../packages/neo/contracts";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import { INetworkType } from "../../../packages/neo/network";
 import { IRuneMeta } from "../../../packages/neo/contracts/ftw/rune/interfaces";
 
@@ -17,7 +17,7 @@ const DisplayRune = ({
   height,
   tokenId,
   network,
-  onClick,
+  onClick
 }: IDisplayRuneProps) => {
   const [token, setToken] = useState<IRuneMeta | undefined>();
   useEffect(() => {

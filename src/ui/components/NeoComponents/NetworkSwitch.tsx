@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import { MAINNET, PRIVATENET, TESTNET } from "../../../packages/neo/consts";
 import { INetworkType } from "../../../packages/neo/network";
 

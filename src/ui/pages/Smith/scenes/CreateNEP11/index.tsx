@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { toast } from "react-hot-toast";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
@@ -20,7 +20,7 @@ const NEP11FormModal = () => {
     symbol: "",
     author: "",
     description: "",
-    email: "",
+    email: ""
   });
   const [isBalanceLoading, setBalanceLoading] = useState(false);
   const [balances, setBalances] = useState<{
@@ -28,7 +28,7 @@ const NEP11FormModal = () => {
     nepBalance: number;
   }>({
     gasBalance: 0,
-    nepBalance: 0,
+    nepBalance: 0
   });
 
   const hasEmoji = detectEmojiInString(values) !== 0;
@@ -36,7 +36,7 @@ const NEP11FormModal = () => {
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
 

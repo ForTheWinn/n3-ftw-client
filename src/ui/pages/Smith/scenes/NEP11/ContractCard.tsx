@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { ISmithNEP11Record } from "../../../../../packages/neo/contracts/ftw/smith/interfaces";
 import {
   MAINNET,
-  UNKNOWN_TOKEN_IMAGE,
+  UNKNOWN_TOKEN_IMAGE
 } from "../../../../../packages/neo/consts";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Tokens from "./Tokens";
 import {
   SMITH_CONTRACT_NEP11_PATH,
-  SMITH_CONTRACT_NEP17_PATH,
+  SMITH_CONTRACT_NEP17_PATH
 } from "../../../../../consts";
 import { Link } from "react-router-dom";
 
@@ -24,7 +24,7 @@ const ContractCard = ({ data }: IContractCardProps) => {
         <div className="has-text-centered">
           <div
             className="image is-64x64 mb-2"
-            style={{ margin: "auto", borderRadius: "50%", width:"40px" }}
+            style={{ margin: "auto", borderRadius: "50%", width: "40px" }}
           >
             <img
               onError={(e) => {

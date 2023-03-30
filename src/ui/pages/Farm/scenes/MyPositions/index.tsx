@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { FARM_PATH } from "../../../../../consts";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";

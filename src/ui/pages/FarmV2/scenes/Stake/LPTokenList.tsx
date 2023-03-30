@@ -5,7 +5,7 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
-import { CHAINS } from "../../../../../packages/chains/consts";
+import { CHAINS } from "../../../../../consts/chains";
 import { IFarmLPToken } from "../../../../../common/routers/farm/interfaces";
 import { farmRouter } from "../../../../../common/routers";
 

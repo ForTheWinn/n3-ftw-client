@@ -3,7 +3,7 @@ import { FARM_STAKE_PATH } from "../../../../../consts";
 import { useHistory } from "react-router-dom";
 import { IStakingPairs } from "../../../../../packages/neo/contracts/ftw/farm/interfaces";
 import PairIcons from "../../../../components/PairIcons";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import {

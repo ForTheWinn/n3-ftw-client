@@ -40,7 +40,7 @@ import { useLocation } from "react-router-dom";
 import { getTokenByHash } from "../helpers";
 import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../consts";
 import ActionModal from "../../AddLiquidity/Polygon/ActionModal";
-import { getChainId } from "../../../../../../packages/chains/helpers";
+import { getChainId } from "../../../../../../helpers";
 import SwapSettings from "../../../components/Settings";
 
 interface ISwapProps {
@@ -250,14 +250,12 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
       try {
         const res = await getReserves(_tokenA, _tokenB);
         setReserve(res);
-        console.log(res);
 
         if (address) {
           const tokenAbalance = await fetchBalance({
             address,
             token: _tokenA.hash
           });
-          console.log(tokenAbalance);
 
           const tokenBbalance = await fetchBalance({
             address,

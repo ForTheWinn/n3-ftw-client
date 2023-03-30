@@ -1,5 +1,5 @@
 import React from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 

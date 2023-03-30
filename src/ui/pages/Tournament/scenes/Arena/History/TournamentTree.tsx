@@ -2,7 +2,7 @@ import React from "react";
 import { IPlayer } from "../../../../../../packages/neo/contracts/ftw/arena/interfaces";
 import DisplayRuneWithProperties from "../../../components/DisplayRuneWithProperties";
 import { fight } from "../helpers";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 
 interface ITournamentTree {
   gameNo: string;
@@ -23,7 +23,7 @@ const TournamentTree = ({
   onClick,
   champ,
   tree,
-  nonce,
+  nonce
 }: ITournamentTree) => {
   const { network } = useWallet();
 

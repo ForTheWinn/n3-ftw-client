@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import _ from "underscore";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { SwapContract } from "../../../../../../packages/neo/contracts";
 import AssetListModal from "../../Swap/NEO/TokenList";
 import { toast } from "react-hot-toast";

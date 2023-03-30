@@ -1,4 +1,4 @@
-import { IConnectedWallet } from "../wallet/interfaces";
+import { IConnectedWallet } from "../wallets/interfaces";
 
 export const validateConnectedWallet = (connectedWallet?: IConnectedWallet) => {
   if (

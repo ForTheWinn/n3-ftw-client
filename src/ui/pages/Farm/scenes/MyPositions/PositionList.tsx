@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 import { RestAPI } from "../../../../../packages/neo/api";
 import PositionCard from "./PositionCard";
-import {StakingContract} from "../../../../../packages/neo/contracts/ftw/farm";
+import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 
 interface IPositionListProps {
   network: INetworkType;
@@ -16,7 +16,7 @@ const PositionList = ({
   network,
   connectedWallet,
   refresh,
-  onUnStake,
+  onUnStake
 }: IPositionListProps) => {
   const [data, setData] = useState<any>();
 
@@ -29,7 +29,7 @@ const PositionList = ({
         const prices = await new RestAPI(network).getPrices();
         setData({
           tokens,
-          prices,
+          prices
         });
       } catch (e: any) {
         console.log(e);
@@ -49,7 +49,7 @@ const PositionList = ({
           {data.tokens.map((item, i) => {
             return (
               <PositionCard
-	              network={network}
+                network={network}
                 key={"position" + i}
                 prices={data.prices}
                 {...item}

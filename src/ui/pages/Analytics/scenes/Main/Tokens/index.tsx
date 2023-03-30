@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import TokenItem from "./TokenItem";
 import ModalCard from "../../../../../components/Modal";
 import TokenDetail from "../../TokenDetail";
 import {
   ANALYTICS_PATH,
-  ANALYTICS_TOKENS_PATH,
+  ANALYTICS_TOKENS_PATH
 } from "../../../../../../consts";
 
 const TokensAnalytics = (props) => {
@@ -48,7 +48,7 @@ const TokensAnalytics = (props) => {
               <th>Price</th>
               <th>24H %</th>
               <th>7D %</th>
-	            <th>Volume 24H</th>
+              <th>Volume 24H</th>
               <th>Liquidity</th>
               <th></th>
             </tr>

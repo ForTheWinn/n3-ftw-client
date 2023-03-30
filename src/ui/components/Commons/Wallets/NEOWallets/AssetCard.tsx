@@ -1,5 +1,5 @@
 import React from "react";
-import { IBalance } from "../../../neo/wallet/interfaces";
+import { IBalance } from "../../../../../packages/neo/wallets/interfaces";
 
 const AssetCard = (props: IBalance) => {
   return (

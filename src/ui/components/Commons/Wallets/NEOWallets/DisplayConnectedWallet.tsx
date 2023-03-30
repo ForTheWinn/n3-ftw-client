@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import { getWalletIcon } from "./helpers";
-import { IConnectedWallet } from "../../../neo/wallet/interfaces";
-import { truncateAddress } from "../../../neo/utils";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
+import { truncateAddress } from "../../../../../packages/neo/utils";
 
 interface IDisplayConnectedWalletProps {
   connectedWallet: IConnectedWallet;
@@ -10,7 +10,7 @@ interface IDisplayConnectedWalletProps {
 }
 const DisplayConnectedWallet = ({
   connectedWallet,
-  disConnectWallet,
+  disConnectWallet
 }: IDisplayConnectedWalletProps) => {
   const [isActive, setActive] = useState(false);
 
@@ -20,10 +20,7 @@ const DisplayConnectedWallet = ({
         style={{ width: "100%" }}
         className={`dropdown ${isActive ? "is-active" : ""}`}
       >
-        <div
-          style={{ width: "100%" }}
-          className="dropdown-trigger"
-        >
+        <div style={{ width: "100%" }} className="dropdown-trigger">
           <button
             style={{ justifyContent: "flex-start" }}
             className="button is-fullwidth"

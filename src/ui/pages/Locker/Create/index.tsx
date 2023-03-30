@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import toast from "react-hot-toast";
 import Modal from "../../../components/Modal";
 import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
@@ -47,7 +47,7 @@ const Create = () => {
     nepBalance: number;
   }>({
     gasBalance: 0,
-    nepBalance: 0,
+    nepBalance: 0
   });
 
   const onSubmit = async () => {
@@ -105,7 +105,7 @@ const Create = () => {
           setContractHash({
             assetHash: contract.contractHash,
             decimals: contract.decimals,
-            symbol: contract.symbol,
+            symbol: contract.symbol
           });
         }
 

@@ -35,7 +35,7 @@ const ClaimList = ({
           }
         });
         return (
-          <div key={`claim-${i}`} className="media">
+          <div key={`claimlist-${i}`} className="media">
             {isClaimNode && (
               <div className="media-left">
                 <input
@@ -137,7 +137,7 @@ const ClaimList = ({
             <div className="field has-addons is-fullwidth">
               {DISPLAY_OPTIONS.map((op) => {
                 return (
-                  <p className="control">
+                  <p key={op.val} className="control">
                     <button
                       onClick={() => setRewardDisplayType(op.val)}
                       className={`button is-small ${

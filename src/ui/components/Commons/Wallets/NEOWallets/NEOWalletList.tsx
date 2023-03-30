@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { getWalletIcon } from "./helpers";
-import { IWalletType } from "../../../neo/wallet/interfaces";
-import Modal from "../../../../ui/components/Modal";
+import { IWalletType } from "../../../../../packages/neo/wallets/interfaces";
+import Modal from "../../../Modal";
 import DisplayConnectedWallet from "./DisplayConnectedWallet";
 
 const NEOWalletList = () => {

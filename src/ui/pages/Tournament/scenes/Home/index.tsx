@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { TOURNAMENT_PATH } from "../../../../../consts";
 import PageLayout from "../../../../components/Commons/PageLayout";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { MAINNET } from "../../../../../packages/neo/consts";
 
 const ArenaHome = (props) => {
@@ -17,7 +17,7 @@ const ArenaHome = (props) => {
         backgroundImage: 'url("/assets/arena-bg.jpeg")',
         backgroundSize: "cover",
         height: "calc(100vh - 52px)",
-        backgroundPosition: "center",
+        backgroundPosition: "center"
       }}
     >
       <PageLayout>

@@ -1,5 +1,5 @@
 import { INetworkType, Network } from "../../../network";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { LOCKER_SCRIPT_HASH } from "./consts";

@@ -1,7 +1,7 @@
 import React from "react";
 import SideNav from "react-simple-sidenav";
 import { useApp } from "../../../../common/hooks/use-app";
-import Wallet from "../../../../packages/ui/Wallet";
+import Wallet from "../Wallets";
 
 const WalletSidebar = () => {
   const { walletSidebarStatus, toggleWalletSidebar } = useApp();

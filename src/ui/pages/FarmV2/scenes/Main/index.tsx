@@ -4,15 +4,15 @@ import {
   FARM_V2_STAKE_PATH,
   FARM_V2_STAKE_POSITIONS_PATH
 } from "../../../../../consts";
-import { useWallet } from "../../../../../packages/provider";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
-import { CHAINS } from "../../../../../packages/chains/consts";
+import { CHAINS } from "../../../../../consts/chains";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { IPoolEnhanced } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { Avatar, Space } from "antd";
 import DisplayAPR from "../../components/DisplayAPR";
 import { farmRouter } from "../../../../../common/routers";
+import { useWallet } from "../../../../../packages/neo/provider";
 
 interface IStakingMainProps {
   chain: CHAINS;
@@ -41,8 +41,6 @@ const StakingMain = ({ prices, chain, nepPrice, path }: IStakingMainProps) => {
     () => farmRouter.getPoolList(chain, network),
     [refresh, network]
   );
-
-  console.log(error);
 
   return (
     <div>

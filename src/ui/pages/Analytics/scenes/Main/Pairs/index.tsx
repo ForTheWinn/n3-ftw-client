@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { RestAPI } from "../../../../../../packages/neo/api";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import PairItem from "./PairItem";
 import {
   ANALYTICS_PAIRS_PATH,
   ANALYTICS_PATH,
-  ANALYTICS_TOKENS_PATH,
+  ANALYTICS_TOKENS_PATH
 } from "../../../../../../consts";
 import ModalCard from "../../../../../components/Modal";
 import PairDetail from "../../PairDetail";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import Modal from "../../components/Modal";
 import AfterTransactionSubmitted from "../../components/NeoComponents/AfterTransactionSubmitted";
 import toast from "react-hot-toast";

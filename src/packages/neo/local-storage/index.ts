@@ -1,11 +1,14 @@
 import store from "store2";
-import { IConnectedWallet, ITransaction } from "../wallet/interfaces";
+import { IConnectedWallet, ITransaction } from "../wallets/interfaces";
 import { RUNE_SCRIPT_HASH } from "../contracts";
 import { MAINNET } from "../consts";
 import { INetworkType } from "../network";
 import { validateConnectedWallet } from "./helpers";
-import { ETH_WALLET, NEO_WALLET } from "../../ui/Wallet/consts";
-import { CHAINS, NEO_CHAIN } from "../../chains/consts";
+import {
+  ETH_WALLET,
+  NEO_WALLET
+} from "../../../ui/components/Commons/Wallets/consts";
+import { CHAINS, NEO_CHAIN } from "../../../consts/chains";
 
 const CONNECTED_WALLET = "CONNECTED_WALLET";
 const TRANSACTIONS = "TRANSACTIONS";

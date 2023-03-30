@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
-import { wallet } from "@cityofzion/neon-core";
-import { FaAngleLeft, FaAngleRight, FaQuestionCircle } from "react-icons/fa";
-import { GetContractStateResult } from "@cityofzion/neon-core/lib/rpc/Query";
+import { fetchToken } from "@wagmi/core";
+import { FaAngleLeft } from "react-icons/fa";
 import { ITokenState } from "../../interfaces";
+import { ethers } from "ethers";
 
 interface ContractSearchInputProps {
   onAssetClick: (token: ITokenState) => void;
@@ -10,69 +10,48 @@ interface ContractSearchInputProps {
 }
 const ContractSearchInput = ({
   onAssetClick,
-  filterDecimals,
+  filterDecimals
 }: ContractSearchInputProps) => {
   const [customContractHash, setContractHash] = useState("");
   const [contractInfo, setContractInfo] = useState<ITokenState | undefined>();
-  const [contractState, setContractState] = useState<
-    GetContractStateResult | undefined
-  >();
   const [error, setError] = useState<string | undefined>();
-  const firstInput = useRef(null);
 
   const onAddContractHash = async () => {
-    // setError(undefined);
-    // let hash = customContractHash;
-    // const ox = customContractHash.substring(0, 2);
-    // if (ox === "0x") {
-    //   hash = customContractHash.substring(2);
-    // }
-    // if (wallet.isScriptHash(hash)) {
-    //   try {
-    //     const res = await new SwapContract(network).getContractInfo(hash);
-    //     const state = await Network.getContactState(network, hash);
-    //     if (res.decimals === 0 && filterDecimals) {
-    //       setError(`FTWSwap cannot support tokens with 0 decimals.`);
-    //     } else {
-    //       setContractInfo(res);
-    //       setContractState(state);
-    //       // onAssetClick(hash, symbol, decimals);
-    //     }
-    //   } catch (e: any) {
-    //     setError(e.message);
-    //   }
-    // } else {
-    //   setError("Please enter a valid contract script hash.");
-    // }
+    setError(undefined);
+
+    if (ethers.utils.isAddress(customContractHash)) {
+      try {
+        const token = await fetchToken({
+          address: customContractHash as any
+        });
+        setContractInfo({
+          hash: token.address,
+          decimals: token.decimals,
+          symbol: token.symbol,
+          icon: ""
+        });
+      } catch (e: any) {
+        setError(e.message ? e.message : "Something went wrong.");
+      }
+    } else {
+      setError("Please enter a valid contract script hash.");
+    }
   };
 
-  // const handleSubmit = () => {
-  //   if (contractInfo) {
-  //     onAssetClick(
-  //       contractInfo.contractHash,
-  //       contractInfo.symbol,
-  //       contractInfo.decimals
-  //     );
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   firstInput.current.focus();
-  // }, []);
+  const handleSubmit = () => {
+    if (contractInfo) {
+      onAssetClick(contractInfo);
+    }
+  };
 
   return (
     <>
-      {contractInfo && contractState ? (
+      {contractInfo ? (
         <>
           <h1 className="title is-5 is-marginless">We've found the contract</h1>
           <hr />
 
           <div className="columns is-multiline">
-            <div className="column is-12">
-              <strong>Contract Name</strong>
-              <p>{contractState.manifest.name}</p>
-            </div>
             <div className="column is-12">
               <strong>Contract Hash</strong>
               <p>0x{contractInfo.hash}</p>
@@ -85,74 +64,34 @@ const ContractSearchInput = ({
               <strong>Decimals</strong>
               <p>{contractInfo.decimals}</p>
             </div>
-            <div className="column is-6">
-              <strong>FTWSmith verification</strong>
-              <div className="dropdown is-up is-hoverable ml-2">
-                <div className="dropdown-trigger">
-                  <span className="icon is-small">
-                    <FaQuestionCircle />
-                  </span>
-                </div>
-                <div className="dropdown-menu" id="dropdown-menu7" role="menu">
-                  <div className="dropdown-content">
-                    <div className="dropdown-item">
-                      FTWSmith NEP17 is open sourced and don't have update
-                      function.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <p
-                // className={
-                //   contractInfo.isWhitelisted
-                //     ? "has-text-info"
-                //     : "has-text-danger"
-                // }
-              >
-                {/* {contractInfo.isWhitelisted ? "Yes" : "No"} */}
-              </p>
-            </div>
-            <div className="column is-6">
-              <strong>Update counter</strong>
-              <div className="dropdown is-up is-hoverable ml-2">
-                <div className="dropdown-trigger">
-                  <span className="icon is-small">
-                    <FaQuestionCircle />
-                  </span>
-                </div>
-                <div className="dropdown-menu" id="dropdown-menu7" role="menu">
-                  <div className="dropdown-content">
-                    <div className="dropdown-item">
-                      This indicates how many times this contract has been
-                      updated since deploy.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <br />
-              {contractState.updatecounter}
-            </div>
             <div className="column is-12">
               <strong>Note!</strong>
               <p>
                 Invoking unverified contract is extremely dangerous. Please
-                check the contract hash again.{" "}
+                check the contract hash again.
               </p>
             </div>
           </div>
           <hr />
-          <div className="buttons">
-            <button
-              onClick={() => setContractInfo(undefined)}
-              className="button is-light"
-            >
-              <FaAngleLeft />
-              Back
-            </button>
-            {/* <button onClick={handleSubmit} className="button is-primary">
-              <span>Next</span>
-              <FaAngleRight />
-            </button> */}
+          <div className="level">
+            <div className="level-left">
+              <div className="level-item">
+                <button
+                  onClick={() => setContractInfo(undefined)}
+                  className="button is-light"
+                >
+                  <FaAngleLeft />
+                  Back
+                </button>
+              </div>
+            </div>
+            <div className="level-right">
+              <div className="level-item">
+                <button onClick={handleSubmit} className="button is-primary">
+                  Ok
+                </button>
+              </div>
+            </div>
           </div>
         </>
       ) : (
@@ -165,7 +104,6 @@ const ContractSearchInput = ({
           <div className="field">
             <input
               placeholder={"0x..."}
-              ref={firstInput}
               className="input"
               value={customContractHash}
               onChange={(e) => setContractHash(e.target.value)}

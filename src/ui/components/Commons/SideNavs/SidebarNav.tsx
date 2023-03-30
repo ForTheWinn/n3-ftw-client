@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useApp } from "../../../../common/hooks/use-app";
 import { MENU } from "../../../../consts";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import SocialLinkGroup from "../SocialLinkGroup";
 
 const SidebarNav = (props) => {

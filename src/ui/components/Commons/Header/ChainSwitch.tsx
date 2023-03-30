@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  chainList,
-  CHAINS,
-  chainThemes,
-} from "../../../../packages/chains/consts";
+import { chainList, CHAINS, chainThemes } from "../../../../consts/chains";
 import { useApp } from "../../../../common/hooks/use-app";
 
 const ChainSwitch = () => {

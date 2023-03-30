@@ -1,18 +1,18 @@
-import { NEON_WALLET_DISCONNECTED } from "./consts";
+import { consts } from ".";
 
 export const addEventListenerNeonWalletDisconnected = (
   callback: () => void
 ) => {
-  window.addEventListener(NEON_WALLET_DISCONNECTED, callback, false);
+  window.addEventListener(consts.NEON_WALLET_DISCONNECTED, callback, false);
 };
 
 export const removeEventListenerNeonWalletDisconnected = (
   callback: () => void
 ) => {
-  window.removeEventListener(NEON_WALLET_DISCONNECTED, callback, false);
+  window.removeEventListener(consts.NEON_WALLET_DISCONNECTED, callback, false);
 };
 
 export const dispatchEventNeonWalletDisconnected = () => {
   console.log("disconnected");
-  window.dispatchEvent(new CustomEvent(NEON_WALLET_DISCONNECTED));
+  window.dispatchEvent(new CustomEvent(consts.NEON_WALLET_DISCONNECTED));
 };

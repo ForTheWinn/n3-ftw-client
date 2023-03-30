@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DrawHistory from "./DrawHistory";
 import ClaimHistory from "./ClaimHistory";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 
 const historyRoutes = ["DRAWS", "CLAIMS"];
 
@@ -14,7 +14,9 @@ const History = () => {
         <ul>
           {historyRoutes.map((r) => (
             <li key={r} className={route === r ? "is-active" : ""}>
-              <a onClick={() => setRoute(r)}>{r === historyRoutes[0] ? "Past results" : "My claims"}</a>
+              <a onClick={() => setRoute(r)}>
+                {r === historyRoutes[0] ? "Past results" : "My claims"}
+              </a>
             </li>
           ))}
         </ul>

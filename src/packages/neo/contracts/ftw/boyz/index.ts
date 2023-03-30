@@ -2,7 +2,7 @@ import { INetworkType, Network } from "../../../network";
 import { BOYZ_SCRIPT_HASH } from "./consts";
 import { IBoy } from "./interface";
 import { parseMapValue } from "../../../utils";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
 
 export class BoyzContract {
@@ -21,9 +21,9 @@ export class BoyzContract {
       args: [
         {
           type: "String",
-          value: tokenId,
-        },
-      ],
+          value: tokenId
+        }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -43,9 +43,9 @@ export class BoyzContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
-        },
-      ],
+          value: senderHash
+        }
+      ]
     };
     const tokensOfRes: any = await Network.read(this.network, [script]);
     const sessionId = tokensOfRes.session;

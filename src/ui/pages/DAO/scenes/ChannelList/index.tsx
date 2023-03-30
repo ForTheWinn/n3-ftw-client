@@ -4,7 +4,7 @@ import Modal from "../../../../components/Modal";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import Index from "../CreateChannel";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";

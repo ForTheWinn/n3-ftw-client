@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import MDEditor from "@uiw/react-md-editor";
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";

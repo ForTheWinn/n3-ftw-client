@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import NEOWalletList from "./NEOWallets/NEOWalletList";
 import { ETH_WALLET, NEO_WALLET } from "./consts";
 import ETHWallets from "./ETHWallets";
-import { LocalStorage } from "../../neo/local-storage";
+import { LocalStorage } from "../../../../packages/neo/local-storage";
 
 const Wallet = () => {
   const [walletType, setWalletType] = useState<
     typeof NEO_WALLET | typeof ETH_WALLET
-    >(LocalStorage.getWalletSwitch());
+  >(LocalStorage.getWalletSwitch());
   console.log(LocalStorage.getWalletSwitch());
   const handleWalletSwitchChange = (val) => {
-    console.log(val)
+    console.log(val);
     LocalStorage.setWalletSwitchType(val);
     setWalletType(val);
-  }
+  };
   return (
     <div className="is-relative">
       <section>
@@ -23,7 +23,7 @@ const Wallet = () => {
             width: "50px",
             position: "fixed",
             top: 0,
-            left: 0,
+            left: 0
           }}
         >
           <ul className="menu">

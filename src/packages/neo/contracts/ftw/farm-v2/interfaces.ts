@@ -1,4 +1,5 @@
 export interface IClaimableRewards {
+  pairId: string;
   tokenA: string;
   tokenB: string;
   tokenASymbol: string;

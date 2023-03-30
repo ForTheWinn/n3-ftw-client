@@ -1,5 +1,8 @@
-import {IConnectedWallet, IETHWalletType, IWalletType} from "../neo/wallet/interfaces";
-import { INetworkType } from "../neo/network";
+import {
+  IConnectedWallet,
+  IWalletType
+} from "../wallets/interfaces";
+import { INetworkType } from "../network";
 import { sc } from "@cityofzion/neon-core";
 
 export interface IWalletStates {

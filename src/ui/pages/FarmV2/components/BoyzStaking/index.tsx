@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../../../../components/Modal";
 import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import DisplayBoy from "../MyBoyz/DisplayBoy";
 import StakingModal from "./StakingModal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
@@ -57,6 +57,7 @@ const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
               target="_blank"
               href="https://docs.forthewin.network/boyz#utilities"
               className="is-size-7 has-text-grey-light"
+              rel="noreferrer"
             >
               <small>Learn more</small>
             </a>

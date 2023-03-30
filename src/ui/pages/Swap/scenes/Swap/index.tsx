@@ -1,10 +1,7 @@
 import React from "react";
 import { useApp } from "../../../../../common/hooks/use-app";
 
-import {
-  NEO_CHAIN,
-  POLYGON_CHAIN,
-} from "../../../../../packages/chains/consts";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../../../../consts/chains";
 
 import NEOSwap from "./NEO";
 import PolygonSwap from "./Polygon";

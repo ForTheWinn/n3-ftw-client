@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import { ILockerKeyToken } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import LockerKeyCard from "./LockerKeyCard";
@@ -41,7 +41,7 @@ const LockerKeys = () => {
       try {
         const items = await new LockerContract(network).getLockerKeys(address);
         setData({
-          items,
+          items
         });
       } catch (e: any) {
         console.error(e);

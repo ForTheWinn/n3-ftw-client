@@ -1,5 +1,5 @@
 import React from "react";
-import { useWallet } from "../../packages/provider";
+import { useWallet } from "../../packages/neo/provider";
 
 const NetworkCheck = () => {
   const { connectedWallet, network } = useWallet();

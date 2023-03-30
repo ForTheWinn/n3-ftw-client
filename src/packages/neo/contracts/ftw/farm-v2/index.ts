@@ -1,6 +1,6 @@
 import { INetworkType, Network } from "../../../network";
 import { SWAP_SCRIPT_HASH } from "../swap/consts";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { ethers } from "ethers";
@@ -16,7 +16,8 @@ import { parseMapValue, withDecimal } from "../../../utils";
 import { ILPToken } from "../swap/interfaces";
 import { BOYZ_SCRIPT_HASH } from "../boyz/consts";
 import { TOKEN_LIST } from "../../../../../consts/tokens";
-import { CHAINS } from "../../../../chains/consts";
+import { CHAINS } from "../../../../../consts/chains";
+import { IClaimable } from "../../../../../common/routers/farm/interfaces";
 
 export class FarmV2Contract {
   network: INetworkType;
@@ -269,14 +270,9 @@ export class FarmV2Contract {
   };
 
   getClaimable = async (
-    connectedWallet: IConnectedWallet
-  ): Promise<{
-    boyz: IBoyStaked[];
-    rewards: IClaimableRewards[];
-  }> => {
-    const senderHash = NeonWallet.getScriptHashFromAddress(
-      connectedWallet.account.address
-    );
+    address: string
+  ): Promise<IClaimable> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(address);
     const scripts = [
       {
         scriptHash: this.contractHash,
@@ -300,35 +296,57 @@ export class FarmV2Contract {
         return parseMapValue(pair);
       });
 
-      const boyz = parseMapValue(res.stack[1]);
+      const boyzObj = parseMapValue(res.stack[1]);
+      const boyz = [
+        {
+          lotNo: "1",
+          tokenId: boyzObj["1_tokenId"],
+          tier: boyzObj["1_tier"],
+          createdAt: boyzObj["1_createdAt"]
+        },
+        {
+          lotNo: "2",
+          tokenId: boyzObj["2_tokenId"],
+          tier: boyzObj["2_tier"],
+          createdAt: boyzObj["2_createdAt"]
+        },
+        {
+          lotNo: "3",
+          tokenId: boyzObj["3_tokenId"],
+          tier: boyzObj["3_tier"],
+          createdAt: boyzObj["3_createdAt"]
+        }
+      ];
+
+      let bonus = 0;
+      let team = 0;
+
+      boyz.forEach((b) => {
+        if (b.tier === "1") {
+          bonus = bonus + 1;
+        } else if (b.tier === "2") {
+          bonus = bonus + 0.75;
+        } else if (b.tier === "3") {
+          bonus = bonus + 0.5;
+        }
+        if (b.tokenId) {
+          team++;
+        }
+      });
+      if (team === 3) {
+        bonus = bonus + 1;
+      }
 
       return {
         rewards,
-        boyz: [
-          {
-            lotNo: "1",
-            tokenId: boyz["1_tokenId"],
-            tier: boyz["1_tier"],
-            createdAt: boyz["1_createdAt"]
-          },
-          {
-            lotNo: "2",
-            tokenId: boyz["2_tokenId"],
-            tier: boyz["2_tier"],
-            createdAt: boyz["2_createdAt"]
-          },
-          {
-            lotNo: "3",
-            tokenId: boyz["3_tokenId"],
-            tier: boyz["3_tier"],
-            createdAt: boyz["3_createdAt"]
-          }
-        ]
+        boyz,
+        bonus
       };
     } else {
       return {
         boyz: [],
-        rewards: []
+        rewards: [],
+        bonus: 0
       };
     }
   };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { TournamentContract } from "../../../../../../packages/neo/contracts/ftw/arena";
 import DisplayRuneWithProperties from "../../../components/DisplayRuneWithProperties";
 import PlayerModal from "./components/PlayerModal";

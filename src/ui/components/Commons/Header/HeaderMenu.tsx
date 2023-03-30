@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { navRoutes } from "../../../../consts/navRoutes";
-import { CHAINS } from "../../../../packages/chains/consts";
+import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
 interface IHeaderMenuProps {
   chain: CHAINS;

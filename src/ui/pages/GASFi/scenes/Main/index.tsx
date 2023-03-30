@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import StakeHeader from "./StakeHeader";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import {
   IClaimableResult,
   IStakeResult,
-  IStatusResult,
+  IStatusResult
 } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import Countdown from "react-countdown";
 import DrawBtn from "./DrawBtn";
@@ -102,7 +102,7 @@ const Main = (props) => {
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      alignItems: "center",
+                      alignItems: "center"
                     }}
                   >
                     <div>
@@ -124,7 +124,7 @@ const Main = (props) => {
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      alignItems: "center",
+                      alignItems: "center"
                     }}
                   >
                     <button

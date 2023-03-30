@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import { NFTContract } from "../../../packages/neo/contracts";
 
 interface IPropertiesModal {

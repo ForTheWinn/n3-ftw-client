@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import { Link, NavLink, useParams } from "react-router-dom";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import moment from "moment";
 import TextTruncate from "react-text-truncate";
 import { DAO_CHANNEL_PATH } from "../../../../../../consts";
 import ChannelCard from "../../../components/ChannelCard";
-import removeMd  from "remove-markdown";
+import removeMd from "remove-markdown";
 const ProposalList = () => {
   const params = useParams();
   const { contractHash } = params as any;
@@ -35,7 +35,7 @@ const ProposalList = () => {
                         const now = moment().valueOf();
                         const end = item.end;
                         const isActive = now < end;
-												const desc = removeMd(item.description);
+                        const desc = removeMd(item.description);
                         return (
                           <Link
                             to={`${DAO_CHANNEL_PATH}/${contractHash}/proposal/${item.no}`}

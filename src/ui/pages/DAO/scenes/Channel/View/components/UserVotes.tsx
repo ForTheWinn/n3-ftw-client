@@ -2,7 +2,7 @@ import React from "react";
 import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../../packages/neo/contracts/ftw/dao";
 import { INetworkType } from "../../../../../../../packages/neo/network";
-import { IConnectedWallet } from "../../../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../../../packages/neo/wallets/interfaces";
 interface IUserVotesProps {
   contractHash: string;
   proposalNo: string;
@@ -21,7 +21,7 @@ const UserVotes = ({
   connectedWallet,
   refresh,
   isVoteActive,
-  setTxid,
+  setTxid
 }: IUserVotesProps) => {
   const { isLoaded, error, data } = useOnChainData(() => {
     return new DaoContract(network).getUserVotes(

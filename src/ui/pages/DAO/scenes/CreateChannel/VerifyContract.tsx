@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { wallet } from "@cityofzion/neon-core";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 
 interface IVerifyContractProps {
@@ -13,11 +13,9 @@ interface IVerifyContractProps {
 const VerifyContract = ({
   network,
   connectedWallet,
-  onVerify,
+  onVerify
 }: IVerifyContractProps) => {
-  const [contractHash, setContractHash] = useState(
-    ""
-  );
+  const [contractHash, setContractHash] = useState("");
   const [error, setError] = useState<string | undefined>();
   const handleVerify = async () => {
     setError(undefined);

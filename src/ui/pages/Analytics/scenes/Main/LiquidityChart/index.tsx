@@ -8,10 +8,10 @@ import {
   Title,
   Tooltip,
   Filler,
-  Legend,
+  Legend
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../../packages/neo/api";
 // import Spinner from "../Spinner";
 
@@ -30,39 +30,39 @@ export const options = {
   responsive: true,
   elements: {
     line: {
-      tension: 0.4,
+      tension: 0.4
     },
     point: {
-      radius: 0,
-    },
+      radius: 0
+    }
   },
   plugins: {
     legend: {
-      display: false,
+      display: false
     },
     tooltip: {
-      enabled: false,
-    },
+      enabled: false
+    }
   },
   scales: {
     y: {
       prefix: "$",
       grid: {
-        color: "white",
+        color: "white"
       },
       ticks: {
         callback: (value) => {
           return "$" + value.toLocaleString();
-        },
-      },
+        }
+      }
     },
     x: {
       // display:false,
       grid: {
-        color: "white",
-      },
-    },
-  },
+        color: "white"
+      }
+    }
+  }
 };
 
 const labels = ["January", "February", "March", "April", "May", "June", "July"];
@@ -75,9 +75,9 @@ export const data = {
       // label: undefined,
       data: [1, 2, 3, 4, 5, 6, 7],
       borderColor: "rgba(32, 226, 47, 1)",
-      backgroundColor: "rgba(32, 226, 47, 0.56)",
-    },
-  ],
+      backgroundColor: "rgba(32, 226, 47, 0.56)"
+    }
+  ]
 };
 
 interface ILiquidityChartProps {
@@ -112,9 +112,9 @@ const LiquidityChart = ({ id, days }: ILiquidityChartProps) => {
           // label: undefined,
           data: data && data.data ? data.data : [],
           borderColor: "rgba(32, 226, 47, 1)",
-          backgroundColor: "rgba(32, 226, 47, 0.56)",
-        },
-      ],
+          backgroundColor: "rgba(32, 226, 47, 0.56)"
+        }
+      ]
     };
   }, [data]);
 

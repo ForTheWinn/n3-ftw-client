@@ -1,45 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PositionCard from "./PositionCard";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
-import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
-import { RestAPI } from "../../../../../packages/neo/api";
+import { CHAINS } from "../../../../../consts/chains";
+import { farmRouter } from "../../../../../common/routers";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { IFarmLPToken } from "../../../../../common/routers/farm/interfaces";
 
 interface IPositionListProps {
+  chain: CHAINS;
+  address: string;
   network: INetworkType;
-  connectedWallet: IConnectedWallet;
-  refresh: number;
   onUnStake: (tokenId: string) => void;
 }
 const PositionList = ({
+  chain,
   network,
-  connectedWallet,
-  refresh,
-  onUnStake,
+  address,
+  onUnStake
 }: IPositionListProps) => {
-  const [data, setData] = useState<any>();
   const [prices, setPrices] = useState<any>();
 
-  useEffect(() => {
-    async function getData(wallet) {
-      try {
-        const res = await new FarmV2Contract(network).getStakedLPTokens(wallet);
-        setData(res);
-      } catch (e: any) {
-        console.log(e);
-      }
-
-      try {
-        const res = await new RestAPI(network).getPrices();
-        setPrices(res);
-      } catch (e: any) {
-        console.log(e);
-      }
-    }
-    if (connectedWallet) {
-      getData(connectedWallet);
-    }
-  }, [connectedWallet, refresh, network]);
+  const { data, error } = useOnChainData(
+    () => farmRouter.getStakedLPTokens(chain, network, address),
+    []
+  );
 
   return (
     <div>
@@ -47,13 +31,12 @@ const PositionList = ({
         <></>
       ) : data.length > 0 ? (
         <div>
-          {data.map((item, i) => {
+          {data.map((item: IFarmLPToken, i) => {
             return (
               <PositionCard
-                network={network}
                 key={"position" + i}
                 prices={prices}
-                {...item}
+                token={item}
                 onUnStake={onUnStake}
               />
             );

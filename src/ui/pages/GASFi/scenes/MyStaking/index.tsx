@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IRuneMeta } from "../../../../../../../packages/neo/contracts/ftw/rune/interfaces";
 import Modal from "../../../../../../components/Modal";
-import { useWallet } from "../../../../../../../packages/provider";
+import { useWallet } from "../../../../../../../packages/neo/provider";
 import BetButton from "../../../../components/BetButton";
 import LeaveButton from "../../../../components/LeaveButton";
 import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
@@ -20,13 +20,13 @@ const PlayerModal = ({
   arenaNo,
   gameNo,
   player,
-  onClose,
+  onClose
 }: IPlayerModalProps) => {
   const [txid, setTxid] = useState("");
   const { connectedWallet, network } = useWallet();
   const [status, setStatus] = useState({
     totalBets: "",
-    userBets: "",
+    userBets: ""
   });
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");

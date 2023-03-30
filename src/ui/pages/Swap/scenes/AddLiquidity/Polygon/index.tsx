@@ -13,7 +13,7 @@ import {
 
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { getTokenByHash } from "../../Swap/helpers";
-import { getChainId } from "../../../../../../packages/chains/helpers";
+import { getChainId } from "../../../../../../helpers";
 import {
   approve,
   getAllowances,
@@ -183,7 +183,6 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           tokenA.hash,
           tokenB.hash
         );
-        console.log(allowances);
         tokenAAllowance = allowances[0];
         tokenBAllowance = allowances[1];
       } catch (e) {
@@ -269,7 +268,6 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
             address,
             token: _tokenA.hash as `0x${string}`
           });
-          console.log(tokenAbalance);
 
           const tokenBbalance = await fetchBalance({
             address,
@@ -301,7 +299,6 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
   if (tokenA && tokenB && reserves) {
     noLiquidity = reserves.shares === "0";
-    console.log(reserves);
   }
 
   const toMain = {

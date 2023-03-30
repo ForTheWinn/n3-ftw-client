@@ -3,7 +3,7 @@ import { Avatar } from "antd";
 import NeoWalletConnected from "./NeoWalletConnected";
 import PolygonWalletConnected from "./PolygonWalletConnected";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { useAccount } from "wagmi";
 
 const btnStyle = { background: "#f4f4f4" };
@@ -11,7 +11,7 @@ const btnStyle = { background: "#f4f4f4" };
 const DisplayConnectedWallets = () => {
   const { toggleWalletSidebar } = useApp();
   const { connectedWallet } = useWallet();
-  const { isConnected} = useAccount();
+  const { isConnected } = useAccount();
   let isWalletConnected = connectedWallet || isConnected;
   return (
     <button

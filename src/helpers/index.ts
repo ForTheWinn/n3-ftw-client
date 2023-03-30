@@ -1,4 +1,4 @@
-import { POLYGON_CHAIN } from "./consts";
+import { POLYGON_CHAIN } from "../consts/chains";
 
 export const getChainId = (chain: string): number => {
   switch (chain) {

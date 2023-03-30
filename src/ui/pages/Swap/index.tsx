@@ -4,14 +4,14 @@ import { Route, useHistory, useRouteMatch } from "react-router-dom";
 import {
   SWAP_PATH,
   SWAP_PATH_LIQUIDITY_ADD,
-  SWAP_PATH_LIQUIDITY_REMOVE,
+  SWAP_PATH_LIQUIDITY_REMOVE
 } from "../../../consts";
 
 import PageLayout from "../../components/Commons/PageLayout";
 import Liquidity from "./scenes/AddLiquidity";
 import Trade from "./scenes/Swap";
 import RemoveLiquidity from "./scenes/RemoveLiquidity";
-import { NEO_CHAIN, POLYGON_CHAIN } from "../../../packages/chains/consts";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { useApp } from "../../../common/hooks/use-app";
 import { POLYGON_SWAP_PATH } from "../../../consts/polygonRoutes";
 // import MarketStatus from "./components/CheckMarketStatus";
@@ -38,10 +38,9 @@ const Swap = (props: ISwapProps) => {
   }
 
   if (path !== POLYGON_SWAP_PATH && chain === POLYGON_CHAIN) {
-      history.push(POLYGON_SWAP_PATH);
+    history.push(POLYGON_SWAP_PATH);
   }
 
-  console.log(path);
   return (
     <div>
       <PageLayout>

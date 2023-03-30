@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../packages/neo/api";
 import { ASSET_LIST } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import {
   MAINNET,
-  UNKNOWN_TOKEN_IMAGE,
+  UNKNOWN_TOKEN_IMAGE
 } from "../../../../../packages/neo/consts";
 import TokenPriceChart from "../../components/PriceChart";
 import LiquidityChart from "../Main/LiquidityChart";

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { getWalletIcon } from "./helpers";
-import { IETHWalletType } from "../../../neo/wallet/interfaces";
-import { truncateAddress } from "../../../neo/utils";
+import { truncateAddress } from "../../../../../packages/neo/utils";
 
 interface IDisplayConnectedWalletProps {
   connectorId: string;
@@ -11,7 +10,7 @@ interface IDisplayConnectedWalletProps {
 const DisplayConnectedWallet = ({
   connectorId,
   account,
-  disConnectWallet,
+  disConnectWallet
 }: IDisplayConnectedWalletProps) => {
   const [isActive, setActive] = useState(false);
   return (

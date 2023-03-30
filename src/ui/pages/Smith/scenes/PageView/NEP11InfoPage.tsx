@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import {
   MAINNET,
-  UNKNOWN_TOKEN_IMAGE,
+  UNKNOWN_TOKEN_IMAGE
 } from "../../../../../packages/neo/consts";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
@@ -35,7 +35,7 @@ const NEP11InfoPage = () => {
     if (connectedWallet) {
       const manifest = JSON.stringify({
         logo: values.logo,
-        website: values.website,
+        website: values.website
       });
       try {
         if (isAdmin) {

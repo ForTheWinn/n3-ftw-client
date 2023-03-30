@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
 import { DAO_CHANNEL_PATH } from "../../../../../../consts";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import Modal from "../../../../../components/Modal";
@@ -26,14 +26,14 @@ const ProposalView = () => {
   const [vote, setVote] = useState({
     vote: "",
     voteIndex: "",
-    amount: "",
+    amount: ""
   });
 
   const onVoteOptionClick = (op, i) => {
     setVote({
       vote: op,
       voteIndex: i,
-      amount: vote.amount,
+      amount: vote.amount
     });
     setVoteModalActive(true);
   };
@@ -41,7 +41,7 @@ const ProposalView = () => {
   const handleVoteAmount = (v) => {
     setVote({
       ...vote,
-      amount: v,
+      amount: v
     });
   };
 
@@ -51,7 +51,7 @@ const ProposalView = () => {
     setVote({
       vote: "",
       voteIndex: "",
-      amount: "",
+      amount: ""
     });
   };
 

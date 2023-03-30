@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../../../../components/Commons/PageLayout";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import DataTable from "react-data-table-component";
 import PairIcons from "../../../../../components/PairIcons";
@@ -22,20 +22,20 @@ const columns = [
           <span className="ml-2">{row.name}</span>
         </div>
       );
-    },
+    }
   },
   {
     name: "Staked Liquidity",
-    selector: (row) => (row.tvl > 0 ? "$" + numberTrim(row.tvl) : "-"),
+    selector: (row) => (row.tvl > 0 ? "$" + numberTrim(row.tvl) : "-")
   },
   {
     name: "Claimed Rewards",
-    selector: (row) => (row.rewards > 0 ? "$" + numberTrim(row.rewards) : "-"),
+    selector: (row) => (row.rewards > 0 ? "$" + numberTrim(row.rewards) : "-")
   },
   {
     name: "APR",
-    selector: (row) => `${row.APR}%`,
-  },
+    selector: (row) => `${row.APR}%`
+  }
 ];
 
 const FarmAnalytics = (props) => {

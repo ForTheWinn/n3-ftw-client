@@ -1,23 +1,35 @@
-import {
-  CHAINS,
-  NEO_CHAIN,
-  POLYGON_CHAIN
-} from "../../../packages/chains/consts";
+import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
+import { writeContract } from "@wagmi/core";
 import { RestAPI } from "../../../packages/neo/api";
 import { IPrices } from "../../../packages/neo/api/interfaces";
 import { MAINNET } from "../../../packages/neo/consts";
 import { SwapContract } from "../../../packages/neo/contracts";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
-import { IPoolEnhanced } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
+import {
+  IBoyStaked,
+  IClaimableRewards,
+  IPoolEnhanced
+} from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { IReserveData } from "../../../packages/neo/contracts/ftw/swap/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
 import { withDecimal } from "../../../packages/neo/utils";
-import { getPools, stake } from "../../../packages/polygon/farm";
+import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
+import { POLYGON_FARM_CONTRACT_HASH } from "../../../packages/polygon";
+import {
+  getPools,
+  getStakedTokens,
+  stake,
+  unStake,
+  getClaimable as polygonGetClaimable,
+  claim as polygonClaim
+} from "../../../packages/polygon/farm";
 import {
   getLPTokens as getPolygonLPTokens,
-  getReserve as getPolygonReserves
+  getReserve as getPolygonReserves,
+  isApprovedForAll,
+  setApprovalForAll
 } from "../../../packages/polygon/swap";
-import { IFarmLPToken } from "./interfaces";
+import { IClaimable, IFarmLPToken } from "./interfaces";
 
 export const getPrices = (chain: CHAINS): Promise<IPrices> => {
   switch (chain) {
@@ -90,10 +102,12 @@ export const getLPTokens = async (
         tokens.push({
           name: token.name,
           tokenA: token.tokenA,
+          symbolA: token.symbolA,
+          symbolB: token.symbolB,
           tokenB: token.tokenB,
           tokenId: token.tokenId,
-          tokenAAmount: reserves.pair[token.tokenA].reserveAmountFormatted,
-          tokenBAmount: reserves.pair[token.tokenB].reserveAmountFormatted,
+          amountA: reserves.pair[token.tokenA].reserveAmountFormatted,
+          amountB: reserves.pair[token.tokenB].reserveAmountFormatted,
           sharesPercentage: (
             (token.amount / reserves.totalShare) *
             100
@@ -106,17 +120,115 @@ export const getLPTokens = async (
   }
 };
 
-export const stakeLPToken = (
+export const getStakedLPTokens = async (
   chain: CHAINS,
   network: INetworkType,
-  tokenId: string
+  address: string
+): Promise<IFarmLPToken[]> => {
+  switch (chain) {
+    case NEO_CHAIN:
+      const tokens: IFarmLPToken[] = [];
+      const res = await new SwapContract(network).getLPTokens(address);
+      for (const token of res) {
+        const reserves = await new SwapContract(network).getReserve(
+          token.tokenA,
+          token.tokenB
+        );
+        tokens.push({
+          name: token.name,
+          tokenA: token.tokenA,
+          tokenB: token.tokenB,
+          symbolA: token.symbolA,
+          symbolB: token.symbolB,
+          tokenId: token.tokenId,
+          amountA: (
+            (reserves.pair[token.tokenA].reserveAmount * token.amount) /
+            reserves.totalShare
+          ).toString(),
+          amountB: (
+            (reserves.pair[token.tokenB].reserveAmount * token.amount) /
+            reserves.totalShare
+          ).toString(),
+          sharesPercentage: (
+            (token.amount / reserves.totalShare) *
+            100
+          ).toFixed(2)
+        });
+      }
+      return tokens;
+    case POLYGON_CHAIN:
+      return getStakedTokens(address);
+  }
+};
+
+export const getClaimable = async (
+  chain: CHAINS,
+  network: INetworkType,
+  address: string
+): Promise<IClaimable> => {
+  switch (chain) {
+    case NEO_CHAIN:
+      return await new FarmV2Contract(network).getClaimable(address);
+    case POLYGON_CHAIN:
+      return polygonGetClaimable(address);
+  }
+};
+
+export const stakeLPToken = async (
+  chain: CHAINS,
+  network: INetworkType,
+  tokenId: string,
+  address: string,
+  connectedWallet?: IConnectedWallet
 ) => {
   switch (chain) {
     case NEO_CHAIN:
-      stake(tokenId);
-      break;
+      if (connectedWallet) {
+        return new FarmV2Contract(network).stake(connectedWallet, tokenId);
+      } else {
+        return "";
+      }
     case POLYGON_CHAIN:
-      stake(tokenId);
-      break;
+      if (!(await isApprovedForAll(address, POLYGON_FARM_CONTRACT_HASH))) {
+        const config = await setApprovalForAll(POLYGON_FARM_CONTRACT_HASH);
+        const res = await writeContract(config);
+        await res.wait();
+      }
+      return stake(tokenId);
+  }
+};
+
+export const unStakeLPToken = async (
+  chain: CHAINS,
+  network: INetworkType,
+  tokenId: string,
+  connectedWallet?: IConnectedWallet
+) => {
+  switch (chain) {
+    case NEO_CHAIN:
+      if (connectedWallet) {
+        return new FarmV2Contract(network).remove(connectedWallet, tokenId);
+      } else {
+        return "";
+      }
+    case POLYGON_CHAIN:
+      return unStake(tokenId);
+  }
+};
+
+export const claim = async (
+  chain: CHAINS,
+  network: INetworkType,
+  items: IClaimableRewards[],
+  connectedWallet?: IConnectedWallet
+): Promise<string> => {
+  switch (chain) {
+    case NEO_CHAIN:
+      if (connectedWallet) {
+        return new FarmV2Contract(network).claimMulti(connectedWallet, items);
+      }
+      return "";
+    case POLYGON_CHAIN:
+      return polygonClaim(items);
   }
 };

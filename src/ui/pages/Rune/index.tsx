@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
 import PropertiesModal from "./PropertiesModal";
 import toast from "react-hot-toast";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import { NFTContract } from "../../../packages/neo/contracts";
 import Banner from "./Banner";
 import { RestAPI } from "../../../packages/neo/api";
@@ -76,7 +76,7 @@ const Gallery = () => {
           className="container"
           style={{
             display: "flex",
-            flexFlow: "wrap",
+            flexFlow: "wrap"
           }}
         >
           {tokens.map((token) => (

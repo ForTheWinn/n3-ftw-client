@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ILocker } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import { FaSearch } from "react-icons/fa";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
@@ -112,7 +112,9 @@ const LockerSearch = () => {
             ) : (
               <>
                 <h1 className="title is-5">Search locker</h1>
-                <p className="subtitle is-7">Find FTWLocker key values by entering a locker no</p>
+                <p className="subtitle is-7">
+                  Find FTWLocker key values by entering a locker no
+                </p>
                 <div className="field has-addons">
                   <div className="control  is-expanded">
                     <input

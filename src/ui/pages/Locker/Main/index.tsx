@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import {
   LOCKER_CREATE_PATH,
   LOCKER_SEARCH_PATH,
-  LOCKER_USER_PATH,
+  LOCKER_USER_PATH
 } from "../../../../consts";
 import { useOnChainData } from "../../../../common/hooks/use-onchain-data";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import LockerTokenCard from "./LockerTokenCard";
 import { FaInfoCircle, FaKey, FaPlus, FaSearch } from "react-icons/fa";

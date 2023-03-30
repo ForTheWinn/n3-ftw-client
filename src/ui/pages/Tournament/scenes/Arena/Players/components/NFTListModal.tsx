@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../../../components/Modal";
 import { NFTContract } from "../../../../../../../packages/neo/contracts";
-import { useWallet } from "../../../../../../../packages/provider";
+import { useWallet } from "../../../../../../../packages/neo/provider";
 import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { TournamentContract } from "../../../../../../../packages/neo/contracts/ftw/arena";
 import { toast } from "react-hot-toast";
@@ -78,7 +78,7 @@ const NFTListModal = ({ arenaNo, onClose }: INFTListModalModal) => {
               ) : tokens.length > 0 ? (
                 <div
                   style={{
-                    flexFlow: "wrap",
+                    flexFlow: "wrap"
                   }}
                   className="is-flex"
                 >

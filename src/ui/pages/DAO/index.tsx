@@ -4,12 +4,12 @@ import {
   DAO_CHANNEL_CREATE_PATH,
   DAO_CHANNEL_PATH,
   DAO_PAGE_ROUTE,
-  DAO_PATH,
+  DAO_PATH
 } from "../../../consts";
 import ChannelList from "./scenes/ChannelList";
 import Channel from "./scenes/Channel";
 import CreateChannel from "./scenes/CreateChannel";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import ProductNotSupportedInNetwork from "../../components/ProductNotSupportedInNetwork";
 
 const Dao = () => {

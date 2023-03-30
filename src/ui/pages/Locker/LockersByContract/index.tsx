@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import Pagination from "bulma-pagination-react";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import {
   ILockerContract,
-  ILockersByToken,
+  ILockersByToken
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { FaPlus } from "react-icons/fa";
 import { LOCKER_CREATE_PATH } from "../../../../consts";
@@ -33,7 +33,7 @@ const LockersByContract = () => {
         );
         setData({
           contract,
-          items,
+          items
         });
       } catch (e: any) {
         console.error(e);

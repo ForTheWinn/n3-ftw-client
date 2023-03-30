@@ -1,7 +1,7 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { MAINNET, TESTNET } from "../../../packages/neo/consts";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 
 const NetworkSwitch = () => {
   const { network, switchNetwork } = useWallet();

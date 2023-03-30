@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { toast } from "react-hot-toast";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 

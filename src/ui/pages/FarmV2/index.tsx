@@ -13,10 +13,10 @@ import ClaimRewards from "./scenes/ClaimRewards";
 import CheckMarketStatus from "./components/CheckMarketStatus";
 import { useApp } from "../../../common/hooks/use-app";
 import { useOnChainData } from "../../../common/hooks/use-onchain-data";
-import { NEO_CHAIN, POLYGON_CHAIN } from "../../../packages/chains/consts";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { POLYGON_FARM_PATH } from "../../../consts/polygonRoutes";
 import { NEP_SCRIPT_HASH } from "../../../packages/neo/consts/neo-token-hashes";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import { farmRouter } from "../../../common/routers";
 
 interface IFarmProps {
@@ -24,11 +24,15 @@ interface IFarmProps {
 }
 
 const Farm = (props: IFarmProps) => {
-  const { chain } = useApp();
+  const { chain, refreshCount } = useApp();
   const { network } = useWallet();
-  const [refresh, setRefresh] = useState(0);
+  
   let nepPrice = undefined;
-  const { data } = useOnChainData(() => farmRouter.getPrices(chain), [refresh]);
+
+  const { data } = useOnChainData(
+    () => farmRouter.getPrices(chain),
+    [refreshCount]
+  );
 
   let { path } = useRouteMatch();
   let history = useHistory();
@@ -78,26 +82,17 @@ const Farm = (props: IFarmProps) => {
                   exact={true}
                   path={`${path}${FARM_V2_STAKE_PATH}`}
                   component={() => (
-                    <Stake
-                      chain={chain}
-                      network={network}
-                      onRefresh={() => setRefresh(refresh + 1)}
-                    />
+                    <Stake path={path} chain={chain} network={network} />
                   )}
                 />
                 <Route
                   path={`${path}${FARM_V2_STAKE_POSITIONS_PATH}`}
-                  component={() => (
-                    <MyPositions
-                      path={path}
-                      onRefresh={() => setRefresh(refresh + 1)}
-                    />
-                  )}
+                  component={() => <MyPositions chain={chain} path={path} />}
                 />
               </div>
             </div>
             <div className="column is-4">
-              <ClaimRewards prices={data} />
+              <ClaimRewards chain={chain} path={path} prices={data} />
             </div>
           </div>
         </div>

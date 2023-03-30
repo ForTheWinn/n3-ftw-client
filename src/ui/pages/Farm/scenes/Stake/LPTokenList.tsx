@@ -1,10 +1,10 @@
 import React from "react";
 import LPTokenCard from "./LPTokenCard";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { INetworkType } from "../../../../../packages/neo/network";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
-import {SwapContract} from "../../../../../packages/neo/contracts";
+import { SwapContract } from "../../../../../packages/neo/contracts";
 
 interface ILPTokenListProps {
   connectedWallet: IConnectedWallet;
@@ -22,11 +22,11 @@ const LPTokenList = ({
   connectedWallet,
   onStakeLP,
   refresh,
-  onRefresh,
+  onRefresh
 }: ILPTokenListProps) => {
   const { isLoaded, error, data } = useOnChainData(() => {
     return new SwapContract(network).getLPTokens(
-      connectedWallet.account.address,
+      connectedWallet.account.address
       // symbolA,
       // symbolB
     );

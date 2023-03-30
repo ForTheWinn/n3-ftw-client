@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { POSITION_RANGE } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "bulma-pagination-react";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { TournamentContract } from "../../../../../../packages/neo/contracts/ftw/arena";
 import NFTDetailModal from "./NFTDetailModal";
 import HistoryTable from "./HistoryTable";

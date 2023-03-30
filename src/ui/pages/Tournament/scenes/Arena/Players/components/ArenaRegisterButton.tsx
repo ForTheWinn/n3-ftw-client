@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NFTListModal from "./NFTListModal";
-import { useWallet } from "../../../../../../../packages/provider";
+import { useWallet } from "../../../../../../../packages/neo/provider";
 import { toast } from "react-hot-toast";
 
 interface IRegisterButtonProps {

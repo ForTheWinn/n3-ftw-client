@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GASFI_MY_STAKING_PATH, GASFI_STAKE_PATH } from "../../../../../consts";
 import { IMainData } from "./index";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import ModalCard from "../../../../components/Modal";
@@ -18,23 +18,23 @@ interface IStakeHeaderProps {
 }
 
 const renderer = ({ days, hours, minutes, seconds, completed }) => {
-	if (completed) {
-		// Render a completed state
-		return <>(In progress)</>;
-	} else {
-		// Render a countdown
-		return (
-			<>
-				(In {days}:{hours}:{minutes}:{seconds})
-			</>
-		);
-	}
+  if (completed) {
+    // Render a completed state
+    return <>(In progress)</>;
+  } else {
+    // Render a countdown
+    return (
+      <>
+        (In {days}:{hours}:{minutes}:{seconds})
+      </>
+    );
+  }
 };
 
 const StakeHeader = ({
   isLoading,
   data,
-  connectedWallet,
+  connectedWallet
 }: IStakeHeaderProps) => {
   const { toggleWalletSidebar } = useApp();
   const [isInfoModalActive, setInfoModalActive] = useState(false);
@@ -52,22 +52,25 @@ const StakeHeader = ({
               <strong>Total staked</strong>
               <br />
               {data ? withDecimal(data.status.totalNEO, 8, true) : ""} bNEO
-	            <br/>
-	            {data ? (
-		            <div className="is-size-7">
-			            Next drawing after&nbsp;
-			            {moment(data.status.nextDrawingAt).format("MMM/DD H:MM A")} <br />
-			            <Countdown
-				            // date={Date.now() + 500000}
-				            date={data && data.status.nextDrawingAt}
-				            renderer={renderer}
-			            >
-				            <DrawBtn />
-			            </Countdown>
-		            </div>
-	            ) : (
-		            <></>
-	            )}
+              <br />
+              {data ? (
+                <div className="is-size-7">
+                  Next drawing after&nbsp;
+                  {moment(data.status.nextDrawingAt).format(
+                    "MMM/DD H:MM A"
+                  )}{" "}
+                  <br />
+                  <Countdown
+                    // date={Date.now() + 500000}
+                    date={data && data.status.nextDrawingAt}
+                    renderer={renderer}
+                  >
+                    <DrawBtn />
+                  </Countdown>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="media-right"></div>
           </div>
@@ -77,7 +80,7 @@ const StakeHeader = ({
           style={{
             display: "flex",
             // justifyContent: "end",
-            alignItems: "center",
+            alignItems: "center"
           }}
         >
           <div className="is-pulled-right">

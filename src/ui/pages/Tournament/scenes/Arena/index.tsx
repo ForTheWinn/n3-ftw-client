@@ -4,7 +4,7 @@ import { ARENA_PATH } from "../../pageRoutes";
 import { Route, useLocation } from "react-router-dom";
 import Players from "./Players";
 import History from "./History";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { TournamentContract } from "../../../../../packages/neo/contracts/ftw/arena";
 
 const Arena = (props) => {

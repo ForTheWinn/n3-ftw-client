@@ -1,5 +1,5 @@
 import { INetworkType, Network } from "../../../network";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet } from "../../../index";
 import { SWAP_SCRIPT_HASH } from "./consts";
 import { base64ToString, parseMapValue, withDecimal } from "../../../utils";
@@ -526,7 +526,6 @@ export class SwapContract {
     tokenB: string,
     connectedWallet?: IConnectedWallet
   ): Promise<IReserveData> => {
-    console.log(tokenA);
     const scripts: any = [];
     const script = {
       scriptHash: this.contractHash,

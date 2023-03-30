@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { FARM_V2_STAKE_PATH } from "../../../../../consts";
 import { Link } from "react-router-dom";
 import PairIcons from "../../../../components/PairIcons";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import {
   IPool,
-  IPoolEnhanced,
+  IPoolEnhanced
 } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { u } from "@cityofzion/neon-core";
 import { SwapContract } from "../../../../../packages/neo/contracts";
@@ -38,7 +38,7 @@ const StakingPairCard = ({
   // tokensStaked,
   // nepTokensPerSecond,
   // bonusTokensPerSecond,
-  bonusTokenSymbol,
+  bonusTokenSymbol
 }: // tokenAPrice,
 // tokenBPrice,
 // nepPrice,

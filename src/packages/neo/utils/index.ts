@@ -1,9 +1,9 @@
 import { sc, u, wallet } from "@cityofzion/neon-core";
 import moment from "moment";
-import { IBalance } from "../wallet/interfaces";
+import { IBalance } from "../wallets/interfaces";
 import {
   StackItemLike,
-  StackItemMap,
+  StackItemMap
 } from "@cityofzion/neon-core/lib/sc/StackItem";
 
 export const truncateAddress = (address: string) => {
@@ -78,25 +78,25 @@ export const withDecimal = (
 };
 
 export const decimalCuts = (symbol: string): number => {
-	switch (symbol){
-		case "fUSDT":
-			return 0;
-		case "bNEO":
-			return 2;
-		case "GAS":
-			return 2;
-		case "fWBTC":
-			return 2;
-		case "fWETH":
-			return 2;
-		case "NEP":
-			return 5;
-		case "TTM":
-			return 5;
-		default:
-			return 9
-	}
-}
+  switch (symbol) {
+    case "fUSDT":
+      return 0;
+    case "bNEO":
+      return 2;
+    case "GAS":
+      return 2;
+    case "fWBTC":
+      return 2;
+    case "fWETH":
+      return 2;
+    case "NEP":
+      return 5;
+    case "TTM":
+      return 5;
+    default:
+      return 9;
+  }
+};
 
 export const numberTrim = (no: number, decimals = 2): string => {
   if (!no) return "0";
@@ -134,10 +134,10 @@ const stringList = [
   "description",
   "author",
   "bonusTokenSymbol",
-	"image",
-	"1_tokenId",
-	"2_tokenId",
-	"3_tokenId",
+  "image",
+  "1_tokenId",
+  "2_tokenId",
+  "3_tokenId"
 ];
 const addressList = ["owner", "account", "creator", "receiver"];
 const hash160List = [
@@ -147,7 +147,7 @@ const hash160List = [
   "tokenIn",
   "tokenOut",
   "bonusToken",
-  "bonusTokenHash",
+  "bonusTokenHash"
 ];
 const dateList = ["createdAt", "1_createdAt", "2_createdAt", "3_createdAt"];
 const intList = [
@@ -191,7 +191,7 @@ const intList = [
   "totalReward",
   "totalPosition",
   "claimableAmount",
-	"estimated",
+  "estimated"
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {

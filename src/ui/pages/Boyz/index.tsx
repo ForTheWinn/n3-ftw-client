@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import Banner from "./Banner";
 import { RestAPI } from "../../../packages/neo/api";
 import Modal from "../../components/Modal";
@@ -21,7 +21,7 @@ const Boyz = () => {
     accessory: [],
     head: [],
     mouth: [],
-    background: ["Mint"],
+    background: ["Mint"]
   });
   const [currentCategory, setCurrentCategory] = useState<string>("clothing");
   const [boyz, setBoyz] = useState<any>([]);
@@ -31,7 +31,7 @@ const Boyz = () => {
 
   const onFilterChange = (newFilter: any) => {
     setFilter({
-      ...newFilter,
+      ...newFilter
     });
     setFilterActive(false);
   };

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { ANALYTICS_ROUTE } from "../../../../../consts";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import ProductNotSupportedInNetwork from "../../../../components/ProductNotSupportedInNetwork";
 import LiquidityChart from "./LiquidityChart";
 import PageLayout from "../../../../components/Commons/PageLayout";

@@ -1,6 +1,6 @@
 import { INetworkType, Network } from "../../../network";
 import { SUPPORT_TICKET_PRICE, TOURNAMENT_SCRIPT_HASH } from "./consts";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet } from "../../../index";
 import { RUNE_SCRIPT_HASH } from "../rune";
 import { parsePlayer, parseHistory } from "./helpers";

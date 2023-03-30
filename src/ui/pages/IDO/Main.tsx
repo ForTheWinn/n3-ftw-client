@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { payments } from "../../../packages/neo/contracts/ftw/ido/consts";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import { IDOContract } from "../../../packages/neo/contracts/ftw/ido";
 import Tokenomics from "./components/Tokenomics";
 import PaymentSelection from "./components/PaymentSelection";

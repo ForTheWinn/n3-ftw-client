@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useWallet } from "../../../../../packages/neo/provider";
 import { NEO_LINE, O3 } from "../../../../../packages/neo/consts";
 import neo3Dapi from "neo3-dapi";
 import { Avatar } from "antd";

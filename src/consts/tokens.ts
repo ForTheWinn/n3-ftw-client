@@ -1,4 +1,4 @@
-import { NEO_CHAIN, POLYGON_CHAIN } from "../packages/chains/consts";
+import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
 import { MAINNET_TOKEN_LIST } from "../packages/neo/consts/mainnet-token-list";
 import { POLYGON_TOKEN_LIST } from "../packages/polygon";
 

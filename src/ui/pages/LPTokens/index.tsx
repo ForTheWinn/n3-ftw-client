@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
 import { SwapContract } from "../../../packages/neo/contracts";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import { RestAPI } from "../../../packages/neo/api";
 import { u } from "@cityofzion/neon-core";
 import { SpinnerRoundFilled } from "spinners-react";
@@ -63,7 +63,7 @@ const LPTokens = () => {
         tokenAAmount,
         tokenBAmount,
         tokenAUSD: tokenAAmount * tokenAPrice,
-        tokenBUSD: tokenBAmount * tokenBPrice,
+        tokenBUSD: tokenBAmount * tokenBPrice
       });
       setSearching(false);
       let search = `?id=${id}`;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
-import { useWallet } from "../../../packages/provider";
+import { useWallet } from "../../../packages/neo/provider";
 import { NFTContract } from "../../../packages/neo/contracts";
 import PropertiesModal from "../Rune/PropertiesModal";
 import { GALLERY_PATH } from "../../../consts";

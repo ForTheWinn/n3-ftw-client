@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { u } from "@cityofzion/neon-core";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import {
   ILocker,
-  ILockerContract,
+  ILockerContract
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { FaLock, FaUnlock } from "react-icons/fa";
 import CountdownRender from "../components/CountdownRender";

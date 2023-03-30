@@ -1,6 +1,5 @@
 import { DEV, NEO_LINE, NEON, O3, ONE_GATE } from "../consts";
 import { INetworkType } from "../network";
-import {COINBASE_WALLET, META_MASK} from "../../web3/consts";
 
 export type IWalletType =
   | typeof O3
@@ -9,10 +8,6 @@ export type IWalletType =
   | typeof ONE_GATE
   | typeof NEON;
 
-
-export type IETHWalletType =
-	| typeof META_MASK
-	| typeof COINBASE_WALLET
 
 export interface IConnectedWallet {
   key: IWalletType;

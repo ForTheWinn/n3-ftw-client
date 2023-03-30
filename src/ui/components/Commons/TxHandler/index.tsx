@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { INetworkType, Network } from "../../../../packages/neo/network";
-import { TESTNET } from "../../../../packages/neo/consts";
 import TxReceipt from "./TxReceipt";
+import { useApp } from "../../../../common/hooks/use-app";
+import { getTxBrowser } from "./helpers";
+import Modal from "../../Modal";
+import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
 
-interface IAfterTransactionSubmittedProps {
-  txid: string;
-  network: INetworkType;
-  onSuccess: () => void;
-  onError: () => void;
-}
-const TxHandler = ({
-  txid,
-  network,
-  onSuccess,
-  onError
-}: IAfterTransactionSubmittedProps) => {
+const TxHandler = () => {
+  const { chain, network, txid, resetTxid } = useApp();
   const [isDone, setDone] = useState(false);
   const [hasError, setError] = useState("");
 
   useEffect(() => {
-    async function checkTxid() {
+    async function checkTxid(_txid: string) {
       try {
-        const res = await Network.getRawTx(txid, network);
+        const res = await waitTransactionUntilSubmmited(chain, network, _txid);
         if (res) {
           setDone(true);
         }
@@ -29,20 +21,23 @@ const TxHandler = ({
         setError(e.message);
       }
     }
-    checkTxid();
+    if (txid) {
+      checkTxid(txid);
+    }
   }, [txid]);
 
+  if (!txid) return <></>;
   return (
-    <TxReceipt
-      txid={txid}
-      isSuccess={isDone}
-      error={hasError}
-      onSuccess={onSuccess}
-      onError={onError}
-      explorer={`https://${
-        network === TESTNET ? "testmagnet." : ""
-      }explorer.onegate.space/transactionInfo/`}
-    />
+    <Modal onClose={resetTxid}>
+      <TxReceipt
+        txid={txid}
+        isSuccess={isDone}
+        error={hasError}
+        onSuccess={resetTxid}
+        onError={resetTxid}
+        explorer={getTxBrowser(chain, network)}
+      />
+    </Modal>
   );
 };
 

@@ -16,7 +16,8 @@ export const useOnChainData = (fn, deps: any[]): IUseOnChainDataResult => {
         const res = await fn();
         setData(res);
       } catch (e: any) {
-        setError(e.message);
+        console.error(e);
+        setError(e && e.message ? e.message : "Something went wrong.");
       }
       setIsLoaded(true);
     }

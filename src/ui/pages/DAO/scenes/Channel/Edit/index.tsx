@@ -5,7 +5,7 @@ import { DAO_CHANNEL_PATH } from "../../../../../../consts";
 import ChannelForm from "../../../components/ChannelForm";
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import { useWallet } from "../../../../../../packages/provider";
+import { useWallet } from "../../../../../../packages/neo/provider";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { u } from "@cityofzion/neon-core";
@@ -22,14 +22,14 @@ const Edit = () => {
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
 
   const handleAddChannel = async () => {
     if (connectedWallet && values.decimals) {
       const manifest = JSON.stringify({
-        logo: values.logo,
+        logo: values.logo
       });
       const txid = await new DaoContract(network).editChannel(
         connectedWallet,
@@ -60,7 +60,7 @@ const Edit = () => {
           ),
           logo: manifest.logo,
           decimals: res.decimals as any,
-          symbol: res.symbol as string,
+          symbol: res.symbol as string
         });
       } catch (e: any) {}
     }

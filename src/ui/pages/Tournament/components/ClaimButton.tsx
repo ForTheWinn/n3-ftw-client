@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../packages/provider";
+import { useWallet } from "../../../../packages/neo/provider";
 import { TournamentContract } from "../../../../packages/neo/contracts/ftw/arena";
 import toast from "react-hot-toast";
 import { IHistoryGame } from "../../../../packages/neo/contracts/ftw/arena/interfaces";
 import { calculateClaimableAmount } from "../../../../packages/neo/contracts/ftw/arena/helpers";
-import {handleError} from "../../../../packages/neo/utils/errors";
+import { handleError } from "../../../../packages/neo/utils/errors";
 
 interface IClaimButtonProps {
   arenaNo: string;
@@ -14,7 +14,7 @@ interface IClaimButtonProps {
 const ClaimButton = ({ arenaNo, history, onClaimed }: IClaimButtonProps) => {
   const [status, setStatus] = useState<any>({
     betAmount: 0,
-    isClaimed: false,
+    isClaimed: false
   });
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -30,7 +30,7 @@ const ClaimButton = ({ arenaNo, history, onClaimed }: IClaimButtonProps) => {
         addPendingTransaction(res);
         onClaimed(res);
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet.");
@@ -59,7 +59,7 @@ const ClaimButton = ({ arenaNo, history, onClaimed }: IClaimButtonProps) => {
     }
   }, [connectedWallet, network, history]);
   if (!connectedWallet) return <></>;
-	if (history.betsOnChampion === "0") return <></>;
+  if (history.betsOnChampion === "0") return <></>;
   if (!status.betAmount) return <></>;
   return (
     <>

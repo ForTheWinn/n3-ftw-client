@@ -24,11 +24,11 @@ import {
   BOYZ_PATH,
   GASFI_PATH,
   BRIDGE_PATH,
-  BRAND_KIT_PATH,
+  BRAND_KIT_PATH
 } from "../consts";
 import { POLYGON_FARM_PATH, POLYGON_SWAP_PATH } from "../consts/polygonRoutes";
 
-import { WalletContextProvider } from "../packages/provider";
+import { WalletContextProvider } from "../packages/neo/provider";
 
 import Header from "./components/Commons/Header/Header";
 import WalletSidebar from "./components/Commons/SideNavs/WalletSidebar";
@@ -52,6 +52,7 @@ import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
 import BrandKit from "./pages/BrandKit";
 import { TESTNET } from "../packages/neo/consts";
+import TxHandler from "./components/Commons/TxHandler";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygonMumbai],
@@ -62,7 +63,7 @@ const client = createClient({
   autoConnect: true,
   connectors: [new MetaMaskConnector({ chains })],
   provider,
-  webSocketProvider,
+  webSocketProvider
 });
 
 const App = () => {
@@ -70,7 +71,7 @@ const App = () => {
     <WagmiConfig client={client}>
       <WalletContextProvider
         options={{
-          useDevWallet: process.env.NODE_ENV === "development",
+          useDevWallet: process.env.NODE_ENV === "development"
         }}
       >
         <Router>
@@ -105,6 +106,7 @@ const App = () => {
 
           <MobileMenuSlider />
           <WalletSidebar />
+          <TxHandler />
         </Router>
       </WalletContextProvider>
     </WagmiConfig>
