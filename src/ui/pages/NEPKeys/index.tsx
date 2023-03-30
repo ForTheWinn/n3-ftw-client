@@ -45,7 +45,7 @@ const NEPKeys = () => {
   const { data, isLoaded } = useOnChainData(
     () =>
       new RestAPI(network).getGMAssets({
-        "creators[]": "NYqGJqeAKCdzqZBjhSTtsLwnsRTrhDsHsC",
+        "Owners[]": "NYqGJqeAKCdzqZBjhSTtsLwnsRTrhDsHsC",
       }),
     []
   );
