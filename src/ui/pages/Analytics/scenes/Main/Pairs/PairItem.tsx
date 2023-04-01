@@ -4,6 +4,7 @@ import { INetworkType } from "../../../../../../packages/neo/network";
 import PairIcons from "../../../../../components/PairIcons";
 import { numberTrim } from "../../../../../../packages/neo/utils";
 import { FaChartLine } from "react-icons/fa";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 interface IPairItem {
   network: INetworkType;
@@ -19,8 +20,9 @@ const PairItem = ({
   tokenASymbol,
   tokenBSymbol,
   network,
-  onClick,
+  onClick
 }: IPairItem) => {
+  const { chain } = useApp();
   const [data, setData] = useState<any>();
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
@@ -44,6 +46,7 @@ const PairItem = ({
       <td>
         <div className="is-flex" style={{ alignItems: "center" }}>
           <PairIcons
+            chain={chain}
             width="25px"
             height="25px"
             network={network}
@@ -53,8 +56,16 @@ const PairItem = ({
           <strong className="ml-3">{`${tokenASymbol}-${tokenBSymbol}`}</strong>
         </div>
       </td>
-      <td>{data ? "$" + parseFloat(numberTrim(data.reserveUSD, 0)).toLocaleString() : ""}</td>
-      <td>{data ? "$" + parseFloat(numberTrim(data.volumeUSD, 0)).toLocaleString() : ""}</td>
+      <td>
+        {data
+          ? "$" + parseFloat(numberTrim(data.reserveUSD, 0)).toLocaleString()
+          : ""}
+      </td>
+      <td>
+        {data
+          ? "$" + parseFloat(numberTrim(data.volumeUSD, 0)).toLocaleString()
+          : ""}
+      </td>
       {/*<td>{data ? "$" + numberTrim(data.feesUSD) : ""}</td>*/}
       <td style={{ textAlign: "right" }}>
         <button onClick={onClick} className="button is-small is-white">

@@ -3,7 +3,6 @@ import { useWallet } from "../../../../../packages/neo/provider";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
-import { GASFI_PATH } from "../../../../../consts";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
@@ -12,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
 import moment from "moment";
 import { DRAWING_FREQUENCY } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
+import { NEO_ROUTES } from "../../../../../consts";
 
 const MyStaking = (props) => {
   const history = useHistory();
@@ -37,7 +37,7 @@ const MyStaking = (props) => {
 
   const handleSuccess = () => {
     setTxid("");
-    history.push(GASFI_PATH);
+    history.push(NEO_ROUTES.GASFI_PATH);
   };
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const MyStaking = (props) => {
       <div className="columns is-centered">
         <div className="column is-half">
           <div className="box is-shadowless">
-            <HeaderBetween path={GASFI_PATH} title={"My staking"} />
+            <HeaderBetween path={NEO_ROUTES.GASFI_PATH} title={"My staking"} />
           </div>
           {!connectedWallet ? (
             <button

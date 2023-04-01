@@ -4,10 +4,7 @@ import { RestAPI } from "../../../../../../packages/neo/api";
 import TokenItem from "./TokenItem";
 import ModalCard from "../../../../../components/Modal";
 import TokenDetail from "../../TokenDetail";
-import {
-  ANALYTICS_PATH,
-  ANALYTICS_TOKENS_PATH
-} from "../../../../../../consts";
+import { NEO_ROUTES } from "../../../../../../consts";
 
 const TokensAnalytics = (props) => {
   const { network } = useWallet();
@@ -16,11 +13,15 @@ const TokensAnalytics = (props) => {
   const [isModalActive, setModalActive] = useState("");
   const handleTokenClick = (id: string) => {
     setModalActive(id);
-    window.history.replaceState(null, "", `#${ANALYTICS_TOKENS_PATH}/${id}`);
+    window.history.replaceState(
+      null,
+      "",
+      `#${NEO_ROUTES.ANALYTICS_TOKENS_PATH}/${id}`
+    );
   };
 
   const handleModalClose = () => {
-    window.history.replaceState(null, "", `#${ANALYTICS_PATH}`);
+    window.history.replaceState(null, "", `#${NEO_ROUTES.ANALYTICS_PATH}`);
     setModalActive("");
   };
 

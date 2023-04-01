@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useWallet } from "../../../packages/neo/provider";
-import { MAINNET, PRIVATENET, TESTNET } from "../../../packages/neo/consts";
 import { INetworkType } from "../../../packages/neo/network";
+import { MAINNET, TESTNET } from "../../../consts/global";
 
 const NetworkSwitch = () => {
   const [isActive, setActive] = useState(false);
@@ -14,7 +14,7 @@ const NetworkSwitch = () => {
       setActive(false);
     }
   };
-  const networkList = [PRIVATENET, TESTNET, MAINNET];
+  const networkList = [TESTNET, MAINNET];
 
   return (
     <div className={`dropdown is-right ${isActive ? "is-active" : ""}`}>
@@ -33,7 +33,7 @@ const NetworkSwitch = () => {
         <div className="dropdown-content">
           {networkList.map((v) => {
             if (
-              (process.env.NODE_ENV !== "development" && v === PRIVATENET) ||
+              (process.env.NODE_ENV !== "development") ||
               network === v
             ) {
               return false;

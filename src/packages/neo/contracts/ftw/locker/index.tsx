@@ -3,7 +3,7 @@ import { IConnectedWallet } from "../../../wallets/interfaces";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { LOCKER_SCRIPT_HASH } from "./consts";
-import { NEP_SCRIPT_HASH } from "../../../consts/neo-token-hashes";
+import { NEP_SCRIPT_HASH } from "../../../consts/neo-contracts";
 import { parseMapValue } from "../../../utils";
 import {
   ILocker,

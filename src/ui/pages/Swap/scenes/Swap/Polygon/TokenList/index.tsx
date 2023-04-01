@@ -5,10 +5,13 @@ import ContractSearchInput from "./ContractSearchInput";
 import SwapTokenCard from "../../../../components/TokenCard";
 import Modal from "../../../../../../components/Modal";
 
-import { POLYGON_TOKENS } from "../../../../../../../packages/polygon";
 import { ITokenState } from "../../interfaces";
+import { TOKENS } from "../../../../../../../consts";
+import { POLYGON_CHAIN } from "../../../../../../../consts/chains";
+import { INetworkType } from "../../../../../../../packages/neo/network";
 
 interface IAssetListModalProps {
+  network: INetworkType;
   activeTokenInput: "A" | "B";
   tokenAHash?: string;
   tokenBHash?: string;
@@ -17,11 +20,9 @@ interface IAssetListModalProps {
 }
 
 const TokenList = ({
-  tokenAHash,
-  tokenBHash,
+  network,
   onAssetClick,
   onClose,
-  activeTokenInput,
 }: IAssetListModalProps) => {
   const [isCustomInputMode, setCustomInputMode] = useState(false);
 
@@ -32,7 +33,7 @@ const TokenList = ({
       ) : (
         <>
           <div className="columns">
-            {POLYGON_TOKENS.map((token) => {
+            {TOKENS.SWAP_TOKEN_LIST[POLYGON_CHAIN][network].map((token) => {
               return (
                 <SwapTokenCard
                   key={token.hash}

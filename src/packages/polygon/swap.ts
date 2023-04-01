@@ -6,20 +6,23 @@ import {
 } from "@wagmi/core";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
-import { POLYGON_SWAP_CONTRACT_HASH } from ".";
+import { CONSTS } from ".";
 import {
   IReservesState,
   ITokenState,
 } from "../../ui/pages/Swap/scenes/Swap/interfaces";
 import FTWSwapABI from "./FTWSwap.json";
 import { IFarmLPToken } from "../../common/routers/farm/interfaces";
+import { INetworkType } from "../neo/network";
+import { GLOBAL } from "../../consts";
 
 export const getReserves = async (
+  network: INetworkType,
   tokenA: ITokenState,
   tokenB: ITokenState
 ): Promise<IReservesState> => {
   const res: any = await readContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getReserves",
     args: [tokenA.hash, tokenB.hash],
@@ -38,29 +41,30 @@ export const getReserves = async (
 };
 
 export const getReserve = async (
+ network: INetworkType,
   tokenA: string,
   tokenB: string
 ): Promise<any> => {
   return readContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getReserves",
     args: [tokenA, tokenB],
   });
 };
 
-export const getEstimated = (args) => {
+export const getEstimated = ( network: INetworkType,args) => {
   return readContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getSwapEstimated",
     args,
   });
 };
 
-export const getLPTokens = async (owner: string): Promise<IFarmLPToken[]> => {
+export const getLPTokens = async ( network: INetworkType,owner: string): Promise<IFarmLPToken[]> => {
   const res: any = await readContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getTokensOf",
     args: [owner],
@@ -68,24 +72,23 @@ export const getLPTokens = async (owner: string): Promise<IFarmLPToken[]> => {
   const tokens: IFarmLPToken[] = [];
 
   for (const tokenId of res) {
-    const token = await getTokenURI(tokenId.toString());
+    const token = await getTokenURI(network, tokenId.toString());
     tokens.push(token)
   }
 
   return tokens;
 };
 
-export const getTokenURI = async (tokenId: string): Promise<IFarmLPToken> => {
+export const getTokenURI = async ( network: INetworkType,tokenId: string): Promise<IFarmLPToken> => {
   console.log(tokenId)
   const res = await readContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "tokenURI",
     args: [tokenId],
   }) as string;
    const json = Buffer.from(res.substring(29), "base64").toString();
   const jsonObject = JSON.parse(json);
-  console.log(jsonObject)
    return{
       name: jsonObject.name,
       tokenA: jsonObject.tokenA,
@@ -113,43 +116,44 @@ export const getLPEstimate = (
   return ethers.utils.formatUnits(estimated, opponentDecimals);
 };
 
-export const swap = (args) => {
+export const swap = ( network: INetworkType,args: any) => {
   return prepareWriteContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "swap",
     args,
   });
 };
 
-export const provide = (args) => {
+export const provide = ( network: INetworkType,args) => {
   return prepareWriteContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "addLiquidity",
     args: args,
   });
 };
 
-export const removeLiquidity = (tokenId: string) => {
+export const removeLiquidity = ( network: INetworkType,tokenId: string) => {
   return prepareWriteContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "removeLiquidity",
     args: [tokenId],
   });
 };
 
-export const approve = (token) => {
+export const approve = ( network: INetworkType,token) => {
   return prepareWriteContract({
     address: token,
     abi: erc20ABI,
     functionName: "approve",
-    args: [POLYGON_SWAP_CONTRACT_HASH, ethers.constants.MaxUint256],
+    args: [CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP]  as any, ethers.constants.MaxUint256],
   });
 };
 
 export const getAllowances = (
+  network: INetworkType,
   address: string,
   tokenA: string,
   tokenB: string
@@ -160,30 +164,30 @@ export const getAllowances = (
         address: tokenA as `0x${string}`,
         abi: erc20ABI,
         functionName: "allowance",
-        args: [address as `0x${string}`, POLYGON_SWAP_CONTRACT_HASH],
+        args: [address as `0x${string}`, CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as `0x${string}`],
       },
       {
         address: tokenB as `0x${string}`,
         abi: erc20ABI,
         functionName: "allowance",
-        args: [address as `0x${string}`, POLYGON_SWAP_CONTRACT_HASH],
+        args: [address as `0x${string}`, CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as `0x${string}`],
       },
     ],
   });
 };
 
-export const isApprovedForAll = (owner: string, contractHash: string) => {
+export const isApprovedForAll = ( network: INetworkType,owner: string, contractHash: string) => {
   return readContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "isApprovedForAll",
     args: [owner, contractHash],
   });
 };
 
-export const setApprovalForAll = (contractHash: string) => {
+export const setApprovalForAll = ( network: INetworkType,contractHash: string) => {
   return prepareWriteContract({
-    address: POLYGON_SWAP_CONTRACT_HASH,
+    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "setApprovalForAll",
     args: [contractHash, true],

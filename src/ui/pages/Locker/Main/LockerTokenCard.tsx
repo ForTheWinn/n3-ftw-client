@@ -1,10 +1,11 @@
-import { u } from "@cityofzion/neon-core";
 import React from "react";
-import { ASSET_LIST } from "../../../../packages/neo/contracts/ftw/swap/consts";
+import { u } from "@cityofzion/neon-core";
 import { useHistory } from "react-router-dom";
-import { LOCKER_PATH } from "../../../../consts";
-import {UNKNOWN_TOKEN_IMAGE} from "../../../../packages/neo/consts";
+import { CHAINS, NEO_ROUTES } from "../../../../consts";
+import { UNKNOWN_TOKEN_IMAGE } from "../../../../consts/global";
+import { TOKEN_LIST } from "../../../../consts/tokens";
 interface ILockerTokenCardProps {
+  chain: CHAINS.CHAINS;
   lockedAmount: number;
   decimals: number;
   contractHash: string;
@@ -12,15 +13,16 @@ interface ILockerTokenCardProps {
   network: string;
 }
 const LockerTokenCard = ({
+  chain,
   network,
   lockedAmount,
   decimals,
   contractHash,
-  symbol,
+  symbol
 }: ILockerTokenCardProps) => {
   const history = useHistory();
-  const logo = ASSET_LIST[network][contractHash]
-    ? ASSET_LIST[network][contractHash].icon
+  const logo = TOKEN_LIST[chain][network][contractHash]
+    ? TOKEN_LIST[chain][network][contractHash].icon
     : UNKNOWN_TOKEN_IMAGE;
   const amount = parseFloat(
     u.BigInteger.fromNumber(lockedAmount).toDecimal(decimals)
@@ -28,7 +30,7 @@ const LockerTokenCard = ({
   return (
     <div
       onClick={() => {
-        history.push(`${LOCKER_PATH}/contracts/${contractHash}`);
+        history.push(`${NEO_ROUTES.LOCKER_PATH}/contracts/${contractHash}`);
       }}
       className="box has-text-centered is-hoverable"
     >

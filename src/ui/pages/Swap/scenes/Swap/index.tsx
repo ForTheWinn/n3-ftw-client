@@ -12,7 +12,6 @@ interface ISwapProps {
 
 const Swap = ({ rootPath }: ISwapProps) => {
   const { chain } = useApp();
-
   return (
     <div>
       {chain === NEO_CHAIN ? <NEOSwap rootPath={rootPath} /> : false}

@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import { useWallet } from "../../../../../../packages/neo/provider";
 import PairItem from "./PairItem";
-import {
-  ANALYTICS_PAIRS_PATH,
-  ANALYTICS_PATH,
-  ANALYTICS_TOKENS_PATH
-} from "../../../../../../consts";
 import ModalCard from "../../../../../components/Modal";
 import PairDetail from "../../PairDetail";
+import { NEO_ROUTES } from "../../../../../../consts";
 
 const Pairs = (props) => {
   const { network } = useWallet();
@@ -17,11 +13,15 @@ const Pairs = (props) => {
   const [isModalActive, setModalActive] = useState("");
   const handleTokenClick = (id: string) => {
     setModalActive(id);
-    window.history.replaceState(null, "", `#${ANALYTICS_PAIRS_PATH}/${id}`);
+    window.history.replaceState(
+      null,
+      "",
+      `#${NEO_ROUTES.ANALYTICS_PAIRS_PATH}/${id}`
+    );
   };
 
   const handleModalClose = () => {
-    window.history.replaceState(null, "", `#${ANALYTICS_PATH}`);
+    window.history.replaceState(null, "", `#${NEO_ROUTES.ANALYTICS_PATH}`);
     setModalActive("");
   };
   useEffect(() => {

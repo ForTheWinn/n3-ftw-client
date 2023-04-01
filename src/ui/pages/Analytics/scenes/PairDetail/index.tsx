@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import SwapHistory from "./SwapHistory";
-import { useWallet } from "../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../packages/neo/api";
 import LiquidityChart from "../Main/LiquidityChart";
-import { ASSET_LIST } from "../../../../../packages/neo/contracts/ftw/swap/consts";
-import {
-  MAINNET,
-  UNKNOWN_TOKEN_IMAGE
-} from "../../../../../packages/neo/consts";
+import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { TOKEN_LIST } from "../../../../../consts/tokens";
 
 interface IPairDetailProps {
   id: string;
 }
 const PairDetail = ({ id }: IPairDetailProps) => {
-  const { network } = useWallet();
+  const { chain, network } = useApp();
   const pairs = id.split("_");
   const tokenA = pairs[0];
   const tokenB = pairs[1];
@@ -37,14 +34,14 @@ const PairDetail = ({ id }: IPairDetailProps) => {
     fetch();
   }, [network]);
   const tokenALogo = data
-    ? ASSET_LIST[MAINNET][data.tokenA.id.substring(2)]
-      ? ASSET_LIST[MAINNET][data.tokenA.id.substring(2)].icon
+    ? TOKEN_LIST[chain][MAINNET][data.tokenA.id.substring(2)]
+      ? TOKEN_LIST[chain][MAINNET][data.tokenA.id.substring(2)].icon
       : UNKNOWN_TOKEN_IMAGE
     : undefined;
 
   const tokenBLogo = data
-    ? ASSET_LIST[MAINNET][data.tokenB.id.substring(2)]
-      ? ASSET_LIST[MAINNET][data.tokenB.id.substring(2)].icon
+    ? TOKEN_LIST[chain][MAINNET][data.tokenB.id.substring(2)]
+      ? TOKEN_LIST[chain][MAINNET][data.tokenB.id.substring(2)].icon
       : UNKNOWN_TOKEN_IMAGE
     : undefined;
   return (

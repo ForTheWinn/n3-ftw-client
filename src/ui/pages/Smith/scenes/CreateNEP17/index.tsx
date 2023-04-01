@@ -6,12 +6,12 @@ import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
-import { SMITH_PATH } from "../../../../../consts";
 import Modal from "../../../../components/Modal";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
+import { NEO_ROUTES } from "../../../../../consts";
 
 const NEP17FormModal = () => {
   const { network, connectedWallet } = useWallet();
@@ -95,7 +95,7 @@ const NEP17FormModal = () => {
 
   const onSuccess = () => {
     setTxid("");
-    history.push(SMITH_PATH);
+    history.push(NEO_ROUTES.SMITH_PATH);
   };
 
   // const firstInput = useRef(null);
@@ -317,7 +317,7 @@ const NEP17FormModal = () => {
                       target="_blank"
                       href={
                         "https://github.com/ForTheWinn/public-contracts/blob/main/FTWSmithNep17-v3/FTWSmithNep17-v3.cs"
-                      }
+                      } rel="noreferrer"
                     >
                       here
                     </a>

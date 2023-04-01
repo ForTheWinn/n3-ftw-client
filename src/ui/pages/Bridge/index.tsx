@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
 import MarketStatus from "../Swap/components/CheckMarketStatus";
 import { Route } from "react-router-dom";
-import { BRIDGE_PATH } from "../../../consts";
 import BridgeMain from "./scene/Main";
+import { NEO_ROUTES } from "../../../consts";
 
 const Bridge = () => {
   useEffect(() => {
@@ -16,7 +16,11 @@ const Bridge = () => {
           <div className="column is-half">
             <MarketStatus />
             <div className="box is-shadowless">
-              <Route exact={true} path={BRIDGE_PATH} component={BridgeMain} />
+              <Route
+                exact={true}
+                path={NEO_ROUTES.BRIDGE_PATH}
+                component={BridgeMain}
+              />
             </div>
           </div>
         </div>

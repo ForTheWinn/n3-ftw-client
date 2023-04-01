@@ -3,12 +3,12 @@ import PageLayout from "../../../../components/Commons/PageLayout";
 import { Route } from "react-router-dom";
 import ProposalList from "./ProposalList";
 import Create from "./Create";
-import { DAO_CHANNEL_PATH } from "../../../../../consts";
 import ProposalView from "./View";
 import Edit from "./Edit";
+import { NEO_ROUTES } from "../../../../../consts";
 
 const DAOChannel = (props) => {
-  const path = DAO_CHANNEL_PATH + "/:contractHash";
+  const path = NEO_ROUTES.DAO_CHANNEL_PATH + "/:contractHash";
 
   return (
     <PageLayout>

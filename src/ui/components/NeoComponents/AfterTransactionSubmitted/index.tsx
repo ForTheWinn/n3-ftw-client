@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { TESTNET } from "../../../../consts/global";
 import { INetworkType, Network } from "../../../../packages/neo/network";
-import { TESTNET } from "../../../../packages/neo/consts";
 import TxReceipt from "../../Commons/TxHandler/TxReceipt";
 
 interface IAfterTransactionSubmittedProps {

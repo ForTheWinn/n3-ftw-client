@@ -6,7 +6,7 @@ export interface ILPTokenURI {
   amountA: string;
   amountB: string;
   symbolA: string;
-    symbolB: string;
-    decimalsA: string;
-    decimalsB: string;
+  symbolB: string;
+  decimalsA: string;
+  decimalsB: string;
 }

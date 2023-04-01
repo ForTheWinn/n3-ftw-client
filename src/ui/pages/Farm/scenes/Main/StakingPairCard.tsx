@@ -1,19 +1,19 @@
 import React from "react";
-import { FARM_STAKE_PATH } from "../../../../../consts";
 import { useHistory } from "react-router-dom";
 import { IStakingPairs } from "../../../../../packages/neo/contracts/ftw/farm/interfaces";
 import PairIcons from "../../../../components/PairIcons";
-import { useWallet } from "../../../../../packages/neo/provider";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import {
   BNEO_SCRIPT_HASH,
   GAS_SCRIPT_HASH
-} from "../../../../../packages/neo/consts/neo-token-hashes";
+} from "../../../../../packages/neo/consts/neo-contracts";
+import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const StakingPairCard = (props: IStakingPairs) => {
   const history = useHistory();
-  const { network } = useWallet();
+  const { network, chain } = useApp();
   const isBNEOAndGAS =
     props.tokenA === BNEO_SCRIPT_HASH[network] &&
     props.tokenB === GAS_SCRIPT_HASH;
@@ -31,7 +31,7 @@ const StakingPairCard = (props: IStakingPairs) => {
       className="is-clickable"
       onClick={() =>
         history.push(
-          `${FARM_STAKE_PATH}?tokenA=${props.tokenA}&tokenB=${props.tokenB}&tokenASymbol=${props.tokenASymbol}&tokenBSymbol=${props.tokenBSymbol}`
+          `${NEO_ROUTES.FARM_STAKE_PATH}?tokenA=${props.tokenA}&tokenB=${props.tokenB}&tokenASymbol=${props.tokenASymbol}&tokenBSymbol=${props.tokenBSymbol}`
         )
       }
     >
@@ -40,6 +40,7 @@ const StakingPairCard = (props: IStakingPairs) => {
           <div className="level-left">
             <div className="level-item">
               <PairIcons
+                chain={chain}
                 network={network}
                 tokenA={props.tokenA}
                 tokenB={props.tokenB}

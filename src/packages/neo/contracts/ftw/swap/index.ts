@@ -20,7 +20,7 @@ import {
   GAS_SCRIPT_HASH,
   NEO_SCRIPT_HASH,
   NEP_SCRIPT_HASH
-} from "../../../consts/neo-token-hashes";
+} from "../../../consts/neo-contracts";
 
 export class SwapContract {
   network: INetworkType;

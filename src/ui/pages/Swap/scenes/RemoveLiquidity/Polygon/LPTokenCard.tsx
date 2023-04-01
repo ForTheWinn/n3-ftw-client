@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { Buffer } from "buffer";
 
 import { getTokenURI } from "../../../../../../packages/polygon/swap";
 import LPTokenCard from "../components/LPTokenCard";
 
 import { IFarmLPToken } from "../../../../../../common/routers/farm/interfaces";
+import { INetworkType } from "../../../../../../packages/neo/network";
 
 interface ILPTokenCard {
+  network: INetworkType;
   tokenId: string;
   onClick: () => void;
 }
-const LPTokenDataLoader = ({ tokenId, onClick }: ILPTokenCard) => {
+const LPTokenDataLoader = ({ network, tokenId, onClick }: ILPTokenCard) => {
   const [token, setToken] = useState<IFarmLPToken | undefined>();
   useEffect(() => {
     const load = async (_tokenId: string) => {
       try {
-        const res: any = await getTokenURI(_tokenId);
+        const res: any = await getTokenURI(network, _tokenId);
         setToken(res);
       } catch (e) {
         console.log(e);

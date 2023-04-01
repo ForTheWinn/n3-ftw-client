@@ -6,7 +6,7 @@ import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 import { parseMapValue } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
-import { BNEO_SCRIPT_HASH } from "../../../consts/neo-token-hashes";
+import { BNEO_SCRIPT_HASH } from "../../../consts/neo-contracts";
 import {
   IClaimableResult,
   IDrawsResult,

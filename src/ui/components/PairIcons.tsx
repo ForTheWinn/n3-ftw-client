@@ -1,8 +1,9 @@
 import React from "react";
 import LogoIcon from "./LogoIcon";
-import { ASSET_LIST } from "../../packages/neo/contracts/ftw/swap/consts";
-import { UNKNOWN_TOKEN_IMAGE } from "../../packages/neo/consts";
 import { INetworkType } from "../../packages/neo/network";
+import { UNKNOWN_TOKEN_IMAGE } from "../../consts/global";
+import { CHAINS } from "../../consts";
+import { TOKEN_LIST } from "../../consts/tokens";
 
 interface IPairIconsProps {
   network: INetworkType;
@@ -10,6 +11,7 @@ interface IPairIconsProps {
   tokenB: string;
   width?: string;
   height?: string;
+  chain: CHAINS.CHAINS;
 }
 const PairIcons = ({
   network,
@@ -17,13 +19,14 @@ const PairIcons = ({
   tokenB,
   width,
   height,
+  chain
 }: IPairIconsProps) => {
-  let token1 = ASSET_LIST[network][tokenA]
-    ? ASSET_LIST[network][tokenA]
+  let token1 = TOKEN_LIST[chain][network][tokenA]
+    ? TOKEN_LIST[chain][network][tokenA]
     : undefined;
 
-  let token2 = ASSET_LIST[network][tokenB]
-    ? ASSET_LIST[network][tokenB]
+  let token2 = TOKEN_LIST[chain][network][tokenB]
+    ? TOKEN_LIST[chain][network][tokenB]
     : undefined;
 
   // if (token2 && token2.contractHash === NEP_SCRIPT_HASH[network]) {

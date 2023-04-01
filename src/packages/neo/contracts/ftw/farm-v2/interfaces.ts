@@ -4,14 +4,14 @@ export interface IClaimableRewards {
   tokenB: string;
   tokenASymbol: string;
   tokenBSymbol: string;
-  bonusToHarvest: number;
+  bonusToHarvest: string;
   bonusTokenHash: string;
   bonusTokenSymbol: string;
-  rewardsToHarvest: number;
-  share: number;
-  tokensStaked: number;
-  nepTokensPerSecond: number;
-  bonusTokensPerSecond: number;
+  rewardsToHarvest: string;
+  share: string;
+  tokensStaked: string;
+  nepTokensPerSecond: string;
+  bonusTokensPerSecond: string;
 }
 
 export interface IPool {

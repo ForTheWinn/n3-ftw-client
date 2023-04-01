@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../../../../components/Commons/PageLayout";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { DAO_CHANNEL_PATH } from "../../../../../../consts";
 import ChannelForm from "../../../components/ChannelForm";
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
@@ -9,6 +8,7 @@ import { useWallet } from "../../../../../../packages/neo/provider";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { u } from "@cityofzion/neon-core";
+import { NEO_ROUTES } from "../../../../../../consts";
 
 const Edit = () => {
   const params = useParams();
@@ -46,7 +46,7 @@ const Edit = () => {
 
   const handleTxSuccess = () => {
     setTxid("");
-    history.push(`${DAO_CHANNEL_PATH}/${contractHash}`);
+    history.push(`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`);
   };
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const Edit = () => {
       <div className="columns  is-center">
         <div className="column is-half ">
           <Link
-            to={`${DAO_CHANNEL_PATH}/${contractHash}`}
+            to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
             className="button is-rounded is-small mb-3"
           >
             Back to list

@@ -3,8 +3,8 @@ import PageLayout from "../../components/Commons/PageLayout";
 import { useWallet } from "../../../packages/neo/provider";
 import { NFTContract } from "../../../packages/neo/contracts";
 import PropertiesModal from "../Rune/PropertiesModal";
-import { GALLERY_PATH } from "../../../consts";
 import { Link } from "react-router-dom";
+import { NEO_ROUTES } from "../../../consts";
 
 const MyCollection = () => {
   const [tokens, setTokens] = useState<any>([]);
@@ -65,17 +65,15 @@ const MyCollection = () => {
                     <p>You don't have any runes yet</p>
                   </div>
 
-                  <Link className="button is-primary" to={GALLERY_PATH}>
+                  <Link className="button is-primary" to={NEO_ROUTES.GALLERY_PATH}>
                     Go Get Them
                   </Link>
                 </div>
-                {/*<DisplayRandomRune width="100%" height="100%" />*/}
               </div>
             )}
           </div>
         )}
       </PageLayout>
-      {/*<button onClick={onMint} className="button is-black">Mint</button>*/}
       {propertiesModalActive && (
         <PropertiesModal
           tokenId={propertiesModalActive}

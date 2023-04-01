@@ -8,9 +8,9 @@ import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import LogoIcon from "../../../../components/LogoIcon";
-import { NEP_LOGO } from "../../../../../packages/neo/contracts/ftw/farm/consts";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import ClaimList from "./ClaimList";
+import { NEP_LOGO } from "../../../../../consts/global";
 
 interface IClaimRewardsProps {
   pRefresh: number;

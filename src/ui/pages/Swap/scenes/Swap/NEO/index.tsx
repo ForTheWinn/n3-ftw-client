@@ -20,7 +20,7 @@ import {
   BNEO_SCRIPT_HASH,
   GAS_SCRIPT_HASH,
   NEO_SCRIPT_HASH
-} from "../../../../../../packages/neo/consts/neo-token-hashes";
+} from "../../../../../../packages/neo/consts/neo-contracts";
 import { BNEOContract } from "../../../../../../packages/neo/contracts/ftw/bneo";
 
 import AssetListModal from "./TokenList";
@@ -38,8 +38,8 @@ import { ITokenState } from "../interfaces";
 import SwapDetails from "../components/SwapDetails/SwapDetails";
 
 import ProvideLPInfo from "../../../components/ProvideLPInfo";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../consts";
 import SwapSettings from "../../../components/Settings";
+import { NEO_ROUTES } from "../../../../../../consts";
 
 interface ISwapProps {
   rootPath: string;
@@ -381,7 +381,7 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
       {noLiquidity && tokenA && tokenB ? (
         <ProvideLPInfo
           path={{
-            pathname: `${rootPath}${SWAP_PATH_LIQUIDITY_ADD}`,
+            pathname: `${rootPath}${NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}`,
             search:
               tokenA && tokenB
                 ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
@@ -397,6 +397,7 @@ const NEOSwap = ({ rootPath }: ISwapProps) => {
       )}
 
       <SwapInputs
+        chain={chain}
         setSwapType={setSwapType}
         noLiquidity={noLiquidity}
         network={network}

@@ -7,11 +7,13 @@ import { SwapContract } from "../../../../../../packages/neo/contracts";
 import {
   GAS_SCRIPT_HASH,
   NEO_SCRIPT_HASH
-} from "../../../../../../packages/neo/consts/neo-token-hashes";
-import { ASSET_LIST } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
+} from "../../../../../../packages/neo/consts/neo-contracts";
 import { ITokenState } from "../../Swap/interfaces";
+import { CHAINS } from "../../../../../../consts";
+import { TOKEN_LIST } from "../../../../../../consts/tokens";
 
 interface ILPInputsProps {
+  chain: CHAINS.CHAINS
   network: INetworkType;
   tokenA?: ITokenState;
   tokenB?: ITokenState;
@@ -28,6 +30,7 @@ interface ILPInputsProps {
 }
 
 const LPInputs = ({
+  chain,
   network,
   tokenA,
   tokenB,
@@ -95,8 +98,8 @@ const LPInputs = ({
         contractHash={tokenA ? tokenA.hash : ""}
         symbol={tokenA ? tokenA.symbol : ""}
         logo={
-          tokenA && ASSET_LIST[network][tokenA.hash]
-            ? ASSET_LIST[network][tokenA.hash].icon
+          tokenA && TOKEN_LIST[chain][network][tokenA.hash]
+            ? TOKEN_LIST[chain][network][tokenA.hash].icon
             : undefined
         }
         decimals={tokenA ? tokenA.decimals : undefined}
@@ -128,8 +131,8 @@ const LPInputs = ({
         contractHash={tokenB ? tokenB.hash : ""}
         symbol={tokenB ? tokenB.symbol : ""}
         logo={
-          tokenB && ASSET_LIST[network][tokenB.hash]
-            ? ASSET_LIST[network][tokenB.hash].icon
+          tokenB && TOKEN_LIST[chain][network][tokenB.hash]
+            ? TOKEN_LIST[chain][network][tokenB.hash].icon
             : undefined
         }
         decimals={tokenB ? tokenB.decimals : undefined}

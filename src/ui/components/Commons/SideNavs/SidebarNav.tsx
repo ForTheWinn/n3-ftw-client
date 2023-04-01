@@ -1,12 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useApp } from "../../../../common/hooks/use-app";
-import { MENU } from "../../../../consts";
-import { useWallet } from "../../../../packages/neo/provider";
+import { HEADER_ROUTES } from "../../../../consts";
 import SocialLinkGroup from "../SocialLinkGroup";
 
-const SidebarNav = (props) => {
-  const { network } = useWallet();
+const SidebarNav = () => {
+  const { chain, network } = useApp();
   const { toggleSidebar } = useApp();
   return (
     <div
@@ -16,7 +15,7 @@ const SidebarNav = (props) => {
       <aside className="menu p-5">
         <p className="menu-label">Menu</p>
         <ul className="menu-list">
-          {MENU.map((route, i) => {
+          {HEADER_ROUTES[chain].map((route, i) => {
             if (!route.network.includes(network)) return false;
             return (
               <li key={`${route.label}${i}`}>

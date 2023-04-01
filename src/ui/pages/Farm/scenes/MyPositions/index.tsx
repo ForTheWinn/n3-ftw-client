@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
-import { FARM_PATH } from "../../../../../consts";
 import { useWallet } from "../../../../../packages/neo/provider";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { toast } from "react-hot-toast";
@@ -9,6 +8,7 @@ import AfterTransactionSubmitted from "../../../../components/NeoComponents/Afte
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
 import { handleError } from "../../../../../packages/neo/utils/errors";
+import { NEO_ROUTES } from "../../../../../consts";
 
 const MyPositions = ({ onRefresh }) => {
   const { network, connectedWallet } = useWallet();
@@ -39,7 +39,7 @@ const MyPositions = ({ onRefresh }) => {
 
   return (
     <div>
-      <HeaderBetween path={FARM_PATH} title={`My staking`} />
+      <HeaderBetween path={NEO_ROUTES.FARM_PATH} title={`My staking`} />
       <hr />
       {connectedWallet ? (
         <PositionList

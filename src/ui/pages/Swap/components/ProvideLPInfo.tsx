@@ -1,13 +1,11 @@
 import React from "react";
-import { Link, useRouteMatch } from "react-router-dom";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../consts";
+import { Link } from "react-router-dom";
 import { SWAP_FEE } from "../../../../packages/neo/contracts/ftw/swap/consts";
 
 interface IProvideLPInfoProps {
   path?: any;
 }
 const ProvideLPInfo = ({ path }: IProvideLPInfoProps) => {
-  // const { path } = useRouteMatch();
   return (
     <>
       <div className="notification is-info is-light">
@@ -25,18 +23,6 @@ const ProvideLPInfo = ({ path }: IProvideLPInfoProps) => {
         ) : (
           <></>
         )}
-        {/* <Link
-          className="button is-info is-inverted"
-          to={
-            tokenA && tokenB
-              ? `${
-                  path + SWAP_PATH_LIQUIDITY_ADD
-                }?tokenA=${tokenA}&tokenB=${tokenB}`
-              : path + SWAP_PATH_LIQUIDITY_ADD
-          }
-        >
-          Provide liquidity
-        </Link> */}
       </div>
       <hr />
     </>

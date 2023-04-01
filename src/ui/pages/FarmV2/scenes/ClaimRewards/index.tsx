@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useWallet } from "../../../../../packages/neo/provider";
 import ClaimModal from "./ClaimModal";
 import { useApp } from "../../../../../common/hooks/use-app";
 import LogoIcon from "../../../../components/LogoIcon";
-import { NEP_LOGO } from "../../../../../packages/neo/contracts/ftw/farm/consts";
 import ClaimList from "./ClaimList";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import BoyzStaking from "../../components/BoyzStaking";
 import { Link } from "react-router-dom";
-import { FARM_PATH } from "../../../../../consts/pageRoutes";
+import { FARM_PATH } from "../../../../../consts/neoRoutes";
 import { CHAINS, NEO_CHAIN } from "../../../../../consts/chains";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import toast from "react-hot-toast";
+import { NEP_LOGO } from "../../../../../consts/global";
 
 interface IClaimRewardsProps {
   chain: CHAINS;
@@ -21,7 +21,8 @@ interface IClaimRewardsProps {
   prices?: IPrices;
 }
 const ClaimRewards = ({ chain, path, prices }: IClaimRewardsProps) => {
-  const { toggleWalletSidebar, increaseRefreshCount, setTxid, refreshCount } = useApp();
+  const { toggleWalletSidebar, increaseRefreshCount, setTxid, refreshCount } =
+    useApp();
   const { network, connectedWallet } = useWallet();
   const { isConnected, address } = useWalletRouter(chain);
   const [isClaimModalOpen, setClaimModalOpen] = useState(false);
@@ -36,7 +37,7 @@ const ClaimRewards = ({ chain, path, prices }: IClaimRewardsProps) => {
       );
       setTxid(txid);
     } catch (e: any) {
-      toast.error(e.message ? e.message : "Something went wrong." );
+      toast.error(e.message ? e.message : "Something went wrong.");
     }
   };
 

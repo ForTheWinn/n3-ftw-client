@@ -8,9 +8,9 @@ import AfterTransactionSubmitted from "../../../../components/NeoComponents/Afte
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useHistory } from "react-router-dom";
-import { GASFI_PATH } from "../../../../../consts";
 import { IMainData } from "../Main";
 import About from "../Main/About";
+import { NEO_ROUTES } from "../../../../../consts";
 
 const Stake = (props) => {
   const history = useHistory();
@@ -47,7 +47,7 @@ const Stake = (props) => {
 
   const handleSuccess = () => {
     setTxid("");
-    history.push(GASFI_PATH);
+    history.push(NEO_ROUTES.GASFI_PATH);
   };
 
   const handleClickBalance = () => {

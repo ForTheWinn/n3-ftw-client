@@ -1,8 +1,8 @@
-import { CONST } from "../../../index";
+import { GLOBAL } from "../../../../../consts";
 
-// Address: Nh4GiUdrm6ebTueJQCkHYdRHcBvaeSGP8Z
+const { TESTNET, MAINNET } = GLOBAL;
+
 export const FARM_V2_SCRIPT_HASH = {
-  [CONST.PRIVATENET]: "",
-  [CONST.TESTNET]: "acfe786cbbd1d2dd96f5f98b0ec9e987cbb20584",
-  [CONST.MAINNET]: "7ff30b362efb2c9b96432988cec9e443299aece7",
+  [TESTNET]: "0xacfe786cbbd1d2dd96f5f98b0ec9e987cbb20584",
+  [MAINNET]: "0x7ff30b362efb2c9b96432988cec9e443299aece7"
 };

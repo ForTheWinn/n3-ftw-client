@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import Modal from "../../../../../../components/Modal";
 import { useWallet } from "../../../../../../../packages/neo/provider";
-import {
-  SWAP_ASSET_CATEGORY,
-  SWAP_ASSET_LIST
-} from "../../../../../../../packages/neo/contracts/ftw/swap/consts";
+import { SWAP_ASSET_CATEGORY } from "../../../../../../../packages/neo/contracts/ftw/swap/consts";
 
 import ContractSearchInput from "./ContractSearchInput";
 import { FaPlus } from "react-icons/fa";
 import {
   BNEO_SCRIPT_HASH,
   NEO_SCRIPT_HASH
-} from "../../../../../../../packages/neo/consts/neo-token-hashes";
+} from "../../../../../../../packages/neo/consts/neo-contracts";
 import { ITokenState } from "../../interfaces";
 import SwapTokenCard from "../../../../components/TokenCard";
+import { SWAP_TOKEN_LIST } from "../../../../../../../consts/tokens";
 interface IAssetListModalProps {
   activeTokenInput: "A" | "B";
   tokenAHash?: string;
@@ -36,7 +34,7 @@ const AssetListModal = ({
   const { network } = useWallet();
   const [isCustomInputMode, setCustomInputMode] = useState(false);
   const bNEOHash = BNEO_SCRIPT_HASH[network];
-  let assets = SWAP_ASSET_LIST(network);
+  let assets = SWAP_TOKEN_LIST[network];
 
   assets = assets.filter((asset) => {
     if (activeTokenInput === "A" && tokenBHash && asset.hash === tokenBHash) {

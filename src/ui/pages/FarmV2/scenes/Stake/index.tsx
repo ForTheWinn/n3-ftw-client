@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FARM_V2_PATH } from "../../../../../consts";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { useWallet } from "../../../../../packages/neo/provider";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";

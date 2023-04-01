@@ -3,8 +3,6 @@ import PageLayout from "../../../../../components/Commons/PageLayout";
 import { useWallet } from "../../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import DataTable from "react-data-table-component";
-import PairIcons from "../../../../../components/PairIcons";
-import { MAINNET } from "../../../../../../packages/neo/consts";
 import { numberTrim } from "../../../../../../packages/neo/utils";
 
 const columns = [
@@ -14,11 +12,6 @@ const columns = [
     cell: (row) => {
       return (
         <div className="is-flex is-center">
-          {/*<PairIcons*/}
-          {/*	network={MAINNET}*/}
-          {/*	tokenA={row.token_A_id.slice(2)}*/}
-          {/*	tokenB={row.token_B_id.slice(2)}*/}
-          {/*/>*/}
           <span className="ml-2">{row.name}</span>
         </div>
       );

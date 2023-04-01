@@ -6,8 +6,8 @@ import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import Pagination from "bulma-pagination-react";
 import Banner from "../../Banner";
 import PageLayout from "../../../../components/Commons/PageLayout";
-import { SMITH_PATH, SMITH_PATH_NEP11 } from "../../../../../consts";
 import { Link, useLocation } from "react-router-dom";
+import { NEO_ROUTES } from "../../../../../consts";
 const NEP11Smith = () => {
   const location = useLocation();
   const [page, setPage] = useState(1);
@@ -28,19 +28,23 @@ const NEP11Smith = () => {
                     <ul>
                       <li
                         className={
-                          location.pathname === SMITH_PATH ? "is-active" : ""
-                        }
-                      >
-                        <Link to={SMITH_PATH}>Token Showcase</Link>
-                      </li>
-                      <li
-                        className={
-                          location.pathname === SMITH_PATH_NEP11
+                          location.pathname === NEO_ROUTES.SMITH_PATH
                             ? "is-active"
                             : ""
                         }
                       >
-                        <Link to={SMITH_PATH_NEP11}>&nbsp; NFT Showcase</Link>
+                        <Link to={NEO_ROUTES.SMITH_PATH}>Token Showcase</Link>
+                      </li>
+                      <li
+                        className={
+                          location.pathname === NEO_ROUTES.SMITH_PATH_NEP11
+                            ? "is-active"
+                            : ""
+                        }
+                      >
+                        <Link to={NEO_ROUTES.SMITH_PATH_NEP11}>
+                          &nbsp; NFT Showcase
+                        </Link>
                       </li>
                     </ul>
                   </div>

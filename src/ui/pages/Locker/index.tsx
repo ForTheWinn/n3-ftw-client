@@ -1,19 +1,12 @@
-import cReact, { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
-import {
-  DAO_PAGE_ROUTE,
-  LOCKER_CONTRACT_PATH,
-  LOCKER_CREATE_PATH,
-  LOCKER_PATH,
-  LOCKER_SEARCH_PATH,
-  LOCKER_USER_PATH,
-} from "../../../consts";
 import LockerMain from "./Main";
 import Create from "./Create";
 import PageLayout from "../../components/Commons/PageLayout";
 import LockersByContract from "./LockersByContract";
 import LockerKeys from "./LockerKeys";
 import LockerSearch from "./Search";
+import { NEO_ROUTES } from "../../../consts";
 
 const Locker = () => {
   useEffect(() => {
@@ -22,14 +15,21 @@ const Locker = () => {
 
   return (
     <PageLayout>
-      <Route exact={true} path={LOCKER_PATH} component={LockerMain} />
       <Route
-        path={`${LOCKER_CONTRACT_PATH}/:contractHash`}
+        exact={true}
+        path={NEO_ROUTES.LOCKER_PATH}
+        component={LockerMain}
+      />
+      <Route
+        path={`${NEO_ROUTES.LOCKER_CONTRACT_PATH}/:contractHash`}
         component={LockersByContract}
       />
-      <Route path={LOCKER_USER_PATH} component={LockerKeys} />
-      <Route path={`${LOCKER_SEARCH_PATH}`} component={LockerSearch} />
-      <Route path={LOCKER_CREATE_PATH} component={Create} />
+      <Route path={NEO_ROUTES.LOCKER_USER_PATH} component={LockerKeys} />
+      <Route
+        path={`${NEO_ROUTES.LOCKER_SEARCH_PATH}`}
+        component={LockerSearch}
+      />
+      <Route path={NEO_ROUTES.LOCKER_CREATE_PATH} component={Create} />
     </PageLayout>
   );
 };

@@ -6,26 +6,26 @@ import AssetListModal from "../../Swap/NEO/TokenList";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
 import ErrorNotificationWithRefresh from "../../../../../components/ErrorNotificationWithRefresh";
 import TimeLockInput from "../components/TimeLockInput";
 import LPInputs from "./LPInputs";
 import { IReserveData } from "../../../../../../packages/neo/contracts/ftw/swap/interfaces";
-import { FaAngleLeft } from "react-icons/fa";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 import { handleError } from "../../../../../../packages/neo/utils/errors";
 import {
   BNEO_SCRIPT_HASH,
   NEO_SCRIPT_HASH,
   NEP_SCRIPT_HASH
-} from "../../../../../../packages/neo/consts/neo-token-hashes";
+} from "../../../../../../packages/neo/consts/neo-contracts";
 import { ITokenState } from "../../Swap/interfaces";
 import PriceRatio from "../../Swap/components/SwapDetails/PriceRatio";
 import ProvideLPInfo from "../../../components/ProvideLPInfo";
 import Nav from "../components/Nav";
 import SwapSettings from "../../../components/Settings";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 interface ILiquidityProps {
   rootPath: string;
@@ -35,7 +35,8 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const location = useLocation();
   const history = useHistory();
   const params = queryString.parse(location.search);
-  const { network, connectedWallet } = useWallet();
+  const { connectedWallet } = useWallet();
+  const { network, chain } = useApp();
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B"
   >();
@@ -254,6 +255,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       <div className="is-relative">
         <div className="pb-2">
           <LPInputs
+            chain={chain}
             setPeg={setPeg}
             noLiquidity={noLiquidity}
             network={network}

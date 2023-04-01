@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  FARM_V2_STAKE_PATH,
-  FARM_V2_STAKE_POSITIONS_PATH
-} from "../../../../../consts";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import { CHAINS } from "../../../../../consts/chains";
@@ -13,6 +9,7 @@ import { Avatar, Space } from "antd";
 import DisplayAPR from "../../components/DisplayAPR";
 import { farmRouter } from "../../../../../common/routers";
 import { useWallet } from "../../../../../packages/neo/provider";
+import { NEO_ROUTES } from "../../../../../consts";
 
 interface IStakingMainProps {
   chain: CHAINS;
@@ -54,7 +51,7 @@ const StakingMain = ({ prices, chain, nepPrice, path }: IStakingMainProps) => {
           <div className="level-item">
             <div className="buttons">
               <Link
-                to={`${path}${FARM_V2_STAKE_POSITIONS_PATH}`}
+                to={`${path}${NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}`}
                 className="button is-light is-small is-rounded"
               >
                 My positions
@@ -110,7 +107,7 @@ const StakingMain = ({ prices, chain, nepPrice, path }: IStakingMainProps) => {
                     </td>
                     <td className="has-text-right">
                       <Link
-                        to={`${path}${FARM_V2_STAKE_PATH}?tokenA=${pool.tokenA}&tokenB=${pool.tokenB}&tokenASymbol=${pool.tokenASymbol}&tokenBSymbol=${pool.tokenBSymbol}`}
+                        to={`${path}${NEO_ROUTES.FARM_V2_STAKE_PATH}?tokenA=${pool.tokenA}&tokenB=${pool.tokenB}&tokenASymbol=${pool.tokenASymbol}&tokenBSymbol=${pool.tokenBSymbol}`}
                         className="button is-primary is-small"
                       >
                         Stake

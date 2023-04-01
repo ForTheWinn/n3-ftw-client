@@ -1,27 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { FARM_V2_STAKE_PATH } from "../../../../../consts";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import PairIcons from "../../../../components/PairIcons";
 import { useWallet } from "../../../../../packages/neo/provider";
 import {
-  IPool,
   IPoolEnhanced
 } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
-import { u } from "@cityofzion/neon-core";
-import { SwapContract } from "../../../../../packages/neo/contracts";
-import { numberTrim } from "../../../../../packages/neo/utils";
-import { FaAngleDown } from "react-icons/fa";
-import { RestAPI } from "../../../../../packages/neo/api";
 import { Space, Avatar } from "antd";
+import { NEO_ROUTES } from "../../../../../consts";
 
 interface IStakingPairCardProps extends IPoolEnhanced {
   path: string;
-  // tokenAPrice: number;
-  // tokenBPrice: number;
-  // nepPrice?: number;
-  // bonusTokenPrice: number;
-  // nepRewardsPerDay: string;
-  // bonusRewardsPerDay: string;
 }
 
 const StakingPairCard = ({
@@ -35,17 +22,8 @@ const StakingPairCard = ({
   nepRewardsPerDay,
   bonusRewardsPerDay,
   hasBonusRewards,
-  // tokensStaked,
-  // nepTokensPerSecond,
-  // bonusTokensPerSecond,
   bonusTokenSymbol
-}: // tokenAPrice,
-// tokenBPrice,
-// nepPrice,
-// bonusTokenPrice,
-// bonusTokenDecimals,
-// nepRewardsPerDay,
-// bonusRewardsPerDay,
+}:
 IStakingPairCardProps) => {
   const { network } = useWallet();
   const [isExpanded, setExpanded] = useState(false);
@@ -157,7 +135,7 @@ IStakingPairCardProps) => {
         </td> */}
         <td className="has-text-right">
           <Link
-            to={`${FARM_V2_STAKE_PATH}?tokenA=${tokenA}&tokenB=${tokenB}&tokenASymbol=${tokenASymbol}&tokenBSymbol=${tokenBSymbol}`}
+            to={`${NEO_ROUTES.FARM_V2_STAKE_PATH}?tokenA=${tokenA}&tokenB=${tokenB}&tokenASymbol=${tokenASymbol}&tokenBSymbol=${tokenBSymbol}`}
             className="button is-primary is-small"
           >
             Stake

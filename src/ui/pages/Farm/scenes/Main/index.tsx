@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FARM_STAKE_POSITIONS_PATH } from "../../../../../consts";
 import StakingPairCard from "./StakingPairCard";
 import { useWallet } from "../../../../../packages/neo/provider";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
+import { NEO_ROUTES } from "../../../../../consts";
 
 const StakingMain = ({ onRefresh }) => {
   const { network } = useWallet();
@@ -27,7 +27,7 @@ const StakingMain = ({ onRefresh }) => {
           <div className="level-item">
             <div className="buttons">
               <Link
-                to={FARM_STAKE_POSITIONS_PATH}
+                to={NEO_ROUTES.FARM_STAKE_POSITIONS_PATH}
                 className="button is-light is-small is-rounded"
               >
                 My positions

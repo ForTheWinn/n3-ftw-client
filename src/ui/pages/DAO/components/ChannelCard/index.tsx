@@ -1,5 +1,5 @@
 import React from "react";
-import { UNKNOWN_TOKEN_IMAGE } from "../../../../../packages/neo/consts";
+import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 interface IChannelCardProps {
   logo?: string;
   symbol: string;

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
-import { DAO_CHANNEL_PATH } from "../../../../../../consts";
 import { useWallet } from "../../../../../../packages/neo/provider";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
@@ -15,6 +14,7 @@ import VoteModal from "./components/VoteModal";
 import UserVotes from "./components/UserVotes";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
+import { NEO_ROUTES } from "../../../../../../consts";
 
 const ProposalView = () => {
   const params = useParams();
@@ -102,7 +102,7 @@ const ProposalView = () => {
     <div className="columns">
       <div className="column is-8 is-offset-2">
         <Link
-          to={`${DAO_CHANNEL_PATH}/${contractHash}`}
+          to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
           className="button is-rounded is-small mb-3"
         >
           Back to list

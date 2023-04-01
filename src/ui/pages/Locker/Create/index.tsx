@@ -10,12 +10,10 @@ import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import moment from "moment";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { LOCKER_USER_PATH } from "../../../../consts";
 import { wallet } from "@cityofzion/neon-core";
 import { SmithContract } from "../../../../packages/neo/contracts/ftw/smith";
 import { LOCKER_NEP_FEE } from "../../../../packages/neo/contracts/ftw/locker/consts";
-// import MDEditor from "@uiw/react-md-editor";
-// import rehypeSanitize from "rehype-sanitize";
+import { NEO_ROUTES } from "../../../../consts";
 
 export interface IContractState {
   assetHash: string;
@@ -87,7 +85,7 @@ const Create = () => {
 
   const onSuccess = () => {
     if (connectedWallet) {
-      history.push(`${LOCKER_USER_PATH}/${connectedWallet.account.address}`);
+      history.push(`${NEO_ROUTES.LOCKER_USER_PATH}/${connectedWallet.account.address}`);
     }
   };
 

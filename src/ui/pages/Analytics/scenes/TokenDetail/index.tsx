@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../packages/neo/api";
-import { ASSET_LIST } from "../../../../../packages/neo/contracts/ftw/swap/consts";
-import {
-  MAINNET,
-  UNKNOWN_TOKEN_IMAGE
-} from "../../../../../packages/neo/consts";
 import TokenPriceChart from "../../components/PriceChart";
 import LiquidityChart from "../Main/LiquidityChart";
 import SwapHistory from "./SwapHistory";
+import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
+import { TOKEN_LIST } from "../../../../../consts/tokens";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface ITokenDetailProps {
   tokenId: string;
 }
 const TokenDetail = ({ tokenId }: ITokenDetailProps) => {
-  const { network } = useWallet();
+  const { network, chain } = useApp();
   const [data, setData] = useState<any>();
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -36,8 +33,8 @@ const TokenDetail = ({ tokenId }: ITokenDetailProps) => {
   }, [network]);
   if (!data) return <div></div>;
   const hash = tokenId.substring(2);
-  const logo = ASSET_LIST[MAINNET][hash]
-    ? ASSET_LIST[MAINNET][hash].icon
+  const logo = TOKEN_LIST[chain][MAINNET][hash]
+    ? TOKEN_LIST[chain][MAINNET][hash].icon
     : UNKNOWN_TOKEN_IMAGE;
   return (
     <div>

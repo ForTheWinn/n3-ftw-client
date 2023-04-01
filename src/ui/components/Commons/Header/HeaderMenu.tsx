@@ -1,16 +1,19 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { navRoutes } from "../../../../consts/navRoutes";
 import { CHAINS } from "../../../../consts/chains";
+import { HEADER_ROUTES } from "../../../../consts";
 import { INetworkType } from "../../../../packages/neo/network";
 interface IHeaderMenuProps {
   chain: CHAINS;
   network: INetworkType;
 }
 export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
+  console.log(chain);
+  console.log(HEADER_ROUTES);
+  console.log(network);
   return (
     <>
-      {navRoutes[chain].map((route, i) => {
+      {HEADER_ROUTES[chain].map((route, i) => {
         if (!route.network.includes(network)) return false;
         if (route.category.length > 0) {
           return (

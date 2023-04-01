@@ -19,13 +19,16 @@ import {
   TTM_SCRIPT_HASH,
   USDT_SCRIPT_HASH,
   WATT_SCRIPT_HASH
-} from "./neo-token-hashes";
+} from "./neo-contracts";
+
 import {
-  MAINNET,
   TOKEN_CATEGORY_GENERAL,
   TOKEN_CATEGORY_METAVERSE,
   TOKEN_CATEGORY_STARTUPS
 } from ".";
+import { MAINNET } from "../../../consts/global";
+
+
 export const MAINNET_TOKEN_LIST = {
   [NEP_SCRIPT_HASH[MAINNET]]: {
     category: TOKEN_CATEGORY_GENERAL,

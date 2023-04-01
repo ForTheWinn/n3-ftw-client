@@ -4,8 +4,11 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { DISPLAY_OPTIONS, REALTIME } from "./consts";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import RewardsInRange from "./RewardsInRange";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-token-hashes";
+import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
 import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
+
+import { Radio, Divider } from "antd";
+
 interface IClaimListProps {
   bonus: number;
   network: INetworkType;
@@ -27,7 +30,8 @@ const ClaimList = ({
   const [rewardDisplayType, setRewardDisplayType] = useState<string>(REALTIME);
   return (
     <>
-      {rewards.map((item, i) => {
+      {rewards.map((item: IClaimableRewards, i) => {
+        console.log(item);
         let isSelected = false;
         selectedItems.forEach((_item) => {
           if (item.tokenA === _item.tokenA && item.tokenB === _item.tokenB) {
@@ -86,7 +90,7 @@ const ClaimList = ({
                       )}
                     </small>
 
-                    {item.bonusTokensPerSecond > 0 ? (
+                    {parseFloat(item.bonusTokensPerSecond) > 0 ? (
                       <div className="mt-2">
                         <small>
                           {rewardDisplayType === REALTIME ? (
@@ -129,31 +133,33 @@ const ClaimList = ({
       })}
 
       {rewards.length > 0 ? (
-        <div className="media" style={{ alignItems: "center" }}>
-          <div className="media-left is-hidden-mobile">
-            <span className="has-text-weight-medium">Estimate</span>
-          </div>
-          <div className="media-content">
-            <div className="field has-addons is-fullwidth">
-              {DISPLAY_OPTIONS.map((op) => {
-                return (
-                  <p key={op.val} className="control">
-                    <button
-                      onClick={() => setRewardDisplayType(op.val)}
-                      className={`button is-small ${
-                        rewardDisplayType === op.val
-                          ? "is-active is-success is-light"
-                          : ""
-                      }`}
-                    >
-                      <span>{op.label}</span>
-                    </button>
-                  </p>
-                );
-              })}
+        <>
+          <Divider />
+          <div className="level">
+            <div className="level-left is-hidden-mobile">
+              <div className="level-item">
+                <strong>Estimate</strong>
+              </div>
+            </div>
+            <div className="level-right">
+              <div className="level-item">
+                <Radio.Group
+                  size="small"
+                  value={rewardDisplayType}
+                  onChange={(e) => setRewardDisplayType(e.target.value)}
+                >
+                  {DISPLAY_OPTIONS.map((op) => {
+                    return (
+                      <Radio.Button key={op.val} value={op.val}>
+                        {op.label}
+                      </Radio.Button>
+                    );
+                  })}
+                </Radio.Group>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       ) : (
         <></>
       )}

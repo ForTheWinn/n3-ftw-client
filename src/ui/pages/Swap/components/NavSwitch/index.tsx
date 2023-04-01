@@ -1,39 +1,21 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { SWAP_PATH } from "../../../../../consts";
+import { NEO_ROUTES } from "../../../../../consts";
 
-const NavSwitch = (props) => {
+const NavSwitch = () => {
   const location = useLocation();
   return (
     <div className="tabs is-toggle">
       <ul>
         <li
           className={
-            location.pathname === SWAP_PATH
+            location.pathname === NEO_ROUTES.SWAP_PATH
               ? "is-active"
               : "has-background-white"
           }
         >
-          <Link to={SWAP_PATH}>Swap</Link>
+          <Link to={NEO_ROUTES.SWAP_PATH}>Swap</Link>
         </li>
-        {/*<li*/}
-        {/*  className={*/}
-        {/*    location.pathname === SWAP_PATH_LIQUIDITY*/}
-        {/*      ? "is-active"*/}
-        {/*      : "has-background-white"*/}
-        {/*  }*/}
-        {/*>*/}
-        {/*  <Link to={SWAP_PATH_LIQUIDITY}>Liquidity</Link>*/}
-        {/*</li>*/}
-        {/*<li*/}
-        {/*  className={*/}
-        {/*    location.pathname.includes(SWAP_PATH)*/}
-        {/*      ? "is-active"*/}
-        {/*      : "has-background-white"*/}
-        {/*  }*/}
-        {/*>*/}
-        {/*  <Link to={SWAP_PATH_FARM}>Pools</Link>*/}
-        {/*</li>*/}
       </ul>
     </div>
   );

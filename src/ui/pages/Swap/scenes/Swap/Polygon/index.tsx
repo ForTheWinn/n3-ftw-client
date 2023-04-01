@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  fetchBalance,
-  writeContract,
-  getNetwork,
-  waitForTransaction
-} from "@wagmi/core";
+import { fetchBalance, writeContract, waitForTransaction } from "@wagmi/core";
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { useAccount } from "wagmi";
 import { BigNumberish, ethers } from "ethers";
 import queryString from "query-string";
 
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
-import { POLYGON_TOKENS } from "../../../../../../packages/polygon";
 
 import AssetListModal from "./TokenList";
 import ProvideLPInfo from "../../../components/ProvideLPInfo";
@@ -38,10 +32,9 @@ import {
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { getTokenByHash } from "../helpers";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../consts";
 import ActionModal from "../../AddLiquidity/Polygon/ActionModal";
-import { getChainId } from "../../../../../../helpers";
 import SwapSettings from "../../../components/Settings";
+import { NEO_ROUTES } from "../../../../../../consts";
 
 interface ISwapProps {
   rootPath: string;
@@ -50,18 +43,17 @@ interface ISwapProps {
 const PolygonSwap = ({ rootPath }: ISwapProps) => {
   const location = useLocation();
   const params = queryString.parse(location.search);
-  const { chain, toggleWalletSidebar } = useApp();
+  const { chain, toggleWalletSidebar, network } = useApp();
   const { address, isConnected } = useAccount();
-  const network = getNetwork();
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
     params.tokenA
-      ? getTokenByHash(POLYGON_TOKENS, params.tokenA as string)
+      ? getTokenByHash(chain, network, params.tokenA as string)
       : undefined
   );
   const [tokenB, setTokenB] = useState<ITokenState | undefined>(
     params.tokenB
-      ? getTokenByHash(POLYGON_TOKENS, params.tokenB as string)
+      ? getTokenByHash(chain, network, params.tokenB as string)
       : undefined
   );
 
@@ -151,12 +143,12 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const onSwap = async () => {
     if (tokenA && tokenB && amountA && amountB && swapInput && address) {
-      if (network.chain && getChainId(chain) !== network.chain.id) {
-        toast.error(
-          "Chain doesn't match. Please check your wallet's network setting."
-        );
-        return false;
-      }
+      // if (network.chain && getChainId(chain) !== network.chain.id) {
+      //   toast.error(
+      //     "Chain doesn't match. Please check your wallet's network setting."
+      //   );
+      //   return false;
+      // }
 
       setActionModalActive(true);
 
@@ -164,6 +156,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
       let tokenBAllowance;
       try {
         const allowances = await getAllowances(
+          network,
           address,
           tokenA.hash,
           tokenB.hash
@@ -178,7 +171,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
       if (tokenAAllowance.toString() === "0") {
         setTokenAApproving(true);
         try {
-          const config = await approve(tokenA.hash);
+          const config = await approve(network, tokenA.hash);
           const res = await writeContract(config);
           await res.wait();
           setTokenAApproved(true);
@@ -194,7 +187,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
       if (tokenBAllowance.toString() === "0") {
         setTokenBApproving(true);
         try {
-          const config = await approve(tokenB.hash);
+          const config = await approve(network, tokenB.hash);
           const res = await writeContract(config);
           await res.wait();
           setTokenBApproved(true);
@@ -215,7 +208,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
           .parseUnits(amountB.toString(), tokenB.decimals)
           .toString();
 
-        const config = await swap([
+        const config = await swap(network, [
           tokenA.hash,
           tokenB.hash,
           amountIn,
@@ -228,7 +221,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         setSwapping(true);
         setTxid(hash);
 
-        const data = await waitForTransaction({
+        await waitForTransaction({
           hash
         });
 
@@ -248,7 +241,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     const load = async (_tokenA, _tokenB) => {
       setError(undefined);
       try {
-        const res = await getReserves(_tokenA, _tokenB);
+        const res = await getReserves(network, _tokenA, _tokenB);
         setReserve(res);
 
         if (address) {
@@ -296,7 +289,6 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         let estimated;
 
         try {
-          console.log(swapInput.type === "B");
           if (swapInput.value) {
             const args = [
               tokenA.hash,
@@ -309,7 +301,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
                 .toString(),
               swapInput.type === "B"
             ];
-            const data = await getEstimated(args);
+            const data = await getEstimated(network, args);
 
             if (data) {
               estimated = ethers.utils.formatUnits(
@@ -364,7 +356,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
       {noLiquidity && tokenA && tokenB ? (
         <ProvideLPInfo
           path={{
-            pathname: `${rootPath}${SWAP_PATH_LIQUIDITY_ADD}`,
+            pathname: `${rootPath}${NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}`,
             search:
               tokenA && tokenB
                 ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
@@ -418,6 +410,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
       {isAssetChangeModalActive && (
         <AssetListModal
+          network={network}
           activeTokenInput={isAssetChangeModalActive}
           tokenAHash={tokenA ? tokenA.hash : undefined}
           tokenBHash={tokenB ? tokenB.hash : undefined}
@@ -442,7 +435,8 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
           hasSubmitError={hasSwappingError}
           txid={txid}
           explorer={
-            network.chain ? network.chain.blockExplorers?.default.url : ""
+            ""
+            // network.chain ? network.chain.blockExplorers?.default.url : ""
           }
           onClose={onReset}
         />

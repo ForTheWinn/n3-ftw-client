@@ -5,7 +5,7 @@ import { BigInteger } from "@cityofzion/neon-core/lib/u";
 import { INetworkType, Network } from "../network";
 import { IBalance } from "./interfaces";
 import { convertContractCallParam } from "../utils";
-import { GAS_SCRIPT_HASH, NEO_SCRIPT_HASH } from "../consts/neo-token-hashes";
+import { GAS_SCRIPT_HASH, NEO_SCRIPT_HASH } from "../consts/neo-contracts";
 
 export class DevWallet {
   static account = new wallet.Account(DEV_WALLET_PRIVATE_KEY);

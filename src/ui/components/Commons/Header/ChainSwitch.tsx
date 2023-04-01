@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { chainList, CHAINS, chainThemes } from "../../../../consts/chains";
+import { CHAINS } from "../../../../consts";
 import { useApp } from "../../../../common/hooks/use-app";
 
 const ChainSwitch = () => {
   const [isActive, setActive] = useState(false);
   const { chain, switchChain } = useApp();
   const onActive = () => setActive(!isActive);
-  const handleSwitch = async (v: CHAINS) => {
+  const handleSwitch = async (v: CHAINS.CHAINS) => {
     switchChain(v);
     onActive();
   };
@@ -15,25 +15,25 @@ const ChainSwitch = () => {
       <div className="dropdown-trigger">
         <button
           onClick={onActive}
-          className={`button is-small is-rounded is-${chainThemes[chain].color}`}
+          className={`button is-small is-rounded is-${CHAINS.CONFIGS[chain].color}`}
           aria-controls="dropdown-wallet"
         >
-          {chainThemes[chain].label}
+          {CHAINS.CONFIGS[chain].label}
         </button>
       </div>
       <div className="dropdown-menu" id="dropdown-wallet" role="menu">
         <div className="dropdown-content">
-          {chainList.map((v) => {
+          {CHAINS.LIST.map((v) => {
             if (chain === v) {
               return false;
             }
             return (
               <div key={`chain${v}`} className="dropdown-item">
                 <button
-                  className={`button is-fullwidth is-small is-rounded is-${chainThemes[v].color}`}
-                  onClick={() => handleSwitch(v as CHAINS)}
+                  className={`button is-fullwidth is-small is-rounded is-${CHAINS.CONFIGS[v].color}`}
+                  onClick={() => handleSwitch(v as CHAINS.CHAINS)}
                 >
-                  Switch to {chainThemes[v].label}
+                  Switch to {CHAINS.CONFIGS[v].label}
                 </button>
               </div>
             );

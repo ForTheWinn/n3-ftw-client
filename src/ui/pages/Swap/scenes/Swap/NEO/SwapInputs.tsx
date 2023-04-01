@@ -7,11 +7,13 @@ import {
   BNEO_SCRIPT_HASH,
   GAS_SCRIPT_HASH,
   NEO_SCRIPT_HASH
-} from "../../../../../../packages/neo/consts/neo-token-hashes";
+} from "../../../../../../packages/neo/consts/neo-contracts";
 import { ITokenState } from "../interfaces";
-import { ASSET_LIST } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
+import { TOKEN_LIST } from "../../../../../../consts/tokens";
+import { CHAINS } from "../../../../../../consts";
 
 interface ISwapInputsProps {
+  chain: CHAINS.CHAINS;
   network: INetworkType;
   tokenA?: ITokenState;
   tokenB?: ITokenState;
@@ -45,7 +47,8 @@ const SwapInputs = ({
   userTokenBBalance,
   setAmountA,
   setAmountB,
-  noLiquidity
+  noLiquidity,
+  chain
 }: ISwapInputsProps) => {
   const [searchTerm, setSearchTerm] = useState<ISearchTerm>();
   const [isAmountALoading, setAmountALoading] = useState(false);
@@ -120,8 +123,8 @@ const SwapInputs = ({
         contractHash={tokenA ? tokenA.hash : ""}
         symbol={tokenA ? tokenA.symbol : undefined}
         logo={
-          tokenA && ASSET_LIST[network][tokenA.hash]
-            ? ASSET_LIST[network][tokenA.hash].icon
+          tokenA && TOKEN_LIST[chain][network][tokenA.hash]
+            ? TOKEN_LIST[chain][network][tokenA.hash].icon
             : undefined
         }
         isDisable={
@@ -163,8 +166,8 @@ const SwapInputs = ({
         contractHash={tokenB ? tokenB.hash : ""}
         symbol={tokenB ? tokenB.symbol : undefined}
         logo={
-          tokenB && ASSET_LIST[network][tokenB.hash]
-            ? ASSET_LIST[network][tokenB.hash].icon
+          tokenB && TOKEN_LIST[chain][network][tokenB.hash]
+            ? TOKEN_LIST[chain][network][tokenB.hash].icon
             : undefined
         }
         isDisable={

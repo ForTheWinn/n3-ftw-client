@@ -1,6 +1,7 @@
 import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../../consts/chains";
-import { TESTNET } from "../../../../packages/neo/consts";
+import { TESTNET } from "../../../../consts/global";
 import { INetworkType } from "../../../../packages/neo/network";
+
 
 export const getTxBrowser = (chain: CHAINS, network: INetworkType) => {
   switch (chain) {

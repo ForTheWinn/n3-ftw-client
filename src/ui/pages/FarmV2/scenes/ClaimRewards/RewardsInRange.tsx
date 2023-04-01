@@ -3,14 +3,14 @@ import React from "react";
 import { DAILY, MONTHLY, YEARLY } from "./consts";
 import { numberTrim } from "../../../../../packages/neo/utils";
 interface ICounterUpProps {
-  bonus: number;
-  claimable: number;
-  rewardsPerSecond: number;
-  timeRangeType: string;
-  tokensStaked: number;
-  share: number;
   symbol: string;
   pricePerToken: number;
+  bonus: number;
+  claimable: string;
+  rewardsPerSecond: string;
+  timeRangeType: string;
+  tokensStaked: string;
+  share: string;
 }
 const RewardsInRange = ({
   bonus,
@@ -20,7 +20,7 @@ const RewardsInRange = ({
   timeRangeType,
   tokensStaked,
   share,
-  pricePerToken,
+  pricePerToken
 }: ICounterUpProps) => {
   let timeRange = 0;
   if (timeRangeType === DAILY) {
@@ -32,9 +32,9 @@ const RewardsInRange = ({
   }
   const rewards = u.BigInteger.fromNumber(rewardsPerSecond)
     .mul(timeRange)
-    .mul(share)
-    .div(tokensStaked)
-    .add(claimable)
+    .mul(parseFloat(share))
+    .div(parseFloat(tokensStaked))
+    .add(parseFloat(claimable))
     .toDecimal(8);
 
   const bonusReward = (parseFloat(rewards) * bonus) / 100;

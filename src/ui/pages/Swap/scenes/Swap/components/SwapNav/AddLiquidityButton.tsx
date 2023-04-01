@@ -1,7 +1,7 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../../consts";
+import { NEO_ROUTES } from "../../../../../../../consts";
 
 interface IAddLiquidityButtonProps {
   rootPath: string;
@@ -11,8 +11,8 @@ const AddLiquidityButton = ({ rootPath, search }: IAddLiquidityButtonProps) => {
   return (
     <Link
       to={{
-        pathname: `${rootPath + SWAP_PATH_LIQUIDITY_ADD}`,
-        search,
+        pathname: `${rootPath + NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}`,
+        search
       }}
       className="button is-small is-white"
     >

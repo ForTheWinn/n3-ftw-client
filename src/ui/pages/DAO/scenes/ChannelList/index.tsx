@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import Modal from "../../../../components/Modal";
 import PageLayout from "../../../../components/Commons/PageLayout";
-import Index from "../CreateChannel";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useWallet } from "../../../../../packages/neo/provider";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
-import toast from "react-hot-toast";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import List from "./List";
 import { Link } from "react-router-dom";
-import { DAO_CHANNEL_CREATE_PATH } from "../../../../../consts";
+import { NEO_ROUTES } from "../../../../../consts";
 
 const DAOChannelList = () => {
   const { network } = useWallet();
@@ -33,7 +29,7 @@ const DAOChannelList = () => {
 
             <div className="level-right">
               <div className="level-item">
-                <Link to={DAO_CHANNEL_CREATE_PATH} className="button is-white">
+                <Link to={NEO_ROUTES.DAO_CHANNEL_CREATE_PATH} className="button is-white">
                   <FaPlus />
                 </Link>
               </div>

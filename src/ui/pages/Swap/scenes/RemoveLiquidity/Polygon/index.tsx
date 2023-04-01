@@ -12,13 +12,15 @@ import {
 import LPTokenCard from "./LPTokenCard";
 import toast from "react-hot-toast";
 import RemoveLiquidityModal from "./RemoveLiquidityModal";
-import { POLYGON_SWAP_CONTRACT_HASH } from "../../../../../../packages/polygon";
+import { useApp } from "../../../../../../common/hooks/use-app";
+import { CONTRACTS, GLOBAL } from "../../../../../../consts";
 
 interface IRemoveLiquidityProps {
   rootPath: string;
 }
 
 const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
+  const { network, chain } = useApp();
   const { isConnected, address } = useAccount();
   const [tokens, setTokens] = useState([]);
   const [isLoading, setLoading] = useState(true);
@@ -33,17 +35,19 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
   const [isSubmitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
 
+  const SWAP_HASH = CONTRACTS.CONTRACT_LIST[chain][network][GLOBAL.SWAP];
+
   const onRemoveLiquidity = async (tokenId: string) => {
     if (isConnected && address) {
       setActionModalActive(true);
 
       try {
         setApproveError(false);
-        if (await isApprovedForAll(address, POLYGON_SWAP_CONTRACT_HASH)) {
+        if (await isApprovedForAll(network, address, SWAP_HASH)) {
           setApproved(true);
         } else {
           setApproving(true);
-          const config = await setApprovalForAll(POLYGON_SWAP_CONTRACT_HASH);
+          const config = await setApprovalForAll(network, SWAP_HASH);
           const res = await writeContract(config);
           await res.wait();
           setApproved(true);
@@ -56,9 +60,10 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
           toast.error(e.reason);
         }
       }
+
       try {
         setSubmitError(false);
-        const config = await removeLiquidity(tokenId);
+        const config = await removeLiquidity(network, tokenId);
         const { hash } = await writeContract(config);
         setSubmitting(true);
         setTxid(hash);
@@ -94,7 +99,7 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
     const load = async (_address: string) => {
       setLoading(true);
       try {
-        const res = await getLPTokens(_address);
+        const res = await getLPTokens(network, _address);
         setTokens(res as any);
       } catch (e) {
         console.log(e);
@@ -117,12 +122,12 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
           ) : tokens.length > 0 ? (
             tokens.map(({ tokenId }: any) => {
               return (
-                <div key={tokenId}>
-                  <LPTokenCard
-                    tokenId={tokenId}
-                    onClick={() => onRemoveLiquidity(tokenId.toString())}
-                  />
-                </div>
+                <LPTokenCard
+                  key={tokenId}
+                  network={network}
+                  tokenId={tokenId}
+                  onClick={() => onRemoveLiquidity(tokenId.toString())}
+                />
               );
             })
           ) : (

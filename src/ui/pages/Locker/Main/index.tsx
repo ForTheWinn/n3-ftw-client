@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  LOCKER_CREATE_PATH,
-  LOCKER_SEARCH_PATH,
-  LOCKER_USER_PATH
-} from "../../../../consts";
 import { useOnChainData } from "../../../../common/hooks/use-onchain-data";
 import { useWallet } from "../../../../packages/neo/provider";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
@@ -13,6 +8,7 @@ import { FaInfoCircle, FaKey, FaPlus, FaSearch } from "react-icons/fa";
 import SearchLockerModal from "./SearchLockerModal";
 import ModalCard from "../../../components/Modal";
 import LockerInfoPage from "../InfoPage";
+import { NEO_ROUTES } from "../../../../consts";
 
 const LockerMain = () => {
   const { network } = useWallet();
@@ -38,13 +34,22 @@ const LockerMain = () => {
               <div className="level-right">
                 <div className="level-item">
                   <div className="buttons">
-                    <Link to={LOCKER_CREATE_PATH} className="button is-white">
+                    <Link
+                      to={NEO_ROUTES.LOCKER_CREATE_PATH}
+                      className="button is-white"
+                    >
                       <FaPlus />
                     </Link>
-                    <Link to={LOCKER_SEARCH_PATH} className="button is-white">
+                    <Link
+                      to={NEO_ROUTES.LOCKER_SEARCH_PATH}
+                      className="button is-white"
+                    >
                       <FaSearch />
                     </Link>
-                    <Link to={LOCKER_USER_PATH} className="button is-white">
+                    <Link
+                      to={NEO_ROUTES.LOCKER_USER_PATH}
+                      className="button is-white"
+                    >
                       <FaKey />
                     </Link>
                     <button

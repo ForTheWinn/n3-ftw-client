@@ -1,7 +1,7 @@
 import React from "react";
 import PageLayout from "./Commons/PageLayout";
-import { TESTNET } from "../../packages/neo/consts";
 import { useWallet } from "../../packages/neo/provider";
+import { TESTNET } from "../../consts/global";
 
 interface TestnetOnlyRouteProps {
   title: string;

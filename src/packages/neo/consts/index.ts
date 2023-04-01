@@ -7,6 +7,11 @@ export const NEON = "NEON";
 export const NEO_LINE = "NEO_LINE";
 export const DEV = "DEV";
 export const ONE_GATE = "ONE_GATE";
+
+export const TOKEN_CATEGORY_GENERAL = "GENERAL";
+export const TOKEN_CATEGORY_METAVERSE = "METAVERSE";
+export const TOKEN_CATEGORY_STARTUPS = "STARTUPS";
+
 export const WALLET_LIST: {
   label: string;
   key: IWalletType;
@@ -28,11 +33,6 @@ export const WALLET_LIST: {
     key: O3
   }
 ];
-
-/* Network types */
-export const PRIVATENET = "N3PrivateNet";
-export const TESTNET = "N3TestNet";
-export const MAINNET = "N3MainNet";
 
 /* Network configs */
 export const PRIVATE_CONFIG = {
@@ -70,8 +70,3 @@ export const DEFAULT_WITNESS_SCOPE = (senderHash: string) => {
   };
 };
 
-export const UNKNOWN_TOKEN_IMAGE = "/symbols/unknown.png";
-
-export const TOKEN_CATEGORY_GENERAL = "GENERAL";
-export const TOKEN_CATEGORY_METAVERSE = "METAVERSE";
-export const TOKEN_CATEGORY_STARTUPS = "STARTUPS";

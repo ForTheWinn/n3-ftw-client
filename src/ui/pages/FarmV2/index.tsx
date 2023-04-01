@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
 import { Route, useHistory, useRouteMatch } from "react-router-dom";
-import {
-  FARM_V2_PATH,
-  FARM_V2_STAKE_PATH,
-  FARM_V2_STAKE_POSITIONS_PATH
-} from "../../../consts";
 import StakingMain from "./scenes/Main";
 import Stake from "./scenes/Stake";
 import MyPositions from "./scenes/MyPositions";
@@ -14,10 +9,10 @@ import CheckMarketStatus from "./components/CheckMarketStatus";
 import { useApp } from "../../../common/hooks/use-app";
 import { useOnChainData } from "../../../common/hooks/use-onchain-data";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
-import { POLYGON_FARM_PATH } from "../../../consts/polygonRoutes";
-import { NEP_SCRIPT_HASH } from "../../../packages/neo/consts/neo-token-hashes";
+import { NEP_SCRIPT_HASH } from "../../../packages/neo/consts/neo-contracts";
 import { useWallet } from "../../../packages/neo/provider";
 import { farmRouter } from "../../../common/routers";
+import { NEO_ROUTES, POLYGON_ROUTES } from "../../../consts";
 
 interface IFarmProps {
   path?: string;
@@ -26,7 +21,7 @@ interface IFarmProps {
 const Farm = (props: IFarmProps) => {
   const { chain, refreshCount } = useApp();
   const { network } = useWallet();
-  
+
   let nepPrice = undefined;
 
   const { data } = useOnChainData(
@@ -44,15 +39,15 @@ const Farm = (props: IFarmProps) => {
   if (!data) return <></>;
 
   if (chain === NEO_CHAIN) {
-    if (path !== FARM_V2_PATH) {
-      history.push(FARM_V2_PATH);
+    if (path !== NEO_ROUTES.FARM_V2_PATH) {
+      history.push(NEO_ROUTES.FARM_V2_PATH);
     }
     nepPrice = data[NEP_SCRIPT_HASH[network]];
   }
 
   if (chain === POLYGON_CHAIN) {
-    if (path !== POLYGON_FARM_PATH) {
-      history.push(POLYGON_FARM_PATH);
+    if (path !== POLYGON_ROUTES.FARM_PATH) {
+      history.push(POLYGON_ROUTES.FARM_PATH);
     }
     //TODO::change later
     nepPrice = data[NEP_SCRIPT_HASH[network]];
@@ -80,13 +75,13 @@ const Farm = (props: IFarmProps) => {
                 />
                 <Route
                   exact={true}
-                  path={`${path}${FARM_V2_STAKE_PATH}`}
+                  path={`${path}${NEO_ROUTES.FARM_V2_STAKE_PATH}`}
                   component={() => (
                     <Stake path={path} chain={chain} network={network} />
                   )}
                 />
                 <Route
-                  path={`${path}${FARM_V2_STAKE_POSITIONS_PATH}`}
+                  path={`${path}${NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}`}
                   component={() => <MyPositions chain={chain} path={path} />}
                 />
               </div>

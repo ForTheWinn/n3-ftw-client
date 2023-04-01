@@ -3,7 +3,7 @@ import {
   BNEO_SCRIPT_HASH,
   GAS_SCRIPT_HASH,
   NEO_SCRIPT_HASH
-} from "../../../consts/neo-token-hashes";
+} from "../../../consts/neo-contracts";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";

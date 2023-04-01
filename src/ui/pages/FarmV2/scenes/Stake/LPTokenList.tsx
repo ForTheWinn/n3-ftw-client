@@ -38,10 +38,9 @@ const LPTokenList = ({
 
   if (data) {
     data.forEach((item: IFarmLPToken) => {
-      console.log(item);
       if (params.tokenA === item.tokenA && params.tokenB === item.tokenB) {
+        matchedTokens.push(item);
       }
-      matchedTokens.push(item);
     });
   }
 

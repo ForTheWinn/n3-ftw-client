@@ -1,6 +1,7 @@
 import { u } from "@cityofzion/neon-core";
-import { NEO_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-token-hashes";
-import { POLYGON_TOKENS } from "../../../../../packages/polygon";
+import { CHAINS, TOKENS } from "../../../../../consts";
+import { NEO_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
+import { INetworkType } from "../../../../../packages/neo/network";
 import { ITokenState } from "./interfaces";
 
 export const priceImpactFormat = (p: number) => {
@@ -12,10 +13,13 @@ export const priceImpactFormat = (p: number) => {
 };
 
 export const getTokenByHash = (
-  list: ITokenState[],
+  chain: CHAINS.CHAINS,
+  network: INetworkType,
   hash: string
 ): ITokenState | undefined => {
-  const result = POLYGON_TOKENS.find((token) => token.hash === hash);
+  const result = TOKENS.SWAP_TOKEN_LIST[chain][network].find(
+    (token) => token.hash === hash
+  );
   if (result) {
     return result;
   }

@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { DAO_CHANNEL_PATH } from "../../../../../consts";
 import ChannelCard from "../../components/ChannelCard";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
+import { NEO_ROUTES } from "../../../../../consts";
 
 interface IListProps {
   isLoaded: boolean;
@@ -25,14 +25,18 @@ const List = ({ isLoaded, error, data }: IListProps) => {
               if (!manifest.logo) return <></>;
               return (
                 <div key={item.contractHash} className="column is-6">
-                  <Link to={`${DAO_CHANNEL_PATH}/${item.contractHash}`}>
+                  <Link
+                    to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${item.contractHash}`}
+                  >
                     <ChannelCard symbol={item.symbol} logo={manifest.logo} />
                   </Link>
                 </div>
               );
             })
           ) : (
-	          <div className="column is-12"><div className="box is-shadowless">No channels</div></div>
+            <div className="column is-12">
+              <div className="box is-shadowless">No channels</div>
+            </div>
           )}
         </div>
       )}

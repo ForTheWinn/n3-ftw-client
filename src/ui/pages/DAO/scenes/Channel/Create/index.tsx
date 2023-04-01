@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import MDEditor from "@uiw/react-md-editor";
 import Modal from "../../../../../components/Modal";
@@ -8,11 +8,10 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import moment from "moment";
-import { DAO_CHANNEL_PATH } from "../../../../../../consts";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { withDecimal } from "../../../../../../packages/neo/utils";
 import ChannelCard from "../../../components/ChannelCard";
-import { emojiRegexExp } from "../../../../Smith/helpers";
+import { NEO_ROUTES } from "../../../../../../consts";
 
 const Create = () => {
   const params = useParams();
@@ -62,7 +61,7 @@ const Create = () => {
   };
 
   const onSuccess = () => {
-    history.push(`${DAO_CHANNEL_PATH}/${contractHash}`);
+    history.push(`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`);
   };
 
   const { data } = useOnChainData(() => {
@@ -82,7 +81,7 @@ const Create = () => {
     <div className="columns">
       <div className="column is-8 is-offset-2">
         <Link
-          to={`${DAO_CHANNEL_PATH}/${contractHash}`}
+          to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
           className="button is-rounded is-small mb-3"
         >
           Back to list

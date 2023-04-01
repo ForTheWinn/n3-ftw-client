@@ -6,10 +6,10 @@ import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
-import { SMITH_PATH_NEP11 } from "../../../../../consts";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
+import { NEO_ROUTES } from "../../../../../consts";
 
 const NEP11FormModal = () => {
   const history = useHistory();
@@ -92,7 +92,7 @@ const NEP11FormModal = () => {
 
   const onSuccess = () => {
     setTxid("");
-    history.push(SMITH_PATH_NEP11);
+    history.push(NEO_ROUTES.SMITH_PATH_NEP11);
   };
 
   useEffect(() => {
@@ -258,6 +258,7 @@ const NEP11FormModal = () => {
                       href={
                         "https://github.com/ForTheWinn/public-contracts/blob/main/FTWSmithNep11/FTWSmithNep11.cs"
                       }
+                      rel="noreferrer"
                     >
                       here
                     </a>

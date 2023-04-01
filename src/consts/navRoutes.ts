@@ -1,8 +1,6 @@
-import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
-import { MENU } from "./pageRoutes";
-import { polygonNav } from "./polygonRoutes";
+import { NEO_ROUTES, POLYGON_ROUTES, CHAINS } from ".";
 
-export const navRoutes = {
-  [NEO_CHAIN]: MENU,
-  [POLYGON_CHAIN]: polygonNav
+export const HEADER_ROUTES = {
+  [CHAINS.NEO_CHAIN]: NEO_ROUTES.ROUTES,
+  [CHAINS.POLYGON_CHAIN]: POLYGON_ROUTES.ROUTES
 };

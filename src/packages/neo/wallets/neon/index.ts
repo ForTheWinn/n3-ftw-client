@@ -1,11 +1,11 @@
 import WcSdk from "@cityofzion/wallet-connect-sdk-core";
 import buffer from "buffer";
 import { INetworkType } from "../../network";
-import { MAINNET } from "../../consts";
 import { SignClient } from "@walletconnect/sign-client";
 
 import * as events from "./events";
 import * as consts from "./consts";
+import { MAINNET } from "../../../../consts/global";
 
 const getWcNeonWalletInstance = async (
   network: INetworkType

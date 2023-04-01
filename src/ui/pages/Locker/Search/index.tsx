@@ -5,8 +5,8 @@ import { useWallet } from "../../../../packages/neo/provider";
 import { FaSearch } from "react-icons/fa";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { LOCKER_SEARCH_PATH } from "../../../../consts";
 import LockerCard from "./LockerCard";
+import { NEO_ROUTES } from "../../../../consts";
 
 const LockerSearch = () => {
   const location = useLocation();
@@ -39,7 +39,7 @@ const LockerSearch = () => {
   };
   const handleReset = () => {
     setLocker(undefined);
-    history.push(LOCKER_SEARCH_PATH);
+    history.push(NEO_ROUTES.LOCKER_SEARCH_PATH);
   };
 
   useEffect(() => {

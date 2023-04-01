@@ -7,7 +7,7 @@ import { parsePlayer, parseHistory } from "./helpers";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 import { base64ToAddress, toDecimal } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
-import { GAS_SCRIPT_HASH } from "../../../consts/neo-token-hashes";
+import { GAS_SCRIPT_HASH } from "../../../consts/neo-contracts";
 
 export class TournamentContract {
   network: INetworkType;

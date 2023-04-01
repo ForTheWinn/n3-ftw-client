@@ -5,29 +5,6 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { publicProvider } from "wagmi/providers/public";
 import { HashRouter as Router, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-
-import {
-  COLLECTION_PATH,
-  GALLERY_PATH,
-  HOME_PATH,
-  MIGRATION_PATH,
-  SMITH_PATH,
-  SWAP_PATH,
-  TOURNAMENT_PATH,
-  FARM_PATH,
-  DAO_PATH,
-  IDO_PATH,
-  ANALYTICS_PATH,
-  FARM_V2_PATH,
-  LP_TOKENS_PATH,
-  LOCKER_PATH,
-  BOYZ_PATH,
-  GASFI_PATH,
-  BRIDGE_PATH,
-  BRAND_KIT_PATH
-} from "../consts";
-import { POLYGON_FARM_PATH, POLYGON_SWAP_PATH } from "../consts/polygonRoutes";
-
 import { WalletContextProvider } from "../packages/neo/provider";
 
 import Header from "./components/Commons/Header/Header";
@@ -42,7 +19,6 @@ import Swap from "./pages/Swap";
 import Migration from "./pages/Migration";
 import Farm from "./pages/Farm";
 import DAO from "./pages/DAO";
-import IDO from "./pages/IDO";
 import Analytics from "./pages/Analytics";
 import FarmV2 from "./pages/FarmV2";
 import LPTokens from "./pages/LPTokens";
@@ -51,11 +27,15 @@ import Boyz from "./pages/Boyz";
 import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
 import BrandKit from "./pages/BrandKit";
-import { TESTNET } from "../packages/neo/consts";
 import TxHandler from "./components/Commons/TxHandler";
+import { NEO_ROUTES, POLYGON_ROUTES, GLOBAL } from "../consts";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygonMumbai],
+  [
+    process.env.REACT_APP_NETWORK === GLOBAL.TESTNET
+      ? polygonMumbai
+      : polygonMumbai
+  ],
   [publicProvider()]
 );
 
@@ -77,32 +57,31 @@ const App = () => {
         <Router>
           <Toaster position="bottom-center" />
           <Header />
-          <Route exact path={HOME_PATH} component={Home} />
-          <Route path={GALLERY_PATH} component={Gallery} />
-          <Route path={BOYZ_PATH} component={Boyz} />
-          <Route path={TOURNAMENT_PATH} component={Tournament} />
-          <Route path={SMITH_PATH} component={Smith} />
-          <Route path={LOCKER_PATH} component={Locker} />
-          <Route path={COLLECTION_PATH} component={MyCollection} />
-          <Route path={SWAP_PATH} component={Swap} />
+          <Route exact path={NEO_ROUTES.HOME_PATH} component={Home} />
+          <Route path={NEO_ROUTES.GALLERY_PATH} component={Gallery} />
+          <Route path={NEO_ROUTES.BOYZ_PATH} component={Boyz} />
+          <Route path={NEO_ROUTES.TOURNAMENT_PATH} component={Tournament} />
+          <Route path={NEO_ROUTES.SMITH_PATH} component={Smith} />
+          <Route path={NEO_ROUTES.LOCKER_PATH} component={Locker} />
+          <Route path={NEO_ROUTES.COLLECTION_PATH} component={MyCollection} />
+          <Route path={NEO_ROUTES.SWAP_PATH} component={Swap} />
           <Route
-            path={POLYGON_SWAP_PATH}
-            component={() => <Swap path={POLYGON_SWAP_PATH} />}
+            path={POLYGON_ROUTES.SWAP_PATH}
+            component={() => <Swap path={POLYGON_ROUTES.SWAP_PATH} />}
           />
-          <Route path={FARM_PATH} component={Farm} />
-          <Route path={FARM_V2_PATH} component={FarmV2} />
+          <Route path={NEO_ROUTES.FARM_PATH} component={Farm} />
+          <Route path={NEO_ROUTES.FARM_V2_PATH} component={FarmV2} />
           <Route
-            path={POLYGON_FARM_PATH}
-            component={() => <FarmV2 path={POLYGON_FARM_PATH} />}
+            path={POLYGON_ROUTES.FARM_PATH}
+            component={() => <FarmV2 path={POLYGON_ROUTES.FARM_PATH} />}
           />
-          <Route path={DAO_PATH} component={DAO} />
-          <Route path={IDO_PATH} component={IDO} />
-          <Route exact path={MIGRATION_PATH} component={Migration} />
-          <Route path={ANALYTICS_PATH} component={Analytics} />
-          <Route path={LP_TOKENS_PATH} component={LPTokens} />
-          <Route path={GASFI_PATH} component={GASFi} />
-          <Route path={BRAND_KIT_PATH} component={BrandKit} />
-          <Route path={BRIDGE_PATH} component={Bridge} />
+          <Route path={NEO_ROUTES.DAO_PATH} component={DAO} />
+          <Route exact path={NEO_ROUTES.MIGRATION_PATH} component={Migration} />
+          <Route path={NEO_ROUTES.ANALYTICS_PATH} component={Analytics} />
+          <Route path={NEO_ROUTES.LP_TOKENS_PATH} component={LPTokens} />
+          <Route path={NEO_ROUTES.GASFI_PATH} component={GASFi} />
+          <Route path={NEO_ROUTES.BRAND_KIT_PATH} component={BrandKit} />
+          <Route path={NEO_ROUTES.BRIDGE_PATH} component={Bridge} />
 
           <MobileMenuSlider />
           <WalletSidebar />

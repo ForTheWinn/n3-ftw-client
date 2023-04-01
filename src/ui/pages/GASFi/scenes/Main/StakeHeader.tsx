@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { GASFI_MY_STAKING_PATH, GASFI_STAKE_PATH } from "../../../../../consts";
 import { IMainData } from "./index";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { useApp } from "../../../../../common/hooks/use-app";
@@ -10,6 +9,7 @@ import About from "./About";
 import moment from "moment";
 import Countdown from "react-countdown";
 import DrawBtn from "./DrawBtn";
+import { NEO_ROUTES } from "../../../../../consts";
 
 interface IStakeHeaderProps {
   isLoading: boolean;
@@ -88,8 +88,8 @@ const StakeHeader = ({
               <Link
                 to={
                   data && data.staking
-                    ? GASFI_MY_STAKING_PATH
-                    : GASFI_STAKE_PATH
+                    ? NEO_ROUTES.GASFI_MY_STAKING_PATH
+                    : NEO_ROUTES.GASFI_STAKE_PATH
                 }
                 className={`button ${
                   isLoading ? "is-loading is-white" : "is-primary"

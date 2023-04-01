@@ -6,10 +6,10 @@ import { useWallet } from "../../../../../packages/neo/provider";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { Link, useHistory } from "react-router-dom";
-import { DAO_PATH } from "../../../../../consts";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import VerifyContract from "./VerifyContract";
 import ChannelForm from "../../components/ChannelForm";
+import { NEO_ROUTES } from "../../../../../consts";
 
 interface IAddChannelProps {
   onAdd: (values) => void;
@@ -68,14 +68,17 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
 
   const handleTxSuccess = () => {
     setTxid("");
-    history.push(DAO_PATH);
+    history.push(NEO_ROUTES.DAO_PATH);
   };
 
   return (
     <PageLayout>
       <div className="columns">
         <div className="column is-8 is-offset-2">
-          <Link to={DAO_PATH} className="button is-rounded is-small mb-3">
+          <Link
+            to={NEO_ROUTES.DAO_PATH}
+            className="button is-rounded is-small mb-3"
+          >
             Back to list
           </Link>
 

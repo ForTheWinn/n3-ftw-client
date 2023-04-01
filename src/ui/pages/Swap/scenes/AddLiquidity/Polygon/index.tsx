@@ -4,16 +4,10 @@ import queryString from "query-string";
 import { toast } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
-import {
-  fetchBalance,
-  writeContract,
-  getNetwork,
-  waitForTransaction
-} from "@wagmi/core";
+import { fetchBalance, writeContract, waitForTransaction } from "@wagmi/core";
 
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { getTokenByHash } from "../../Swap/helpers";
-import { getChainId } from "../../../../../../helpers";
 import {
   approve,
   getAllowances,
@@ -22,7 +16,6 @@ import {
   provide
 } from "../../../../../../packages/polygon/swap";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
-import { POLYGON_TOKENS } from "../../../../../../packages/polygon";
 
 import AssetListModal from "../../Swap/Polygon/TokenList";
 import LPInputs from "./Inputs";
@@ -47,17 +40,16 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const location = useLocation();
   const params = queryString.parse(location.search);
   const { address, isConnected } = useAccount();
-  const network = getNetwork();
-  const { chain, toggleWalletSidebar } = useApp();
+  const { chain, toggleWalletSidebar, network } = useApp();
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
     params.tokenA
-      ? getTokenByHash(POLYGON_TOKENS, params.tokenA as string)
+      ? getTokenByHash(chain, network, params.tokenA as string)
       : undefined
   );
   const [tokenB, setTokenB] = useState<ITokenState | undefined>(
     params.tokenB
-      ? getTokenByHash(POLYGON_TOKENS, params.tokenB as string)
+      ? getTokenByHash(chain, network, params.tokenB as string)
       : undefined
   );
 
@@ -165,12 +157,13 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
   const onProvide = async () => {
     if (tokenA && tokenB && amountA && amountB && address) {
-      if (network.chain && getChainId(chain) !== network.chain.id) {
-        toast.error(
-          "Chain doesn't match. Please check your wallet's network setting."
-        );
-        return false;
-      }
+      // TODO: check later
+      // if (network.chain && getChainId(chain) !== network.chain.id) {
+      //   toast.error(
+      //     "Chain doesn't match. Please check your wallet's network setting."
+      //   );
+      //   return false;
+      // }
 
       setActionModalActive(true);
 
@@ -179,6 +172,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
       try {
         const allowances = await getAllowances(
+          network,
           address,
           tokenA.hash,
           tokenB.hash
@@ -193,7 +187,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       if (!tokenAAllowance || tokenAAllowance.toString() === "0") {
         setTokenAApproving(true);
         try {
-          const config = await approve(tokenA.hash);
+          const config = await approve(network, tokenA.hash);
           const res = await writeContract(config);
           await res.wait();
           setTokenAApproved(true);
@@ -210,7 +204,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       if (!tokenBAllowance || tokenBAllowance.toString() === "0") {
         setTokenBApproving(true);
         try {
-          const config = await approve(tokenB.hash);
+          const config = await approve(network, tokenB.hash);
           const res = await writeContract(config);
           await res.wait();
           setTokenBApproved(true);
@@ -225,7 +219,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       }
 
       try {
-        const config = await provide([
+        const config = await provide(network, [
           tokenA.hash,
           ethers.utils
             .parseUnits(amountA.toString(), tokenA.decimals)
@@ -260,7 +254,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
     const load = async (_tokenA: ITokenState, _tokenB: ITokenState) => {
       setError(undefined);
       try {
-        const res = await getReserves(_tokenA, _tokenB);
+        const res = await getReserves(network, _tokenA, _tokenB);
         setReserve(res);
 
         if (address) {
@@ -347,6 +341,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
       {isAssetChangeModalActive && (
         <AssetListModal
+          network={network}
           activeTokenInput={isAssetChangeModalActive}
           tokenAHash={tokenA ? tokenA.hash : undefined}
           tokenBHash={tokenB ? tokenB.hash : undefined}
@@ -371,7 +366,8 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           hasSubmitError={hasSwappingError}
           txid={txid}
           explorer={
-            network.chain ? network.chain.blockExplorers?.default.url : ""
+            ""
+            // network.chain ? network.chain.blockExplorers?.default.url : ""
           }
           onClose={onReset}
         />

@@ -1,33 +1,20 @@
-import { MAINNET, TESTNET } from "../packages/neo/consts";
+import { MAINNET, TESTNET } from "./global";
 
-/* 
-  Swap
-*/
-export const POLYGON_SWAP_PATH = "/polygon/swap";
-export const POLYGON_SWAP_POOL_PATH = "/polygon/swap/pools";
-export const POLYGON_SWAP_PATH_HISTORY = "/polygon/swap/history";
-export const POLYGON_SWAP_PATH_LP_LIST = "/polygon/swap/providers";
-export const POLYGON_SWAP_PATH_LIQUIDITY_ADD = "/polygon/swap/liquidity/add";
-export const POLYGON_SWAP_PATH_LIQUIDITY_REMOVE =
-  "/polygon/swap/liquidity/remove";
+export const SWAP_PATH = "/polygon/swap";
+export const FARM_PATH = "/polygon/farm";
 
-/* 
-  Farm
-*/
-export const POLYGON_FARM_PATH = "/polygon/farm";
-
-export const POLYGON_SWAP_ROUTE = {
+const SWAP_ROUTE = {
   label: "Swap",
-  path: POLYGON_SWAP_PATH,
+  path: SWAP_PATH,
   network: [TESTNET, MAINNET],
-  category: [],
+  category: []
 };
 
-export const POLYGON_FARM_ROUTE = {
+const FARM_ROUTE = {
   label: "Farm",
-  path: POLYGON_FARM_PATH,
+  path: FARM_PATH,
   network: [TESTNET, MAINNET],
-  category: [],
+  category: []
 };
 
-export const polygonNav = [POLYGON_SWAP_ROUTE, POLYGON_FARM_ROUTE];
+export const ROUTES = [SWAP_ROUTE, FARM_ROUTE];

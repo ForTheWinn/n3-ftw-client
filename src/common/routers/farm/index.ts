@@ -2,11 +2,9 @@ import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { writeContract } from "@wagmi/core";
 import { RestAPI } from "../../../packages/neo/api";
 import { IPrices } from "../../../packages/neo/api/interfaces";
-import { MAINNET } from "../../../packages/neo/consts";
 import { SwapContract } from "../../../packages/neo/contracts";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 import {
-  IBoyStaked,
   IClaimableRewards,
   IPoolEnhanced
 } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
@@ -14,7 +12,6 @@ import { IReserveData } from "../../../packages/neo/contracts/ftw/swap/interface
 import { INetworkType } from "../../../packages/neo/network";
 import { withDecimal } from "../../../packages/neo/utils";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
-import { POLYGON_FARM_CONTRACT_HASH } from "../../../packages/polygon";
 import {
   getPools,
   getStakedTokens,
@@ -30,13 +27,14 @@ import {
   setApprovalForAll
 } from "../../../packages/polygon/swap";
 import { IClaimable, IFarmLPToken } from "./interfaces";
+import { CONTRACTS, GLOBAL } from "../../../consts";
 
 export const getPrices = (chain: CHAINS): Promise<IPrices> => {
   switch (chain) {
     case NEO_CHAIN:
-      return new RestAPI(MAINNET).getPrices();
+      return new RestAPI(GLOBAL.MAINNET).getPrices();
     case POLYGON_CHAIN:
-      return new RestAPI(MAINNET).getPrices();
+      return new RestAPI(GLOBAL.MAINNET).getPrices();
   }
 };
 
@@ -48,7 +46,7 @@ export const getPoolList = (
     case NEO_CHAIN:
       return new FarmV2Contract(network).getPools(chain);
     case POLYGON_CHAIN:
-      return getPools();
+      return getPools(network);
   }
 };
 
@@ -63,7 +61,7 @@ export const getReserves = async (
     case NEO_CHAIN:
       return new SwapContract(network).getReserve(tokenA, tokenB);
     case POLYGON_CHAIN:
-      const res = await getPolygonReserves(tokenA, tokenB);
+      const res = await getPolygonReserves(network, tokenA, tokenB);
       return {
         pair: {
           [tokenA]: {
@@ -116,7 +114,7 @@ export const getLPTokens = async (
       }
       return tokens;
     case POLYGON_CHAIN:
-      return getPolygonLPTokens(address);
+      return getPolygonLPTokens(network, address);
   }
 };
 
@@ -157,7 +155,7 @@ export const getStakedLPTokens = async (
       }
       return tokens;
     case POLYGON_CHAIN:
-      return getStakedTokens(address);
+      return getStakedTokens(network, address);
   }
 };
 
@@ -170,7 +168,7 @@ export const getClaimable = async (
     case NEO_CHAIN:
       return await new FarmV2Contract(network).getClaimable(address);
     case POLYGON_CHAIN:
-      return polygonGetClaimable(address);
+      return polygonGetClaimable(network, address);
   }
 };
 
@@ -189,12 +187,21 @@ export const stakeLPToken = async (
         return "";
       }
     case POLYGON_CHAIN:
-      if (!(await isApprovedForAll(address, POLYGON_FARM_CONTRACT_HASH))) {
-        const config = await setApprovalForAll(POLYGON_FARM_CONTRACT_HASH);
+      if (
+        !(await isApprovedForAll(
+          network,
+          address,
+          CONTRACTS.CONTRACT_LIST[chain][network][GLOBAL.FARM]
+        ))
+      ) {
+        const config = await setApprovalForAll(
+          network,
+          CONTRACTS.CONTRACT_LIST[chain][network][GLOBAL.FARM]
+        );
         const res = await writeContract(config);
         await res.wait();
       }
-      return stake(tokenId);
+      return stake(network, tokenId);
   }
 };
 
@@ -212,7 +219,7 @@ export const unStakeLPToken = async (
         return "";
       }
     case POLYGON_CHAIN:
-      return unStake(tokenId);
+      return unStake(network, tokenId);
   }
 };
 
@@ -229,6 +236,6 @@ export const claim = async (
       }
       return "";
     case POLYGON_CHAIN:
-      return polygonClaim(items);
+      return polygonClaim(network, items);
   }
 };
