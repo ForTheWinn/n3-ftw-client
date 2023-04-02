@@ -21,7 +21,6 @@ import {
   ITokenState
 } from "../interfaces";
 
-
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { getTokenByHash } from "../helpers";
@@ -29,6 +28,7 @@ import ActionModal from "../../AddLiquidity/Polygon/ActionModal";
 import SwapSettings from "../../../components/Settings";
 import { NEO_ROUTES } from "../../../../../../consts";
 import { swapRouter } from "../../../../../../common/routers";
+import { swap } from "../../../../../../packages/polygon/swap";
 
 interface ISwapProps {
   rootPath: string;
@@ -65,7 +65,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const [swapInput, setSwapInput] = useState<ISwapInputState>();
 
-  const [isActionModalActive, setActionModalActive] = useState(false);
+  const [invokeFn, setInvokeFn] = useState<() => any | undefined>();
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
   >("");
@@ -112,7 +112,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     setAmountA(undefined);
     setAmountB(undefined);
     increaseRefreshCount();
-    setActionModalActive(false);
+    // setActionModalActive(false);
   };
 
   const onSwitch = async () => {
@@ -124,7 +124,21 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const onSwap = async () => {
     if (tokenA && tokenB && amountA && amountB && swapInput && address) {
-      setActionModalActive(true);
+      // setActionModalActive(true);
+
+      setInvokeFn(() =>
+        swap(network, {
+          tokenA: tokenA.hash,
+          tokenB: tokenB.hash,
+          amountIn: ethers.utils
+            .parseUnits(amountA.toString(), tokenA.decimals)
+            .toString(),
+          amountOut: ethers.utils
+            .parseUnits(amountB.toString(), tokenB.decimals)
+            .toString(),
+          isReverse: swapInput.type === "B"
+        })
+      );
     }
   };
 
@@ -311,24 +325,17 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         />
       )}
 
-      {isActionModalActive &&
-        tokenA &&
-        tokenB &&
-        amountA &&
-        amountB &&
-        swapInput && (
-          <ActionModal
-            chain={chain}
-            network={network}
-            address={address as any}
-            tokenA={tokenA}
-            tokenB={tokenB}
-            amountIn={amountA}
-            amountOut={amountB}
-            isReverse={swapInput.type === "B"}
-            onClose={onReset}
-          />
-        )}
+      {invokeFn && tokenA && tokenB && address && (
+        <ActionModal
+          chain={chain}
+          network={network}
+          address={address}
+          tokenA={tokenA}
+          tokenB={tokenB}
+          invokeFn={}
+          onClose={onReset}
+        />
+      )}
 
       <SwapSettings
         isActive={isSettingsActive}

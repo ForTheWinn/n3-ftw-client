@@ -59,9 +59,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
   const [swapInput, setSwapInput] = useState<ISwapInputState>();
 
-  const [invocationConfig, setInvocationConfig] = useState<
-    object | undefined
-  >();
+  const [invokeFn, setInvokeFn] = useState<() => any | undefined>();
   // const [isTokenAApproved, setTokenAApproved] = useState(false);
   // const [isTokenAApprving, setTokenAApproving] = useState(false);
   // const [isTokenBApproved, setTokenBApproved] = useState(false);
@@ -80,7 +78,6 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const [slippage, setSlippage] = useState<number>(DEFAULT_SLIPPAGE);
 
   const [error, setError] = useState<any>();
-
 
   const onAssetChange = (type: "A" | "B" | "") => {
     setAssetChangeModalActive(type);
@@ -138,15 +135,11 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   };
 
   const onReset = () => {
-    // setRefresh(refresh + 1);
     // setTokenAApproved(false);
     // setTokenAApproving(false);
     // setTokenBApproved(false);
     // setTokenBApproving(false);
-    // setSwapDone(false);
-    // setSwapping(false);
     // setTokenAApproveError(false);
-    // setTokenBApproveError(false);
     // setSwappingError(false);
     // setTxid(undefined);
     setAmountA(undefined);
@@ -162,15 +155,20 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       //   );
       //   return false;
       // }
-      const config = await provide(network, [
-        tokenA.hash,
-        ethers.utils.parseUnits(amountA.toString(), tokenA.decimals).toString(),
-        tokenB.hash,
-        ethers.utils.parseUnits(amountB.toString(), tokenB.decimals).toString(),
-        slippage * 100
-      ]);
 
-      setInvocationConfig(config);
+      setInvokeFn(() =>
+        provide(network, {
+          tokenA: tokenA.hash,
+          tokenB: tokenB.hash,
+          amountA: ethers.utils
+            .parseUnits(amountA.toString(), tokenA.decimals)
+            .toString(),
+          amountB: ethers.utils
+            .parseUnits(amountB.toString(), tokenB.decimals)
+            .toString(),
+          slippage: slippage * 100
+        })
+      );
     }
   };
 
@@ -274,11 +272,14 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         />
       )}
 
-      {invocationConfig && tokenA && tokenB && (
+      {invokeFn && tokenA && tokenB && address && (
         <ActionModal
-          // title="Add Liquidity"
+          chain={chain}
+          network={network}
+          invokeFn={invokeFn}
           tokenA={tokenA}
           tokenB={tokenB}
+          address={address}
           onClose={onReset}
         />
       )}

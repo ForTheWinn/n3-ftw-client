@@ -25,3 +25,11 @@ export interface SwapArgs {
   amountOut: string;
   isReverse: boolean;
 }
+
+export interface AddLiquidityArgs {
+  tokenA: string;
+  amountA: string;
+  tokenB: string;
+  amountB: string;
+  slippage: number;
+}

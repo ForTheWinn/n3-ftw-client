@@ -9,11 +9,9 @@ import { INetworkType } from "../../../../../../packages/neo/network";
 import { getExploler } from "../../../../../../helpers";
 import {
   approve,
-  getAllowances,
-  swap
+  getAllowances
 } from "../../../../../../packages/polygon/swap";
 import toast from "react-hot-toast";
-import { ethers } from "ethers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -21,9 +19,7 @@ interface IActionModalProps {
   address: string;
   tokenA: ITokenState;
   tokenB: ITokenState;
-  amountIn: number;
-  amountOut: number;
-  isReverse: boolean;
+  invokeFn: () => any; // prepareWriteContract fn
   onClose: () => void;
 }
 
@@ -31,9 +27,7 @@ const ActionModal = ({
   tokenA,
   tokenB,
   address,
-  amountIn,
-  amountOut,
-  isReverse,
+  invokeFn,
   onClose,
   chain,
   network
@@ -109,19 +103,7 @@ const ActionModal = ({
       }
 
       try {
-        const config = await swap(network, {
-          tokenA: tokenA.hash,
-          tokenB: tokenB.hash,
-          amountIn: ethers.utils
-            .parseUnits(amountIn.toString(), tokenA.decimals)
-            .toString(),
-          amountOut: ethers.utils
-            .parseUnits(amountOut.toString(), tokenB.decimals)
-            .toString(),
-          isReverse
-        });
-
-        const { hash } = await writeContract(config);
+        const { hash } = await writeContract(await invokeFn());
 
         setSwapping(true);
         setTxid(hash);

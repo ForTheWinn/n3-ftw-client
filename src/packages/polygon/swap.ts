@@ -15,7 +15,7 @@ import FTWSwapABI from "./FTWSwap.json";
 import { IFarmLPToken } from "../../common/routers/farm/interfaces";
 import { INetworkType } from "../neo/network";
 import { GLOBAL } from "../../consts";
-import { SwapArgs, SwapEstimateArgs } from "./interfaces";
+import { AddLiquidityArgs, SwapArgs, SwapEstimateArgs } from "./interfaces";
 
 export const getReserves = async (
   network: INetworkType,
@@ -138,12 +138,13 @@ export const swap = (network: INetworkType, args: SwapArgs) => {
   });
 };
 
-export const provide = (network: INetworkType, args) => {
+export const provide = (network: INetworkType, args: AddLiquidityArgs) => {
+  const { tokenA, tokenB, amountA, amountB, slippage } = args;
   return prepareWriteContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "addLiquidity",
-    args: args
+    args: [tokenA, tokenB, amountA, amountB, slippage]
   });
 };
 
