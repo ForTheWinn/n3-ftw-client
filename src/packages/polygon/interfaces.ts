@@ -17,3 +17,11 @@ export interface SwapEstimateArgs {
   amount: string;
   isReverse: boolean;
 }
+
+export interface SwapArgs {
+  tokenA: string;
+  tokenB: string;
+  amountIn: string;
+  amountOut: string;
+  isReverse: boolean;
+}

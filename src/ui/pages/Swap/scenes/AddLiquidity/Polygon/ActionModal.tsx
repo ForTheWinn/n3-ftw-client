@@ -1,44 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { writeContract, waitForTransaction } from "@wagmi/core";
 import Modal from "../../../../../components/Modal";
 import { Steps } from "antd";
 import { ITokenState } from "../../Swap/interfaces";
 import LoadingWithText from "../../../../../components/Commons/LoadingWithText";
+import { CHAINS } from "../../../../../../consts/chains";
+import { INetworkType } from "../../../../../../packages/neo/network";
+import { getExploler } from "../../../../../../helpers";
+import {
+  approve,
+  getAllowances,
+  swap
+} from "../../../../../../packages/polygon/swap";
+import toast from "react-hot-toast";
+import { ethers } from "ethers";
 
 interface IActionModalProps {
-  title: string;
+  chain: CHAINS;
+  network: INetworkType;
+  address: string;
   tokenA: ITokenState;
   tokenB: ITokenState;
-  isTokenAApproved: boolean;
-  isTokenBApproved: boolean;
-  isSwapDone: boolean;
-  isTokenAApproving: boolean;
-  isTokenBApproving: boolean;
-  isSwapping: boolean;
-  hasTokenAError: boolean;
-  hasTokenBError: boolean;
-  hasSubmitError: boolean;
-  txid?: `0x${string}`;
-  explorer?: string;
+  amountIn: number;
+  amountOut: number;
+  isReverse: boolean;
   onClose: () => void;
 }
 
 const ActionModal = ({
-  title,
   tokenA,
   tokenB,
-  isTokenAApproved,
-  isTokenBApproved,
-  isSwapDone,
-  isTokenAApproving,
-  isTokenBApproving,
-  isSwapping,
-  hasTokenAError,
-  hasTokenBError,
-  hasSubmitError,
-  txid,
-  explorer,
+  address,
+  amountIn,
+  amountOut,
+  isReverse,
   onClose,
+  chain,
+  network
 }: IActionModalProps) => {
+  const [isTokenAApproved, setTokenAApproved] = useState(false);
+  const [isTokenAApproving, setTokenAApproving] = useState(false);
+  const [isTokenBApproved, setTokenBApproved] = useState(false);
+  const [isTokenBApproving, setTokenBApproving] = useState(false);
+  const [isSwapDone, setSwapDone] = useState(false);
+  const [isSwapping, setSwapping] = useState(false);
+  const [hasTokenAApproveError, setTokenAApproveError] = useState(false);
+  const [hasTokenBApproveError, setTokenBApproveError] = useState(false);
+  const [hasSwappingError, setSwappingError] = useState(false);
+  const [txid, setTxid] = useState<string | undefined>();
+  const [hasError, setError] = useState<string | undefined>();
+
   let currentStep = 0;
   if (isTokenAApproved) {
     currentStep = 1;
@@ -46,12 +57,100 @@ const ActionModal = ({
   if (isTokenBApproved) {
     currentStep = 2;
   }
+
+  useEffect(() => {
+    async function startSwap() {
+      let tokenAAllowance;
+      let tokenBAllowance;
+      try {
+        const allowances = await getAllowances(
+          network,
+          address,
+          tokenA.hash,
+          tokenB.hash
+        );
+        tokenAAllowance = allowances[0];
+        tokenBAllowance = allowances[1];
+      } catch (e: any) {
+        toast.error(e.message ? e.message : "Something went wrong.");
+        onClose();
+      }
+
+      if (tokenAAllowance.toString() === "0") {
+        setTokenAApproving(true);
+        try {
+          const config = await approve(network, tokenA.hash);
+          const res = await writeContract(config);
+          await res.wait();
+          setTokenAApproved(true);
+        } catch (e) {
+          setTokenAApproveError(true);
+          toast.error(`"Failed to approve ${tokenA.symbol}."`);
+        }
+        setTokenAApproving(false);
+      } else {
+        setTokenAApproved(true);
+      }
+
+      if (tokenBAllowance.toString() === "0") {
+        setTokenBApproving(true);
+        try {
+          const config = await approve(network, tokenB.hash);
+          const res = await writeContract(config);
+          await res.wait();
+          setTokenBApproved(true);
+        } catch (e) {
+          setTokenBApproveError(true);
+          toast.error(`"Failed to approve ${tokenA.symbol}."`);
+        }
+        setTokenBApproving(false);
+      } else {
+        setTokenBApproved(true);
+      }
+
+      try {
+        const config = await swap(network, {
+          tokenA: tokenA.hash,
+          tokenB: tokenB.hash,
+          amountIn: ethers.utils
+            .parseUnits(amountIn.toString(), tokenA.decimals)
+            .toString(),
+          amountOut: ethers.utils
+            .parseUnits(amountOut.toString(), tokenB.decimals)
+            .toString(),
+          isReverse
+        });
+
+        const { hash } = await writeContract(config);
+
+        setSwapping(true);
+        setTxid(hash);
+
+        await waitForTransaction({
+          hash
+        });
+
+        setSwapDone(true);
+        setSwapping(false);
+      } catch (e: any) {
+        setSwappingError(true);
+        setSwapping(false);
+        if (e.reason) {
+          toast.error(e.reason);
+        }
+      }
+    }
+
+    startSwap();
+  }, [tokenA, tokenB]);
+
   return (
     <Modal onClose={onClose}>
-      <div className="">
+      <>
         <div className="block">
-          <h3 className="title is-5 has-text-centered">{title}</h3>
+          <h3 className="title is-5 has-text-centered">Swap</h3>
         </div>
+
         <div className="block">
           <Steps
             progressDot={true}
@@ -67,13 +166,13 @@ const ActionModal = ({
                       <></>
                     )}
                     {isTokenAApproved ? "Approved" : ""}
-                    {hasTokenAError ? (
+                    {hasTokenAApproveError ? (
                       <span className="has-text-danger">Error</span>
                     ) : (
                       ""
                     )}
                   </>
-                ),
+                )
               },
               {
                 title: tokenB.symbol,
@@ -85,13 +184,13 @@ const ActionModal = ({
                       <></>
                     )}
                     {isTokenBApproved ? "Approved" : ""}
-                    {hasTokenBError ? (
+                    {hasTokenBApproveError ? (
                       <span className="has-text-danger">Error</span>
                     ) : (
                       ""
                     )}
                   </>
-                ),
+                )
               },
               {
                 title: "Action",
@@ -103,14 +202,14 @@ const ActionModal = ({
                       <></>
                     )}
                     {isSwapDone ? "Finished" : ""}
-                    {hasSubmitError ? (
+                    {hasSwappingError ? (
                       <span className="has-text-danger">Error</span>
                     ) : (
                       ""
                     )}
                   </>
-                ),
-              },
+                )
+              }
             ]}
           />
         </div>
@@ -122,7 +221,7 @@ const ActionModal = ({
               <a
                 className="button is-primary"
                 target="_blank"
-                href={`${explorer}/tx/${txid}`}
+                href={`${getExploler(chain, network)}/tx/${txid}`}
                 rel="noreferrer"
               >
                 View txid on explorer
@@ -136,10 +235,12 @@ const ActionModal = ({
           <></>
         )}
 
-        {hasSubmitError || hasTokenAError || hasTokenBError ? (
+        {hasError ||
+        hasSwappingError ||
+        hasTokenAApproveError ||
+        hasTokenBApproveError ? (
           <div className="has-text-centered">
             <hr />
-
             <button onClick={onClose} className="button is-black">
               Close
             </button>
@@ -147,7 +248,7 @@ const ActionModal = ({
         ) : (
           <></>
         )}
-      </div>
+      </>
     </Modal>
   );
 };

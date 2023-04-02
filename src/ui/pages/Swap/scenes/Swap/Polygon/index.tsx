@@ -44,7 +44,13 @@ interface ISwapProps {
 const PolygonSwap = ({ rootPath }: ISwapProps) => {
   const location = useLocation();
   const params = queryString.parse(location.search);
-  const { chain, toggleWalletSidebar, network } = useApp();
+  const {
+    chain,
+    toggleWalletSidebar,
+    network,
+    refreshCount,
+    increaseRefreshCount
+  } = useApp();
   const { address, isConnected } = useAccount();
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
@@ -67,16 +73,6 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   const [swapInput, setSwapInput] = useState<ISwapInputState>();
 
   const [isActionModalActive, setActionModalActive] = useState(false);
-  const [isTokenAApproved, setTokenAApproved] = useState(false);
-  const [isTokenAApprving, setTokenAApproving] = useState(false);
-  const [isTokenBApproved, setTokenBApproved] = useState(false);
-  const [isTokenBApprving, setTokenBApproving] = useState(false);
-  const [isSwapDone, setSwapDone] = useState(false);
-  const [isSwapping, setSwapping] = useState(false);
-  const [hasTokenAApproveError, setTokenAApproveError] = useState(false);
-  const [hasTokenBApproveError, setTokenBApproveError] = useState(false);
-  const [hasSwappingError, setSwappingError] = useState(false);
-
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
   >("");
@@ -87,9 +83,8 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   const [isSettingsActive, setSettingsActive] = useState(false);
   const [slippage, setSlippage] = useState<number>(DEFAULT_SLIPPAGE);
 
-  const [txid, setTxid] = useState<`0x${string}` | undefined>();
+  // const [txid, setTxid] = useState<`0x${string}` | undefined>();
   const [error, setError] = useState<any>();
-  const [refresh, setRefresh] = useState(0);
 
   const onAssetChange = (type: "A" | "B" | "") => {
     setAssetChangeModalActive(type);
@@ -122,17 +117,9 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   };
 
   const onReset = () => {
-    setRefresh(refresh + 1);
-    setTokenAApproved(false);
-    setTokenAApproving(false);
-    setTokenBApproved(false);
-    setTokenBApproving(false);
-    setSwapDone(false);
-    setSwapping(false);
-    setTokenAApproveError(false);
-    setTokenBApproveError(false);
-    setSwappingError(false);
-    setTxid(undefined);
+    setAmountA(undefined);
+    setAmountB(undefined);
+    increaseRefreshCount();
     setActionModalActive(false);
   };
 
@@ -145,97 +132,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const onSwap = async () => {
     if (tokenA && tokenB && amountA && amountB && swapInput && address) {
-      // if (network.chain && getChainId(chain) !== network.chain.id) {
-      //   toast.error(
-      //     "Chain doesn't match. Please check your wallet's network setting."
-      //   );
-      //   return false;
-      // }
-
       setActionModalActive(true);
-
-      let tokenAAllowance;
-      let tokenBAllowance;
-      try {
-        const allowances = await getAllowances(
-          network,
-          address,
-          tokenA.hash,
-          tokenB.hash
-        );
-        tokenAAllowance = allowances[0];
-        tokenBAllowance = allowances[1];
-      } catch (e) {
-        toast.error("Failed to load data.");
-        onReset();
-      }
-
-      if (tokenAAllowance.toString() === "0") {
-        setTokenAApproving(true);
-        try {
-          const config = await approve(network, tokenA.hash);
-          const res = await writeContract(config);
-          await res.wait();
-          setTokenAApproved(true);
-        } catch (e) {
-          setTokenAApproveError(true);
-          toast.error(`"Failed to approve ${tokenA.symbol}."`);
-        }
-        setTokenAApproving(false);
-      } else {
-        setTokenAApproved(true);
-      }
-
-      if (tokenBAllowance.toString() === "0") {
-        setTokenBApproving(true);
-        try {
-          const config = await approve(network, tokenB.hash);
-          const res = await writeContract(config);
-          await res.wait();
-          setTokenBApproved(true);
-        } catch (e) {
-          setTokenBApproveError(true);
-          toast.error(`"Failed to approve ${tokenA.symbol}."`);
-        }
-        setTokenBApproving(false);
-      } else {
-        setTokenBApproved(true);
-      }
-
-      try {
-        const amountIn = ethers.utils
-          .parseUnits(amountA.toString(), tokenA.decimals)
-          .toString();
-        const amountOut = ethers.utils
-          .parseUnits(amountB.toString(), tokenB.decimals)
-          .toString();
-
-        const config = await swap(network, [
-          tokenA.hash,
-          tokenB.hash,
-          amountIn,
-          amountOut,
-          swapInput.type === "B"
-        ]);
-
-        const { hash } = await writeContract(config);
-
-        setSwapping(true);
-        setTxid(hash);
-
-        await waitForTransaction({
-          hash
-        });
-
-        setSwapDone(true);
-        setSwapping(false);
-      } catch (e: any) {
-        setSwappingError(true);
-        setSwapping(false);
-        if (e.reason) {
-          toast.error(e.reason);
-        }
-      }
     }
   };
 
@@ -279,7 +176,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     if (tokenA && tokenB) {
       load(tokenA, tokenB);
     }
-  }, [address, tokenA, tokenB, refresh]);
+  }, [address, tokenA, tokenB, refreshCount]);
 
   useEffect(() => {
     if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
@@ -422,25 +319,24 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         />
       )}
 
-      {isActionModalActive && tokenA && tokenB && (
-        <ActionModal
-          title="Swap"
-          tokenA={tokenA}
-          tokenB={tokenB}
-          isTokenAApproved={isTokenAApproved}
-          isTokenBApproved={isTokenBApproved}
-          isTokenAApproving={isTokenAApprving}
-          isTokenBApproving={isTokenBApprving}
-          isSwapping={isSwapping}
-          isSwapDone={isSwapDone}
-          hasTokenAError={hasTokenAApproveError}
-          hasTokenBError={hasTokenBApproveError}
-          hasSubmitError={hasSwappingError}
-          txid={txid}
-          explorer={getExploler(chain, network)}
-          onClose={onReset}
-        />
-      )}
+      {isActionModalActive &&
+        tokenA &&
+        tokenB &&
+        amountA &&
+        amountB &&
+        swapInput && (
+          <ActionModal
+            chain={chain}
+            network={network}
+            address={address as any}
+            tokenA={tokenA}
+            tokenB={tokenB}
+            amountIn={amountA}
+            amountOut={amountB}
+            isReverse={swapInput.type === "B"}
+            onClose={onReset}
+          />
+        )}
 
       <SwapSettings
         isActive={isSettingsActive}

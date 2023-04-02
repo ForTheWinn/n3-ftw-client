@@ -350,9 +350,9 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         />
       )}
 
-      {isActionModalActive && tokenA && tokenB && (
+      {/* {isActionModalActive && tokenA && tokenB && (
         <ActionModal
-          title="Add Liquidity"
+          // title="Add Liquidity"
           tokenA={tokenA}
           tokenB={tokenB}
           isTokenAApproved={isTokenAApproved}
@@ -371,7 +371,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           }
           onClose={onReset}
         />
-      )}
+      )} */}
 
       <SwapSettings
         isActive={isSettingsActive}
