@@ -4,7 +4,7 @@ import Modal from "../../../../../components/Modal";
 import { Steps } from "antd";
 import { ITokenState } from "../../Swap/interfaces";
 import LoadingWithText from "../../../../../components/Commons/LoadingWithText";
-import { CHAINS } from "../../../../../../consts/chains";
+import { CHAINS, NEO_CHAIN } from "../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../packages/neo/network";
 import { getExploler } from "../../../../../../helpers";
 import {
@@ -15,6 +15,13 @@ import {
 } from "../../../../../../packages/polygon/swap";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
+import {
+  getAfterSlippage,
+  getMaxTokenAAmount
+} from "../../../../../../packages/neo/contracts/ftw/swap/helpers";
+import { SwapContract } from "../../../../../../packages/neo/contracts";
+import { IConnectedWallet } from "../../../../../../packages/neo/wallets/interfaces";
+import { waitTransactionUntilSubmmited } from "../../../../../../common/routers/global";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -27,6 +34,7 @@ interface IActionModalProps {
   slippage: number;
   method: "swap" | "provide";
   isReverse: boolean;
+  connectedWallet?: IConnectedWallet;
   onClose: () => void;
 }
 
@@ -41,7 +49,8 @@ const ActionModal = ({
   onClose,
   chain,
   isReverse,
-  network
+  network,
+  connectedWallet
 }: IActionModalProps) => {
   const [isTokenAApproved, setTokenAApproved] = useState(false);
   const [isTokenAApproving, setTokenAApproving] = useState(false);
@@ -65,112 +74,152 @@ const ActionModal = ({
 
   useEffect(() => {
     async function startSwap() {
-      let tokenAAllowance;
-      let tokenBAllowance;
-      try {
-        const allowances = await getAllowances(
-          network,
-          address,
-          tokenA.hash,
-          tokenB.hash
-        );
-        tokenAAllowance = allowances[0];
-        tokenBAllowance = allowances[1];
-      } catch (e: any) {
-        console.error(e);
-        toast.error(e.message ? e.message : "Something went wrong.");
-        onClose();
-      }
+      if (chain === NEO_CHAIN) {
+        if (!connectedWallet) return false;
 
-      if (tokenAAllowance.toString() === "0") {
-        setTokenAApproving(true);
-        try {
-          const config = await approve(network, tokenA.hash);
-          const res = await writeContract(config);
-          await res.wait();
-          setTokenAApproved(true);
-        } catch (e) {
-          console.error(e);
-          setTokenAApproveError(true);
-          toast.error(`"Failed to approve ${tokenA.symbol}."`);
-        }
-        setTokenAApproving(false);
-      } else {
+        let txid;
+
         setTokenAApproved(true);
-      }
-
-      if (tokenBAllowance.toString() === "0") {
-        setTokenBApproving(true);
-        try {
-          const config = await approve(network, tokenB.hash);
-          const res = await writeContract(config);
-          await res.wait();
-          setTokenBApproved(true);
-        } catch (e) {
-          console.error(e);
-          setTokenBApproveError(true);
-          toast.error(`"Failed to approve ${tokenA.symbol}."`);
-        }
-        setTokenBApproving(false);
-      } else {
         setTokenBApproved(true);
-      }
 
-      try {
-        let config;
         if (method === "swap") {
-          const amountOutBN = ethers.utils.parseUnits(
-            amountB.toString(),
-            tokenB.decimals
-          );
-
-          config = await swap(network, {
-            tokenA: tokenA.hash,
-            tokenB: tokenB.hash,
-            amountIn: ethers.utils
-              .parseUnits(amountA.toString(), tokenA.decimals)
-              .toString(),
-            // Add slippage
-            amountOut: amountOutBN
-              .sub(amountOutBN.mul(slippage).div(100))
-              .toString(),
-            isReverse
-          });
-        } else if (method === "provide") {
-          config = await provide(network, {
-            tokenA: tokenA.hash,
-            tokenB: tokenB.hash,
-            amountA: ethers.utils
-              .parseUnits(amountA.toString(), tokenA.decimals)
-              .toString(),
-            amountB: ethers.utils
-              .parseUnits(amountB.toString(), tokenB.decimals)
-              .toString(),
-            slippage: slippage * 100 // BPS
-          });
+          if (isReverse) {
+            txid = await new SwapContract(network).swapBtoA(
+              connectedWallet,
+              tokenA.hash,
+              tokenA.decimals,
+              tokenB.hash,
+              tokenB.decimals,
+              amountB,
+              getMaxTokenAAmount(amountA, slippage)
+            );
+          } else {
+            txid = await new SwapContract(network).swap(
+              connectedWallet,
+              tokenA.hash,
+              tokenA.decimals,
+              amountA,
+              tokenB.hash,
+              tokenB.decimals,
+              getAfterSlippage(amountB, slippage)
+            );
+            console.log(txid);
+          }
         } else {
-          toast.error("The method is not supported.");
-          return;
         }
-        console.log(config);
+        console.log(txid);
+        if (txid) {
+          setTxid(txid);
+          setSwapping(true);
+          await waitTransactionUntilSubmmited(chain, network, txid);
+          setSwapping(false);
+          setSwapDone(true);
+        }
+      } else {
+        let tokenAAllowance;
+        let tokenBAllowance;
+        try {
+          const allowances = await getAllowances(
+            network,
+            address,
+            tokenA.hash,
+            tokenB.hash
+          );
+          tokenAAllowance = allowances[0];
+          tokenBAllowance = allowances[1];
+        } catch (e: any) {
+          console.error(e);
+          toast.error(e.message ? e.message : "Something went wrong.");
+          onClose();
+        }
 
-        const { hash } = await writeContract(config);
+        if (tokenAAllowance.toString() === "0") {
+          setTokenAApproving(true);
+          try {
+            const config = await approve(network, tokenA.hash);
+            const res = await writeContract(config);
+            await res.wait();
+            setTokenAApproved(true);
+          } catch (e) {
+            console.error(e);
+            setTokenAApproveError(true);
+            toast.error(`"Failed to approve ${tokenA.symbol}."`);
+          }
+          setTokenAApproving(false);
+        } else {
+          setTokenAApproved(true);
+        }
 
-        setSwapping(true);
-        setTxid(hash);
+        if (tokenBAllowance.toString() === "0") {
+          setTokenBApproving(true);
+          try {
+            const config = await approve(network, tokenB.hash);
+            const res = await writeContract(config);
+            await res.wait();
+            setTokenBApproved(true);
+          } catch (e) {
+            console.error(e);
+            setTokenBApproveError(true);
+            toast.error(`"Failed to approve ${tokenA.symbol}."`);
+          }
+          setTokenBApproving(false);
+        } else {
+          setTokenBApproved(true);
+        }
 
-        await waitForTransaction({
-          hash
-        });
+        try {
+          let config;
+          if (method === "swap") {
+            const amountOutBN = ethers.utils.parseUnits(
+              amountB.toString(),
+              tokenB.decimals
+            );
 
-        setSwapDone(true);
-        setSwapping(false);
-      } catch (e: any) {
-        console.error(e);
-        setSwappingError(true);
-        setSwapping(false);
-        if (e.reason) {
-          toast.error(e.reason);
+            config = await swap(network, {
+              tokenA: tokenA.hash,
+              tokenB: tokenB.hash,
+              amountIn: ethers.utils
+                .parseUnits(amountA.toString(), tokenA.decimals)
+                .toString(),
+              // Add slippage
+              amountOut: amountOutBN
+                .sub(amountOutBN.mul(slippage).div(100))
+                .toString(),
+              isReverse
+            });
+          } else if (method === "provide") {
+            config = await provide(network, {
+              tokenA: tokenA.hash,
+              tokenB: tokenB.hash,
+              amountA: ethers.utils
+                .parseUnits(amountA.toString(), tokenA.decimals)
+                .toString(),
+              amountB: ethers.utils
+                .parseUnits(amountB.toString(), tokenB.decimals)
+                .toString(),
+              slippage: slippage * 100 // BPS
+            });
+          } else {
+            toast.error("The method is not supported.");
+            return;
+          }
+
+          const { hash } = await writeContract(config);
+
+          setSwapping(true);
+          setTxid(hash);
+
+          await waitTransactionUntilSubmmited(chain, network, hash);
+
+          setSwapDone(true);
+          setSwapping(false);
+        } catch (e: any) {
+          console.error(e);
+          setSwappingError(true);
+          setSwapping(false);
+          if (e.reason) {
+            toast.error(e.reason);
+          }
         }
       }
     }
@@ -255,7 +304,7 @@ const ActionModal = ({
               <a
                 className="button is-primary"
                 target="_blank"
-                href={`${getExploler(chain, network)}/tx/${txid}`}
+                href={`${getExploler(chain, network)}/${txid}`}
                 rel="noreferrer"
               >
                 View txid on explorer

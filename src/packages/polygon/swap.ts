@@ -8,7 +8,6 @@ import { ethers } from "ethers";
 import { Buffer } from "buffer";
 import { CONSTS } from ".";
 import {
-  IReservesState,
   ITokenState
 } from "../../ui/pages/Swap/scenes/Swap/interfaces";
 import FTWSwapABI from "./FTWSwap.json";
@@ -16,12 +15,13 @@ import { IFarmLPToken } from "../../common/routers/farm/interfaces";
 import { INetworkType } from "../neo/network";
 import { GLOBAL } from "../../consts";
 import { AddLiquidityArgs, SwapArgs, SwapEstimateArgs } from "./interfaces";
+import { ISwapReserves } from "../../common/routers/swap/interfaces";
 
 export const getReserves = async (
   network: INetworkType,
   tokenA: ITokenState,
   tokenB: ITokenState
-): Promise<IReservesState> => {
+): Promise<ISwapReserves> => {
   const res: any = await readContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,

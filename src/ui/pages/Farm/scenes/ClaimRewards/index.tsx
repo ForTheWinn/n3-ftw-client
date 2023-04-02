@@ -7,10 +7,10 @@ import AfterTransactionSubmitted from "../../../../components/NeoComponents/Afte
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import LogoIcon from "../../../../components/LogoIcon";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import ClaimList from "./ClaimList";
 import { NEP_LOGO } from "../../../../../consts/global";
+import { Avatar } from "antd";
 
 interface IClaimRewardsProps {
   pRefresh: number;
@@ -53,7 +53,7 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
       <div className="level is-mobile">
         <div className="level-left">
           <div className="level-item">
-            <LogoIcon img={NEP_LOGO} />
+            <Avatar src={NEP_LOGO} />
           </div>
           <div className="level-item">
             <h1 className="title is-7 ">Rewards</h1>

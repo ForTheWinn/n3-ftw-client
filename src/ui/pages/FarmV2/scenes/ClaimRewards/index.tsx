@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useWallet } from "../../../../../packages/neo/provider";
 import ClaimModal from "./ClaimModal";
 import { useApp } from "../../../../../common/hooks/use-app";
-import LogoIcon from "../../../../components/LogoIcon";
 import ClaimList from "./ClaimList";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import BoyzStaking from "../../components/BoyzStaking";
@@ -14,6 +13,7 @@ import { farmRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import toast from "react-hot-toast";
 import { NEP_LOGO } from "../../../../../consts/global";
+import { Avatar } from "antd";
 
 interface IClaimRewardsProps {
   chain: CHAINS;
@@ -100,7 +100,7 @@ const ClaimRewards = ({ chain, path, prices }: IClaimRewardsProps) => {
         <div className="level is-mobile">
           <div className="level-left">
             <div className="level-item">
-              <LogoIcon img={NEP_LOGO} />
+              <Avatar src={NEP_LOGO} />
             </div>
             <div className="level-item">
               <h1 className="title is-6 ">Rewards</h1>

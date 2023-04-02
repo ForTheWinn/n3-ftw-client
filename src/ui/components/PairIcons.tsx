@@ -1,9 +1,9 @@
 import React from "react";
-import LogoIcon from "./LogoIcon";
 import { INetworkType } from "../../packages/neo/network";
 import { UNKNOWN_TOKEN_IMAGE } from "../../consts/global";
 import { CHAINS } from "../../consts";
 import { TOKEN_LIST } from "../../consts/tokens";
+import { Avatar } from "antd";
 
 interface IPairIconsProps {
   network: INetworkType;
@@ -37,16 +37,8 @@ const PairIcons = ({
 
   return (
     <div className="is-flex">
-      <LogoIcon
-        width={width}
-        height={width}
-        img={token1 && token1.icon ? token1.icon : UNKNOWN_TOKEN_IMAGE}
-      />
-      <LogoIcon
-        width={width}
-        height={width}
-        img={token2 && token2.icon ? token2.icon : UNKNOWN_TOKEN_IMAGE}
-      />
+      <Avatar src={token1 && token1.icon ? token1.icon : UNKNOWN_TOKEN_IMAGE} />
+      <Avatar src={token2 && token2.icon ? token2.icon : UNKNOWN_TOKEN_IMAGE} />
     </div>
   );
 };

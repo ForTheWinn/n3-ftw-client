@@ -7,12 +7,13 @@ import Modal from "../../../../../../components/Modal";
 
 import { ITokenState } from "../../interfaces";
 import { TOKENS } from "../../../../../../../consts";
-import { POLYGON_CHAIN } from "../../../../../../../consts/chains";
+import { CHAINS, POLYGON_CHAIN } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 
 interface IAssetListModalProps {
+  chain: CHAINS;
   network: INetworkType;
-  activeTokenInput: "A" | "B";
+  activeTokenInput: "A" | "B" | undefined;
   tokenAHash?: string;
   tokenBHash?: string;
   onClose: () => void;
@@ -20,9 +21,10 @@ interface IAssetListModalProps {
 }
 
 const TokenList = ({
+  chain,
   network,
   onAssetClick,
-  onClose,
+  onClose
 }: IAssetListModalProps) => {
   const [isCustomInputMode, setCustomInputMode] = useState(false);
 
@@ -33,7 +35,7 @@ const TokenList = ({
       ) : (
         <>
           <div className="columns">
-            {TOKENS.SWAP_TOKEN_LIST[POLYGON_CHAIN][network].map((token) => {
+            {TOKENS.SWAP_TOKEN_LIST[chain][network].map((token) => {
               return (
                 <SwapTokenCard
                   key={token.hash}

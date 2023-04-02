@@ -6,17 +6,30 @@ import {
   getReserves as polygonGetReserves
 } from "../../../packages/polygon/swap";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
-import { ITokenBalances, SwapEstimateArgs } from "./interfaces";
+import {
+  ISwapReserves,
+  ISwapEstimateArgs,
+  IUserTokenBalances
+} from "./interfaces";
+import { SwapContract } from "../../../packages/neo/contracts";
 
 export const getReserves = async (
   chain: CHAINS,
   network: INetworkType,
   tokenA: ITokenState,
   tokenB: ITokenState
-) => {
+): Promise<ISwapReserves> => {
   switch (chain) {
     case NEO_CHAIN:
-      return await polygonGetReserves(network, tokenA, tokenB);
+      const res = await new SwapContract(network).getReserve(
+        tokenA.hash,
+        tokenB.hash
+      );
+      return {
+        reserveA: res.pair[tokenA.hash].reserveAmount.toString(),
+        reserveB: res.pair[tokenB.hash].reserveAmount.toString(),
+        shares: res.totalShare.toString()
+      };
     case POLYGON_CHAIN:
       return await polygonGetReserves(network, tokenA, tokenB);
   }
@@ -28,13 +41,16 @@ export const getBalances = async (
   address: `0x${string}`,
   tokenA: `0x${string}`,
   tokenB: `0x${string}`
-): Promise<ITokenBalances> => {
+): Promise<IUserTokenBalances> => {
   let amountA;
   let amountB;
   switch (chain) {
     case NEO_CHAIN:
-      //   return new RestAPI(MAINNET).getPrices();
-      break;
+      return await new SwapContract(network).getUserBalances(
+        address,
+        tokenA,
+        tokenB
+      );
     case POLYGON_CHAIN:
       const res1 = await fetchBalance({
         address,
@@ -56,13 +72,26 @@ export const getBalances = async (
 export const getEstimate = async (
   chain: CHAINS,
   network: INetworkType,
-  args: SwapEstimateArgs,
+  args: ISwapEstimateArgs,
   decimals: number
 ) => {
   switch (chain) {
     case NEO_CHAIN:
-      //   return new RestAPI(MAINNET).getPrices();
-      break;
+      if (args.isReverse) {
+        return new SwapContract(network).getSwapBEstimate(
+          args.tokenA,
+          args.tokenB,
+          args.amount
+        );
+      } else {
+        return new SwapContract(network).getSwapEstimate(
+          args.tokenA,
+          args.tokenB,
+          args.isReverse ? args.tokenB : args.tokenA,
+          args.amount
+        );
+      }
+
     case POLYGON_CHAIN:
       return polygonGetEstimated(network, args, decimals);
   }

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { toast } from "react-hot-toast";
 import { useAccount } from "wagmi";
-import { ethers } from "ethers";
 import { fetchBalance } from "@wagmi/core";
 
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { getTokenByHash } from "../../Swap/helpers";
 import {
   getLPEstimate,
-  getReserves,
-  provide
+  getReserves
 } from "../../../../../../packages/polygon/swap";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 
@@ -23,12 +20,13 @@ import ProvideLPInfo from "../../../components/ProvideLPInfo";
 import ActionModal from "./ActionModal";
 import SwapSettings from "../../../components/Settings";
 
+import { ISwapInputState, ITokenState } from "../../Swap/interfaces";
 import {
-  IBalancesState,
-  IReservesState,
-  ISwapInputState,
-  ITokenState
-} from "../../Swap/interfaces";
+  ISwapReserves,
+  IUserTokenBalances
+} from "../../../../../../common/routers/swap/interfaces";
+import { useWallet } from "../../../../../../packages/neo/provider";
+import { swapRouter } from "../../../../../../common/routers";
 
 interface ILiquidityProps {
   rootPath: string;
@@ -38,6 +36,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const location = useLocation();
   const params = queryString.parse(location.search);
   const { address, isConnected } = useAccount();
+  const { connectedWallet } = useWallet();
   const {
     chain,
     toggleWalletSidebar,
@@ -57,8 +56,8 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       : undefined
   );
 
-  const [reserves, setReserve] = useState<IReservesState | undefined>();
-  const [balances, setBalances] = useState<IBalancesState | undefined>();
+  const [reserves, setReserve] = useState<ISwapReserves | undefined>();
+  const [balances, setBalances] = useState<IUserTokenBalances | undefined>();
 
   const [amountA, setAmountA] = useState<number | undefined>();
   const [amountB, setAmountB] = useState<number | undefined>();
@@ -108,9 +107,6 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         );
         setAmountB(parseFloat(estimated));
       }
-      // if (!val.value) {
-      //   setAmountB(undefined);
-      // }
     } else if (val.type === "B") {
       setAmountB(val.value);
       if (tokenA && tokenB && reserves && val.value) {
@@ -123,9 +119,6 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         );
         setAmountA(parseFloat(estimated));
       }
-      // if (!val.value) {
-      //   setAmountA(undefined);
-      // }
     }
     setSwapInput(val);
   };
@@ -154,7 +147,13 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
     const load = async (_tokenA: ITokenState, _tokenB: ITokenState) => {
       setError(undefined);
       try {
-        const res = await getReserves(network, _tokenA, _tokenB);
+        const res = await swapRouter.getReserves(
+          chain,
+          network,
+          _tokenA,
+          _tokenB
+        );
+        
         setReserve(res);
 
         if (address) {
@@ -241,6 +240,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
       {isAssetChangeModalActive && (
         <AssetListModal
+          chain={chain}
           network={network}
           activeTokenInput={isAssetChangeModalActive}
           tokenAHash={tokenA ? tokenA.hash : undefined}
@@ -262,6 +262,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           isReverse={false}
           address={address}
           slippage={slippage}
+          connectedWallet={connectedWallet}
           onClose={onReset}
         />
       )}

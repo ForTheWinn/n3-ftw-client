@@ -92,14 +92,14 @@ const SwapInputs = ({
               tokenAHash,
               tokenBHash,
               tokenAHash,
-              tokenA.hash === NEO_SCRIPT_HASH ? 8 : tokenA.decimals,
               searchTerm.value
+              // tokenA.hash === NEO_SCRIPT_HASH ? 8 : tokenA.decimals,
+              // searchTerm.value
             );
           } else {
             estimated = await new SwapContract(network).getSwapBEstimate(
               tokenAHash,
               tokenBHash,
-              tokenB.hash === NEO_SCRIPT_HASH ? 8 : tokenB.decimals,
               searchTerm.value
             );
           }

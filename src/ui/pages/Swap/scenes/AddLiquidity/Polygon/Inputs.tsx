@@ -1,18 +1,15 @@
 import React from "react";
 import Input from "../../../components/Input";
-import { FaExchangeAlt, FaPlusSquare } from "react-icons/fa";
-import {
-  IBalancesState,
-  ISwapInputState,
-  ITokenState,
-} from "../../Swap/interfaces";
+import { FaPlusSquare } from "react-icons/fa";
+import { ISwapInputState, ITokenState } from "../../Swap/interfaces";
+import { IUserTokenBalances } from "../../../../../../common/routers/swap/interfaces";
 
 interface ILPInputsProps {
   tokenA?: ITokenState;
   tokenB?: ITokenState;
   amountA?: number;
   amountB?: number;
-  balances?: IBalancesState;
+  balances?: IUserTokenBalances;
   swapInput?: ISwapInputState;
   onAssetChange: (type: "A" | "B") => void;
   setSwapInputChange: (val: ISwapInputState) => void;
@@ -26,9 +23,8 @@ const LPInputs = ({
   balances,
   swapInput,
   onAssetChange,
-  setSwapInputChange,
+  setSwapInputChange
 }: ILPInputsProps) => {
-
   const amountAOverflow =
     !!(
       swapInput &&
@@ -78,7 +74,7 @@ const LPInputs = ({
           setValue={(value) => {
             setSwapInputChange({
               type: "A",
-              value,
+              value
             });
           }}
           userBalance={balances ? parseFloat(balances.amountA) : undefined}
@@ -107,7 +103,7 @@ const LPInputs = ({
         setValue={(value) => {
           setSwapInputChange({
             type: "B",
-            value,
+            value
           });
         }}
         userBalance={balances ? parseFloat(balances.amountB) : undefined}

@@ -15,15 +15,15 @@ export const getExploler = (chain: string, network: INetworkType): string => {
   switch (chain) {
     case NEO_CHAIN:
       if (network === MAINNET) {
-        return "https://explorer.onegate.space";
+        return "https://explorer.onegate.space/transactionInfo";
       } else {
-        return "https://testmagnet.explorer.onegate.space";
+        return "https://testmagnet.explorer.onegate.space/transactionInfo";
       }
     case POLYGON_CHAIN:
       if (network === MAINNET) {
-        return "https://polygonscan.com";
+        return "https://polygonscan.com/tx";
       } else {
-        return "https://mumbai.polygonscan.com";
+        return "https://mumbai.polygonscan.com/tx";
       }
     default:
       return "";

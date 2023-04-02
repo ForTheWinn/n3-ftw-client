@@ -14,12 +14,7 @@ import SwapButton from "../../../components/SwapButton";
 import SwapNav from "../components/SwapNav";
 import ReservesFetchError from "../components/Notifications/ReservesFetchError";
 
-import {
-  IBalancesState,
-  IReservesState,
-  ISwapInputState,
-  ITokenState
-} from "../interfaces";
+import { ISwapInputState, ITokenState } from "../interfaces";
 
 import { useLocation } from "react-router-dom";
 import { getTokenByHash } from "../helpers";
@@ -27,7 +22,12 @@ import ActionModal from "../../AddLiquidity/Polygon/ActionModal";
 import SwapSettings from "../../../components/Settings";
 import { NEO_ROUTES } from "../../../../../../consts";
 import { swapRouter } from "../../../../../../common/routers";
-import { swap } from "../../../../../../packages/polygon/swap";
+import { useWallet } from "../../../../../../packages/neo/provider";
+import { NEO_CHAIN } from "../../../../../../consts/chains";
+import {
+  ISwapReserves,
+  IUserTokenBalances
+} from "../../../../../../common/routers/swap/interfaces";
 
 interface ISwapProps {
   rootPath: string;
@@ -43,6 +43,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     refreshCount,
     increaseRefreshCount
   } = useApp();
+  const { connectedWallet } = useWallet();
   const { address, isConnected } = useAccount();
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
@@ -56,8 +57,8 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
       : undefined
   );
 
-  const [reserves, setReserve] = useState<IReservesState | undefined>();
-  const [balances, setBalances] = useState<IBalancesState | undefined>();
+  const [reserves, setReserve] = useState<ISwapReserves | undefined>();
+  const [balances, setBalances] = useState<IUserTokenBalances | undefined>();
 
   const [amountA, setAmountA] = useState<number | undefined>();
   const [amountB, setAmountB] = useState<number | undefined>();
@@ -66,8 +67,8 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const [method, setMethod] = useState<"swap" | "provide" | undefined>();
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
-    "A" | "B" | ""
-  >("");
+    "A" | "B" | undefined
+  >();
 
   const [isAmountALoading, setAmountALoading] = useState(false);
   const [isAmountBLoading, setAmountBLoading] = useState(false);
@@ -77,7 +78,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const [error, setError] = useState<any>();
 
-  const onAssetChange = (type: "A" | "B" | "") => {
+  const onAssetChange = (type: "A" | "B" | undefined) => {
     setAssetChangeModalActive(type);
   };
 
@@ -95,7 +96,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     }
     setAmountB(undefined);
     setAmountA(undefined);
-    setAssetChangeModalActive("");
+    setAssetChangeModalActive(undefined);
   };
 
   const onSwapInputChange = (val: ISwapInputState) => {
@@ -140,11 +141,15 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         );
         setReserve(res);
 
-        if (address) {
+        let _address =
+          chain === NEO_CHAIN ? connectedWallet?.account.address : address;
+
+        console.log(_address);
+        if (_address) {
           const { amountA, amountB } = await swapRouter.getBalances(
             chain,
             network,
-            address,
+            _address,
             _tokenA.hash,
             _tokenB.hash
           );
@@ -167,7 +172,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     if (tokenA && tokenB) {
       load(tokenA, tokenB);
     }
-  }, [address, tokenA, tokenB, refreshCount]);
+  }, [address, tokenA, tokenB, refreshCount, connectedWallet]);
 
   useEffect(() => {
     if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
@@ -200,6 +205,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
               args,
               swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
             );
+            console.log(estimated);
           }
         } catch (e: any) {
           setError("Failed to fetch swap estimate. Check your inputs.");
@@ -301,12 +307,13 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
       {isAssetChangeModalActive && (
         <AssetListModal
+          chain={chain}
           network={network}
           activeTokenInput={isAssetChangeModalActive}
           tokenAHash={tokenA ? tokenA.hash : undefined}
           tokenBHash={tokenB ? tokenB.hash : undefined}
           onAssetClick={onAssetClick}
-          onClose={() => setAssetChangeModalActive("")}
+          onClose={() => setAssetChangeModalActive(undefined)}
         />
       )}
 
@@ -327,6 +334,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
             amountB={amountB}
             slippage={slippage}
             method={method}
+            connectedWallet={connectedWallet}
             isReverse={swapInput && swapInput.type === "B" ? true : false}
             onClose={onReset}
           />

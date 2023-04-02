@@ -623,7 +623,6 @@ export class SwapContract {
     tokenA,
     tokenB,
     swapToken,
-    swapTokenDecimals,
     amount
   ): Promise<string> => {
     const script = {
@@ -635,28 +634,23 @@ export class SwapContract {
         { type: "Hash160", value: swapToken },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amount, swapTokenDecimals).toString()
+          value: amount
+          // value: u.BigInteger.fromDecimal(amount, swapTokenDecimals).toString()
         }
       ]
     };
     const res = await Network.read(this.network, [script]);
+    console.log(res);
     if (res.state === "FAULT") {
       return "0";
     } else {
       const { estimated, fee, decimals } = parseMapValue(res.stack[0] as any);
-      console.log(
-        "Fee: " + u.BigInteger.fromNumber(fee).toDecimal(swapTokenDecimals)
-      );
       return u.BigInteger.fromNumber(estimated).toDecimal(decimals);
     }
   };
 
-  getSwapBEstimate = async (
-    tokenA,
-    tokenB,
-    tokenBDecimals,
-    amountOut
-  ): Promise<string> => {
+  getSwapBEstimate = async (tokenA, tokenB, amountOut): Promise<string> => {
+    console.log(amountOut)
     const script = {
       scriptHash: this.contractHash,
       operation: "getSwapBEstimate",
@@ -665,7 +659,7 @@ export class SwapContract {
         { type: "Hash160", value: tokenB },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amountOut, tokenBDecimals).toString()
+          value: amountOut
         }
       ]
     };
@@ -957,6 +951,37 @@ export class SwapContract {
       bNEO: parseFloat(
         u.BigInteger.fromNumber(res.stack[1].value as string).toDecimal(8)
       )
+    };
+  };
+
+  getUserBalances = async (
+    address: string,
+    tokenA: string,
+    tokenB: string
+  ): Promise<{ amountA: string; amountB: string }> => {
+    const scripts: any = [];
+    const senderHash = NeonWallet.getScriptHashFromAddress(address);
+    const script1 = {
+      scriptHash: tokenA,
+      operation: "balanceOf",
+      args: [{ type: "Hash160", value: senderHash }]
+    };
+    const script2 = {
+      scriptHash: tokenB,
+      operation: "balanceOf",
+      args: [{ type: "Hash160", value: senderHash }]
+    };
+    scripts.push(script1);
+    scripts.push(script2);
+    const res = await Network.read(this.network, scripts);
+    if (res.state === "FAULT") {
+      throw new Error(
+        res.exception ? (res.exception as string) : "something went wrong.."
+      );
+    }
+    return {
+      amountA: res.stack[0].value as string,
+      amountB: res.stack[1].value as string
     };
   };
 }
