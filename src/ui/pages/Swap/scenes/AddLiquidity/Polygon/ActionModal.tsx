@@ -9,9 +9,12 @@ import { INetworkType } from "../../../../../../packages/neo/network";
 import { getExploler } from "../../../../../../helpers";
 import {
   approve,
-  getAllowances
+  getAllowances,
+  provide,
+  swap
 } from "../../../../../../packages/polygon/swap";
 import toast from "react-hot-toast";
+import { ethers } from "ethers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -19,17 +22,25 @@ interface IActionModalProps {
   address: string;
   tokenA: ITokenState;
   tokenB: ITokenState;
-  invokeFn: () => any; // prepareWriteContract fn
+  amountA: number;
+  amountB: number;
+  slippage: number;
+  method: "swap" | "provide";
+  isReverse: boolean;
   onClose: () => void;
 }
 
 const ActionModal = ({
   tokenA,
   tokenB,
+  amountA,
+  amountB,
+  slippage,
   address,
-  invokeFn,
+  method,
   onClose,
   chain,
+  isReverse,
   network
 }: IActionModalProps) => {
   const [isTokenAApproved, setTokenAApproved] = useState(false);
@@ -66,6 +77,7 @@ const ActionModal = ({
         tokenAAllowance = allowances[0];
         tokenBAllowance = allowances[1];
       } catch (e: any) {
+        console.error(e);
         toast.error(e.message ? e.message : "Something went wrong.");
         onClose();
       }
@@ -78,6 +90,7 @@ const ActionModal = ({
           await res.wait();
           setTokenAApproved(true);
         } catch (e) {
+          console.error(e);
           setTokenAApproveError(true);
           toast.error(`"Failed to approve ${tokenA.symbol}."`);
         }
@@ -94,6 +107,7 @@ const ActionModal = ({
           await res.wait();
           setTokenBApproved(true);
         } catch (e) {
+          console.error(e);
           setTokenBApproveError(true);
           toast.error(`"Failed to approve ${tokenA.symbol}."`);
         }
@@ -103,7 +117,44 @@ const ActionModal = ({
       }
 
       try {
-        const { hash } = await writeContract(await invokeFn());
+        let config;
+        if (method === "swap") {
+          const amountOutBN = ethers.utils.parseUnits(
+            amountB.toString(),
+            tokenB.decimals
+          );
+
+          config = await swap(network, {
+            tokenA: tokenA.hash,
+            tokenB: tokenB.hash,
+            amountIn: ethers.utils
+              .parseUnits(amountA.toString(), tokenA.decimals)
+              .toString(),
+            // Add slippage
+            amountOut: amountOutBN
+              .sub(amountOutBN.mul(slippage).div(100))
+              .toString(),
+            isReverse
+          });
+        } else if (method === "provide") {
+          config = await provide(network, {
+            tokenA: tokenA.hash,
+            tokenB: tokenB.hash,
+            amountA: ethers.utils
+              .parseUnits(amountA.toString(), tokenA.decimals)
+              .toString(),
+            amountB: ethers.utils
+              .parseUnits(amountB.toString(), tokenB.decimals)
+              .toString(),
+            slippage: slippage * 100 // BPS
+          });
+        } else {
+          toast.error("The method is not supported.");
+          return;
+        }
+        console.log(config);
+
+        const { hash } = await writeContract(config);
 
         setSwapping(true);
         setTxid(hash);
@@ -115,6 +166,7 @@ const ActionModal = ({
         setSwapDone(true);
         setSwapping(false);
       } catch (e: any) {
+        console.error(e);
         setSwappingError(true);
         setSwapping(false);
         if (e.reason) {

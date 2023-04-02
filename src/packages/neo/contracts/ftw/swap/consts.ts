@@ -11,7 +11,7 @@ const { TESTNET, MAINNET } = GLOBAL;
 
 export const SWAP_FEE = 0.25;
 
-export const DEFAULT_SLIPPAGE = 3;
+export const DEFAULT_SLIPPAGE = 10;
 
 export const PRICE_IMPACT_LIMIT = 100;
 

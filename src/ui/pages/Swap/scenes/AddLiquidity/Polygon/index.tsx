@@ -38,7 +38,13 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const location = useLocation();
   const params = queryString.parse(location.search);
   const { address, isConnected } = useAccount();
-  const { chain, toggleWalletSidebar, network } = useApp();
+  const {
+    chain,
+    toggleWalletSidebar,
+    network,
+    refreshCount,
+    increaseRefreshCount
+  } = useApp();
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
     params.tokenA
@@ -57,18 +63,8 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const [amountA, setAmountA] = useState<number | undefined>();
   const [amountB, setAmountB] = useState<number | undefined>();
 
+  const [method, setMethod] = useState<"swap" | "provide" | undefined>();
   const [swapInput, setSwapInput] = useState<ISwapInputState>();
-
-  const [invokeFn, setInvokeFn] = useState<() => any | undefined>();
-  // const [isTokenAApproved, setTokenAApproved] = useState(false);
-  // const [isTokenAApprving, setTokenAApproving] = useState(false);
-  // const [isTokenBApproved, setTokenBApproved] = useState(false);
-  // const [isTokenBApprving, setTokenBApproving] = useState(false);
-  // const [isSwapDone, setSwapDone] = useState(false);
-  // const [isSwapping, setSwapping] = useState(false);
-  // const [hasTokenAApproveError, setTokenAApproveError] = useState(false);
-  // const [hasTokenBApproveError, setTokenBApproveError] = useState(false);
-  // const [hasSwappingError, setSwappingError] = useState(false);
 
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
@@ -135,15 +131,10 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   };
 
   const onReset = () => {
-    // setTokenAApproved(false);
-    // setTokenAApproving(false);
-    // setTokenBApproved(false);
-    // setTokenBApproving(false);
-    // setTokenAApproveError(false);
-    // setSwappingError(false);
-    // setTxid(undefined);
     setAmountA(undefined);
     setAmountB(undefined);
+    increaseRefreshCount();
+    setMethod(undefined);
   };
 
   const onProvide = async () => {
@@ -155,20 +146,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       //   );
       //   return false;
       // }
-
-      setInvokeFn(() =>
-        provide(network, {
-          tokenA: tokenA.hash,
-          tokenB: tokenB.hash,
-          amountA: ethers.utils
-            .parseUnits(amountA.toString(), tokenA.decimals)
-            .toString(),
-          amountB: ethers.utils
-            .parseUnits(amountB.toString(), tokenB.decimals)
-            .toString(),
-          slippage: slippage * 100
-        })
-      );
+      setMethod("provide");
     }
   };
 
@@ -209,7 +187,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
     if (tokenA && tokenB) {
       load(tokenA, tokenB);
     }
-  }, [address, tokenA, tokenB, refresh]);
+  }, [address, tokenA, tokenB]);
 
   let noLiquidity = false;
 
@@ -272,14 +250,18 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         />
       )}
 
-      {invokeFn && tokenA && tokenB && address && (
+      {method && tokenA && tokenB && address && amountA && amountB && (
         <ActionModal
           chain={chain}
           network={network}
-          invokeFn={invokeFn}
+          method={method}
           tokenA={tokenA}
           tokenB={tokenB}
+          amountA={amountA}
+          amountB={amountB}
+          isReverse={false}
           address={address}
+          slippage={slippage}
           onClose={onReset}
         />
       )}

@@ -43,7 +43,10 @@ const Swap = (props: ISwapProps) => {
       <PageLayout>
         <div className="columns is-centered">
           <div className="column is-half">
-            <div className="box is-shadowless is-relative">
+            <div
+              className="box is-shadowless is-relative"
+              style={{ overflow: "hidden" }}
+            >
               <Route
                 exact={true}
                 path={path}

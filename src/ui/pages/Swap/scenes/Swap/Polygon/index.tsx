@@ -21,7 +21,6 @@ import {
   ITokenState
 } from "../interfaces";
 
-import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { getTokenByHash } from "../helpers";
 import ActionModal from "../../AddLiquidity/Polygon/ActionModal";
@@ -65,7 +64,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const [swapInput, setSwapInput] = useState<ISwapInputState>();
 
-  const [invokeFn, setInvokeFn] = useState<() => any | undefined>();
+  const [method, setMethod] = useState<"swap" | "provide" | undefined>();
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
   >("");
@@ -109,10 +108,11 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   };
 
   const onReset = () => {
+    console.log(1);
     setAmountA(undefined);
     setAmountB(undefined);
     increaseRefreshCount();
-    // setActionModalActive(false);
+    setMethod(undefined);
   };
 
   const onSwitch = async () => {
@@ -124,21 +124,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
   const onSwap = async () => {
     if (tokenA && tokenB && amountA && amountB && swapInput && address) {
-      // setActionModalActive(true);
-
-      setInvokeFn(() =>
-        swap(network, {
-          tokenA: tokenA.hash,
-          tokenB: tokenB.hash,
-          amountIn: ethers.utils
-            .parseUnits(amountA.toString(), tokenA.decimals)
-            .toString(),
-          amountOut: ethers.utils
-            .parseUnits(amountB.toString(), tokenB.decimals)
-            .toString(),
-          isReverse: swapInput.type === "B"
-        })
-      );
+      setMethod("swap");
     }
   };
 
@@ -162,7 +148,6 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
             _tokenA.hash,
             _tokenB.hash
           );
-
           setBalances({
             amountA,
             amountB
@@ -246,7 +231,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   }
 
   return (
-    <div>
+    <>
       <SwapNav
         rootPath={rootPath}
         search={
@@ -325,17 +310,27 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         />
       )}
 
-      {invokeFn && tokenA && tokenB && address && (
-        <ActionModal
-          chain={chain}
-          network={network}
-          address={address}
-          tokenA={tokenA}
-          tokenB={tokenB}
-          invokeFn={}
-          onClose={onReset}
-        />
-      )}
+      {method &&
+        tokenA &&
+        tokenB &&
+        address &&
+        amountA &&
+        amountB &&
+        method && (
+          <ActionModal
+            chain={chain}
+            network={network}
+            address={address}
+            tokenA={tokenA}
+            tokenB={tokenB}
+            amountA={amountA}
+            amountB={amountB}
+            slippage={slippage}
+            method={method}
+            isReverse={swapInput && swapInput.type === "B" ? true : false}
+            onClose={onReset}
+          />
+        )}
 
       <SwapSettings
         isActive={isSettingsActive}
@@ -343,7 +338,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
         slippage={slippage}
         onSlippageChange={setSlippage}
       />
-    </div>
+    </>
   );
 };
 

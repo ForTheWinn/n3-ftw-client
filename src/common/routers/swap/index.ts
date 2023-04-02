@@ -36,14 +36,16 @@ export const getBalances = async (
       //   return new RestAPI(MAINNET).getPrices();
       break;
     case POLYGON_CHAIN:
-      amountA = await fetchBalance({
+      const res1 = await fetchBalance({
         address,
         token: tokenA
       });
-      amountB = await fetchBalance({
+      const res2 = await fetchBalance({
         address,
         token: tokenB
       });
+      amountA = res1.formatted;
+      amountB = res2.formatted;
       break;
   }
   return {

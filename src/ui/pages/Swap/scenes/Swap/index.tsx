@@ -12,8 +12,6 @@ interface ISwapProps {
 
 const Swap = ({ rootPath }: ISwapProps) => {
   const { chain } = useApp();
-
-
   
   return (
     <div>
