@@ -56,12 +56,21 @@ const NEPKeys = () => {
         const res = await new RestAPI(network).getGMOrders({
           tokenId: tokenId,
         });
-        const tx = await new GMContract(network).buy(
-          connectedWallet,
-          res.orders[0].contractAuctionId,
-          amount
-        );
-        setTxid(tx);
+        if (
+          res &&
+          res.orders[0] &&
+          res.orders[0].orderData &&
+          res.orders[0].orderData.contractOrderId
+        ) {
+          const tx = await new GMContract(network).buy(
+            connectedWallet,
+            res.orders[0].orderData.contractOrderId,
+            amount
+          );
+          setTxid(tx);
+        } else {
+          toast.error("Fetching GM API failed.");
+        }
       } catch (e: any) {
         toast.error(e.message);
       }

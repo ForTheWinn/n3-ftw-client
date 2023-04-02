@@ -111,9 +111,18 @@ export class RestAPI {
     };
 
     const params = "?" + new URLSearchParams(defaultFilters).toString();
-    return this.fetchResult(
+    const res = await this.fetchResult(
       `https://api.ghostmarket.io/api/v2/assets` + params
     );
+    if(res.next){
+      defaultFilters.Cursor = res.next
+      const params = "?" + new URLSearchParams(defaultFilters).toString();
+      const res1 = await this.fetchResult(
+        `https://api.ghostmarket.io/api/v2/assets` + params
+      );
+      res.assets = res.assets.concat(res1.assets)
+    }
+    return res;
   }
 
   async getGMEvents(filter): Promise<any> {
