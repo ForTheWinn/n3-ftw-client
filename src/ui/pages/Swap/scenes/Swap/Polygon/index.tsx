@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { fetchBalance, writeContract, waitForTransaction } from "@wagmi/core";
+import { writeContract, waitForTransaction } from "@wagmi/core";
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { useAccount } from "wagmi";
-import { BigNumberish, ethers } from "ethers";
+import { ethers } from "ethers";
 import queryString from "query-string";
 
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
@@ -25,16 +25,17 @@ import {
 import {
   approve,
   getAllowances,
-  getEstimated,
-  getReserves,
   swap
 } from "../../../../../../packages/polygon/swap";
+
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { getTokenByHash } from "../helpers";
 import ActionModal from "../../AddLiquidity/Polygon/ActionModal";
 import SwapSettings from "../../../components/Settings";
 import { NEO_ROUTES } from "../../../../../../consts";
+import { swapRouter } from "../../../../../../common/routers";
+import { getExploler } from "../../../../../../helpers";
 
 interface ISwapProps {
   rootPath: string;
@@ -93,6 +94,7 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   const onAssetChange = (type: "A" | "B" | "") => {
     setAssetChangeModalActive(type);
   };
+
   const onAssetClick = (token: ITokenState) => {
     if (isAssetChangeModalActive === "A") {
       if (tokenB && tokenB.hash === token.hash) {
@@ -241,31 +243,34 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
     const load = async (_tokenA, _tokenB) => {
       setError(undefined);
       try {
-        const res = await getReserves(network, _tokenA, _tokenB);
+        const res = await await swapRouter.getReserves(
+          chain,
+          network,
+          _tokenA,
+          _tokenB
+        );
         setReserve(res);
 
         if (address) {
-          const tokenAbalance = await fetchBalance({
+          const { amountA, amountB } = await swapRouter.getBalances(
+            chain,
+            network,
             address,
-            token: _tokenA.hash
-          });
-
-          const tokenBbalance = await fetchBalance({
-            address,
-            token: _tokenB.hash
-          });
+            _tokenA.hash,
+            _tokenB.hash
+          );
 
           setBalances({
-            amountA: tokenAbalance.formatted,
-            amountB: tokenBbalance.formatted
+            amountA,
+            amountB
           });
-
-          window.history.replaceState(
-            null,
-            "",
-            `/#${location.pathname}?tokenA=${_tokenA.hash}&tokenB=${_tokenB.hash}`
-          );
         }
+
+        window.history.replaceState(
+          null,
+          "",
+          `/#${location.pathname}?tokenA=${_tokenA.hash}&tokenB=${_tokenB.hash}`
+        );
       } catch (e) {
         setError("Failed to fetch reserves.");
         console.log(e);
@@ -290,25 +295,23 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
 
         try {
           if (swapInput.value) {
-            const args = [
-              tokenA.hash,
-              tokenB.hash,
-              ethers.utils
+            const args = {
+              tokenA: tokenA.hash,
+              tokenB: tokenB.hash,
+              amount: ethers.utils
                 .parseUnits(
                   swapInput.value.toString(),
                   swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
                 )
                 .toString(),
-              swapInput.type === "B"
-            ];
-            const data = await getEstimated(network, args);
-
-            if (data) {
-              estimated = ethers.utils.formatUnits(
-                data as BigNumberish,
-                swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
-              );
-            }
+              isReverse: swapInput.type === "B"
+            };
+            estimated = await swapRouter.getEstimate(
+              chain,
+              network,
+              args,
+              swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
+            );
           }
         } catch (e: any) {
           setError("Failed to fetch swap estimate. Check your inputs.");
@@ -434,13 +437,11 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
           hasTokenBError={hasTokenBApproveError}
           hasSubmitError={hasSwappingError}
           txid={txid}
-          explorer={
-            ""
-            // network.chain ? network.chain.blockExplorers?.default.url : ""
-          }
+          explorer={getExploler(chain, network)}
           onClose={onReset}
         />
       )}
+
       <SwapSettings
         isActive={isSettingsActive}
         onClose={() => setSettingsActive(false)}

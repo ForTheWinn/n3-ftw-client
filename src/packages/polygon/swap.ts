@@ -15,6 +15,7 @@ import FTWSwapABI from "./FTWSwap.json";
 import { IFarmLPToken } from "../../common/routers/farm/interfaces";
 import { INetworkType } from "../neo/network";
 import { GLOBAL } from "../../consts";
+import { SwapEstimateArgs } from "./interfaces";
 
 export const getReserves = async (
   network: INetworkType,
@@ -53,13 +54,33 @@ export const getReserve = async (
   });
 };
 
-export const getEstimated = ( network: INetworkType,args) => {
-  return readContract({
+export const
+
+  
+  getEstimated = async (network: INetworkType, args: SwapEstimateArgs, decimals: number):
+    
+    
+    
+    
+    
+    
+    Promise<string> => {
+  const { tokenA, tokenB, amount, isReverse } = args;
+  const res = await readContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getSwapEstimated",
-    args,
+    args: [
+      tokenA,
+      tokenB,
+      amount,
+      isReverse,
+    ]
   });
+                return ethers.utils.formatUnits(
+            res as number,
+                        decimals
+                        );
 };
 
 export const getLPTokens = async ( network: INetworkType,owner: string): Promise<IFarmLPToken[]> => {
@@ -75,8 +96,7 @@ export const getLPTokens = async ( network: INetworkType,owner: string): Promise
     const token = await getTokenURI(network, tokenId.toString());
     tokens.push(token)
   }
-
-  return tokens;
+        return tokens;
 };
 
 export const getTokenURI = async ( network: INetworkType,tokenId: string): Promise<IFarmLPToken> => {

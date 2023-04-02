@@ -1,4 +1,6 @@
-import { POLYGON_CHAIN } from "../consts/chains";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../consts/chains";
+import { MAINNET } from "../consts/global";
+import { INetworkType } from "../packages/neo/network";
 
 export const getChainId = (chain: string): number => {
   switch (chain) {
@@ -6,5 +8,24 @@ export const getChainId = (chain: string): number => {
       return 80001;
     default:
       return 1;
+  }
+};
+
+export const getExploler = (chain: string, network: INetworkType): string => {
+  switch (chain) {
+    case NEO_CHAIN:
+      if (network === MAINNET) {
+        return "https://explorer.onegate.space";
+      } else {
+        return "https://testmagnet.explorer.onegate.space";
+      }
+    case POLYGON_CHAIN:
+      if (network === MAINNET) {
+        return "https://polygonscan.com";
+      } else {
+        return "https://mumbai.polygonscan.com";
+      }
+    default:
+      return "";
   }
 };

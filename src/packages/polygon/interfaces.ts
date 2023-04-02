@@ -10,3 +10,10 @@ export interface ILPTokenURI {
   decimalsA: string;
   decimalsB: string;
 }
+
+export interface SwapEstimateArgs {
+  tokenA: string;
+  tokenB: string;
+  amount: string;
+  isReverse: boolean;
+}

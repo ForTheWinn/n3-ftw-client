@@ -1,3 +1,4 @@
-import * as farm from "./farm";
+import * as farmRouter from "./farm";
+import * as swapRouter from "./swap";
 
-export { farm as farmRouter };
+export { farmRouter, swapRouter };
