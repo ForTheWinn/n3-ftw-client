@@ -9,6 +9,7 @@ import Trade from "./scenes/Swap";
 import RemoveLiquidity from "./scenes/RemoveLiquidity";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import PolygonSwap from "./scenes/Swap/Polygon";
+import PolygonAddLiquidity from "./scenes/AddLiquidity/Polygon";
 
 // import MarketStatus from "./components/CheckMarketStatus";
 
@@ -42,9 +43,7 @@ const Swap = (props: ISwapProps) => {
       <PageLayout>
         <div className="columns is-centered">
           <div className="column is-half">
-            <div
-              className="box is-shadowless is-relative"
-            >
+            <div className="box is-shadowless is-relative">
               <Route
                 exact={true}
                 path={path}
@@ -52,7 +51,7 @@ const Swap = (props: ISwapProps) => {
               />
               <Route
                 path={path + NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}
-                component={() => <Liquidity rootPath={path} />}
+                component={() => <PolygonAddLiquidity rootPath={path} />}
               />
               <Route
                 path={path + NEO_ROUTES.SWAP_PATH_LIQUIDITY_REMOVE}

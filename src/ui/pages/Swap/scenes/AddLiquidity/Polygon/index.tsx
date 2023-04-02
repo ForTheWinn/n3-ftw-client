@@ -4,13 +4,11 @@ import queryString from "query-string";
 import { toast } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
-import { fetchBalance, writeContract, waitForTransaction } from "@wagmi/core";
+import { fetchBalance } from "@wagmi/core";
 
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { getTokenByHash } from "../../Swap/helpers";
 import {
-  approve,
-  getAllowances,
   getLPEstimate,
   getReserves,
   provide
@@ -61,16 +59,18 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
   const [swapInput, setSwapInput] = useState<ISwapInputState>();
 
-  const [isActionModalActive, setActionModalActive] = useState(false);
-  const [isTokenAApproved, setTokenAApproved] = useState(false);
-  const [isTokenAApprving, setTokenAApproving] = useState(false);
-  const [isTokenBApproved, setTokenBApproved] = useState(false);
-  const [isTokenBApprving, setTokenBApproving] = useState(false);
-  const [isSwapDone, setSwapDone] = useState(false);
-  const [isSwapping, setSwapping] = useState(false);
-  const [hasTokenAApproveError, setTokenAApproveError] = useState(false);
-  const [hasTokenBApproveError, setTokenBApproveError] = useState(false);
-  const [hasSwappingError, setSwappingError] = useState(false);
+  const [invocationConfig, setInvocationConfig] = useState<
+    object | undefined
+  >();
+  // const [isTokenAApproved, setTokenAApproved] = useState(false);
+  // const [isTokenAApprving, setTokenAApproving] = useState(false);
+  // const [isTokenBApproved, setTokenBApproved] = useState(false);
+  // const [isTokenBApprving, setTokenBApproving] = useState(false);
+  // const [isSwapDone, setSwapDone] = useState(false);
+  // const [isSwapping, setSwapping] = useState(false);
+  // const [hasTokenAApproveError, setTokenAApproveError] = useState(false);
+  // const [hasTokenBApproveError, setTokenBApproveError] = useState(false);
+  // const [hasSwappingError, setSwappingError] = useState(false);
 
   const [isAssetChangeModalActive, setAssetChangeModalActive] = useState<
     "A" | "B" | ""
@@ -79,9 +79,8 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   const [isSettingsActive, setSettingsActive] = useState(false);
   const [slippage, setSlippage] = useState<number>(DEFAULT_SLIPPAGE);
 
-  const [txid, setTxid] = useState<`0x${string}` | undefined>();
   const [error, setError] = useState<any>();
-  const [refresh, setRefresh] = useState(0);
+
 
   const onAssetChange = (type: "A" | "B" | "") => {
     setAssetChangeModalActive(type);
@@ -139,18 +138,17 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   };
 
   const onReset = () => {
-    setRefresh(refresh + 1);
-    setTokenAApproved(false);
-    setTokenAApproving(false);
-    setTokenBApproved(false);
-    setTokenBApproving(false);
-    setSwapDone(false);
-    setSwapping(false);
-    setTokenAApproveError(false);
-    setTokenBApproveError(false);
-    setSwappingError(false);
-    setTxid(undefined);
-    setActionModalActive(false);
+    // setRefresh(refresh + 1);
+    // setTokenAApproved(false);
+    // setTokenAApproving(false);
+    // setTokenBApproved(false);
+    // setTokenBApproving(false);
+    // setSwapDone(false);
+    // setSwapping(false);
+    // setTokenAApproveError(false);
+    // setTokenBApproveError(false);
+    // setSwappingError(false);
+    // setTxid(undefined);
     setAmountA(undefined);
     setAmountB(undefined);
   };
@@ -164,89 +162,15 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
       //   );
       //   return false;
       // }
+      const config = await provide(network, [
+        tokenA.hash,
+        ethers.utils.parseUnits(amountA.toString(), tokenA.decimals).toString(),
+        tokenB.hash,
+        ethers.utils.parseUnits(amountB.toString(), tokenB.decimals).toString(),
+        slippage * 100
+      ]);
 
-      setActionModalActive(true);
-
-      let tokenAAllowance;
-      let tokenBAllowance;
-
-      try {
-        const allowances = await getAllowances(
-          network,
-          address,
-          tokenA.hash,
-          tokenB.hash
-        );
-        tokenAAllowance = allowances[0];
-        tokenBAllowance = allowances[1];
-      } catch (e) {
-        toast.error("Failed to load data.");
-        onReset();
-      }
-
-      if (!tokenAAllowance || tokenAAllowance.toString() === "0") {
-        setTokenAApproving(true);
-        try {
-          const config = await approve(network, tokenA.hash);
-          const res = await writeContract(config);
-          await res.wait();
-          setTokenAApproved(true);
-        } catch (e) {
-          setTokenAApproveError(true);
-          toast.error(`"Failed to approve ${tokenA.symbol}."`);
-          return false;
-        }
-        setTokenAApproving(false);
-      } else {
-        setTokenAApproved(true);
-      }
-
-      if (!tokenBAllowance || tokenBAllowance.toString() === "0") {
-        setTokenBApproving(true);
-        try {
-          const config = await approve(network, tokenB.hash);
-          const res = await writeContract(config);
-          await res.wait();
-          setTokenBApproved(true);
-        } catch (e) {
-          setTokenBApproveError(true);
-          toast.error(`"Failed to approve ${tokenB.symbol}."`);
-          return false;
-        }
-        setTokenBApproving(false);
-      } else {
-        setTokenBApproved(true);
-      }
-
-      try {
-        const config = await provide(network, [
-          tokenA.hash,
-          ethers.utils
-            .parseUnits(amountA.toString(), tokenA.decimals)
-            .toString(),
-          tokenB.hash,
-          ethers.utils
-            .parseUnits(amountB.toString(), tokenB.decimals)
-            .toString(),
-          slippage * 100
-        ]);
-
-        const { hash } = await writeContract(config);
-
-        setSwapping(true);
-        setTxid(hash);
-
-        const data = await waitForTransaction({
-          hash
-        });
-
-        setSwapDone(true);
-        setSwapping(false);
-      } catch (e) {
-        setSwappingError(true);
-        setSwapping(false);
-        return false;
-      }
+      setInvocationConfig(config);
     }
   };
 
@@ -350,28 +274,14 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         />
       )}
 
-      {/* {isActionModalActive && tokenA && tokenB && (
+      {invocationConfig && tokenA && tokenB && (
         <ActionModal
           // title="Add Liquidity"
           tokenA={tokenA}
           tokenB={tokenB}
-          isTokenAApproved={isTokenAApproved}
-          isTokenBApproved={isTokenBApproved}
-          isTokenAApproving={isTokenAApprving}
-          isTokenBApproving={isTokenBApprving}
-          isSwapping={isSwapping}
-          isSwapDone={isSwapDone}
-          hasTokenAError={hasTokenAApproveError}
-          hasTokenBError={hasTokenBApproveError}
-          hasSubmitError={hasSwappingError}
-          txid={txid}
-          explorer={
-            ""
-            // network.chain ? network.chain.blockExplorers?.default.url : ""
-          }
           onClose={onReset}
         />
-      )} */}
+      )}
 
       <SwapSettings
         isActive={isSettingsActive}

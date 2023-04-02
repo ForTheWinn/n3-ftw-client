@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { writeContract, waitForTransaction } from "@wagmi/core";
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
@@ -22,11 +21,6 @@ import {
   ITokenState
 } from "../interfaces";
 
-import {
-  approve,
-  getAllowances,
-  swap
-} from "../../../../../../packages/polygon/swap";
 
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
@@ -35,7 +29,6 @@ import ActionModal from "../../AddLiquidity/Polygon/ActionModal";
 import SwapSettings from "../../../components/Settings";
 import { NEO_ROUTES } from "../../../../../../consts";
 import { swapRouter } from "../../../../../../common/routers";
-import { getExploler } from "../../../../../../helpers";
 
 interface ISwapProps {
   rootPath: string;
@@ -83,7 +76,6 @@ const PolygonSwap = ({ rootPath }: ISwapProps) => {
   const [isSettingsActive, setSettingsActive] = useState(false);
   const [slippage, setSlippage] = useState<number>(DEFAULT_SLIPPAGE);
 
-  // const [txid, setTxid] = useState<`0x${string}` | undefined>();
   const [error, setError] = useState<any>();
 
   const onAssetChange = (type: "A" | "B" | "") => {
