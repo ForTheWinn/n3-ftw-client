@@ -115,6 +115,9 @@ const NEPKeys = () => {
                       <KeysLoading />
                     ) : data && data.assets ? (
                       data.assets.map((evt) => {
+                        if (!evt){
+                          return <></>
+                        }
                         return (
                           <KeyCard
                             onClick={() =>
