@@ -22,6 +22,7 @@ import {
 import { SwapContract } from "../../../../packages/neo/contracts";
 import { IConnectedWallet } from "../../../../packages/neo/wallets/interfaces";
 import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
+import { useWallet } from "../../../../packages/neo/provider";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -34,7 +35,6 @@ interface IActionModalProps {
   slippage: number;
   method: "swap" | "provide";
   isReverse: boolean;
-  connectedWallet?: IConnectedWallet;
   onClose: () => void;
 }
 
@@ -50,8 +50,8 @@ const ActionModal = ({
   chain,
   isReverse,
   network,
-  connectedWallet
 }: IActionModalProps) => {
+  const { connectedWallet } = useWallet();
   const [isTokenAApproved, setTokenAApproved] = useState(false);
   const [isTokenAApproving, setTokenAApproving] = useState(false);
   const [isTokenBApproved, setTokenBApproved] = useState(false);

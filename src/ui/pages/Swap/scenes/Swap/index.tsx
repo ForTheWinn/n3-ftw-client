@@ -1,6 +1,4 @@
-import React, {  useState } from "react";
-import { useApp } from "../../../../../common/hooks/use-app";
-import { useAccount } from "wagmi";
+import React, { useState } from "react";
 import ProvideLPInfo from "../../components/ProvideLPInfo";
 import SwapInputs from "./SwapInputs";
 import SwapDetails from "./components/SwapDetails/SwapDetails";
@@ -8,31 +6,20 @@ import SwapButton from "../../components/SwapButton";
 import SwapNav from "./components/SwapNav";
 
 import ActionModal from "../../components/ActionModal";
-import SwapSettings from "../../components/Settings";
 import { NEO_ROUTES } from "../../../../../consts";
-import { useWallet } from "../../../../../packages/neo/provider";
-import {
-  ISwapReserves,
-  IUserTokenBalances
-} from "../../../../../common/routers/swap/interfaces";
 import { useSwap } from "../SwapContext";
+import { Divider } from "antd";
+import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 
 interface ISwapProps {
   rootPath: string;
 }
 
 const SwapMain = ({ rootPath }: ISwapProps) => {
-  const {
-    chain,
-    toggleWalletSidebar,
-    network,
-    refreshCount,
-    increaseRefreshCount
-  } = useApp();
-  const { connectedWallet } = useWallet();
-  const { address, isConnected } = useAccount();
 
   const {
+    chain,
+    network,
     tokenA,
     tokenB,
     reserves,
@@ -43,48 +30,25 @@ const SwapMain = ({ rootPath }: ISwapProps) => {
     isAmountBLoading,
     swapInput,
     slippage,
-    setTokenA,
-    setTokenB,
-    setAmountA,
-    setAmountB,
+    noLiquidity,
+    priceImpact,
+    onAfterSwapCompleted,
     setAssetChangeModalActive,
     setSettingsModalActive,
-    onSwapInputChange
+    onSwapInputChange,
+    onInputSwitch,
+    toggleWalletSidebar
   } = useSwap();
 
+  const { address, isConnected } = useWalletRouter(chain);
+
   const [method, setMethod] = useState<"swap" | "provide" | undefined>();
-
-  const onReset = () => {
-    console.log(1);
-    setAmountA(undefined);
-    setAmountB(undefined);
-    increaseRefreshCount();
-    setMethod(undefined);
-  };
-
-  const onSwitch = async () => {
-    setTokenA(tokenB);
-    setTokenB(tokenA);
-    setAmountA(undefined);
-    setAmountB(undefined);
-  };
 
   const onSwap = async () => {
     if (tokenA && tokenB && amountA && amountB && swapInput && address) {
       setMethod("swap");
     }
   };
-
-  let noLiquidity = false;
-  let priceImpact = 0;
-
-  if (tokenA && tokenB && reserves) {
-    noLiquidity = reserves.shares === "0";
-    if (amountA && amountB && reserves) {
-      priceImpact = (amountB / parseFloat(reserves.reserveB)) * 100;
-    }
-    console.log(reserves);
-  }
 
   return (
     <>
@@ -98,7 +62,7 @@ const SwapMain = ({ rootPath }: ISwapProps) => {
         onSettingClick={() => setSettingsModalActive(true)}
       />
 
-      <hr className="is-hidden-mobile" />
+      <Divider />
 
       {noLiquidity && tokenA && tokenB ? (
         <ProvideLPInfo
@@ -124,9 +88,9 @@ const SwapMain = ({ rootPath }: ISwapProps) => {
         isAmountALoading={isAmountALoading}
         isAmountBLoading={isAmountBLoading}
         noLiquidity={noLiquidity}
-        setSwapInputChange={onSwapInputChange}
-        onSwitch={onSwitch}
+        onSwitch={onInputSwitch}
         onAssetChange={setAssetChangeModalActive}
+        setSwapInputChange={onSwapInputChange}
       />
 
       {tokenA && tokenB && reserves && amountA && amountB && reserves ? (
@@ -142,9 +106,7 @@ const SwapMain = ({ rootPath }: ISwapProps) => {
         <></>
       )}
 
-      {/* {error ? <ReservesFetchError message={error} /> : <></>} */}
-
-      <hr />
+      <Divider />
 
       <SwapButton
         label="Swap"
@@ -171,18 +133,10 @@ const SwapMain = ({ rootPath }: ISwapProps) => {
             amountB={amountB}
             slippage={slippage}
             method={method}
-            connectedWallet={connectedWallet}
             isReverse={swapInput && swapInput.type === "B" ? true : false}
-            onClose={onReset}
+            onClose={onAfterSwapCompleted}
           />
         )}
-
-      <SwapSettings
-        isActive={isSettingsActive}
-        onClose={() => setSettingsActive(false)}
-        slippage={slippage}
-        onSlippageChange={setSlippage}
-      />
     </>
   );
 };

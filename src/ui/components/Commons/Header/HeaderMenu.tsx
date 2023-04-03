@@ -8,9 +8,6 @@ interface IHeaderMenuProps {
   network: INetworkType;
 }
 export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
-  console.log(chain);
-  console.log(HEADER_ROUTES);
-  console.log(network);
   return (
     <>
       {HEADER_ROUTES[chain].map((route, i) => {

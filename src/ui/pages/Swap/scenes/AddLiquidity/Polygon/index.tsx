@@ -254,7 +254,6 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           isReverse={false}
           address={address}
           slippage={slippage}
-          connectedWallet={connectedWallet}
           onClose={onReset}
         />
       )}

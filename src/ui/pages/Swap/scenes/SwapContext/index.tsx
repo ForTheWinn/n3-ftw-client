@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo
+} from "react";
 import { ISwapInputState, ITokenState } from "../Swap/interfaces";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
@@ -9,15 +15,18 @@ import {
   IUserTokenBalances
 } from "../../../../../common/routers/swap/interfaces";
 import { swapRouter } from "../../../../../common/routers";
-import { NEO_CHAIN } from "../../../../../consts/chains";
+import { CHAINS, NEO_CHAIN } from "../../../../../consts/chains";
 import { useWallet } from "../../../../../packages/neo/provider";
 import { ethers } from "ethers";
-import { useAccount } from "wagmi";
 import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
 import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap/consts";
+import { INetworkType } from "../../../../../packages/neo/network";
+import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 
 interface ISwapContext {
+  chain: CHAINS;
+  network: INetworkType;
   tokenA: ITokenState | undefined;
   tokenB: ITokenState | undefined;
   amountA: number | undefined;
@@ -28,6 +37,8 @@ interface ISwapContext {
   reserves: ISwapReserves | undefined;
   balances: IUserTokenBalances | undefined;
   slippage: number;
+  noLiquidity: boolean;
+  priceImpact: number;
   setTokenA: (token: ITokenState | undefined) => void;
   setTokenB: (token: ITokenState | undefined) => void;
   setAmountA: (amount: number | undefined) => void;
@@ -36,16 +47,26 @@ interface ISwapContext {
   setAssetChangeModalActive: (v: "A" | "B" | undefined) => void;
   setSettingsModalActive: (v: boolean) => void;
   onSwapInputChange: (v: ISwapInputState) => void;
+  onInputSwitch: () => void;
+  onAfterSwapCompleted: () => void;
+  toggleWalletSidebar: () => void;
 }
 
 export const SwapContext = createContext({} as ISwapContext);
 
 export const SwapContextProvider = (props: { children: any }) => {
+  console.log("reload");
   const location = useLocation();
   const params = queryString.parse(location.search);
-  const { chain, network, refreshCount } = useApp();
+  const {
+    chain,
+    network,
+    refreshCount,
+    increaseRefreshCount,
+    toggleWalletSidebar
+  } = useApp();
   const { connectedWallet } = useWallet();
-  const { address, isConnected } = useAccount();
+  const { address, isConnected } = useWalletRouter(chain);
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
     params.tokenA
@@ -85,6 +106,38 @@ export const SwapContextProvider = (props: { children: any }) => {
       setAmountB(val.value);
     }
     setSwapInput(val);
+  };
+
+  const onInputSwitch = async () => {
+    setTokenA(tokenB);
+    setTokenB(tokenA);
+    setAmountA(undefined);
+    setAmountB(undefined);
+  };
+
+  // This is used in TokenList when users select a token.
+  const onAssetClick = (token: ITokenState) => {
+    if (isAssetChangeModalActive === "A") {
+      if (tokenB && tokenB.hash === token.hash) {
+        return false;
+      }
+      setTokenA(token);
+    } else {
+      if (tokenA && tokenA.hash === token.hash) {
+        return false;
+      }
+      setTokenB(token);
+    }
+    setAmountB(undefined);
+    setAmountA(undefined);
+    setAssetChangeModalActive(undefined);
+  };
+
+  // This is used after swap completed.
+  const onAfterSwapCompleted = () => {
+    setAmountA(undefined);
+    setAmountB(undefined);
+    increaseRefreshCount();
   };
 
   useEffect(() => {
@@ -183,42 +236,71 @@ export const SwapContextProvider = (props: { children: any }) => {
     }
   }, [swapInput]);
 
-  const onAssetClick = (token: ITokenState) => {
-    if (isAssetChangeModalActive === "A") {
-      if (tokenB && tokenB.hash === token.hash) {
-        return false;
-      }
-      setTokenA(token);
-    } else {
-      if (tokenA && tokenA.hash === token.hash) {
-        return false;
-      }
-      setTokenB(token);
-    }
-    setAmountB(undefined);
-    setAmountA(undefined);
-    setAssetChangeModalActive(undefined);
-  };
+  let noLiquidity = false;
+  let priceImpact = 0;
 
-  const contextValue = {
-    tokenA,
-    tokenB,
-    amountA,
-    amountB,
-    isAmountALoading,
-    isAmountBLoading,
-    swapInput,
-    reserves,
-    balances,
-    setTokenA,
-    setTokenB,
-    setAmountA,
-    setAmountB,
-    setSwapInput,
-    setAssetChangeModalActive,
-    setSettingsModalActive,
-    onSwapInputChange
-  };
+  if (tokenA && tokenB && reserves) {
+    noLiquidity = reserves.shares === "0";
+    if (amountA && amountB) {
+      priceImpact = (amountB / parseFloat(reserves.reserveB)) * 100;
+    }
+  }
+  const contextValue = useMemo(
+    () => ({
+      chain,
+      network,
+      tokenA,
+      tokenB,
+      amountA,
+      amountB,
+      isAmountALoading,
+      isAmountBLoading,
+      swapInput,
+      reserves,
+      balances,
+      slippage,
+      noLiquidity,
+      priceImpact,
+      setTokenA,
+      setTokenB,
+      setAmountA,
+      setAmountB,
+      setSwapInput,
+      setAssetChangeModalActive,
+      setSettingsModalActive,
+      onSwapInputChange,
+      onInputSwitch,
+      onAfterSwapCompleted,
+      toggleWalletSidebar
+    }),
+    [
+      chain,
+      network,
+      tokenA,
+      tokenB,
+      amountA,
+      amountB,
+      isAmountALoading,
+      isAmountBLoading,
+      swapInput,
+      reserves,
+      balances,
+      slippage,
+      noLiquidity,
+      priceImpact,
+      setTokenA,
+      setTokenB,
+      setAmountA,
+      setAmountB,
+      setSwapInput,
+      setAssetChangeModalActive,
+      setSettingsModalActive,
+      onSwapInputChange,
+      onInputSwitch,
+      onAfterSwapCompleted,
+      toggleWalletSidebar
+    ]
+  );
 
   return (
     <SwapContext.Provider value={contextValue}>

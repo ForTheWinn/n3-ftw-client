@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, useHistory, useRouteMatch } from "react-router-dom";
 import { useApp } from "../../../common/hooks/use-app";
 import { NEO_ROUTES, POLYGON_ROUTES } from "../../../consts";
@@ -20,20 +20,26 @@ const Swap = (props: ISwapProps) => {
   // }, []);
 
   let { path } = useRouteMatch();
-  let history = useHistory();
-  const { chain } = useApp();
 
   if (props.path) {
     path = props.path;
   }
 
-  if (path !== NEO_ROUTES.SWAP_PATH && chain === NEO_CHAIN) {
-    history.push(NEO_ROUTES.SWAP_PATH);
-  }
+  let history = useHistory();
+  const { chain } = useApp();
+  console.log(213)
 
-  if (path !== POLYGON_ROUTES.SWAP_PATH && chain === POLYGON_CHAIN) {
-    history.push(POLYGON_ROUTES.SWAP_PATH);
-  }
+  useEffect(() => {
+    if (path !== NEO_ROUTES.SWAP_PATH && chain === NEO_CHAIN) {
+      console.log(1)
+      history.push(NEO_ROUTES.SWAP_PATH);
+    }
+
+    if (path !== POLYGON_ROUTES.SWAP_PATH && chain === POLYGON_CHAIN) {
+            console.log(2);
+      history.push(POLYGON_ROUTES.SWAP_PATH);
+    }
+  }, [chain]);
 
   return (
     <div>
