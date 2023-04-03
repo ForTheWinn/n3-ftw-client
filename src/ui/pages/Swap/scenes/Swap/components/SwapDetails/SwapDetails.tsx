@@ -14,7 +14,6 @@ interface ISwapDetailsProps {
   amountB: number;
   priceImpact: number;
   slippage: number;
-  setSlippage: (val: number) => void;
 }
 const SwapDetails = ({
   tokenA,
@@ -22,8 +21,7 @@ const SwapDetails = ({
   amountA,
   amountB,
   slippage,
-  priceImpact,
-  setSlippage,
+  priceImpact
 }: ISwapDetailsProps) => {
   const [isActive, setActive] = useState(false);
 

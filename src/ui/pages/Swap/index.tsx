@@ -8,6 +8,7 @@ import RemoveLiquidity from "./scenes/RemoveLiquidity";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import SwapMain from "./scenes/Swap";
 import PolygonAddLiquidity from "./scenes/AddLiquidity/Polygon";
+import { SwapContext, SwapContextProvider } from "./scenes/SwapContext";
 
 interface ISwapProps {
   path?: string;
@@ -46,7 +47,11 @@ const Swap = (props: ISwapProps) => {
               <Route
                 exact={true}
                 path={path}
-                component={() => <SwapMain rootPath={path} />}
+                component={() => (
+                  <SwapContextProvider>
+                    <SwapMain rootPath={path} />
+                  </SwapContextProvider>
+                )}
               />
               <Route
                 path={path + NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}
