@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useOnChainData } from "../../../../common/hooks/use-onchain-data";
-import { useWallet } from "../../../../packages/neo/provider";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import LockerTokenCard from "./LockerTokenCard";
 import { FaInfoCircle, FaKey, FaPlus, FaSearch } from "react-icons/fa";
@@ -9,9 +8,10 @@ import SearchLockerModal from "./SearchLockerModal";
 import ModalCard from "../../../components/Modal";
 import LockerInfoPage from "../InfoPage";
 import { NEO_ROUTES } from "../../../../consts";
+import { useApp } from "../../../../common/hooks/use-app";
 
 const LockerMain = () => {
-  const { network } = useWallet();
+  const { chain, network } = useApp();
   const [isSearchModalActive, setSearchModalActive] = useState(false);
   const [isInfoModalActive, setInfoModalActive] = useState(false);
   const { isLoaded, data } = useOnChainData(() => {
@@ -71,7 +71,7 @@ const LockerMain = () => {
                 data.items.reverse().map((item) => {
                   return (
                     <div key={item.contractHash} className="column is-3">
-                      <LockerTokenCard {...item} network={network} />
+                      <LockerTokenCard {...item} chain={chain} network={network} />
                     </div>
                   );
                 })}

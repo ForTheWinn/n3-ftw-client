@@ -8,16 +8,15 @@ import { useApp } from "../../../../../../common/hooks/use-app";
 import { getTokenByHash } from "../../Swap/helpers";
 import {
   getLPEstimate,
-  getReserves
 } from "../../../../../../packages/polygon/swap";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 
-import AssetListModal from "../../Swap/Polygon/TokenList";
+import AssetListModal from "../../../../../components/Commons/TokenList";
 import LPInputs from "./Inputs";
 import SwapButton from "../../../components/SwapButton";
 import Nav from "../components/Nav";
 import ProvideLPInfo from "../../../components/ProvideLPInfo";
-import ActionModal from "./ActionModal";
+import ActionModal from "../../../components/ActionModal";
 import SwapSettings from "../../../components/Settings";
 
 import { ISwapInputState, ITokenState } from "../../Swap/interfaces";
@@ -132,13 +131,6 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
 
   const onProvide = async () => {
     if (tokenA && tokenB && amountA && amountB && address) {
-      // TODO: check later
-      // if (network.chain && getChainId(chain) !== network.chain.id) {
-      //   toast.error(
-      //     "Chain doesn't match. Please check your wallet's network setting."
-      //   );
-      //   return false;
-      // }
       setMethod("provide");
     }
   };
@@ -153,7 +145,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           _tokenA,
           _tokenB
         );
-        
+
         setReserve(res);
 
         if (address) {
@@ -186,7 +178,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
     if (tokenA && tokenB) {
       load(tokenA, tokenB);
     }
-  }, [address, tokenA, tokenB]);
+  }, [address, tokenA, tokenB, refreshCount]);
 
   let noLiquidity = false;
 

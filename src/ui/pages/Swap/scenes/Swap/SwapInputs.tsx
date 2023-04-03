@@ -1,8 +1,8 @@
 import React from "react";
-import Input from "../../../components/Input";
+import Input from "../../components/Input";
 import { FaExchangeAlt } from "react-icons/fa";
-import { ISwapInputState, ITokenState } from "../interfaces";
-import { IUserTokenBalances } from "../../../../../../common/routers/swap/interfaces";
+import { ISwapInputState, ITokenState } from "./interfaces";
+import { IUserTokenBalances } from "../../../../../common/routers/swap/interfaces";
 
 interface ISwapInputsProps {
   tokenA?: ITokenState;

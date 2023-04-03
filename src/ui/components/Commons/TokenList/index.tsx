@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
 import ContractSearchInput from "./ContractSearchInput";
-import SwapTokenCard from "../../../../components/TokenCard";
-import Modal from "../../../../../../components/Modal";
+import SwapTokenCard from "../../../pages/Swap/components/TokenCard";
+import Modal from "../../Modal";
 
-import { ITokenState } from "../../interfaces";
-import { TOKENS } from "../../../../../../../consts";
-import { CHAINS, POLYGON_CHAIN } from "../../../../../../../consts/chains";
-import { INetworkType } from "../../../../../../../packages/neo/network";
+import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
+import { TOKENS } from "../../../../consts";
+import { CHAINS, POLYGON_CHAIN } from "../../../../consts/chains";
+import { INetworkType } from "../../../../packages/neo/network";
 
 interface IAssetListModalProps {
   chain: CHAINS;

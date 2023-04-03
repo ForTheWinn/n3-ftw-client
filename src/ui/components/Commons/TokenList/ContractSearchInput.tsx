@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { fetchToken } from "@wagmi/core";
 import { FaAngleLeft } from "react-icons/fa";
-import { ITokenState } from "../../interfaces";
+import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
 import { ethers } from "ethers";
 
 interface ContractSearchInputProps {

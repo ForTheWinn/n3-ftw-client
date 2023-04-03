@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { writeContract, waitForTransaction } from "@wagmi/core";
-import Modal from "../../../../../components/Modal";
+import Modal from "../../../components/Modal";
 import { Steps } from "antd";
-import { ITokenState } from "../../Swap/interfaces";
-import LoadingWithText from "../../../../../components/Commons/LoadingWithText";
-import { CHAINS, NEO_CHAIN } from "../../../../../../consts/chains";
-import { INetworkType } from "../../../../../../packages/neo/network";
-import { getExploler } from "../../../../../../helpers";
+import { ITokenState } from "../scenes/Swap/interfaces";
+import LoadingWithText from "../../../components/Commons/LoadingWithText";
+import { CHAINS, NEO_CHAIN } from "../../../../consts/chains";
+import { INetworkType } from "../../../../packages/neo/network";
+import { getExploler } from "../../../../helpers";
 import {
   approve,
   getAllowances,
   provide,
   swap
-} from "../../../../../../packages/polygon/swap";
+} from "../../../../packages/polygon/swap";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import {
   getAfterSlippage,
   getMaxTokenAAmount
-} from "../../../../../../packages/neo/contracts/ftw/swap/helpers";
-import { SwapContract } from "../../../../../../packages/neo/contracts";
-import { IConnectedWallet } from "../../../../../../packages/neo/wallets/interfaces";
-import { waitTransactionUntilSubmmited } from "../../../../../../common/routers/global";
+} from "../../../../packages/neo/contracts/ftw/swap/helpers";
+import { SwapContract } from "../../../../packages/neo/contracts";
+import { IConnectedWallet } from "../../../../packages/neo/wallets/interfaces";
+import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
 
 interface IActionModalProps {
   chain: CHAINS;

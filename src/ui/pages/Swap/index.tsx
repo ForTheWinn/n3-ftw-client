@@ -4,14 +4,10 @@ import { useApp } from "../../../common/hooks/use-app";
 import { NEO_ROUTES, POLYGON_ROUTES } from "../../../consts";
 
 import PageLayout from "../../components/Commons/PageLayout";
-import Liquidity from "./scenes/AddLiquidity";
-import Trade from "./scenes/Swap";
 import RemoveLiquidity from "./scenes/RemoveLiquidity";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
-import PolygonSwap from "./scenes/Swap/Polygon";
+import SwapMain from "./scenes/Swap";
 import PolygonAddLiquidity from "./scenes/AddLiquidity/Polygon";
-
-// import MarketStatus from "./components/CheckMarketStatus";
 
 interface ISwapProps {
   path?: string;
@@ -50,7 +46,7 @@ const Swap = (props: ISwapProps) => {
               <Route
                 exact={true}
                 path={path}
-                component={() => <PolygonSwap rootPath={path} />}
+                component={() => <SwapMain rootPath={path} />}
               />
               <Route
                 path={path + NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}

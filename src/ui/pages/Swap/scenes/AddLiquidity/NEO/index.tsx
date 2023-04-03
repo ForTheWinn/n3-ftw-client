@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import _ from "underscore";
 import { useWallet } from "../../../../../../packages/neo/provider";
 import { SwapContract } from "../../../../../../packages/neo/contracts";
-import AssetListModal from "../../Swap/NEO/TokenList";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
@@ -382,7 +381,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
         </Modal>
       )}
 
-      {isAssetChangeModalActive && (
+      {/* {isAssetChangeModalActive && (
         <AssetListModal
           activeTokenInput={isAssetChangeModalActive}
           tokenAHash={tokenA ? tokenA.hash : undefined}
@@ -392,7 +391,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           filterDecimals={true}
           noNEOBNEO={true}
         />
-      )}
+      )} */}
 
       <SwapSettings
         isActive={isSettingsActive}
