@@ -12,7 +12,8 @@ import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { NEP_SCRIPT_HASH } from "../../../packages/neo/consts/neo-contracts";
 import { useWallet } from "../../../packages/neo/provider";
 import { farmRouter } from "../../../common/routers";
-import { NEO_ROUTES, POLYGON_ROUTES } from "../../../consts";
+import { NEO_ROUTES } from "../../../consts";
+import { FARM_PATH, FARM_V2_PATH } from "../../../consts/neoRoutes";
 
 interface IFarmProps {
   path?: string;
@@ -29,26 +30,13 @@ const Farm = (props: IFarmProps) => {
     [refreshCount]
   );
 
-  let { path } = useRouteMatch();
-  let history = useHistory();
-
-  if (props.path) {
-    path = props.path;
-  }
-
   if (!data) return <></>;
 
   if (chain === NEO_CHAIN) {
-    if (path !== NEO_ROUTES.FARM_V2_PATH) {
-      history.push(NEO_ROUTES.FARM_V2_PATH);
-    }
     nepPrice = data[NEP_SCRIPT_HASH[network]];
   }
 
   if (chain === POLYGON_CHAIN) {
-    if (path !== POLYGON_ROUTES.FARM_PATH) {
-      history.push(POLYGON_ROUTES.FARM_PATH);
-    }
     //TODO::change later
     nepPrice = data[NEP_SCRIPT_HASH[network]];
   }
@@ -63,10 +51,9 @@ const Farm = (props: IFarmProps) => {
               <div className="box is-shadowless">
                 <Route
                   exact={true}
-                  path={path}
+                  path={NEO_ROUTES.FARM_V2_PATH}
                   component={() => (
                     <StakingMain
-                      path={path}
                       prices={data}
                       chain={chain}
                       nepPrice={nepPrice}
@@ -75,19 +62,17 @@ const Farm = (props: IFarmProps) => {
                 />
                 <Route
                   exact={true}
-                  path={`${path}${NEO_ROUTES.FARM_V2_STAKE_PATH}`}
-                  component={() => (
-                    <Stake path={path} chain={chain} network={network} />
-                  )}
+                  path={NEO_ROUTES.FARM_V2_STAKE_PATH}
+                  component={() => <Stake chain={chain} network={network} />}
                 />
                 <Route
-                  path={`${path}${NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}`}
-                  component={() => <MyPositions chain={chain} path={path} />}
+                  path={NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}
+                  component={() => <MyPositions chain={chain} />}
                 />
               </div>
             </div>
             <div className="column is-4">
-              <ClaimRewards chain={chain} path={path} prices={data} />
+              <ClaimRewards chain={chain} prices={data} />
             </div>
           </div>
         </div>

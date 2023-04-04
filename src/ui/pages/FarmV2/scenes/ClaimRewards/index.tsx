@@ -17,10 +17,9 @@ import { Avatar } from "antd";
 
 interface IClaimRewardsProps {
   chain: CHAINS;
-  path: string;
   prices?: IPrices;
 }
-const ClaimRewards = ({ chain, path, prices }: IClaimRewardsProps) => {
+const ClaimRewards = ({ chain, prices }: IClaimRewardsProps) => {
   const { toggleWalletSidebar, increaseRefreshCount, setTxid, refreshCount } =
     useApp();
   const { network, connectedWallet } = useWallet();

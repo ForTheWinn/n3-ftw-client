@@ -6,9 +6,7 @@ import { fetchBalance } from "@wagmi/core";
 
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { getTokenByHash } from "../../Swap/helpers";
-import {
-  getLPEstimate,
-} from "../../../../../../packages/polygon/swap";
+import { getLPEstimate } from "../../../../../../packages/polygon/contracts/swap";
 import { DEFAULT_SLIPPAGE } from "../../../../../../packages/neo/contracts/ftw/swap/consts";
 
 import AssetListModal from "../../../../../components/Commons/TokenList";
@@ -26,12 +24,9 @@ import {
 } from "../../../../../../common/routers/swap/interfaces";
 import { useWallet } from "../../../../../../packages/neo/provider";
 import { swapRouter } from "../../../../../../common/routers";
+import { NEO_ROUTES } from "../../../../../../consts";
 
-interface ILiquidityProps {
-  rootPath: string;
-}
-
-const Liquidity = ({ rootPath }: ILiquidityProps) => {
+const Liquidity = () => {
   const location = useLocation();
   const params = queryString.parse(location.search);
   const { address, isConnected } = useAccount();
@@ -187,7 +182,7 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
   }
 
   const toMain = {
-    pathname: `${rootPath}`,
+    pathname: `${NEO_ROUTES.SWAP_PATH}`,
     search:
       tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : ""
   };
@@ -254,7 +249,8 @@ const Liquidity = ({ rootPath }: ILiquidityProps) => {
           isReverse={false}
           address={address}
           slippage={slippage}
-          onClose={onReset}
+          onSuccess={onReset}
+          onCancel={onReset}
         />
       )}
 

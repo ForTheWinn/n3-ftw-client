@@ -4,7 +4,7 @@ import { INetworkType } from "../../../packages/neo/network";
 import {
   getEstimated as polygonGetEstimated,
   getReserves as polygonGetReserves
-} from "../../../packages/polygon/swap";
+} from "../../../packages/polygon/contracts/swap";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import {
   ISwapReserves,

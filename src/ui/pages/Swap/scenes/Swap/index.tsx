@@ -11,12 +11,7 @@ import { useSwap } from "../SwapContext";
 import { Divider } from "antd";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 
-interface ISwapProps {
-  rootPath: string;
-}
-
-const SwapMain = ({ rootPath }: ISwapProps) => {
-
+const SwapMain = () => {
   const {
     chain,
     network,
@@ -50,10 +45,19 @@ const SwapMain = ({ rootPath }: ISwapProps) => {
     }
   };
 
+  const onSuccess = () => {
+    onAfterSwapCompleted();
+    //need to reset invoke modal.
+    setMethod(undefined);
+  };
+
+  const onCancel = () => {
+    setMethod(undefined);
+  };
+
   return (
     <>
       <SwapNav
-        rootPath={rootPath}
         search={
           tokenA && tokenB
             ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
@@ -67,7 +71,7 @@ const SwapMain = ({ rootPath }: ISwapProps) => {
       {noLiquidity && tokenA && tokenB ? (
         <ProvideLPInfo
           path={{
-            pathname: `${rootPath}${NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}`,
+            pathname: `${NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}`,
             search:
               tokenA && tokenB
                 ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
@@ -116,27 +120,24 @@ const SwapMain = ({ rootPath }: ISwapProps) => {
         onClick={isConnected ? onSwap : toggleWalletSidebar}
       />
 
-      {method &&
-        tokenA &&
-        tokenB &&
-        address &&
-        amountA &&
-        amountB &&
-        method && (
-          <ActionModal
-            chain={chain}
-            network={network}
-            address={address}
-            tokenA={tokenA}
-            tokenB={tokenB}
-            amountA={amountA}
-            amountB={amountB}
-            slippage={slippage}
-            method={method}
-            isReverse={swapInput && swapInput.type === "B" ? true : false}
-            onClose={onAfterSwapCompleted}
-          />
-        )}
+      {method && tokenA && tokenB && address && amountA && amountB && method ? (
+        <ActionModal
+          chain={chain}
+          network={network}
+          address={address}
+          tokenA={tokenA}
+          tokenB={tokenB}
+          amountA={amountA}
+          amountB={amountB}
+          slippage={slippage}
+          method={method}
+          isReverse={swapInput && swapInput.type === "B" ? true : false}
+          onSuccess={onSuccess}
+          onCancel={onCancel}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 };

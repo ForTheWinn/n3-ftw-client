@@ -2,13 +2,13 @@ import React from "react";
 import { FaCog } from "react-icons/fa";
 import AddLiquidityButton from "./AddLiquidityButton";
 import RemoveLiquidityButton from "./RemoveLiquidityButton";
+import { NEO_ROUTES } from "../../../../../../../consts";
 
 interface ISwapNavProps {
-  rootPath: string;
   search?: string;
   onSettingClick?: () => void;
 }
-const SwapNav = ({ rootPath, search, onSettingClick }: ISwapNavProps) => {
+const SwapNav = ({ search, onSettingClick }: ISwapNavProps) => {
   return (
     <div className="level is-mobile is-marginless">
       <div className="level-left is-hidden-mobile">
@@ -20,8 +20,8 @@ const SwapNav = ({ rootPath, search, onSettingClick }: ISwapNavProps) => {
       <div className="level-right">
         <div className="level-item">
           <div className="buttons">
-            <AddLiquidityButton rootPath={rootPath} search={search} />
-            <RemoveLiquidityButton rootPath={rootPath} />
+            <AddLiquidityButton search={search} />
+            <RemoveLiquidityButton />
             {onSettingClick ? (
               <button
                 onClick={onSettingClick}

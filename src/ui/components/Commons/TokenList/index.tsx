@@ -34,7 +34,7 @@ const TokenList = ({
         <ContractSearchInput onAssetClick={onAssetClick} />
       ) : (
         <>
-          <div className="columns">
+          <div className="columns is-multiline">
             {TOKENS.SWAP_TOKEN_LIST[chain][network].map((token) => {
               return (
                 <SwapTokenCard

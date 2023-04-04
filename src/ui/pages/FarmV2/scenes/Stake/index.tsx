@@ -8,13 +8,13 @@ import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { farmRouter } from "../../../../../common/routers";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { NEO_ROUTES } from "../../../../../consts";
 
 interface IStakeProps {
   chain: CHAINS;
   network: INetworkType;
-  path: string;
 }
-const Stake = ({ chain, network, path }: IStakeProps) => {
+const Stake = ({ chain, network }: IStakeProps) => {
   const { setTxid } = useApp();
   const { connectedWallet } = useWallet();
   const { isConnected, address } = useWalletRouter(chain);
@@ -33,7 +33,7 @@ const Stake = ({ chain, network, path }: IStakeProps) => {
 
   return (
     <div>
-      <HeaderBetween path={`${path}`} title={`Stake LP tokens`} />
+      <HeaderBetween path={NEO_ROUTES.FARM_V2_PATH} title={`Stake LP tokens`} />
       <hr />
       {isConnected ? (
         <LPTokenList

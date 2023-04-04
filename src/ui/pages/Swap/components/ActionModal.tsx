@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { writeContract, waitForTransaction } from "@wagmi/core";
+import { writeContract } from "@wagmi/core";
 import Modal from "../../../components/Modal";
 import { Steps } from "antd";
 import { ITokenState } from "../scenes/Swap/interfaces";
@@ -12,7 +12,7 @@ import {
   getAllowances,
   provide,
   swap
-} from "../../../../packages/polygon/swap";
+} from "../../../../packages/polygon/contracts/swap";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import {
@@ -20,7 +20,6 @@ import {
   getMaxTokenAAmount
 } from "../../../../packages/neo/contracts/ftw/swap/helpers";
 import { SwapContract } from "../../../../packages/neo/contracts";
-import { IConnectedWallet } from "../../../../packages/neo/wallets/interfaces";
 import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
 import { useWallet } from "../../../../packages/neo/provider";
 
@@ -35,7 +34,8 @@ interface IActionModalProps {
   slippage: number;
   method: "swap" | "provide";
   isReverse: boolean;
-  onClose: () => void;
+  onSuccess: () => void;
+  onCancel: () => void;
 }
 
 const ActionModal = ({
@@ -46,10 +46,11 @@ const ActionModal = ({
   slippage,
   address,
   method,
-  onClose,
+  onSuccess,
+  onCancel,
   chain,
   isReverse,
-  network,
+  network
 }: IActionModalProps) => {
   const { connectedWallet } = useWallet();
   const [isTokenAApproved, setTokenAApproved] = useState(false);
@@ -81,39 +82,46 @@ const ActionModal = ({
 
         setTokenAApproved(true);
         setTokenBApproved(true);
-
-        if (method === "swap") {
-          if (isReverse) {
-            txid = await new SwapContract(network).swapBtoA(
-              connectedWallet,
-              tokenA.hash,
-              tokenA.decimals,
-              tokenB.hash,
-              tokenB.decimals,
-              amountB,
-              getMaxTokenAAmount(amountA, slippage)
-            );
+        try {
+          if (method === "swap") {
+            if (isReverse) {
+              txid = await new SwapContract(network).swapBtoA(
+                connectedWallet,
+                tokenA.hash,
+                tokenA.decimals,
+                tokenB.hash,
+                tokenB.decimals,
+                amountB,
+                getMaxTokenAAmount(amountA, slippage)
+              );
+            } else {
+              txid = await new SwapContract(network).swap(
+                connectedWallet,
+                tokenA.hash,
+                tokenA.decimals,
+                amountA,
+                tokenB.hash,
+                tokenB.decimals,
+                getAfterSlippage(amountB, slippage)
+              );
+            }
           } else {
-            txid = await new SwapContract(network).swap(
-              connectedWallet,
-              tokenA.hash,
-              tokenA.decimals,
-              amountA,
-              tokenB.hash,
-              tokenB.decimals,
-              getAfterSlippage(amountB, slippage)
-            );
-            console.log(txid);
+            // add liquidity
           }
-        } else {
-        }
-        console.log(txid);
-        if (txid) {
-          setTxid(txid);
-          setSwapping(true);
-          await waitTransactionUntilSubmmited(chain, network, txid);
+          if (txid) {
+            setTxid(txid);
+            setSwapping(true);
+            await waitTransactionUntilSubmmited(chain, network, txid);
+            setSwapping(false);
+            setSwapDone(true);
+          }
+        } catch (e: any) {
+          console.error(e);
+          setSwappingError(true);
           setSwapping(false);
-          setSwapDone(true);
+          if (e.reason) {
+            toast.error(e.reason);
+          }
         }
       } else {
         let tokenAAllowance;
@@ -130,7 +138,7 @@ const ActionModal = ({
         } catch (e: any) {
           console.error(e);
           toast.error(e.message ? e.message : "Something went wrong.");
-          onClose();
+          onCancel();
         }
 
         if (tokenAAllowance.toString() === "0") {
@@ -228,7 +236,7 @@ const ActionModal = ({
   }, [tokenA, tokenB]);
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onCancel}>
       <>
         <div className="block">
           <h3 className="title is-5 has-text-centered">Swap</h3>
@@ -309,7 +317,7 @@ const ActionModal = ({
               >
                 View txid on explorer
               </a>
-              <button onClick={onClose} className="button is-black">
+              <button onClick={onSuccess} className="button is-black">
                 Close
               </button>
             </div>
@@ -324,7 +332,7 @@ const ActionModal = ({
         hasTokenBApproveError ? (
           <div className="has-text-centered">
             <hr />
-            <button onClick={onClose} className="button is-black">
+            <button onClick={onCancel} className="button is-black">
               Close
             </button>
           </div>

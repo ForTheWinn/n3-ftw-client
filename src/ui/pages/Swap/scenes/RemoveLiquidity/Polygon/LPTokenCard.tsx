@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { getTokenURI } from "../../../../../../packages/polygon/swap";
+import { getTokenURI } from "../../../../../../packages/polygon/contracts/swap";
 import LPTokenCard from "../components/LPTokenCard";
 
 import { IFarmLPToken } from "../../../../../../common/routers/farm/interfaces";

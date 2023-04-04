@@ -6,16 +6,14 @@ import {
 } from "@wagmi/core";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
-import { CONSTS } from ".";
-import {
-  ITokenState
-} from "../../ui/pages/Swap/scenes/Swap/interfaces";
-import FTWSwapABI from "./FTWSwap.json";
-import { IFarmLPToken } from "../../common/routers/farm/interfaces";
-import { INetworkType } from "../neo/network";
-import { GLOBAL } from "../../consts";
-import { AddLiquidityArgs, SwapArgs, SwapEstimateArgs } from "./interfaces";
-import { ISwapReserves } from "../../common/routers/swap/interfaces";
+import { CONSTS } from "..";
+import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
+import FTWSwapABI from "./abi/FTWSwap.json";
+import { IFarmLPToken } from "../../../common/routers/farm/interfaces";
+import { INetworkType } from "../../neo/network";
+import { GLOBAL } from "../../../consts";
+import { AddLiquidityArgs, SwapArgs, SwapEstimateArgs } from "../interfaces";
+import { ISwapReserves } from "../../../common/routers/swap/interfaces";
 
 export const getReserves = async (
   network: INetworkType,

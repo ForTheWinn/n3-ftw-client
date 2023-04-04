@@ -65,16 +65,9 @@ const App = () => {
           <Route path={NEO_ROUTES.LOCKER_PATH} component={Locker} />
           <Route path={NEO_ROUTES.COLLECTION_PATH} component={MyCollection} />
           <Route path={NEO_ROUTES.SWAP_PATH} component={Swap} />
-          <Route
-            path={POLYGON_ROUTES.SWAP_PATH}
-            component={() => <Swap path={POLYGON_ROUTES.SWAP_PATH} />}
-          />
+
           <Route path={NEO_ROUTES.FARM_PATH} component={Farm} />
           <Route path={NEO_ROUTES.FARM_V2_PATH} component={FarmV2} />
-          <Route
-            path={POLYGON_ROUTES.FARM_PATH}
-            component={() => <FarmV2 path={POLYGON_ROUTES.FARM_PATH} />}
-          />
           <Route path={NEO_ROUTES.DAO_PATH} component={DAO} />
           <Route exact path={NEO_ROUTES.MIGRATION_PATH} component={Migration} />
           <Route path={NEO_ROUTES.ANALYTICS_PATH} component={Analytics} />

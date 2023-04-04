@@ -7,12 +7,12 @@ import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { CHAINS } from "../../../../../consts/chains";
 import { farmRouter } from "../../../../../common/routers";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { NEO_ROUTES } from "../../../../../consts";
 
 interface IMyPositionsProps {
-  path: string;
   chain: CHAINS;
 }
-const MyPositions = ({ path, chain }: IMyPositionsProps) => {
+const MyPositions = ({ chain }: IMyPositionsProps) => {
   const { setTxid } = useApp();
   const { network, connectedWallet } = useWallet();
   const { isConnected, address } = useWalletRouter(chain);
@@ -29,7 +29,7 @@ const MyPositions = ({ path, chain }: IMyPositionsProps) => {
 
   return (
     <div>
-      <HeaderBetween path={path} title={`My staking`} />
+      <HeaderBetween path={NEO_ROUTES.FARM_V2_PATH} title={`My staking`} />
       <hr />
       {isConnected ? (
         <PositionList

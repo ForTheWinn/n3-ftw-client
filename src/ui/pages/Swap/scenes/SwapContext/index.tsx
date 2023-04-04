@@ -3,7 +3,8 @@ import React, {
   useContext,
   useEffect,
   useState,
-  useMemo
+  useMemo,
+  useRef
 } from "react";
 import { ISwapInputState, ITokenState } from "../Swap/interfaces";
 import { useLocation } from "react-router-dom";
@@ -23,6 +24,7 @@ import SwapSettings from "../../components/Settings";
 import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
+import toast from "react-hot-toast";
 
 interface ISwapContext {
   chain: CHAINS;
@@ -236,6 +238,26 @@ export const SwapContextProvider = (props: { children: any }) => {
     }
   }, [swapInput]);
 
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    setTokenA(undefined);
+    setTokenB(undefined);
+    setAmountA(undefined);
+    setAmountB(undefined);
+    setSwapInput(undefined);
+    setReserve(undefined);
+    setBalances(undefined);
+    setAssetChangeModalActive(undefined);
+    setAmountALoading(false);
+    setAmountBLoading(false);
+    toast.success("Chain switced!");
+  }, [chain]);
+
   let noLiquidity = false;
   let priceImpact = 0;
 
@@ -245,62 +267,33 @@ export const SwapContextProvider = (props: { children: any }) => {
       priceImpact = (amountB / parseFloat(reserves.reserveB)) * 100;
     }
   }
-  const contextValue = useMemo(
-    () => ({
-      chain,
-      network,
-      tokenA,
-      tokenB,
-      amountA,
-      amountB,
-      isAmountALoading,
-      isAmountBLoading,
-      swapInput,
-      reserves,
-      balances,
-      slippage,
-      noLiquidity,
-      priceImpact,
-      setTokenA,
-      setTokenB,
-      setAmountA,
-      setAmountB,
-      setSwapInput,
-      setAssetChangeModalActive,
-      setSettingsModalActive,
-      onSwapInputChange,
-      onInputSwitch,
-      onAfterSwapCompleted,
-      toggleWalletSidebar
-    }),
-    [
-      chain,
-      network,
-      tokenA,
-      tokenB,
-      amountA,
-      amountB,
-      isAmountALoading,
-      isAmountBLoading,
-      swapInput,
-      reserves,
-      balances,
-      slippage,
-      noLiquidity,
-      priceImpact,
-      setTokenA,
-      setTokenB,
-      setAmountA,
-      setAmountB,
-      setSwapInput,
-      setAssetChangeModalActive,
-      setSettingsModalActive,
-      onSwapInputChange,
-      onInputSwitch,
-      onAfterSwapCompleted,
-      toggleWalletSidebar
-    ]
-  );
+  const contextValue = {
+    chain,
+    network,
+    tokenA,
+    tokenB,
+    amountA,
+    amountB,
+    isAmountALoading,
+    isAmountBLoading,
+    swapInput,
+    reserves,
+    balances,
+    slippage,
+    noLiquidity,
+    priceImpact,
+    setTokenA,
+    setTokenB,
+    setAmountA,
+    setAmountB,
+    setSwapInput,
+    setAssetChangeModalActive,
+    setSettingsModalActive,
+    onSwapInputChange,
+    onInputSwitch,
+    onAfterSwapCompleted,
+    toggleWalletSidebar
+  };
 
   return (
     <SwapContext.Provider value={contextValue}>

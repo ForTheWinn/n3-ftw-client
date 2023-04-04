@@ -15,7 +15,6 @@ interface IStakingMainProps {
   chain: CHAINS;
   prices?: IPrices;
   nepPrice?: number;
-  path: string;
 }
 
 const TableHeader = () => (
@@ -29,7 +28,7 @@ const TableHeader = () => (
   </thead>
 );
 
-const StakingMain = ({ prices, chain, nepPrice, path }: IStakingMainProps) => {
+const StakingMain = ({ prices, chain, nepPrice }: IStakingMainProps) => {
   const { network } = useWallet();
   const [refresh, setRefresh] = useState(0);
   const handleRefresh = () => setRefresh(refresh + 1);
@@ -51,7 +50,7 @@ const StakingMain = ({ prices, chain, nepPrice, path }: IStakingMainProps) => {
           <div className="level-item">
             <div className="buttons">
               <Link
-                to={`${path}${NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}`}
+                to={`${NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}`}
                 className="button is-light is-small is-rounded"
               >
                 My positions
@@ -107,7 +106,7 @@ const StakingMain = ({ prices, chain, nepPrice, path }: IStakingMainProps) => {
                     </td>
                     <td className="has-text-right">
                       <Link
-                        to={`${path}${NEO_ROUTES.FARM_V2_STAKE_PATH}?tokenA=${pool.tokenA}&tokenB=${pool.tokenB}&tokenASymbol=${pool.tokenASymbol}&tokenBSymbol=${pool.tokenBSymbol}`}
+                        to={`${NEO_ROUTES.FARM_V2_STAKE_PATH}?tokenA=${pool.tokenA}&tokenB=${pool.tokenB}&tokenASymbol=${pool.tokenASymbol}&tokenBSymbol=${pool.tokenBSymbol}`}
                         className="button is-primary is-small"
                       >
                         Stake

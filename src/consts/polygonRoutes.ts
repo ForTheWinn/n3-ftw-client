@@ -1,7 +1,5 @@
 import { MAINNET, TESTNET } from "./global";
-
-export const SWAP_PATH = "/polygon/swap";
-export const FARM_PATH = "/polygon/farm";
+import { FARM_V2_PATH, SWAP_PATH } from "./neoRoutes";
 
 const SWAP_ROUTE = {
   label: "Swap",
@@ -12,7 +10,7 @@ const SWAP_ROUTE = {
 
 const FARM_ROUTE = {
   label: "Farm",
-  path: FARM_PATH,
+  path: FARM_V2_PATH,
   network: [TESTNET, MAINNET],
   category: []
 };

@@ -1,19 +1,22 @@
 import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
-import { IClaimable, IFarmLPToken } from "../../common/routers/farm/interfaces";
-import { TOKEN_LIST } from "../../consts/tokens";
-import { POLYGON_CHAIN } from "../../consts/chains";
-import {} from "./consts";
+import {
+  IClaimable,
+  IFarmLPToken
+} from "../../../common/routers/farm/interfaces";
+import { TOKEN_LIST } from "../../../consts/tokens";
+import { POLYGON_CHAIN } from "../../../consts/chains";
+import {} from "../consts";
 import {
   IClaimableRewards,
   IPoolEnhanced
-} from "../neo/contracts/ftw/farm-v2/interfaces";
-import { withDecimal } from "../neo/utils";
-import FTWFarmABI from "./FTWFarm.json";
+} from "../../neo/contracts/ftw/farm-v2/interfaces";
+import { withDecimal } from "../../neo/utils";
+import FTWFarmABI from "./abi/FTWFarm.json";
 import { getTokenURI } from "./swap";
 import { Buffer } from "buffer";
-import { INetworkType } from "../neo/network";
-import { CONSTS } from ".";
-import { GLOBAL } from "../../consts";
+import { INetworkType } from "../../neo/network";
+import { CONSTS } from "..";
+import { GLOBAL } from "../../../consts";
 
 export const getPools = async (network: INetworkType): Promise<any> => {
   const res: any = await readContract({

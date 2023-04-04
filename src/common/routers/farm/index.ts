@@ -19,13 +19,13 @@ import {
   unStake,
   getClaimable as polygonGetClaimable,
   claim as polygonClaim
-} from "../../../packages/polygon/farm";
+} from "../../../packages/polygon/contracts/farm";
 import {
   getLPTokens as getPolygonLPTokens,
   getReserve as getPolygonReserves,
   isApprovedForAll,
   setApprovalForAll
-} from "../../../packages/polygon/swap";
+} from "../../../packages/polygon/contracts/swap";
 import { IClaimable, IFarmLPToken } from "./interfaces";
 import { CONTRACTS, GLOBAL } from "../../../consts";
 

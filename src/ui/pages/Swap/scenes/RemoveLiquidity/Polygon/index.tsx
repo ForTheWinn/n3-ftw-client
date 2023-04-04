@@ -8,18 +8,14 @@ import {
   isApprovedForAll,
   removeLiquidity,
   setApprovalForAll
-} from "../../../../../../packages/polygon/swap";
+} from "../../../../../../packages/polygon/contracts/swap";
 import LPTokenCard from "./LPTokenCard";
 import toast from "react-hot-toast";
 import RemoveLiquidityModal from "./RemoveLiquidityModal";
 import { useApp } from "../../../../../../common/hooks/use-app";
-import { CONTRACTS, GLOBAL } from "../../../../../../consts";
+import { CONTRACTS, GLOBAL, NEO_ROUTES } from "../../../../../../consts";
 
-interface IRemoveLiquidityProps {
-  rootPath: string;
-}
-
-const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
+const RemoveLiquidity = () => {
   const { network, chain } = useApp();
   const { isConnected, address } = useAccount();
   const [tokens, setTokens] = useState([]);
@@ -113,7 +109,7 @@ const RemoveLiquidity = ({ rootPath }: IRemoveLiquidityProps) => {
 
   return (
     <>
-      <HeaderBetween path={rootPath} title={"Withdraw liquidity"} />
+      <HeaderBetween path={NEO_ROUTES.SWAP_PATH} title={"Withdraw liquidity"} />
       <hr />
       {isConnected ? (
         <>

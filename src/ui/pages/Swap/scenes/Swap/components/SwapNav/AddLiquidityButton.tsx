@@ -4,14 +4,13 @@ import { Link } from "react-router-dom";
 import { NEO_ROUTES } from "../../../../../../../consts";
 
 interface IAddLiquidityButtonProps {
-  rootPath: string;
   search?: string;
 }
-const AddLiquidityButton = ({ rootPath, search }: IAddLiquidityButtonProps) => {
+const AddLiquidityButton = ({ search }: IAddLiquidityButtonProps) => {
   return (
     <Link
       to={{
-        pathname: `${rootPath + NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}`,
+        pathname: `${NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}`,
         search
       }}
       className="button is-small is-white"

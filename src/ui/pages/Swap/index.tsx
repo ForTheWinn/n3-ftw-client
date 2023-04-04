@@ -1,45 +1,17 @@
-import React, { useEffect } from "react";
-import { Route, useHistory, useRouteMatch } from "react-router-dom";
-import { useApp } from "../../../common/hooks/use-app";
-import { NEO_ROUTES, POLYGON_ROUTES } from "../../../consts";
+import React from "react";
+import { Route } from "react-router-dom";
 
 import PageLayout from "../../components/Commons/PageLayout";
-import RemoveLiquidity from "./scenes/RemoveLiquidity";
-import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import SwapMain from "./scenes/Swap";
-import PolygonAddLiquidity from "./scenes/AddLiquidity/Polygon";
-import { SwapContext, SwapContextProvider } from "./scenes/SwapContext";
+import { SwapContextProvider } from "./scenes/SwapContext";
+import { NEO_ROUTES } from "../../../consts";
+import AddLiquidity from "./scenes/AddLiquidity/Polygon";
+import RemoveLiquidity from "./scenes/RemoveLiquidity/Polygon";
 
-interface ISwapProps {
-  path?: string;
-}
-
-const Swap = (props: ISwapProps) => {
+const Swap = () => {
   // useEffect(() => {
   //   document.title = "FTW Swap";
   // }, []);
-
-  let { path } = useRouteMatch();
-
-  if (props.path) {
-    path = props.path;
-  }
-
-  let history = useHistory();
-  const { chain } = useApp();
-  console.log(213)
-
-  useEffect(() => {
-    if (path !== NEO_ROUTES.SWAP_PATH && chain === NEO_CHAIN) {
-      console.log(1)
-      history.push(NEO_ROUTES.SWAP_PATH);
-    }
-
-    if (path !== POLYGON_ROUTES.SWAP_PATH && chain === POLYGON_CHAIN) {
-            console.log(2);
-      history.push(POLYGON_ROUTES.SWAP_PATH);
-    }
-  }, [chain]);
 
   return (
     <div>
@@ -52,20 +24,19 @@ const Swap = (props: ISwapProps) => {
             >
               <Route
                 exact={true}
-                path={path}
                 component={() => (
                   <SwapContextProvider>
-                    <SwapMain rootPath={path} />
+                    <SwapMain />
                   </SwapContextProvider>
                 )}
               />
               <Route
-                path={path + NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}
-                component={() => <PolygonAddLiquidity rootPath={path} />}
+                path={NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}
+                component={AddLiquidity}
               />
               <Route
-                path={path + NEO_ROUTES.SWAP_PATH_LIQUIDITY_REMOVE}
-                component={() => <RemoveLiquidity rootPath={path} />}
+                path={NEO_ROUTES.SWAP_PATH_LIQUIDITY_REMOVE}
+                component={RemoveLiquidity}
               />
             </div>
           </div>
