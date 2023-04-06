@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { FaBars, FaWallet } from "react-icons/fa";
 import Logo from "./Logo";
 import { useApp } from "../../../../common/hooks/use-app";
-import { useWallet } from "../../../../packages/neo/provider";
 import DisplayConnectedWallets from "./DisplayConnectedWallets";
 import ChainSwitch from "./ChainSwitch";
 import { HeaderMenu } from "./HeaderMenu";
@@ -12,7 +11,7 @@ import { TESTNET } from "../../../../consts/global";
 
 const Header = () => {
   const { toggleSidebar, toggleWalletSidebar, chain } = useApp();
-  const { network } = useWallet();
+  const { network } = useApp();
 
   return (
     <nav

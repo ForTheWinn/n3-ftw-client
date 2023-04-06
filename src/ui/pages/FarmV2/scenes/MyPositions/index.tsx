@@ -1,6 +1,6 @@
 import React from "react";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
@@ -13,8 +13,8 @@ interface IMyPositionsProps {
   chain: CHAINS;
 }
 const MyPositions = ({ chain }: IMyPositionsProps) => {
-  const { setTxid } = useApp();
-  const { network, connectedWallet } = useWallet();
+  const { setTxid, network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const { isConnected, address } = useWalletRouter(chain);
 
   const onUnStake = async (tokenId: string) => {

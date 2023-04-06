@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
 import NumberFormat from "react-number-format";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
@@ -12,9 +12,11 @@ import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEP17FormModal = () => {
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const history = useHistory();
   const [txid, setTxid] = useState<string>();
   const [isBalanceLoading, setBalanceLoading] = useState(false);
@@ -317,7 +319,8 @@ const NEP17FormModal = () => {
                       target="_blank"
                       href={
                         "https://github.com/ForTheWinn/public-contracts/blob/main/FTWSmithNep17-v3/FTWSmithNep17-v3.cs"
-                      } rel="noreferrer"
+                      }
+                      rel="noreferrer"
                     >
                       here
                     </a>

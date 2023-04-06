@@ -44,7 +44,7 @@ export const getPoolList = (
 ): Promise<IPoolEnhanced[]> => {
   switch (chain) {
     case NEO_CHAIN:
-      return new FarmV2Contract(network).getPools(chain);
+      return new FarmV2Contract(network).getPools();
     case POLYGON_CHAIN:
       return getPools(network);
   }
@@ -86,8 +86,9 @@ export const getReserves = async (
 export const getLPTokens = async (
   chain: CHAINS,
   network: INetworkType,
-  address: string
+  address?: string
 ): Promise<IFarmLPToken[]> => {
+  if (!address) return [];
   switch (chain) {
     case NEO_CHAIN:
       const tokens: IFarmLPToken[] = [];

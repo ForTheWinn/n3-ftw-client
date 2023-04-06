@@ -1,14 +1,11 @@
 import React from "react";
 import PageLayout from "./Commons/PageLayout";
-import { useWallet } from "../../packages/neo/provider";
-import { TESTNET } from "../../consts/global";
 
 interface TestnetOnlyRouteProps {
   title: string;
   date?: string;
 }
 const TestnetOnlyRoute = ({ title, date }: TestnetOnlyRouteProps) => {
-  const { switchNetwork } = useWallet();
   return (
     <PageLayout>
       <div className="box is-shadowless">
@@ -26,12 +23,6 @@ const TestnetOnlyRoute = ({ title, date }: TestnetOnlyRouteProps) => {
         Before the launch, try it on our testnet.
         <br />
         <br />
-        <button
-          className="button is-danger"
-          onClick={() => switchNetwork(TESTNET)}
-        >
-          Switch to Testnet
-        </button>
       </div>
     </PageLayout>
   );

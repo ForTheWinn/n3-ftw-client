@@ -8,8 +8,8 @@ import { IPoolEnhanced } from "../../../../../packages/neo/contracts/ftw/farm-v2
 import { Avatar, Space } from "antd";
 import DisplayAPR from "../../components/DisplayAPR";
 import { farmRouter } from "../../../../../common/routers";
-import { useWallet } from "../../../../../packages/neo/provider";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IStakingMainProps {
   chain: CHAINS;
@@ -29,7 +29,7 @@ const TableHeader = () => (
 );
 
 const StakingMain = ({ prices, chain, nepPrice }: IStakingMainProps) => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const [refresh, setRefresh] = useState(0);
   const handleRefresh = () => setRefresh(refresh + 1);
 
@@ -43,7 +43,7 @@ const StakingMain = ({ prices, chain, nepPrice }: IStakingMainProps) => {
       <div className="level is-mobile">
         <div className="level-left">
           <div className="level-item">
-            <h1 className="title is-5 ">Double Farm</h1>
+            <h1 className="title is-5 ">Farm</h1>
           </div>
         </div>
         <div className="level-right">
@@ -53,7 +53,7 @@ const StakingMain = ({ prices, chain, nepPrice }: IStakingMainProps) => {
                 to={`${NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}`}
                 className="button is-light is-small is-rounded"
               >
-                My positions
+                My staking
               </Link>
             </div>
           </div>

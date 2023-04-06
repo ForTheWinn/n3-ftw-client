@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { getWalletIcon } from "./helpers";
 import { IWalletType } from "../../../../../packages/neo/wallets/interfaces";
 import Modal from "../../../Modal";
 import DisplayConnectedWallet from "./DisplayConnectedWallet";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEOWalletList = () => {
+  const { network } = useApp();
   const [neonWalletConnecting, setNeonWalletConnecting] = useState(false);
   const { connectWallet, list, connectedWallet, disConnectWallet } =
-    useWallet();
-  const handleWalletConnect = async (walletType: IWalletType) => {
-    connectWallet(walletType);
+    useNeoWallets();
+
+  const onWalletConnect = async (walletType: IWalletType) => {
+    connectWallet(network, walletType);
   };
 
   return (
@@ -30,7 +33,7 @@ const NEOWalletList = () => {
                 <button
                   style={{ justifyContent: "flex-start" }}
                   className="button is-fullwidth"
-                  onClick={() => handleWalletConnect(_wallet.key)}
+                  onClick={() => onWalletConnect(_wallet.key)}
                 >
                   <span className="panel-icon">
                     <img
@@ -61,3 +64,6 @@ const NEOWalletList = () => {
 };
 
 export default NEOWalletList;
+function useWapp(): { network: any } {
+  throw new Error("Function not implemented.");
+}

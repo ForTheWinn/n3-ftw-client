@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import MDEditor from "@uiw/react-md-editor";
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import { useWallet } from "../../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
@@ -12,12 +12,14 @@ import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data"
 import { withDecimal } from "../../../../../../packages/neo/utils";
 import ChannelCard from "../../../components/ChannelCard";
 import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 const Create = () => {
   const params = useParams();
   const history = useHistory();
   const { contractHash } = params as any;
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [title, setTile] = useState("");
   const [description, setDescription] = useState("");
   const [options, setOptions] = useState(["Yes", "No"]);

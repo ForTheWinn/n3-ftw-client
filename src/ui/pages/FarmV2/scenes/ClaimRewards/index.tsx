@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ClaimModal from "./ClaimModal";
 import { useApp } from "../../../../../common/hooks/use-app";
 import ClaimList from "./ClaimList";
@@ -22,7 +22,8 @@ interface IClaimRewardsProps {
 const ClaimRewards = ({ chain, prices }: IClaimRewardsProps) => {
   const { toggleWalletSidebar, increaseRefreshCount, setTxid, refreshCount } =
     useApp();
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const { isConnected, address } = useWalletRouter(chain);
   const [isClaimModalOpen, setClaimModalOpen] = useState(false);
 
@@ -75,9 +76,7 @@ const ClaimRewards = ({ chain, prices }: IClaimRewardsProps) => {
           ) : (
             <div className="media" style={{ alignItems: "center" }}>
               <div className="media-left">
-                <div className="image is-32x32">
-                  <img alt="Boyz staking" src="/boyz/0.png" />
-                </div>
+                <Avatar src={"/boyz/0.png"} />
               </div>
               <div className="media-content">
                 <h1 className="title is-7 is-marginless">Stake Neo Boyz</h1>

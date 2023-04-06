@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Drawer, theme } from "antd";
+import { Drawer } from "antd";
 import NumberFormat from "react-number-format";
 
 interface ISwapSettingsProps {
@@ -12,14 +12,12 @@ const SwapSettings = ({
   isActive,
   onClose,
   slippage,
-  onSlippageChange,
+  onSlippageChange
 }: ISwapSettingsProps) => {
   return (
     <div>
       <Drawer
-        title={
-          <h5 className="title is-6 is-marginless">Settings</h5>
-        }
+        title={<h5 className="title is-6 is-marginless">Settings</h5>}
         placement="left"
         closable={true}
         onClose={onClose}
@@ -40,6 +38,11 @@ const SwapSettings = ({
               value={slippage}
               onValueChange={(value) => {
                 onSlippageChange(value.floatValue);
+              }}
+              isAllowed={(values) => {
+                const { floatValue, formattedValue } = values;
+                // @ts-ignore
+                return floatValue < 0.01 || floatValue <= 99;
               }}
             />
           </div>

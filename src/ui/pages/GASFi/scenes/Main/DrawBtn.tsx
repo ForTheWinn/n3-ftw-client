@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { toast } from "react-hot-toast";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const DrawBtn = () => {
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState("");
 
   const onDraw = async () => {

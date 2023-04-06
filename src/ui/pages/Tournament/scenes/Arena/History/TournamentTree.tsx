@@ -2,7 +2,7 @@ import React from "react";
 import { IPlayer } from "../../../../../../packages/neo/contracts/ftw/arena/interfaces";
 import DisplayRuneWithProperties from "../../../components/DisplayRuneWithProperties";
 import { fight } from "../helpers";
-import { useWallet } from "../../../../../../packages/neo/provider";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 interface ITournamentTree {
   gameNo: string;
@@ -25,7 +25,7 @@ const TournamentTree = ({
   tree,
   nonce
 }: ITournamentTree) => {
-  const { network } = useWallet();
+  const { network } = useApp();
 
   let capacity = tree.length;
   let stage: IPlayer[] = tree;

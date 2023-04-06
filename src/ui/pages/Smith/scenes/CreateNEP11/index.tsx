@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
@@ -10,10 +10,12 @@ import PageLayout from "../../../../components/Commons/PageLayout";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEP11FormModal = () => {
   const history = useHistory();
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState<string>();
   const [values, setValues] = useState({
     name: "",

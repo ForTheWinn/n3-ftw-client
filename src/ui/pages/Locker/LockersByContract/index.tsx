@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useWallet } from "../../../../packages/neo/provider";
 import Pagination from "bulma-pagination-react";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import {
@@ -10,9 +9,10 @@ import {
 import { FaPlus } from "react-icons/fa";
 import LockerCard from "./LockerCard";
 import { NEO_ROUTES } from "../../../../consts";
+import { useApp } from "../../../../common/hooks/use-app";
 
 const LockersByContract = () => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const [page, setPage] = useState(1);
   const params = useParams();
   const { contractHash } = params as any;

@@ -3,14 +3,13 @@ import { Route } from "react-router-dom";
 import ChannelList from "./scenes/ChannelList";
 import Channel from "./scenes/Channel";
 import CreateChannel from "./scenes/CreateChannel";
-import { useWallet } from "../../../packages/neo/provider";
 import { NEO_ROUTES } from "../../../consts";
 
 const Dao = () => {
   useEffect(() => {
     document.title = "FTW DAO";
   }, []);
-  const { network } = useWallet();
+ 
   // if (!DAO_PAGE_ROUTE.network.includes(network as any)) {
   //   return <ProductNotSupportedInNetwork title={"DAO"} network={network} />;
   // }

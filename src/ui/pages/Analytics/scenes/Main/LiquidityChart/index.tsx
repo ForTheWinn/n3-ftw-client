@@ -11,8 +11,8 @@ import {
   Legend
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { useWallet } from "../../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../../packages/neo/api";
+import { useApp } from "../../../../../../common/hooks/use-app";
 // import Spinner from "../Spinner";
 
 ChartJS.register(
@@ -85,7 +85,7 @@ interface ILiquidityChartProps {
   days: string;
 }
 const LiquidityChart = ({ id, days }: ILiquidityChartProps) => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const [data, setData] = useState<any>();
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {

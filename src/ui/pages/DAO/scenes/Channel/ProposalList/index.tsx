@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import { Link, NavLink, useParams } from "react-router-dom";
-import { useWallet } from "../../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import moment from "moment";
 import TextTruncate from "react-text-truncate";
 import ChannelCard from "../../../components/ChannelCard";
 import removeMd from "remove-markdown";
 import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 const ProposalList = () => {
   const params = useParams();
   const { contractHash } = params as any;
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [page] = useState("1");
   const { isLoaded, error, data } = useOnChainData(() => {
     return new DaoContract(network).getProposals(contractHash, "30", page);

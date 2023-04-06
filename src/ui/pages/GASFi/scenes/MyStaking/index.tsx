@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
@@ -13,10 +13,11 @@ import moment from "moment";
 import { DRAWING_FREQUENCY } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
 import { NEO_ROUTES } from "../../../../../consts";
 
-const MyStaking = (props) => {
+const MyStaking = () => {
   const history = useHistory();
   const { toggleWalletSidebar } = useApp();
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IStakeResult | undefined>(undefined);
   const [error, setError] = useState();

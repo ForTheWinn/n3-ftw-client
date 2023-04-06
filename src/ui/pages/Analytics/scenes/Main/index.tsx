@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useWallet } from "../../../../../packages/neo/provider";
 import ProductNotSupportedInNetwork from "../../../../components/ProductNotSupportedInNetwork";
 import LiquidityChart from "./LiquidityChart";
 import PageLayout from "../../../../components/Commons/PageLayout";
@@ -8,9 +7,10 @@ import Tokens from "./Tokens";
 import PriceChart from "../../components/PriceChart";
 import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
 import { ANALYTICS_ROUTE } from "../../../../../consts/neoRoutes";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const AnalyticsMain = () => {
-  const { network } = useWallet();
+  const { network } = useApp();
 
   useEffect(() => {
     document.title = "FTW Analytics";

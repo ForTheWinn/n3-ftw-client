@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import PlayButton from "../../components/PlayButton";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { ADMIN_FOR_PLAY } from "../../../../../packages/neo/contracts/ftw/arena/consts";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IBanner {
   arenaNo: string;
@@ -18,7 +19,8 @@ interface IBanner {
   };
 }
 const Banner = ({ arenaNo, status, pathname }: IBanner) => {
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [playTxid, setPlayTxid] = useState("");
 
   let hasPermissionToPlay = false;

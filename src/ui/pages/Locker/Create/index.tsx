@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import toast from "react-hot-toast";
 import Modal from "../../../components/Modal";
 import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
@@ -14,6 +14,7 @@ import { wallet } from "@cityofzion/neon-core";
 import { SmithContract } from "../../../../packages/neo/contracts/ftw/smith";
 import { LOCKER_NEP_FEE } from "../../../../packages/neo/contracts/ftw/locker/consts";
 import { NEO_ROUTES } from "../../../../consts";
+import { useApp } from "../../../../common/hooks/use-app";
 
 export interface IContractState {
   assetHash: string;
@@ -25,7 +26,8 @@ const Create = () => {
   const location = useLocation();
   const history = useHistory();
   const params = queryString.parse(location.search);
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [contract, setContractHash] = useState<IContractState | undefined>(
     undefined
   );
@@ -85,7 +87,9 @@ const Create = () => {
 
   const onSuccess = () => {
     if (connectedWallet) {
-      history.push(`${NEO_ROUTES.LOCKER_USER_PATH}/${connectedWallet.account.address}`);
+      history.push(
+        `${NEO_ROUTES.LOCKER_USER_PATH}/${connectedWallet.account.address}`
+      );
     }
   };
 

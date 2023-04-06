@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { BoyzContract } from "../../../../../packages/neo/contracts/ftw/boyz";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import DisplayBoy from "./DisplayBoy";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IMyBoyzProps {
   onStake: (tokenId: string) => void;
 }
 const MyBoyz = ({ onStake }: IMyBoyzProps) => {
-  const { connectedWallet, network } = useWallet();
+  const { connectedWallet } = useNeoWallets();
+  const { network } = useApp();
   const [tokens, setTokens] = useState<string[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
-import { useWallet } from "../../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import Modal from "../../../../../components/Modal";
@@ -15,11 +15,13 @@ import UserVotes from "./components/UserVotes";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
 import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 const ProposalView = () => {
   const params = useParams();
+  const { network } = useApp();
   const { contractHash, proposalNo } = params as any;
-  const { network, connectedWallet } = useWallet();
+  const { connectedWallet } = useNeoWallets();
   const [isVoteModalActive, setVoteModalActive] = useState(false);
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);

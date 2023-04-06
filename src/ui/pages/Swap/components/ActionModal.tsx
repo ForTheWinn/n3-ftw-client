@@ -21,7 +21,7 @@ import {
 } from "../../../../packages/neo/contracts/ftw/swap/helpers";
 import { SwapContract } from "../../../../packages/neo/contracts";
 import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
-import { useWallet } from "../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -52,7 +52,7 @@ const ActionModal = ({
   isReverse,
   network
 }: IActionModalProps) => {
-  const { connectedWallet } = useWallet();
+  const { connectedWallet } = useNeoWallets();
   const [isTokenAApproved, setTokenAApproved] = useState(false);
   const [isTokenAApproving, setTokenAApproving] = useState(false);
   const [isTokenBApproved, setTokenBApproved] = useState(false);
@@ -106,7 +106,17 @@ const ActionModal = ({
               );
             }
           } else {
-            // add liquidity
+            txid = await new SwapContract(network).provide(
+              connectedWallet,
+              isReverse ? tokenB.hash : tokenA.hash,
+              isReverse ? tokenB.decimals : tokenA.decimals,
+              isReverse ? amountB : amountA,
+              isReverse ? tokenA.hash : tokenB.hash,
+              isReverse ? tokenA.decimals : tokenB.decimals,
+              isReverse ? amountA : amountB,
+              0, // Deprecated LP lock
+              slippage * 100 // BPS
+            );
           }
           if (txid) {
             setTxid(txid);

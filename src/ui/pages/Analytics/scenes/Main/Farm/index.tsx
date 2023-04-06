@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../../../../components/Commons/PageLayout";
-import { useWallet } from "../../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import DataTable from "react-data-table-component";
 import { numberTrim } from "../../../../../../packages/neo/utils";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 const columns = [
   {
@@ -32,7 +32,7 @@ const columns = [
 ];
 
 const FarmAnalytics = (props) => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {

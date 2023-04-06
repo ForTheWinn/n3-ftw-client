@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import StakeHeader from "./StakeHeader";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import {
   IClaimableResult,
   IStakeResult,
   IStatusResult
 } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
-import Countdown from "react-countdown";
-import DrawBtn from "./DrawBtn";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import History from "../History";
-import moment from "moment";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 export interface IMainData {
   status: IStatusResult;
@@ -24,7 +22,8 @@ export interface IMainData {
 }
 
 const Main = (props) => {
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IMainData | undefined>(undefined);
   const [error, setError] = useState();

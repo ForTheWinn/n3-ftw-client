@@ -4,17 +4,19 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import ChannelForm from "../../../components/ChannelForm";
 import Modal from "../../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import { useWallet } from "../../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { u } from "@cityofzion/neon-core";
 import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 const Edit = () => {
   const params = useParams();
   const history = useHistory();
   const { contractHash } = params as any;
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState<string>();
   // const [refresh, setRefresh] = useState<string>();
   const [values, setValues] = useState<any>();

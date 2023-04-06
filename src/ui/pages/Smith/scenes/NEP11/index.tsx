@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import ContractCard from "./ContractCard";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
@@ -8,10 +8,12 @@ import Banner from "../../Banner";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import { Link, useLocation } from "react-router-dom";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 const NEP11Smith = () => {
   const location = useLocation();
   const [page, setPage] = useState(1);
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const { isLoaded, error, data } = useOnChainData(() => {
     return new SmithContract(network).getNEP11Records(page);
   }, [connectedWallet, network, page]);

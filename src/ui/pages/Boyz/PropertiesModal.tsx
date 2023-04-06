@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
-import { useWallet } from "../../../packages/neo/provider";
-import { NFTContract } from "../../../packages/neo/contracts";
 import { IBoy } from "../../../packages/neo/contracts/ftw/boyz/interface";
 import { BoyzContract } from "../../../packages/neo/contracts/ftw/boyz";
+import { useApp } from "../../../common/hooks/use-app";
 
 interface IPropertiesModal {
   data: IBoy;
@@ -23,7 +22,7 @@ const PropertiesModal = ({ data, onClose }: IPropertiesModal) => {
   const [item, setItem] = useState<any>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { network } = useWallet();
+  const { network } = useApp();
 
   useEffect(() => {
     async function fetchContractStatus() {

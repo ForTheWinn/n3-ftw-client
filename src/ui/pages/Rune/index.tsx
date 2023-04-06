@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
 import PropertiesModal from "./PropertiesModal";
 import toast from "react-hot-toast";
-import { useWallet } from "../../../packages/neo/provider";
+import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
 import { NFTContract } from "../../../packages/neo/contracts";
 import Banner from "./Banner";
 import { RestAPI } from "../../../packages/neo/api";
@@ -10,6 +10,7 @@ import { RUNE_PHASE_FILTER } from "../../../packages/neo/contracts/ftw/rune/cons
 import AfterTransactionSubmitted from "../../components/NeoComponents/AfterTransactionSubmitted";
 import Modal from "../../components/Modal";
 import { handleError } from "../../../packages/neo/utils/errors";
+import { useApp } from "../../../common/hooks/use-app";
 
 const Gallery = () => {
   const [txid, setTxid] = useState("");
@@ -18,7 +19,8 @@ const Gallery = () => {
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [propertiesModalActive, setPropertiesModalActive] = useState<string>();
-  const { connectedWallet, network, addPendingTransaction } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const onPropertiesModalActive = (tokenId: string) => {
     setPropertiesModalActive(tokenId);
   };
@@ -27,7 +29,6 @@ const Gallery = () => {
     if (connectedWallet) {
       try {
         const res = await new NFTContract(network).mint(connectedWallet);
-        addPendingTransaction(res);
         setTxid(res);
       } catch (e: any) {
         toast.error(handleError(e));

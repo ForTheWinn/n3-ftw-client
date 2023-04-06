@@ -2,13 +2,27 @@ import React from "react";
 import { getWalletIcon } from "./helpers";
 import DisplayConnectedWallet from "./DisplayConnectedWallet";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
+import toast from "react-hot-toast";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { WALLET_CONNECTED, WENT_WRONG } from "../../../../../consts/messages";
 
 const ETHWallets = () => {
+  const { toggleWalletSidebar } = useApp();
   const { address, connector, isConnected } = useAccount();
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect();
 
   const { disconnect } = useDisconnect();
+
+  const onConnect = (connector) => {
+    try {
+      connect(connector);
+      toggleWalletSidebar();
+      toast.success(WALLET_CONNECTED);
+    } catch (e: any) {
+      toast.error(e.message ? e.meesage : WENT_WRONG);
+    }
+  };
 
   return (
     <div>
@@ -22,12 +36,11 @@ const ETHWallets = () => {
       ) : (
         <>
           {connectors.map((connector) => {
-            console.log(connector.id);
             return (
               <div key={connector.id} className="mb-1">
                 <button
                   className="button is-fullwidth"
-                  onClick={() => connect({ connector })}
+                  onClick={() => onConnect(connector)}
                 >
                   <span className="panel-icon">
                     <img

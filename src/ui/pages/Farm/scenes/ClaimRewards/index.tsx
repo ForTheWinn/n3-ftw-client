@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ClaimModal from "./ClaimModal";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
@@ -16,8 +16,8 @@ interface IClaimRewardsProps {
   pRefresh: number;
 }
 const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
-  const { toggleWalletSidebar } = useApp();
-  const { network, connectedWallet } = useWallet();
+  const { toggleWalletSidebar, network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [isClaimModalOpen, setClaimModalOpen] = useState(false);

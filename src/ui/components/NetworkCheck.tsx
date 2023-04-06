@@ -1,8 +1,10 @@
 import React from "react";
-import { useWallet } from "../../packages/neo/provider";
+import { useNeoWallets } from "../../common/hooks/use-neo-wallets";
+import { useApp } from "../../common/hooks/use-app";
 
 const NetworkCheck = () => {
-  const { connectedWallet, network } = useWallet();
+  const { connectedWallet } = useNeoWallets();
+  const { network } = useApp();
   if (!connectedWallet) return <></>;
   if (network === connectedWallet.network.defaultNetwork) return <></>;
   return (

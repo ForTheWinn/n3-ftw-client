@@ -1,10 +1,17 @@
 import { IConnectedWallet, ITransaction, IWalletType } from "./interfaces";
-import { NEO_LINE, NEON, O3, ONE_GATE, WALLET_LIST } from "../consts";
+import {
+  NEO_LINE,
+  NEO_LINE_MOBILE,
+  NEON,
+  O3,
+  ONE_GATE,
+  WALLET_LIST
+} from "../consts";
 import { u } from "@cityofzion/neon-core";
 import { INetworkType } from "../network";
 import { LocalStorage } from "../local-storage";
 import moment from "moment";
-import { initNeoLine } from "./neoline";
+import { initNeoLine, initNeoLineMobile } from "./neoline";
 import { initOG } from "./onegate";
 import { initO3 } from "./o3";
 import { initNeon } from "./neon";
@@ -23,6 +30,9 @@ export class WalletAPI {
         break;
       case NEO_LINE:
         instance = await initNeoLine();
+        break;
+      case NEO_LINE_MOBILE:
+        instance = await initNeoLineMobile();
         break;
       case NEON:
         instance = await initNeon(network);

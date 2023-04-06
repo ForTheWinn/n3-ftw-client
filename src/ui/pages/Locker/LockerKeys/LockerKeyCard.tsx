@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { u } from "@cityofzion/neon-core";
-import { useWallet } from "../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import {
   ILockerContract,
   ILockerKeyToken
@@ -16,7 +16,7 @@ interface ILockerByUserCardProps extends ILockerKeyToken {
 }
 
 const LockerKeyCard = (locker: ILockerByUserCardProps) => {
-  const { connectedWallet } = useWallet();
+  const { connectedWallet } = useNeoWallets();
   const [data, setData] = useState<ILockerContract | undefined>();
   const releaseAt = moment.unix(locker.releaseAt / 1000);
   const now = moment().valueOf();

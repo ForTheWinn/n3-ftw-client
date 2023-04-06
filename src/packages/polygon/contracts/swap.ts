@@ -128,11 +128,6 @@ export const getLPEstimate = (
 
 export const swap = (network: INetworkType, args: SwapArgs) => {
   const { tokenA, tokenB, amountIn, amountOut, isReverse } = args;
-  console.log(tokenA);
-  console.log(tokenB);
-  console.log(amountIn);
-  console.log(amountOut);
-  console.log(isReverse);
   return prepareWriteContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,

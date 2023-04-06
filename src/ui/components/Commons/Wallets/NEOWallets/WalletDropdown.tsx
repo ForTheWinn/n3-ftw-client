@@ -2,12 +2,12 @@ import React, { useState } from "react";
 // tslint:disable-next-line:no-submodule-imports
 import { FaAngleDown } from "react-icons/fa";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { getWalletIcon } from "./helpers";
 
 const WalletDropdown = () => {
   const [isActive, setActive] = useState(false);
-  const { disConnectWallet, connectedWallet } = useWallet();
+  const { disConnectWallet, connectedWallet } = useNeoWallets();
   const { toggleWalletSidebar } = useApp();
   const handleDisconnectWallet = () => {
     setActive(false);

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { IRuneMeta } from "../../../../../../../packages/neo/contracts/ftw/rune/interfaces";
 import Modal from "../../../../../../components/Modal";
-import { useWallet } from "../../../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 import BetButton from "../../../../components/BetButton";
 import LeaveButton from "../../../../components/LeaveButton";
 import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { TournamentContract } from "../../../../../../../packages/neo/contracts/ftw/arena";
 import { toDecimal } from "../../../../../../../packages/neo/utils";
 import AdminLeaveButton from "../../../../components/AdminLeaveButton";
+import { useApp } from "../../../../../../../common/hooks/use-app";
 
 interface IPlayerModalProps {
   arenaNo: string;
@@ -23,7 +24,8 @@ const PlayerModal = ({
   onClose
 }: IPlayerModalProps) => {
   const [txid, setTxid] = useState("");
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [status, setStatus] = useState({
     totalBets: "",
     userBets: ""

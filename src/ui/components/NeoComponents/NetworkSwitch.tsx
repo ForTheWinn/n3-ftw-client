@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../packages/neo/provider";
-import { INetworkType } from "../../../packages/neo/network";
 import { MAINNET, TESTNET } from "../../../consts/global";
+import { useApp } from "../../../common/hooks/use-app";
 
 const NetworkSwitch = () => {
   const [isActive, setActive] = useState(false);
-  const { network, switchNetwork } = useWallet();
+  const { network } = useApp();
   const onActive = () => setActive(!isActive);
   const handleNetworkChange = (val: string) => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Are you sure to switch network?")) {
-      switchNetwork(val as INetworkType);
       setActive(false);
     }
   };
@@ -32,10 +30,7 @@ const NetworkSwitch = () => {
       <div className="dropdown-menu" id="dropdown-wallet" role="menu">
         <div className="dropdown-content">
           {networkList.map((v) => {
-            if (
-              (process.env.NODE_ENV !== "development") ||
-              network === v
-            ) {
+            if (process.env.NODE_ENV !== "development" || network === v) {
               return false;
             }
             return (

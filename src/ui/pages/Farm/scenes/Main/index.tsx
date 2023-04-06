@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import StakingPairCard from "./StakingPairCard";
-import { useWallet } from "../../../../../packages/neo/provider";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
-const StakingMain = ({ onRefresh }) => {
-  const { network } = useWallet();
+const StakingMain = () => {
+  const { network } = useApp();
   const [refresh, setRefresh] = useState(0);
   const handleRefresh = () => setRefresh(refresh + 1);
   const { isLoaded, error, data } = useOnChainData(() => {

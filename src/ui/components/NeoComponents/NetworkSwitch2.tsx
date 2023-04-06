@@ -1,13 +1,12 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { MAINNET, TESTNET } from "../../../consts/global";
-import { useWallet } from "../../../packages/neo/provider";
+import { useApp } from "../../../common/hooks/use-app";
 
 const NetworkSwitch = () => {
-  const { network, switchNetwork } = useWallet();
+  const { network } = useApp();
   const handleSwitchNetwork = () => {
     const targetNetwork = network === TESTNET ? MAINNET : TESTNET;
-    switchNetwork(targetNetwork);
     toast.success(`Network switched. You are on ${targetNetwork}`);
   };
   return (

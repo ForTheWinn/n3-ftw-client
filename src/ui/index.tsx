@@ -5,7 +5,7 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { publicProvider } from "wagmi/providers/public";
 import { HashRouter as Router, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { WalletContextProvider } from "../packages/neo/provider";
+import { NeoWalletProvider } from "../common/hooks/use-neo-wallets";
 
 import Header from "./components/Commons/Header/Header";
 import WalletSidebar from "./components/Commons/SideNavs/WalletSidebar";
@@ -28,7 +28,7 @@ import GASFi from "./pages/GASFi";
 import Bridge from "./pages/Bridge";
 import BrandKit from "./pages/BrandKit";
 import TxHandler from "./components/Commons/TxHandler";
-import { NEO_ROUTES, POLYGON_ROUTES, GLOBAL } from "../consts";
+import { NEO_ROUTES, GLOBAL } from "../consts";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -49,11 +49,7 @@ const client = createClient({
 const App = () => {
   return (
     <WagmiConfig client={client}>
-      <WalletContextProvider
-        options={{
-          useDevWallet: process.env.NODE_ENV === "development"
-        }}
-      >
+      <NeoWalletProvider>
         <Router>
           <Toaster position="bottom-center" />
           <Header />
@@ -65,11 +61,10 @@ const App = () => {
           <Route path={NEO_ROUTES.LOCKER_PATH} component={Locker} />
           <Route path={NEO_ROUTES.COLLECTION_PATH} component={MyCollection} />
           <Route path={NEO_ROUTES.SWAP_PATH} component={Swap} />
-
           <Route path={NEO_ROUTES.FARM_PATH} component={Farm} />
           <Route path={NEO_ROUTES.FARM_V2_PATH} component={FarmV2} />
           <Route path={NEO_ROUTES.DAO_PATH} component={DAO} />
-          <Route exact path={NEO_ROUTES.MIGRATION_PATH} component={Migration} />
+          <Route path={NEO_ROUTES.MIGRATION_PATH} component={Migration} />
           <Route path={NEO_ROUTES.ANALYTICS_PATH} component={Analytics} />
           <Route path={NEO_ROUTES.LP_TOKENS_PATH} component={LPTokens} />
           <Route path={NEO_ROUTES.GASFI_PATH} component={GASFi} />
@@ -80,7 +75,7 @@ const App = () => {
           <WalletSidebar />
           <TxHandler />
         </Router>
-      </WalletContextProvider>
+      </NeoWalletProvider>
     </WagmiConfig>
   );
 };

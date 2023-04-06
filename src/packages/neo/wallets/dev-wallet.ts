@@ -1,4 +1,3 @@
-import { DEV_WALLET_PRIVATE_KEY } from "../consts";
 import { CONST, rpc, sc, tx, u, wallet } from "@cityofzion/neon-core";
 // tslint:disable-next-line:no-submodule-imports
 import { BigInteger } from "@cityofzion/neon-core/lib/u";
@@ -8,7 +7,7 @@ import { convertContractCallParam } from "../utils";
 import { GAS_SCRIPT_HASH, NEO_SCRIPT_HASH } from "../consts/neo-contracts";
 
 export class DevWallet {
-  static account = new wallet.Account(DEV_WALLET_PRIVATE_KEY);
+  static account = new wallet.Account("");
   static async getAccount() {
     return {
       address: DevWallet.account.address,

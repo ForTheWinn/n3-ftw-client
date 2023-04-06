@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useWallet } from "../../../../../packages/neo/provider";
-import {
-  IPoolEnhanced
-} from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
+import { IPoolEnhanced } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { Space, Avatar } from "antd";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IStakingPairCardProps extends IPoolEnhanced {
   path: string;
@@ -23,9 +22,8 @@ const StakingPairCard = ({
   bonusRewardsPerDay,
   hasBonusRewards,
   bonusTokenSymbol
-}:
-IStakingPairCardProps) => {
-  const { network } = useWallet();
+}: IStakingPairCardProps) => {
+  const { network } = useApp();
   const [isExpanded, setExpanded] = useState(false);
 
   // useEffect(() => {

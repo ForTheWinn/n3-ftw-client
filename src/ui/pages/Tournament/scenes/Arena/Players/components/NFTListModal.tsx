@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../../../components/Modal";
 import { NFTContract } from "../../../../../../../packages/neo/contracts";
-import { useWallet } from "../../../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { TournamentContract } from "../../../../../../../packages/neo/contracts/ftw/arena";
 import { toast } from "react-hot-toast";
 import { handleError } from "../../../../../../../packages/neo/utils/errors";
+import { useApp } from "../../../../../../../common/hooks/use-app";
 
 interface INFTListModalModal {
   arenaNo: string;
@@ -16,7 +17,8 @@ const NFTListModal = ({ arenaNo, onClose }: INFTListModalModal) => {
   const [tokens, setTokens] = useState<any>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { connectedWallet, network, addPendingTransaction } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
 
   const onRegister = async (tokenId: string) => {
     if (connectedWallet) {
@@ -26,7 +28,7 @@ const NFTListModal = ({ arenaNo, onClose }: INFTListModalModal) => {
           tokenId,
           arenaNo
         );
-        addPendingTransaction(res);
+        // addPendingTransaction(res);
         setTxid(res);
       } catch (e: any) {
         toast.error(handleError(e));

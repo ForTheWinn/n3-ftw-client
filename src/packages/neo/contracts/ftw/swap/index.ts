@@ -894,7 +894,7 @@ export class SwapContract {
     ) {
       throw new Error(res.exception ? res.exception : "Something went wrong.");
     }
-
+    // return []
     // @ts-ignore
     return res.stack[0].value.map((item) => parseMapValue(item));
   };

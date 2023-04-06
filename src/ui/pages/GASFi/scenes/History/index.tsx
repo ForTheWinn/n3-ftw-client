@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import DrawHistory from "./DrawHistory";
 import ClaimHistory from "./ClaimHistory";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const historyRoutes = ["DRAWS", "CLAIMS"];
 
 const History = () => {
-  const { connectedWallet, network } = useWallet();
+  const { connectedWallet } = useNeoWallets();
+  const { network } = useApp();
   const [route, setRoute] = useState(historyRoutes[0]);
   return (
     <div>

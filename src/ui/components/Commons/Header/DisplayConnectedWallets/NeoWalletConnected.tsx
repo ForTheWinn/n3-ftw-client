@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { NEO_LINE, O3 } from "../../../../../packages/neo/consts";
 import neo3Dapi from "neo3-dapi";
 import { Avatar } from "antd";
 
 const NeoWalletConnected = ({ connectedWallet, style }) => {
-  const { disConnectWallet } = useWallet();
+  const { disConnectWallet } = useNeoWallets();
 
   useEffect(() => {
     // const refresh = () => {

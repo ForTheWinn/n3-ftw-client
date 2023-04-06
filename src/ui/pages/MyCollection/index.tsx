@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
-import { useWallet } from "../../../packages/neo/provider";
+import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
 import { NFTContract } from "../../../packages/neo/contracts";
 import PropertiesModal from "../Rune/PropertiesModal";
 import { Link } from "react-router-dom";
 import { NEO_ROUTES } from "../../../consts";
+import { useApp } from "../../../common/hooks/use-app";
 
 const MyCollection = () => {
   const [tokens, setTokens] = useState<any>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [propertiesModalActive, setPropertiesModalActive] = useState<string>();
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const onPropertiesModalActive = (tokenId: string) => {
     setPropertiesModalActive(tokenId);
   };
@@ -65,7 +67,10 @@ const MyCollection = () => {
                     <p>You don't have any runes yet</p>
                   </div>
 
-                  <Link className="button is-primary" to={NEO_ROUTES.GALLERY_PATH}>
+                  <Link
+                    className="button is-primary"
+                    to={NEO_ROUTES.GALLERY_PATH}
+                  >
                     Go Get Them
                   </Link>
                 </div>

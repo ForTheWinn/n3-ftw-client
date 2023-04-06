@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { NEO_ROUTES, GLOBAL } from "../../../../../consts";
 import PageLayout from "../../../../components/Commons/PageLayout";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const ArenaHome = () => {
-  const { network } = useWallet();
+  const { network } = useApp();
   let ARENA_LIST = ["4", "8", "16", "32", "64", "128", "256"];
   if (network === GLOBAL.MAINNET) {
     ARENA_LIST = ["8", "16", "32", "64", "128"];

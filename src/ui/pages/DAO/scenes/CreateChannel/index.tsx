@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { detectEmojiInString } from "../../../Smith/helpers";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { Link, useHistory } from "react-router-dom";
@@ -10,13 +10,15 @@ import PageLayout from "../../../../components/Commons/PageLayout";
 import VerifyContract from "./VerifyContract";
 import ChannelForm from "../../components/ChannelForm";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IAddChannelProps {
   onAdd: (values) => void;
 }
 const CreateChannel = ({ onAdd }: IAddChannelProps) => {
   const history = useHistory();
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState<string>();
   const [values, setValues] = useState({
     symbol: "",

@@ -3,20 +3,14 @@ import { SWAP_SCRIPT_HASH } from "../swap/consts";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
-import { ethers } from "ethers";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
-import {
-  IBoyStaked,
-  IClaimableRewards,
-  IPool,
-  IPoolEnhanced
-} from "./interfaces";
+import { IClaimableRewards, IPool, IPoolEnhanced } from "./interfaces";
 import { FARM_V2_SCRIPT_HASH } from "./consts";
 import { parseMapValue, withDecimal } from "../../../utils";
 import { ILPToken } from "../swap/interfaces";
 import { BOYZ_SCRIPT_HASH } from "../boyz/consts";
 import { TOKEN_LIST } from "../../../../../consts/tokens";
-import { CHAINS } from "../../../../../consts/chains";
+import { CHAINS, NEO_CHAIN } from "../../../../../consts/chains";
 import { IClaimable } from "../../../../../common/routers/farm/interfaces";
 
 export class FarmV2Contract {
@@ -211,7 +205,7 @@ export class FarmV2Contract {
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
-  getPools = async (chain: CHAINS): Promise<IPoolEnhanced[]> => {
+  getPools = async (): Promise<IPoolEnhanced[]> => {
     const script = {
       scriptHash: this.contractHash,
       operation: "getPools",
@@ -226,14 +220,12 @@ export class FarmV2Contract {
       const hasBonusRewards = pool.bonusTokensPerSecond > 0;
       return {
         ...pool,
-        tokenALogo:
-          TOKEN_LIST[chain] && TOKEN_LIST[chain][pool.tokenA]
-            ? TOKEN_LIST[chain][pool.tokenA].icon
-            : "",
-        tokenBLogo:
-          TOKEN_LIST[chain] && TOKEN_LIST[chain][pool.tokenB]
-            ? TOKEN_LIST[chain][pool.tokenB].icon
-            : "",
+        tokenALogo: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenA]
+          ? TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenA].icon
+          : "",
+        tokenBLogo: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenB]
+          ? TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenB].icon
+          : "",
         nepRewardsPerDay: withDecimal(pool.nepTokensPerSecond * 86400, 8, true),
         bonusRewardsPerDay: hasBonusRewards
           ? withDecimal(
@@ -269,9 +261,7 @@ export class FarmV2Contract {
     });
   };
 
-  getClaimable = async (
-    address: string
-  ): Promise<IClaimable> => {
+  getClaimable = async (address: string): Promise<IClaimable> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(address);
     const scripts = [
       {

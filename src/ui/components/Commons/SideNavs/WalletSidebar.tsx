@@ -11,7 +11,7 @@ const WalletSidebar = () => {
       style={{ top: "52px" }}
       showNav={walletSidebarStatus}
       onHideNav={toggleWalletSidebar}
-      children={<Wallet />}
+      children={<Wallet isActive={walletSidebarStatus} />}
     />
   );
 };

@@ -11,9 +11,9 @@ import {
   Legend
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { useWallet } from "../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../packages/neo/api";
 import { numberTrim } from "../../../../../packages/neo/utils";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 ChartJS.register(
   CategoryScale,
@@ -65,7 +65,7 @@ interface ITokenPriceChartProps {
   days: string;
 }
 const TokenPriceChart = ({ tokenId, days }: ITokenPriceChartProps) => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const [data, setData] = useState<any>();
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../../packages/neo/provider";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import TokenItem from "./TokenItem";
 import ModalCard from "../../../../../components/Modal";
 import TokenDetail from "../../TokenDetail";
 import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
-const TokensAnalytics = (props) => {
-  const { network } = useWallet();
+const TokensAnalytics = () => {
+  const { network } = useApp();
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [isModalActive, setModalActive] = useState("");

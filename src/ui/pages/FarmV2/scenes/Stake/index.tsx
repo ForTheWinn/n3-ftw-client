@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenList from "./LPTokenList";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
@@ -16,7 +16,7 @@ interface IStakeProps {
 }
 const Stake = ({ chain, network }: IStakeProps) => {
   const { setTxid } = useApp();
-  const { connectedWallet } = useWallet();
+  const { connectedWallet } = useNeoWallets();
   const { isConnected, address } = useWalletRouter(chain);
   const [refresh, setRefresh] = useState(0);
 

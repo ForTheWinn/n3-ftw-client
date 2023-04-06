@@ -88,6 +88,8 @@ export class LocalStorage {
 
   static setWalletSwitchType = (val: typeof NEO_WALLET | typeof ETH_WALLET) =>
     store.set(WALLET_SWITCH, val);
+
+  // Get the last wallet switch used.
   static getWalletSwitch = () =>
     store.get(WALLET_SWITCH) ? store.get(WALLET_SWITCH) : NEO_WALLET;
 

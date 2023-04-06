@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
 import { SwapContract } from "../../../packages/neo/contracts";
-import { useWallet } from "../../../packages/neo/provider";
+import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
 import { RestAPI } from "../../../packages/neo/api";
 import { u } from "@cityofzion/neon-core";
 import { SpinnerRoundFilled } from "spinners-react";
@@ -9,13 +9,14 @@ import MyLPTokenList from "./MyLPTokenList";
 import MyLPTokenCard from "./MyLPTokenCard";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router-dom";
+import { useApp } from "../../../common/hooks/use-app";
 
 const LPTokens = () => {
   const location = useLocation();
   const history = useHistory();
   const params = queryString.parse(location.search);
-
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
 
   const [prices, setPrices] = useState<any>();
   const [id, setId] = useState<any>(

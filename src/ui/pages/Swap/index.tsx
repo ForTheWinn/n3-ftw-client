@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 
 import PageLayout from "../../components/Commons/PageLayout";
 import SwapMain from "./scenes/Swap";
 import { SwapContextProvider } from "./scenes/SwapContext";
 import { NEO_ROUTES } from "../../../consts";
-import AddLiquidity from "./scenes/AddLiquidity/Polygon";
-import RemoveLiquidity from "./scenes/RemoveLiquidity/Polygon";
+import AddLiquidity from "./scenes/AddLiquidity";
+import RemoveLiquidity from "./scenes/RemoveLiquidity";
 
 const Swap = () => {
-  // useEffect(() => {
-  //   document.title = "FTW Swap";
-  // }, []);
+  useEffect(() => {
+    document.title = "FTW Swap";
+  }, []);
 
   return (
     <div>
@@ -24,15 +24,20 @@ const Swap = () => {
             >
               <Route
                 exact={true}
+                path={NEO_ROUTES.SWAP_PATH}
                 component={() => (
-                  <SwapContextProvider>
+                  <SwapContextProvider type="swap">
                     <SwapMain />
                   </SwapContextProvider>
                 )}
               />
               <Route
                 path={NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}
-                component={AddLiquidity}
+                component={() => (
+                  <SwapContextProvider type="liquidity">
+                    <AddLiquidity />
+                  </SwapContextProvider>
+                )}
               />
               <Route
                 path={NEO_ROUTES.SWAP_PATH_LIQUIDITY_REMOVE}

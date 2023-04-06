@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { RestAPI } from "../../../../../../packages/neo/api";
-import { useWallet } from "../../../../../../packages/neo/provider";
 import PairItem from "./PairItem";
 import ModalCard from "../../../../../components/Modal";
 import PairDetail from "../../PairDetail";
 import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
-const Pairs = (props) => {
-  const { network } = useWallet();
+const Pairs = () => {
+  const { network } = useApp();
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [isModalActive, setModalActive] = useState("");

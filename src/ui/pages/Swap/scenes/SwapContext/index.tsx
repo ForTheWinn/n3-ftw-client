@@ -17,7 +17,7 @@ import {
 } from "../../../../../common/routers/swap/interfaces";
 import { swapRouter } from "../../../../../common/routers";
 import { CHAINS, NEO_CHAIN } from "../../../../../consts/chains";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { ethers } from "ethers";
 import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
@@ -25,6 +25,7 @@ import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import toast from "react-hot-toast";
+import { getLPEstimate } from "../../../../../packages/polygon/contracts/swap";
 
 interface ISwapContext {
   chain: CHAINS;
@@ -56,8 +57,10 @@ interface ISwapContext {
 
 export const SwapContext = createContext({} as ISwapContext);
 
-export const SwapContextProvider = (props: { children: any }) => {
-  console.log("reload");
+export const SwapContextProvider = (props: {
+  type: "swap" | "liquidity";
+  children: any;
+}) => {
   const location = useLocation();
   const params = queryString.parse(location.search);
   const {
@@ -67,7 +70,7 @@ export const SwapContextProvider = (props: { children: any }) => {
     increaseRefreshCount,
     toggleWalletSidebar
   } = useApp();
-  const { connectedWallet } = useWallet();
+  const { connectedWallet } = useNeoWallets();
   const { address, isConnected } = useWalletRouter(chain);
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>(
@@ -157,14 +160,13 @@ export const SwapContextProvider = (props: { children: any }) => {
         let _address =
           chain === NEO_CHAIN ? connectedWallet?.account.address : address;
 
-        console.log(_address);
         if (_address) {
           const { amountA, amountB } = await swapRouter.getBalances(
             chain,
             network,
             _address,
-            _tokenA.hash,
-            _tokenB.hash
+            _tokenA,
+            _tokenB
           );
           setBalances({
             amountA,
@@ -201,24 +203,38 @@ export const SwapContextProvider = (props: { children: any }) => {
 
         try {
           if (swapInput.value) {
-            const args = {
-              tokenA: tokenA.hash,
-              tokenB: tokenB.hash,
-              amount: ethers.utils
-                .parseUnits(
-                  swapInput.value.toString(),
-                  swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
-                )
-                .toString(),
-              isReverse: swapInput.type === "B"
-            };
-            estimated = await swapRouter.getEstimate(
-              chain,
-              network,
-              args,
-              swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
-            );
-            console.log(estimated);
+            if (props.type === "swap") {
+              const args = {
+                tokenA: tokenA.hash,
+                tokenB: tokenB.hash,
+                amount: ethers.utils
+                  .parseUnits(
+                    swapInput.value.toString(),
+                    swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
+                  )
+                  .toString(),
+                isReverse: swapInput.type === "B"
+              };
+              estimated = await swapRouter.getEstimate(
+                chain,
+                network,
+                args,
+                swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
+              );
+              console.log(estimated);
+            } else if (props.type === "liquidity") {
+              if (reserves) {
+                estimated = await getLPEstimate(
+                  swapInput.value,
+                  swapInput.type === "A" ? tokenA.decimals : tokenB.decimals,
+                  swapInput.type === "A" ? tokenB.decimals : tokenA.decimals,
+                  swapInput.type === "A"
+                    ? reserves.reserveA
+                    : reserves.reserveB,
+                  swapInput.type === "A" ? reserves.reserveB : reserves.reserveA
+                );
+              }
+            }
           }
         } catch (e: any) {
           setError("Failed to fetch swap estimate. Check your inputs.");

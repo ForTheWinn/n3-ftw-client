@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useWallet } from "../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
@@ -12,11 +12,13 @@ import PageLayout from "../../../../components/Commons/PageLayout";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { NEO_ROUTES, GLOBAL } from "../../../../../consts";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEP17InfoPage = () => {
   const params = useParams();
   const { contractHash } = params as any;
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [isUpdateModalActive, setUpdateModalActive] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [txid, setTxid] = useState<string>();

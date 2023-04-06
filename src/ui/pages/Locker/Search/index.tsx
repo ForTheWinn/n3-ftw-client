@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { ILocker } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
-import { useWallet } from "../../../../packages/neo/provider";
 import { FaSearch } from "react-icons/fa";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import LockerCard from "./LockerCard";
 import { NEO_ROUTES } from "../../../../consts";
+import { useApp } from "../../../../common/hooks/use-app";
 
 const LockerSearch = () => {
   const location = useLocation();
   const history = useHistory();
   const params = queryString.parse(location.search);
-  const { network } = useWallet();
+  const { network } = useApp();
   const [lockerNo, setLockerNo] = useState<any>(
     params && params.lockerNo ? params.lockerNo : ""
   );

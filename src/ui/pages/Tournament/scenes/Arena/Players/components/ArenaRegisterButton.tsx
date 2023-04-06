@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NFTListModal from "./NFTListModal";
-import { useWallet } from "../../../../../../../packages/neo/provider";
+import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
 
 interface IRegisterButtonProps {
@@ -9,7 +9,7 @@ interface IRegisterButtonProps {
 }
 const RegisterButton = ({ arenaNo, playerCount }: IRegisterButtonProps) => {
   const [modalActive, setModalActive] = useState(false);
-  const { connectedWallet } = useWallet();
+  const { connectedWallet } = useNeoWallets();
   const onPickModal = () => {
     if (connectedWallet) {
       setModalActive(true);

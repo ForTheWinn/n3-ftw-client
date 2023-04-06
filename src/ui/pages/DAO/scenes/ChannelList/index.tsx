@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import PageLayout from "../../../../components/Commons/PageLayout";
-import { useWallet } from "../../../../../packages/neo/provider";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import List from "./List";
 import { Link } from "react-router-dom";
 import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const DAOChannelList = () => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const [page, setPage] = useState("1");
 
   const { isLoaded, error, data } = useOnChainData(() => {

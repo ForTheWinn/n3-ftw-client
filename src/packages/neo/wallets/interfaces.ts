@@ -1,13 +1,12 @@
-import { DEV, NEO_LINE, NEON, O3, ONE_GATE } from "../consts";
+import { NEO_LINE, NEON, O3, ONE_GATE, NEO_LINE_MOBILE } from "../consts";
 import { INetworkType } from "../network";
 
 export type IWalletType =
   | typeof O3
   | typeof NEO_LINE
-  | typeof DEV
   | typeof ONE_GATE
+  | typeof NEO_LINE_MOBILE
   | typeof NEON;
-
 
 export interface IConnectedWallet {
   key: IWalletType;
@@ -17,9 +16,9 @@ export interface IConnectedWallet {
 }
 
 export interface IConnectedETHWallet {
-	key: IWalletType;
-	account: any;
-	network?: any;
+  key: IWalletType;
+  account: any;
+  network?: any;
 }
 
 export interface IBalance {
@@ -29,7 +28,7 @@ export interface IBalance {
 }
 
 export interface ITransaction {
-	invokeScript?: any
+  invokeScript?: any;
   network: INetworkType;
   wallet: IWalletType;
   // status: "PENDING" | "SUBMITTED";

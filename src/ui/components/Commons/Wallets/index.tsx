@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NEOWalletList from "./NEOWallets/NEOWalletList";
 import { ETH_WALLET, NEO_WALLET } from "./consts";
 import ETHWallets from "./ETHWallets";
 import { LocalStorage } from "../../../../packages/neo/local-storage";
+import { useApp } from "../../../../common/hooks/use-app";
+import { NEO_CHAIN } from "../../../../consts/chains";
 
-const Wallet = () => {
+const Wallet = ({ isActive }: { isActive: boolean }) => {
+  const { chain } = useApp();
   const [walletType, setWalletType] = useState<
     typeof NEO_WALLET | typeof ETH_WALLET
   >(LocalStorage.getWalletSwitch());
-  console.log(LocalStorage.getWalletSwitch());
   const handleWalletSwitchChange = (val) => {
-    console.log(val);
     LocalStorage.setWalletSwitchType(val);
     setWalletType(val);
   };
+
+  useEffect(() => {
+    if (chain === NEO_CHAIN) {
+      setWalletType(NEO_WALLET);
+    } else {
+      setWalletType(ETH_WALLET);
+    }
+  }, [isActive]);
   return (
     <div className="is-relative">
       <section>

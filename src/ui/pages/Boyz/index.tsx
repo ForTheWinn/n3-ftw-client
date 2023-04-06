@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
-import { useWallet } from "../../../packages/neo/provider";
+import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
 import Banner from "./Banner";
 import { RestAPI } from "../../../packages/neo/api";
 import Modal from "../../components/Modal";
 import RarityList from "./RarityList";
 import { IBoy } from "../../../packages/neo/contracts/ftw/boyz/interface";
 import PropertiesModal from "./PropertiesModal";
+import { useApp } from "../../../common/hooks/use-app";
 
 const Boyz = () => {
   const [isFilterActive, setFilterActive] = useState(false);
@@ -23,11 +24,11 @@ const Boyz = () => {
     mouth: [],
     background: ["Mint"]
   });
+  const { network } = useApp();
   const [currentCategory, setCurrentCategory] = useState<string>("clothing");
   const [boyz, setBoyz] = useState<any>([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { network } = useWallet();
 
   const onFilterChange = (newFilter: any) => {
     setFilter({

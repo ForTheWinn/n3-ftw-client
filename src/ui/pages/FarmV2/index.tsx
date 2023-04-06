@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import PageLayout from "../../components/Commons/PageLayout";
-import { Route, useHistory, useRouteMatch } from "react-router-dom";
+import { Route } from "react-router-dom";
 import StakingMain from "./scenes/Main";
 import Stake from "./scenes/Stake";
 import MyPositions from "./scenes/MyPositions";
@@ -10,18 +10,12 @@ import { useApp } from "../../../common/hooks/use-app";
 import { useOnChainData } from "../../../common/hooks/use-onchain-data";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { NEP_SCRIPT_HASH } from "../../../packages/neo/consts/neo-contracts";
-import { useWallet } from "../../../packages/neo/provider";
 import { farmRouter } from "../../../common/routers";
 import { NEO_ROUTES } from "../../../consts";
-import { FARM_PATH, FARM_V2_PATH } from "../../../consts/neoRoutes";
 
-interface IFarmProps {
-  path?: string;
-}
-
-const Farm = (props: IFarmProps) => {
+const Farm = () => {
   const { chain, refreshCount } = useApp();
-  const { network } = useWallet();
+  const { network } = useApp();
 
   let nepPrice = undefined;
 
