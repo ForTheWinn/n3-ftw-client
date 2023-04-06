@@ -23,12 +23,10 @@ export const initNeoLineMobile = async () => {
   try {
     // @ts-ignore
     const instance = new BaseDapi(window.NeoLineMobile);
-    const network = await instance.getNetworks();
     const account = await instance.getAccount();
     return {
       instance,
-      account,
-      network
+      account
     };
   } catch (e) {
     throw new Error("Failed to connect NeoLine Mobile.");
