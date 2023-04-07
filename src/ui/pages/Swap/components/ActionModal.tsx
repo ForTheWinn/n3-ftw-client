@@ -249,7 +249,9 @@ const ActionModal = ({
     <Modal onClose={onCancel}>
       <>
         <div className="block">
-          <h3 className="title is-5 has-text-centered">Swap</h3>
+          <h3 className="title is-5 has-text-centered">
+            {method === "swap" ? "Swap" : "Add Liquidity"}
+          </h3>
         </div>
 
         <div className="block">

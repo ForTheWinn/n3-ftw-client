@@ -64,8 +64,11 @@ const RemoveLiquidityModal = ({
             setApproving(false);
           }
         } catch (e) {
-          setApproveError(true);
           console.error(e);
+          setApproving(false);
+          setApproveError(true);
+          setFinished(true);
+          return;
         }
       } else {
         setApproved(true);
@@ -85,6 +88,7 @@ const RemoveLiquidityModal = ({
         setSubmitting(false);
         setFinished(true);
       } catch (e) {
+        setSubmitting(false);
         setSubmitError(true);
         console.error(e);
       }
@@ -144,18 +148,23 @@ const RemoveLiquidityModal = ({
           />
         </div>
 
-        {txid && isFinished ? (
+        {isFinished ? (
           <>
             <hr />
             <div className="buttons" style={{ justifyContent: "center" }}>
-              <a
-                className="button is-primary"
-                target="_blank"
-                href={`${getExploler(chain, network)}/${txid}`}
-                rel="noreferrer"
-              >
-                View txid on explorer
-              </a>
+              {txid ? (
+                <a
+                  className="button is-primary"
+                  target="_blank"
+                  href={`${getExploler(chain, network)}/${txid}`}
+                  rel="noreferrer"
+                >
+                  View txid on explorer
+                </a>
+              ) : (
+                <></>
+              )}
+
               <button onClick={onSuccess} className="button is-black">
                 Close
               </button>

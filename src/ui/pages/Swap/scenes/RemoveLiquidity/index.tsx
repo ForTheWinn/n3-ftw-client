@@ -21,12 +21,10 @@ const RemoveLiquidity = () => {
     increaseRefreshCount();
     setTokenIdForInvoke(undefined);
   };
-
   const { isLoaded, error, data } = useOnChainData(
     () => farmRouter.getLPTokens(chain, network, address),
     [address, network, refreshCount]
   );
-  console.log(error);
 
   return (
     <>

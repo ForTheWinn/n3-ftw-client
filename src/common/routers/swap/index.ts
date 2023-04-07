@@ -1,4 +1,4 @@
-import { fetchBalance } from "@wagmi/core";
+import { fetchBalance, writeContract } from "@wagmi/core";
 import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { INetworkType } from "../../../packages/neo/network";
 import {
@@ -54,7 +54,7 @@ export const getBalances = async (
         tokenA.hash,
         tokenB.hash
       );
-      console.log(res)
+      console.log(res);
       amountA = ethers.utils.formatUnits(res.amountA, tokenA.decimals);
       amountB = ethers.utils.formatUnits(res.amountB, tokenB.decimals);
       break;
@@ -142,12 +142,14 @@ export const removeLiquidity = async (
   switch (chain) {
     case NEO_CHAIN:
       if (connectedWallet) {
-        return new SwapContract(network).remove(connectedWallet, tokenId);
+        const txid = new SwapContract(network).remove(connectedWallet, tokenId);
+        return txid;
       } else {
         throw new Error("Conneect wallet.");
       }
-
     case POLYGON_CHAIN:
-      return polygonRemoveLiquidity(network, tokenId) as any;
+      const config = (await polygonRemoveLiquidity(network, tokenId)) as any;
+      const res = await writeContract(config);
+      return res.hash;
   }
 };

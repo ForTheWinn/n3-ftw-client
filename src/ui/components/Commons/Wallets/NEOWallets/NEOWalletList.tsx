@@ -7,13 +7,13 @@ import DisplayConnectedWallet from "./DisplayConnectedWallet";
 import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEOWalletList = () => {
-  const { network } = useApp();
+  const { network, toggleWalletSidebar } = useApp();
   const [neonWalletConnecting, setNeonWalletConnecting] = useState(false);
   const { connectWallet, list, connectedWallet, disConnectWallet } =
     useNeoWallets();
 
   const onWalletConnect = async (walletType: IWalletType) => {
-    connectWallet(network, walletType);
+    connectWallet(network, walletType, toggleWalletSidebar);
   };
 
   return (

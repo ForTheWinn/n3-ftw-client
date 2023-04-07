@@ -14,7 +14,11 @@ export interface IWalletStates {
     label: string;
   }[];
   connectedWallet?: IConnectedWallet;
-  connectWallet: (network: INetworkType, wallet: IWalletType) => void;
+  connectWallet: (
+    network: INetworkType,
+    wallet: IWalletType,
+    onSuccess: () => void
+  ) => void;
   disConnectWallet: () => void;
 }
 
@@ -26,11 +30,14 @@ export const NeoWalletProvider = (props: { children: any }) => {
 
   const connectWallet = async (
     network: INetworkType,
-    walletType: IWalletType
+    walletType: IWalletType,
+    onSuccess: () => void
   ) => {
     try {
       const res = await WalletAPI.init(walletType, network);
       setConnectedWallet(res);
+      toast.success("Connected!");
+      onSuccess();
     } catch (e: any) {
       console.log(e);
       toast.error(

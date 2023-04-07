@@ -9,15 +9,25 @@ import { WALLET_CONNECTED, WENT_WRONG } from "../../../../../consts/messages";
 const ETHWallets = () => {
   const { toggleWalletSidebar } = useApp();
   const { address, connector, isConnected } = useAccount();
-  const { connect, connectors, error, isLoading, pendingConnector } =
-    useConnect();
+  const {
+    connectAsync,
+    connectors,
+    error,
+    isLoading,
+    pendingConnector
+  } = useConnect();
 
   const { disconnect } = useDisconnect();
-
-  const onConnect = (connector) => {
+  console.log(connector);
+  console.log(error);
+  console.log(isLoading);
+  console.log(pendingConnector);
+  const onConnect = async (connector) => {
+    console.log(connector)
     try {
-      connect(connector);
-      toggleWalletSidebar();
+      const res = await connectAsync({connector});
+      console.log(res);
+      // toggleWalletSidebar();
       toast.success(WALLET_CONNECTED);
     } catch (e: any) {
       toast.error(e.message ? e.meesage : WENT_WRONG);

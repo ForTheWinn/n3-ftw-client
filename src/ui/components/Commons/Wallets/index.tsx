@@ -23,6 +23,7 @@ const Wallet = ({ isActive }: { isActive: boolean }) => {
       setWalletType(ETH_WALLET);
     }
   }, [isActive]);
+  
   return (
     <div className="is-relative">
       <section>

@@ -4,7 +4,7 @@ import {
   erc20ABI,
   multicall
 } from "@wagmi/core";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { Buffer } from "buffer";
 import { CONSTS } from "..";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
