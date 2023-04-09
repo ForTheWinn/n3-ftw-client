@@ -9,6 +9,7 @@ import {
 import { FaLock, FaUnlock } from "react-icons/fa";
 import CountdownRender from "../components/CountdownRender";
 import { useApp } from "../../../../common/hooks/use-app";
+import { truncateAddress } from "../../../../packages/neo/utils";
 
 interface ILockerByUserCardProps extends ILocker {}
 
@@ -33,7 +34,7 @@ const LockerCard = (locker: ILockerByUserCardProps) => {
   return (
     <tr key={locker.lockerNo}>
       <td>{locker.lockerNo}</td>
-      <td>{locker.contractHash}</td>
+      <td>{truncateAddress(locker.contractHash)}</td>
       <td>{data ? data.symbol : ""}</td>
       <td>
         {data

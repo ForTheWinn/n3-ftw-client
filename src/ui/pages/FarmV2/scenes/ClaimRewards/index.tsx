@@ -14,6 +14,7 @@ import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import toast from "react-hot-toast";
 import { NEP_LOGO } from "../../../../../consts/global";
 import { Avatar } from "antd";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
 interface IClaimRewardsProps {
   chain: CHAINS;
@@ -37,7 +38,7 @@ const ClaimRewards = ({ chain, prices }: IClaimRewardsProps) => {
       );
       setTxid(txid);
     } catch (e: any) {
-      toast.error(e.message ? e.message : "Something went wrong.");
+      toast.error(e.message ? e.message : WENT_WRONG);
     }
   };
 

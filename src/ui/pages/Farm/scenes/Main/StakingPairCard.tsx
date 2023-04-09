@@ -21,9 +21,6 @@ const StakingPairCard = (props: IStakingPairs) => {
   const { isLoaded, error, data } = useOnChainData(() => {
     return new StakingContract(network).getTVL(props.tokenA, props.tokenB);
   }, []);
-  if (isLoaded) {
-    console.log(`${props.tokenASymbol}-${props.tokenBSymbol}: ${data}`);
-  }
 
   if (isBNEOAndGAS && process.env.NODE_ENV !== "development") return <></>;
   return (

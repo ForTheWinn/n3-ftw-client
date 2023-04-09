@@ -44,7 +44,6 @@ const StakingPairCard = ({
   //       });
   //       setLoading(false);
   //     } catch (e: any) {
-  //       console.log(e);
   //       setError(e.message);
   //       setLoading(false);
   //     }
@@ -52,7 +51,6 @@ const StakingPairCard = ({
   //   fetch();
   // }, []);
 
-  // console.log(`${tokenASymbol}-${tokenBSymbol}, staked: ${tokensStaked}`);
 
   // let nepPerSecond = parseFloat(
   //   u.BigInteger.fromNumber(nepTokensPerSecond).toDecimal(8)

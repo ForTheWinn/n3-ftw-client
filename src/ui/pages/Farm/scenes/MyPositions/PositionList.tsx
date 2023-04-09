@@ -32,7 +32,7 @@ const PositionList = ({
           prices
         });
       } catch (e: any) {
-        console.log(e);
+        console.error(e);
       }
     }
     if (connectedWallet) {

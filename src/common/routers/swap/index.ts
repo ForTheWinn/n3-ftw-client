@@ -2,6 +2,7 @@ import { fetchBalance, writeContract } from "@wagmi/core";
 import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { INetworkType } from "../../../packages/neo/network";
 import {
+  getTokenURI as getPolygonLPToken,
   getLPTokens as getPolygonLPTokens,
   getEstimated as polygonGetEstimated,
   getReserves as polygonGetReserves,
@@ -174,5 +175,30 @@ export const getLPTokens = async (
       return tokens;
     case POLYGON_CHAIN:
       return getPolygonLPTokens(network, address);
+  }
+};
+
+export const getLPToken = async (
+  chain: CHAINS,
+  network: INetworkType,
+  tokenId: string
+): Promise<ISwapLPToken> => {
+  switch (chain) {
+    case NEO_CHAIN:
+      const res = await new SwapContract(network).getProperties(tokenId);
+      return {
+        tokenId: res.tokenId,
+        tokenA: res.tokenA,
+        tokenB: res.tokenB,
+        symbolA: res.symbolA,
+        symbolB: res.symbolB,
+        amountA: res.amountA,
+        amountB: res.amountB,
+        decimalsA: res.decimalsA,
+        decimalsB: res.decimalsB,
+        sharesPercentage: res.sharesPercentage.toString()
+      };
+    case POLYGON_CHAIN:
+      return getPolygonLPToken(network, tokenId);
   }
 };

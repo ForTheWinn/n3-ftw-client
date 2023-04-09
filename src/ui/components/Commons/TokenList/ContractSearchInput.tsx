@@ -3,6 +3,7 @@ import { fetchToken } from "@wagmi/core";
 import { FaAngleLeft } from "react-icons/fa";
 import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
 import { ethers } from "ethers";
+import { WENT_WRONG } from "../../../../consts/messages";
 
 interface ContractSearchInputProps {
   onAssetClick: (token: ITokenState) => void;
@@ -31,7 +32,7 @@ const ContractSearchInput = ({
           icon: ""
         });
       } catch (e: any) {
-        setError(e.message ? e.message : "Something went wrong.");
+        setError(e.message ? e.message : WENT_WRONG);
       }
     } else {
       setError("Please enter a valid contract script hash.");

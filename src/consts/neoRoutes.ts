@@ -1,3 +1,4 @@
+import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
 import { MAINNET, TESTNET } from "./global";
 
 /* 
@@ -75,25 +76,144 @@ export const MIGRATION_PATH = "/migration";
 export const TOURNAMENT_PATH = "/arena";
 export const IDO_PATH = "/ido";
 /* 
+  Archive
+*/
+export const TOOLS_ROUTE = "/tools";
+
+/* 
   Deprecated
 */
 export const DAO_PATH = "/dao";
 export const DAO_CHANNEL_CREATE_PATH = "/dao/create";
 export const DAO_CHANNEL_PATH = "/dao/channel";
 
-const BRIDGE_PAGE_ROUTE = {
-  label: "Bridge",
-  path: BRIDGE_PATH,
-  network: [],
-  category: []
-};
-
 const SWAP_PAGE_ROUTE = {
   label: "Swap",
   path: SWAP_PATH,
+  chain: [NEO_CHAIN, POLYGON_CHAIN],
   network: [TESTNET, MAINNET],
   category: []
 };
+
+const FARM_V2_PAGE_ROUTE = {
+  label: "Farm",
+  path: FARM_V2_PATH,
+  chain: [NEO_CHAIN, POLYGON_CHAIN],
+  network: [MAINNET, TESTNET],
+  category: []
+};
+
+const LOCKER_PAGE_ROUTE = {
+  label: "Locker",
+  path: LOCKER_PATH,
+  chain: [NEO_CHAIN],
+  network: [TESTNET, MAINNET],
+  category: []
+};
+
+const SMITH_PAGE_ROUTE = {
+  label: "Smith",
+  path: SMITH_PATH,
+  chain: [NEO_CHAIN],
+  network: [TESTNET, MAINNET],
+  category: []
+};
+
+export const ANALYTICS_ROUTE = {
+  label: "Analytics",
+  path: ANALYTICS_PATH,
+  chain: [NEO_CHAIN],
+  network: [MAINNET],
+  category: []
+};
+
+export const ARENA_PAGE_ROUTE = {
+  label: "Arena",
+  path: TOURNAMENT_PATH,
+  chain: [NEO_CHAIN],
+  network: [MAINNET],
+  category: []
+};
+
+export const MIGRATION_PAGE_ROUTE = {
+  label: "Migration",
+  path: MIGRATION_PATH,
+  chain: [NEO_CHAIN],
+  network: [MAINNET],
+  category: []
+};
+
+export const NEO_BOYZ_PAGE_ROUTE = {
+  label: "Neo Boyz",
+  path: BOYZ_PATH,
+  chain: [NEO_CHAIN],
+  network: [MAINNET],
+  category: []
+};
+
+export const RUNES_PAGE_ROUTE = {
+  label: "Runes",
+  path: GALLERY_PATH,
+  chain: [NEO_CHAIN],
+  network: [MAINNET],
+  category: []
+};
+
+export const LP_FINER_PAGE_ROUTE = {
+  label: "LP Value Finder",
+  path: LP_TOKENS_PATH,
+  chain: [NEO_CHAIN, POLYGON_CHAIN],
+  network: [MAINNET, TESTNET],
+  category: []
+};
+
+export const LOCKER_FINDER_PAGE_ROUTE = {
+  label: "Locker Value Finder",
+  path: LOCKER_SEARCH_PATH,
+  chain: [NEO_CHAIN],
+  network: [MAINNET, TESTNET],
+  category: []
+};
+
+const NFT_ROUTE = {
+  label: "NFT",
+  path: GALLERY_PATH,
+  chain: [NEO_CHAIN],
+  network: [MAINNET],
+  category: [{ ...NEO_BOYZ_PAGE_ROUTE }, { ...RUNES_PAGE_ROUTE }]
+};
+
+const ARCHIVE_ROUTE = {
+  label: "Archive",
+  path: ARCHIVE_PATH,
+  chain: [NEO_CHAIN],
+  network: [MAINNET],
+  category: [{ ...ARENA_PAGE_ROUTE }, { ...MIGRATION_PAGE_ROUTE }]
+};
+
+const TOOLS_PAGE_ROUTE = {
+  label: "Tools",
+  path: TOOLS_ROUTE,
+  chain: [NEO_CHAIN, POLYGON_CHAIN],
+  network: [MAINNET, TESTNET],
+  category: [
+    { ...SMITH_PAGE_ROUTE },
+    { ...LOCKER_PAGE_ROUTE },
+    { ...LP_FINER_PAGE_ROUTE },
+    { ...LOCKER_FINDER_PAGE_ROUTE }
+  ]
+};
+
+export const ROUTES = [
+  SWAP_PAGE_ROUTE,
+  FARM_V2_PAGE_ROUTE,
+  TOOLS_PAGE_ROUTE,
+  ANALYTICS_ROUTE,
+  NFT_ROUTE,
+  ARCHIVE_ROUTE
+];
+
+// Pending pages
 
 const FARM_PAGE_ROUTE = {
   label: "Farm",
@@ -102,24 +222,10 @@ const FARM_PAGE_ROUTE = {
   category: []
 };
 
-const FARM_V2_PAGE_ROUTE = {
-  label: "Farm",
-  path: FARM_V2_PATH,
-  network: [MAINNET, TESTNET],
-  category: []
-};
-
-const LOCKER_PAGE_ROUTE = {
-  label: "Locker",
-  path: LOCKER_PATH,
-  network: [TESTNET, MAINNET],
-  category: []
-};
-
-const SMITH_PAGE_ROUTE = {
-  label: "Smith",
-  path: SMITH_PATH,
-  network: [TESTNET, MAINNET],
+const BRIDGE_PAGE_ROUTE = {
+  label: "Bridge",
+  path: BRIDGE_PATH,
+  network: [],
   category: []
 };
 
@@ -136,71 +242,3 @@ const DAO_PAGE_ROUTE = {
   network: [],
   category: []
 };
-
-export const ANALYTICS_ROUTE = {
-  label: "Analytics",
-  path: ANALYTICS_PATH,
-  network: [MAINNET],
-  category: []
-};
-
-const ARCHIVE_ROUTE = {
-  label: "Archive",
-  path: ARCHIVE_PATH,
-  network: [MAINNET],
-  category: [
-    {
-      label: "Arena",
-      path: TOURNAMENT_PATH,
-      network: [MAINNET]
-    },
-    {
-      label: "Migration",
-      path: MIGRATION_PATH,
-      network: [MAINNET],
-      category: []
-    }
-  ]
-};
-
-const NFT_ROUTE = {
-  label: "NFT",
-  path: GALLERY_PATH,
-  network: [MAINNET],
-  category: [
-    {
-      label: "Neo Boyz",
-      path: BOYZ_PATH,
-      network: [MAINNET]
-    },
-    {
-      label: "Runes",
-      path: GALLERY_PATH,
-      network: [MAINNET]
-    },
-    {
-      label: "LP Tokens",
-      path: LP_TOKENS_PATH,
-      network: [MAINNET]
-    },
-    {
-      label: "Locker Keys",
-      path: LOCKER_SEARCH_PATH,
-      network: [MAINNET]
-    }
-  ]
-};
-
-export const ROUTES = [
-  SWAP_PAGE_ROUTE,
-  BRIDGE_PAGE_ROUTE,
-  // FARM_PAGE_ROUTE,
-  FARM_V2_PAGE_ROUTE,
-  SMITH_PAGE_ROUTE,
-  LOCKER_PAGE_ROUTE,
-  GASFI_PAGE_ROUTE,
-  ANALYTICS_ROUTE,
-  DAO_PAGE_ROUTE,
-  NFT_ROUTE,
-  ARCHIVE_ROUTE
-];

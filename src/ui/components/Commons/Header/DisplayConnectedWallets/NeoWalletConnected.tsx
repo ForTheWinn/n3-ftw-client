@@ -13,7 +13,6 @@ const NeoWalletConnected = ({ connectedWallet, style }) => {
     // };
 
     const disconnected = () => {
-      console.log("Wallet has been switched.");
       disConnectWallet();
     };
 

@@ -22,6 +22,7 @@ import {
 import { SwapContract } from "../../../../packages/neo/contracts";
 import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
+import { WENT_WRONG } from "../../../../consts/messages";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -147,7 +148,7 @@ const ActionModal = ({
           tokenBAllowance = allowances[1];
         } catch (e: any) {
           console.error(e);
-          toast.error(e.message ? e.message : "Something went wrong.");
+          toast.error(e.message ? e.message : WENT_WRONG);
           onCancel();
         }
 

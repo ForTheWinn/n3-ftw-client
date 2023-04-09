@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { WENT_WRONG } from "../../consts/messages";
 
 interface IUseOnChainDataResult {
   isLoaded: boolean;
@@ -17,7 +18,7 @@ export const useOnChainData = (fn, deps: any[]): IUseOnChainDataResult => {
         setData(res);
       } catch (e: any) {
         console.error(e);
-        setError(e && e.message ? e.message : "Something went wrong.");
+        setError(e && e.message ? e.message : WENT_WRONG);
       }
       setIsLoaded(true);
     }

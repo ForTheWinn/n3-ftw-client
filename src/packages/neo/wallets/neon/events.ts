@@ -13,6 +13,5 @@ export const removeEventListenerNeonWalletDisconnected = (
 };
 
 export const dispatchEventNeonWalletDisconnected = () => {
-  console.log("disconnected");
   window.dispatchEvent(new CustomEvent(consts.NEON_WALLET_DISCONNECTED));
 };

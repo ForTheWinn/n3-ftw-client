@@ -181,7 +181,7 @@ export const SwapContextProvider = (props: {
         );
       } catch (e) {
         setError("Failed to fetch reserves.");
-        console.log(e);
+        console.error(e);
       }
     };
     if (tokenA && tokenB) {

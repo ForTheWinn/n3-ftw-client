@@ -55,7 +55,7 @@ const PositionCard = ({
   //         tokenBUSD: tokenBAmount * tokenBPrice,
   //       });
   //     } catch (e: any) {
-  //       console.log(e);
+  //       console.error(e);
   //     }
   //   }
   //   getReserves();

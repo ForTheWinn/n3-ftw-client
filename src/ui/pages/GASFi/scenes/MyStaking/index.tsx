@@ -63,7 +63,6 @@ const MyStaking = () => {
     if (now > canUnstakeAfter) {
       canUnstake = true;
     }
-    console.log(parseFloat(data.stakedAt) + DRAWING_FREQUENCY);
   }
 
   return (

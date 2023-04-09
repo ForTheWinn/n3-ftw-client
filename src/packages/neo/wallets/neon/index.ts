@@ -42,21 +42,7 @@ const getWcNeonWalletInstance = async (
     await instance.connect(
       connectingNetwork // the blockchains your dapp accepts to connect
     );
-
-    if (instance.isConnected()) {
-      if (process.env.NODE_ENV === "development") {
-        console.log("NEON: Connected to New Session");
-        console.log(instance.session);
-      }
-    } else {
-      console.log("NEON: Cannot connect to Neon Wallet");
-    }
-  } else if (instance.isConnected()) {
-    if (process.env.NODE_ENV === "development") {
-      console.log("NEON: Session Loaded");
-      console.log(instance.session);
-    }
-  }
+  } 
   return instance;
 };
 

@@ -27,7 +27,7 @@ const ClaimHistory = ({ connectedWallet, network }: IClaimHistoryProps) => {
         setData(res);
         setLoading(false);
       } catch (e: any) {
-        console.log(e);
+        console.error(e);
         setError(e.message);
         setLoading(false);
       }

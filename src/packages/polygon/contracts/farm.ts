@@ -103,7 +103,6 @@ export const getClaimable = async (
     args: [address]
   });
   const rewards: IClaimableRewards[] = [];
-  console.log(TOKEN_LIST[POLYGON_CHAIN][network]);
   res.map((reward: any) => {
     const userShare = reward.shares.toString();
     if (userShare !== "0") {

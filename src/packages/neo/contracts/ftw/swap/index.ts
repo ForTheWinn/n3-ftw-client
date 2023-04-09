@@ -21,6 +21,7 @@ import {
   NEP_SCRIPT_HASH
 } from "../../../consts/neo-contracts";
 import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
 export class SwapContract {
   network: INetworkType;
@@ -801,7 +802,7 @@ export class SwapContract {
     };
   };
 
-  getProperties = async (tokenId: string): Promise<object | null> => {
+  getProperties = async (tokenId: string): Promise<ILPToken> => {
     const script = {
       scriptHash: this.contractHash,
       operation: "properties",
@@ -814,7 +815,7 @@ export class SwapContract {
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
-      throw new Error(res.exception as string);
+      throw new Error(res.exception ? (res.exception as string) : WENT_WRONG);
     }
     return parseMapValue(res.stack[0] as any);
   };
@@ -835,7 +836,7 @@ export class SwapContract {
       !res.stack[0].value ||
       !Array.isArray(res.stack[0].value)
     ) {
-      throw new Error(res.exception ? res.exception : "Something went wrong.");
+      throw new Error(res.exception ? res.exception : WENT_WRONG);
     }
     // @ts-ignore
     return res.stack[0].value.map((item) => parseMapValue(item));
@@ -918,7 +919,7 @@ export class SwapContract {
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {
       throw new Error(
-        res.exception ? (res.exception as string) : "something went wrong.."
+        res.exception ? (res.exception as string) : WENT_WRONG
       );
     }
     return {

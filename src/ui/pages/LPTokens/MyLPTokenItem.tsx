@@ -3,7 +3,6 @@ import { SwapContract } from "../../../packages/neo/contracts";
 import { ILPToken } from "../../../packages/neo/contracts/ftw/swap/interfaces";
 import { u } from "@cityofzion/neon-core";
 import { INetworkType } from "../../../packages/neo/network";
-import MyLPTokenCard from "./MyLPTokenCard";
 interface IMyTokenItemProps {
   network: INetworkType;
   token: ILPToken;
@@ -46,7 +45,6 @@ const MyLPTokenItem = ({ network, token, prices }: IMyTokenItemProps) => {
   //         tokenBUSD: tokenBAmount * tokenBPrice
   //       });
   //     } catch (e: any) {
-  //       console.log(e);
   //     }
   //   }
   //   getReserves();
@@ -56,7 +54,7 @@ const MyLPTokenItem = ({ network, token, prices }: IMyTokenItemProps) => {
   return (
     <div className="media">
       <div className="media-content">
-        <MyLPTokenCard
+        {/* <MyLPTokenCard
           tokenId={token.tokenId}
           tokenASymbol={data.tokenASymbol}
           tokenAAmount={data.tokenAAmount}
@@ -64,7 +62,7 @@ const MyLPTokenItem = ({ network, token, prices }: IMyTokenItemProps) => {
           tokenBSymbol={data.tokenBSymbol}
           tokenBAmount={data.tokenBAmount}
           tokenBUSD={data.tokenBUSD}
-        />
+        /> */}
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import TruncatedAddress from "../../../../../components/TruncatedAddress";
 import Pagination from "bulma-pagination-react";
 import moment from "moment";
 import { MAINNET_TOKEN_LIST } from "../../../../../../packages/neo/consts/mainnet-token-list";
+import { WENT_WRONG } from "../../../../../../consts/messages";
 
 interface ISwapHistoryProps {
   id: string;
@@ -103,7 +104,7 @@ const SwapHistory = ({ network, id }: ISwapHistoryProps) => {
               )
             ) : (
               <tr>
-                <td>Something went wrong</td>
+                <td>{WENT_WRONG}</td>
               </tr>
             )}
           </tbody>
