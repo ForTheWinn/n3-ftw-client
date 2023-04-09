@@ -8,7 +8,6 @@ import {
   IClaimableRewards,
   IPoolEnhanced
 } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
-import { IReserveData } from "../../../packages/neo/contracts/ftw/swap/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
 import { withDecimal } from "../../../packages/neo/utils";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
@@ -22,12 +21,15 @@ import {
 } from "../../../packages/polygon/contracts/farm";
 import {
   getLPTokens as getPolygonLPTokens,
-  getReserve as getPolygonReserves,
+  getReserves as getPolygonReserves,
   isApprovedForAll,
   setApprovalForAll
 } from "../../../packages/polygon/contracts/swap";
-import { IClaimable, IFarmLPToken } from "./interfaces";
+import { IClaimable } from "./interfaces";
 import { CONTRACTS, GLOBAL } from "../../../consts";
+import { ethers } from "ethers";
+import { getTokenByHash } from "../../../helpers";
+import { ISwapLPToken } from "../swap/interfaces";
 
 export const getPrices = (chain: CHAINS): Promise<IPrices> => {
   switch (chain) {
@@ -50,108 +52,27 @@ export const getPoolList = (
   }
 };
 
-// TODO: double check for optimize
-export const getReserves = async (
-  chain: CHAINS,
-  network: INetworkType,
-  tokenA: string,
-  tokenB: string
-): Promise<IReserveData> => {
-  switch (chain) {
-    case NEO_CHAIN:
-      return new SwapContract(network).getReserve(tokenA, tokenB);
-    case POLYGON_CHAIN:
-      const res = await getPolygonReserves(network, tokenA, tokenB);
-      return {
-        pair: {
-          [tokenA]: {
-            symbol: "",
-            decimals: 8,
-            reserveAmount: parseFloat(res.reserveA),
-            reserveAmountFormatted: withDecimal(res.reserveA, 8)
-          },
-          [tokenB]: {
-            symbol: "",
-            decimals: 18,
-            reserveAmount: parseFloat(res.reserveB),
-            reserveAmountFormatted: withDecimal(res.reserveB, 18)
-          }
-        },
-        userBalances: {},
-        totalShare: parseFloat(res.shares)
-      };
-  }
-};
-
-export const getLPTokens = async (
-  chain: CHAINS,
-  network: INetworkType,
-  address?: string
-): Promise<IFarmLPToken[]> => {
-  if (!address) return [];
-  switch (chain) {
-    case NEO_CHAIN:
-      const tokens: IFarmLPToken[] = [];
-      const res = await new SwapContract(network).getLPTokens(address);
-      for (const token of res) {
-        const reserves = await new SwapContract(network).getReserve(
-          token.tokenA,
-          token.tokenB
-        );
-        tokens.push({
-          name: token.name,
-          tokenA: token.tokenA,
-          symbolA: token.symbolA,
-          symbolB: token.symbolB,
-          tokenB: token.tokenB,
-          tokenId: token.tokenId,
-          amountA: reserves.pair[token.tokenA].reserveAmountFormatted,
-          amountB: reserves.pair[token.tokenB].reserveAmountFormatted,
-          sharesPercentage: (
-            (token.amount / reserves.totalShare) *
-            100
-          ).toFixed(2)
-        });
-      }
-      return tokens;
-    case POLYGON_CHAIN:
-      return getPolygonLPTokens(network, address);
-  }
-};
-
 export const getStakedLPTokens = async (
   chain: CHAINS,
   network: INetworkType,
   address: string
-): Promise<IFarmLPToken[]> => {
+): Promise<ISwapLPToken[]> => {
   switch (chain) {
     case NEO_CHAIN:
-      const tokens: IFarmLPToken[] = [];
-      const res = await new SwapContract(network).getLPTokens(address);
+      const tokens: ISwapLPToken[] = [];
+      const res = await new FarmV2Contract(network).getStakedLPTokens(address);
       for (const token of res) {
-        const reserves = await new SwapContract(network).getReserve(
-          token.tokenA,
-          token.tokenB
-        );
         tokens.push({
-          name: token.name,
+          tokenId: token.tokenId,
           tokenA: token.tokenA,
           tokenB: token.tokenB,
           symbolA: token.symbolA,
           symbolB: token.symbolB,
-          tokenId: token.tokenId,
-          amountA: (
-            (reserves.pair[token.tokenA].reserveAmount * token.amount) /
-            reserves.totalShare
-          ).toString(),
-          amountB: (
-            (reserves.pair[token.tokenB].reserveAmount * token.amount) /
-            reserves.totalShare
-          ).toString(),
-          sharesPercentage: (
-            (token.amount / reserves.totalShare) *
-            100
-          ).toFixed(2)
+          amountA: token.amountA,
+          amountB: token.amountB,
+          decimalsA: token.decimalsA,
+          decimalsB: token.decimalsB,
+          sharesPercentage: token.sharesPercentage.toString()
         });
       }
       return tokens;

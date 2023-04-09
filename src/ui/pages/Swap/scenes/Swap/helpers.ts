@@ -1,8 +1,5 @@
 import { u } from "@cityofzion/neon-core";
-import { CHAINS, TOKENS } from "../../../../../consts";
 import { NEO_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
-import { INetworkType } from "../../../../../packages/neo/network";
-import { ITokenState } from "./interfaces";
 
 export const priceImpactFormat = (p: number) => {
   if (p < 0.01) {
@@ -12,19 +9,6 @@ export const priceImpactFormat = (p: number) => {
   }
 };
 
-export const getTokenByHash = (
-  chain: CHAINS.CHAINS,
-  network: INetworkType,
-  hash: string
-): ITokenState | undefined => {
-  const result = TOKENS.SWAP_TOKEN_LIST[chain][network].find(
-    (token) => token.hash === hash
-  );
-  if (result) {
-    return result;
-  }
-  return undefined;
-};
 
 export const fakeNEOBNEOReserve = (
   bNEOHash: string,

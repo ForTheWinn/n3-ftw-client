@@ -26,65 +26,65 @@ const LPTokens = () => {
   const [error, setError] = useState("");
   const [isSearching, setSearching] = useState(false);
 
-  const handleSearch = async (id, _prices) => {
-    try {
-      setSearching(true);
-      setError("");
-      const info: any = await new SwapContract(network).getProperties(id);
-      const reserve = await new SwapContract(network).getReserve(
-        info.tokenA,
-        info.tokenB
-      );
-      const tokenAPrice = _prices ? _prices["0x" + info.tokenA] : 0;
-      const tokenBPrice = _prices ? _prices["0x" + info.tokenB] : 0;
-      let tokenAReserve = reserve.pair[info.tokenA].reserveAmount;
-      let tokenBReserve = reserve.pair[info.tokenB].reserveAmount;
-      let tokenAAmount = parseFloat(
-        u.BigInteger.fromNumber(tokenAReserve)
-          .mul(info.amount)
-          .div(reserve.totalShare)
-          .toDecimal(reserve.pair[info.tokenA].decimals)
-      );
-      let tokenBAmount = parseFloat(
-        u.BigInteger.fromNumber(tokenBReserve)
-          .mul(info.amount)
-          .div(reserve.totalShare)
-          .toDecimal(reserve.pair[info.tokenB].decimals)
-      );
-      console.log(`Shares: ${info.amount}`);
-      console.log(
-        `${reserve.pair[info.tokenA].symbol}: ${tokenAAmount.toLocaleString()}`
-      );
-      console.log(
-        `${reserve.pair[info.tokenB].symbol}: ${tokenBAmount.toLocaleString()}`
-      );
-      setInfo({
-        tokenASymbol: reserve.pair[info.tokenA].symbol,
-        tokenBSymbol: reserve.pair[info.tokenB].symbol,
-        tokenAAmount,
-        tokenBAmount,
-        tokenAUSD: tokenAAmount * tokenAPrice,
-        tokenBUSD: tokenBAmount * tokenBPrice
-      });
-      setSearching(false);
-      let search = `?id=${id}`;
-      history.push(search);
-    } catch (e: any) {
-      setSearching(false);
-      setError(e.message);
-    }
-  };
+  // const handleSearch = async (id, _prices) => {
+  //   try {
+  //     setSearching(true);
+  //     setError("");
+  //     const info: any = await new SwapContract(network).getProperties(id);
+  //     const reserve = await new SwapContract(network).getReserve(
+  //       info.tokenA,
+  //       info.tokenB
+  //     );
+  //     const tokenAPrice = _prices ? _prices["0x" + info.tokenA] : 0;
+  //     const tokenBPrice = _prices ? _prices["0x" + info.tokenB] : 0;
+  //     let tokenAReserve = reserve.pair[info.tokenA].reserveAmount;
+  //     let tokenBReserve = reserve.pair[info.tokenB].reserveAmount;
+  //     let tokenAAmount = parseFloat(
+  //       u.BigInteger.fromNumber(tokenAReserve)
+  //         .mul(info.amount)
+  //         .div(reserve.totalShare)
+  //         .toDecimal(reserve.pair[info.tokenA].decimals)
+  //     );
+  //     let tokenBAmount = parseFloat(
+  //       u.BigInteger.fromNumber(tokenBReserve)
+  //         .mul(info.amount)
+  //         .div(reserve.totalShare)
+  //         .toDecimal(reserve.pair[info.tokenB].decimals)
+  //     );
+  //     console.log(`Shares: ${info.amount}`);
+  //     console.log(
+  //       `${reserve.pair[info.tokenA].symbol}: ${tokenAAmount.toLocaleString()}`
+  //     );
+  //     console.log(
+  //       `${reserve.pair[info.tokenB].symbol}: ${tokenBAmount.toLocaleString()}`
+  //     );
+  //     setInfo({
+  //       tokenASymbol: reserve.pair[info.tokenA].symbol,
+  //       tokenBSymbol: reserve.pair[info.tokenB].symbol,
+  //       tokenAAmount,
+  //       tokenBAmount,
+  //       tokenAUSD: tokenAAmount * tokenAPrice,
+  //       tokenBUSD: tokenBAmount * tokenBPrice
+  //     });
+  //     setSearching(false);
+  //     let search = `?id=${id}`;
+  //     history.push(search);
+  //   } catch (e: any) {
+  //     setSearching(false);
+  //     setError(e.message);
+  //   }
+  // };
 
-  useEffect(() => {
-    async function fetch() {
-      const res = await new RestAPI(network).getPrices();
-      setPrices(res);
-      if (params.id) {
-        await handleSearch(params.id, res);
-      }
-    }
-    fetch();
-  }, [network]);
+  // useEffect(() => {
+  //   async function fetch() {
+  //     const res = await new RestAPI(network).getPrices();
+  //     setPrices(res);
+  //     if (params.id) {
+  //       await handleSearch(params.id, res);
+  //     }
+  //   }
+  //   fetch();
+  // }, [network]);
 
   return (
     <PageLayout>
@@ -107,7 +107,7 @@ const LPTokens = () => {
                 />
                 {error ? <p className="help is-danger">{error}</p> : <></>}
               </div>
-              <div className="control">
+              {/* <div className="control">
                 <button
                   onClick={() => handleSearch(id, prices)}
                   disabled={!id}
@@ -117,7 +117,7 @@ const LPTokens = () => {
                 >
                   Search
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           {isSearching ? (

@@ -39,7 +39,6 @@ export const NeoWalletProvider = (props: { children: any }) => {
       toast.success("Connected!");
       onSuccess();
     } catch (e: any) {
-      console.log(e);
       toast.error(
         e && e.message ? e.message : `Failed to connect ${walletType}.`
       );

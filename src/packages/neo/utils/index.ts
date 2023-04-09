@@ -197,7 +197,8 @@ const intList = [
   "totalReward",
   "totalPosition",
   "claimableAmount",
-  "estimated"
+  "estimated",
+  "sharesPercentage"
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {

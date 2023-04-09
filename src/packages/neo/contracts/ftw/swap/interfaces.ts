@@ -1,19 +1,6 @@
 import { u } from "@cityofzion/neon-core";
 
-export interface IReserveData {
-  pair: {
-    [key: string]: {
-      symbol: string;
-      decimals: number;
-      reserveAmount: number;
-      reserveAmountFormatted: string;
-    };
-  };
-  userBalances: {
-    [key: string]: number;
-  };
-  totalShare: number;
-}
+
 
 export interface ISwapsHistory {
   totalItems: number;
@@ -72,6 +59,11 @@ export interface ILPToken {
   tokenB: string;
   symbolA: string;
   symbolB: string;
+  amountA: string;
+  amountB: string;
+  decimalsA: string;
+  decimalsB: string;
+  sharesPercentage: string;
 }
 
 // For verification

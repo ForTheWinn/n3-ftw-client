@@ -55,7 +55,6 @@ const MyStaking = () => {
     }
     fetch();
   }, [connectedWallet, network]);
-  console.log(data);
   let canUnstake = false;
 
   if (data) {

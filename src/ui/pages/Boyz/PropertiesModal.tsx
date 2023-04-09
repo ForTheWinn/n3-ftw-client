@@ -41,7 +41,6 @@ const PropertiesModal = ({ data, onClose }: IPropertiesModal) => {
     }
     fetchContractStatus();
   }, [network]);
-  console.log(item);
   return (
     <Modal onClose={onClose}>
       {isLoading ? (

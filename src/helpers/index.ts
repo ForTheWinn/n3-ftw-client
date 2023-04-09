@@ -1,6 +1,10 @@
+import { globalRouter } from "../common/routers";
+import { CHAINS } from "../consts/chains";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../consts/chains";
 import { MAINNET } from "../consts/global";
+import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
+import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
 
 export const getChainId = (chain: string): number => {
   switch (chain) {
@@ -27,5 +31,32 @@ export const getExploler = (chain: string, network: INetworkType): string => {
       }
     default:
       return "";
+  }
+};
+
+// export const getTokenByHash = (
+//   chain: CHAINS,
+//   network: INetworkType,
+//   hash: string
+// ): ITokenState | undefined => {
+//   const result = TOKENS.SWAP_TOKEN_LIST[chain][network].find(
+//     (token) => token.hash === hash
+//   );
+//   if (result) {
+//     return result;
+//   }
+//   return undefined;
+// };
+
+export const getTokenByHash = (
+  chain: CHAINS,
+  network: INetworkType,
+  hash: string
+): ITokenState | undefined => {
+  if (TOKEN_LIST[chain][network][hash]) {
+    return TOKEN_LIST[chain][network][hash];
+  } else {
+    return undefined;
+    // return await globalRouter.fetchTokenInfo(chain, network, hash);
   }
 };

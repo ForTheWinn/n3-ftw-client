@@ -1,7 +1,5 @@
 import React from "react";
-import { RUNE_PRICE } from "../../../packages/neo/contracts/ftw/rune/consts";
 import { INetworkType } from "../../../packages/neo/network";
-import DisplayRandomRune from "../../components/RandomRune";
 interface IBannerProps {
   network: INetworkType;
   filter: string;

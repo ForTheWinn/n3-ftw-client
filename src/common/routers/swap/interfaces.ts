@@ -7,6 +7,21 @@ export interface ISwapReserves {
   reserveA: string;
   reserveB: string;
   shares: string;
+  decimalsA?: string;
+  decimalsB?: string;
+}
+
+export interface ISwapLPToken {
+  tokenId: string;
+  tokenA: string;
+  tokenB: string;
+  symbolA: string;
+  symbolB: string;
+  amountA: string;
+  amountB: string;
+  decimalsA: string;
+  decimalsB: string;
+  sharesPercentage: string;
 }
 
 export interface ISwapEstimateArgs {

@@ -2,6 +2,7 @@ import { fetchBalance, writeContract } from "@wagmi/core";
 import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { INetworkType } from "../../../packages/neo/network";
 import {
+  getLPTokens as getPolygonLPTokens,
   getEstimated as polygonGetEstimated,
   getReserves as polygonGetReserves,
   removeLiquidity as polygonRemoveLiquidity
@@ -10,7 +11,8 @@ import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import {
   ISwapReserves,
   ISwapEstimateArgs,
-  IUserTokenBalances
+  IUserTokenBalances,
+  ISwapLPToken
 } from "./interfaces";
 import { SwapContract } from "../../../packages/neo/contracts";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
@@ -19,20 +21,12 @@ import { ethers } from "ethers";
 export const getReserves = async (
   chain: CHAINS,
   network: INetworkType,
-  tokenA: ITokenState,
-  tokenB: ITokenState
+  tokenA: string,
+  tokenB: string
 ): Promise<ISwapReserves> => {
   switch (chain) {
     case NEO_CHAIN:
-      const res = await new SwapContract(network).getReserve(
-        tokenA.hash,
-        tokenB.hash
-      );
-      return {
-        reserveA: res.pair[tokenA.hash].reserveAmount.toString(),
-        reserveB: res.pair[tokenB.hash].reserveAmount.toString(),
-        shares: res.totalShare.toString()
-      };
+      return await new SwapContract(network).getReserve(tokenA, tokenB);
     case POLYGON_CHAIN:
       return await polygonGetReserves(network, tokenA, tokenB);
   }
@@ -54,7 +48,6 @@ export const getBalances = async (
         tokenA.hash,
         tokenB.hash
       );
-      console.log(res);
       amountA = ethers.utils.formatUnits(res.amountA, tokenA.decimals);
       amountB = ethers.utils.formatUnits(res.amountB, tokenB.decimals);
       break;
@@ -151,5 +144,35 @@ export const removeLiquidity = async (
       const config = (await polygonRemoveLiquidity(network, tokenId)) as any;
       const res = await writeContract(config);
       return res.hash;
+  }
+};
+
+export const getLPTokens = async (
+  chain: CHAINS,
+  network: INetworkType,
+  address?: string
+): Promise<ISwapLPToken[]> => {
+  if (!address) return [];
+  switch (chain) {
+    case NEO_CHAIN:
+      const tokens: ISwapLPToken[] = [];
+      const res = await new SwapContract(network).getLPTokens(address);
+      for (const token of res) {
+        tokens.push({
+          tokenId: token.tokenId,
+          tokenA: token.tokenA,
+          tokenB: token.tokenB,
+          symbolA: token.symbolA,
+          symbolB: token.symbolB,
+          amountA: token.amountA,
+          amountB: token.amountB,
+          decimalsA: token.decimalsA,
+          decimalsB: token.decimalsB,
+          sharesPercentage: token.sharesPercentage.toString()
+        });
+      }
+      return tokens;
+    case POLYGON_CHAIN:
+      return getPolygonLPTokens(network, address);
   }
 };

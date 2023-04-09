@@ -3,13 +3,11 @@ import React, {
   useContext,
   useEffect,
   useState,
-  useMemo,
   useRef
 } from "react";
 import { ISwapInputState, ITokenState } from "../Swap/interfaces";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { getTokenByHash } from "../Swap/helpers";
 import { useApp } from "../../../../../common/hooks/use-app";
 import {
   ISwapReserves,
@@ -26,6 +24,7 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import toast from "react-hot-toast";
 import { getLPEstimate } from "../../../../../packages/polygon/contracts/swap";
+import { getTokenByHash } from "../../../../../helpers";
 
 interface ISwapContext {
   chain: CHAINS;
@@ -54,6 +53,7 @@ interface ISwapContext {
   onAfterSwapCompleted: () => void;
   toggleWalletSidebar: () => void;
 }
+
 
 export const SwapContext = createContext({} as ISwapContext);
 
@@ -146,14 +146,14 @@ export const SwapContextProvider = (props: {
   };
 
   useEffect(() => {
-    const load = async (_tokenA, _tokenB) => {
+    const load = async (_tokenA: ITokenState, _tokenB: ITokenState) => {
       setError(undefined);
       try {
-        const res = await await swapRouter.getReserves(
+        const res = await swapRouter.getReserves(
           chain,
           network,
-          _tokenA,
-          _tokenB
+          _tokenA.hash,
+          _tokenB.hash
         );
         setReserve(res);
 
@@ -221,7 +221,6 @@ export const SwapContextProvider = (props: {
                 args,
                 swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
               );
-              console.log(estimated);
             } else if (props.type === "liquidity") {
               if (reserves) {
                 estimated = await getLPEstimate(
@@ -238,7 +237,6 @@ export const SwapContextProvider = (props: {
           }
         } catch (e: any) {
           setError("Failed to fetch swap estimate. Check your inputs.");
-          console.log(e.reason);
         }
 
         if (swapInput.type === "A") {

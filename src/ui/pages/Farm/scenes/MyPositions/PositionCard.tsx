@@ -23,43 +23,43 @@ const PositionCard = ({
   createdAt,
 }: IPositionCardProps) => {
   const [reserves, setReserves] = useState<any>();
-  useEffect(() => {
-    async function getReserves() {
-      try {
-        const reserve = await new SwapContract(network).getReserve(
-          tokenA,
-          tokenB
-        );
-        const tokenAPrice = prices ? prices["0x" + tokenA] : 0;
-        const tokenBPrice = prices ? prices["0x" + tokenB] : 0;
-        let tokenAReserve = reserve.pair[tokenA].reserveAmount;
-        let tokenBReserve = reserve.pair[tokenB].reserveAmount;
-        let tokenAAmount = parseFloat(
-          u.BigInteger.fromNumber(tokenAReserve)
-            .mul(amount)
-            .div(reserve.totalShare)
-            .toDecimal(reserve.pair[tokenA].decimals)
-        );
-        let tokenBAmount = parseFloat(
-          u.BigInteger.fromNumber(tokenBReserve)
-            .mul(amount)
-            .div(reserve.totalShare)
-            .toDecimal(reserve.pair[tokenB].decimals)
-        );
-        setReserves({
-          tokenASymbol: reserve.pair[tokenA].symbol,
-          tokenBSymbol: reserve.pair[tokenB].symbol,
-          tokenAAmount,
-          tokenBAmount,
-          tokenAUSD: tokenAAmount * tokenAPrice,
-          tokenBUSD: tokenBAmount * tokenBPrice,
-        });
-      } catch (e: any) {
-        console.log(e);
-      }
-    }
-    getReserves();
-  }, []);
+  // useEffect(() => {
+  //   async function getReserves() {
+  //     try {
+  //       const reserve = await new SwapContract(network).getReserve(
+  //         tokenA,
+  //         tokenB
+  //       );
+  //       const tokenAPrice = prices ? prices["0x" + tokenA] : 0;
+  //       const tokenBPrice = prices ? prices["0x" + tokenB] : 0;
+  //       let tokenAReserve = reserve.pair[tokenA].reserveAmount;
+  //       let tokenBReserve = reserve.pair[tokenB].reserveAmount;
+  //       let tokenAAmount = parseFloat(
+  //         u.BigInteger.fromNumber(tokenAReserve)
+  //           .mul(amount)
+  //           .div(reserve.totalShare)
+  //           .toDecimal(reserve.pair[tokenA].decimals)
+  //       );
+  //       let tokenBAmount = parseFloat(
+  //         u.BigInteger.fromNumber(tokenBReserve)
+  //           .mul(amount)
+  //           .div(reserve.totalShare)
+  //           .toDecimal(reserve.pair[tokenB].decimals)
+  //       );
+  //       setReserves({
+  //         tokenASymbol: reserve.pair[tokenA].symbol,
+  //         tokenBSymbol: reserve.pair[tokenB].symbol,
+  //         tokenAAmount,
+  //         tokenBAmount,
+  //         tokenAUSD: tokenAAmount * tokenAPrice,
+  //         tokenBUSD: tokenBAmount * tokenBPrice,
+  //       });
+  //     } catch (e: any) {
+  //       console.log(e);
+  //     }
+  //   }
+  //   getReserves();
+  // }, []);
 
   return (
     <div className="media">

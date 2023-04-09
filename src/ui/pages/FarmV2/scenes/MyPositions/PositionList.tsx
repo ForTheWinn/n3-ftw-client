@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import PositionCard from "./PositionCard";
+import React from "react";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { CHAINS } from "../../../../../consts/chains";
 import { farmRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { IFarmLPToken } from "../../../../../common/routers/farm/interfaces";
+import LPTokenCard from "../../../../components/LPTokenCard";
+import { ISwapLPToken } from "../../../../../common/routers/swap/interfaces";
 
 interface IPositionListProps {
   chain: CHAINS;
@@ -18,8 +18,6 @@ const PositionList = ({
   address,
   onUnStake
 }: IPositionListProps) => {
-  const [prices, setPrices] = useState<any>();
-
   const { data, error } = useOnChainData(
     () => farmRouter.getStakedLPTokens(chain, network, address),
     []
@@ -31,14 +29,23 @@ const PositionList = ({
         <></>
       ) : data.length > 0 ? (
         <div>
-          {data.map((item: IFarmLPToken, i) => {
+          {data.map((token: ISwapLPToken, i) => {
             return (
-              <PositionCard
-                key={"position" + i}
-                prices={prices}
-                token={item}
-                onUnStake={onUnStake}
-              />
+              <>
+                <div className="media">
+                  <div className="media-content">
+                    <LPTokenCard {...token} />
+                  </div>
+                  <div className="media-right">
+                    <button
+                      onClick={() => onUnStake(token.tokenId)}
+                      className="button is-light is-small"
+                    >
+                      Withdraw
+                    </button>
+                  </div>
+                </div>
+              </>
             );
           })}
         </div>

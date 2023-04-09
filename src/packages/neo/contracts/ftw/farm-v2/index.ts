@@ -239,12 +239,8 @@ export class FarmV2Contract {
     });
   };
 
-  getStakedLPTokens = async (
-    connectedWallet: IConnectedWallet
-  ): Promise<ILPToken[]> => {
-    const senderHash = NeonWallet.getScriptHashFromAddress(
-      connectedWallet.account.address
-    );
+  getStakedLPTokens = async (address: string): Promise<ILPToken[]> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(address);
     const scripts = [
       {
         scriptHash: this.contractHash,

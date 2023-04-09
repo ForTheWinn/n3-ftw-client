@@ -18,16 +18,10 @@ const ETHWallets = () => {
   } = useConnect();
 
   const { disconnect } = useDisconnect();
-  console.log(connector);
-  console.log(error);
-  console.log(isLoading);
-  console.log(pendingConnector);
   const onConnect = async (connector) => {
-    console.log(connector)
     try {
-      const res = await connectAsync({connector});
-      console.log(res);
-      // toggleWalletSidebar();
+      await connectAsync({connector});
+      toggleWalletSidebar();
       toast.success(WALLET_CONNECTED);
     } catch (e: any) {
       toast.error(e.message ? e.meesage : WENT_WRONG);

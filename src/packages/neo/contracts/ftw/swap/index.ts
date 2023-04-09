@@ -11,7 +11,6 @@ import {
   ILPHistory,
   ILPToken,
   IReserve,
-  IReserveData,
   ISwapsHistory
 } from "./interfaces";
 import { SMITH_SCRIPT_HASH } from "../smith/consts";
@@ -21,6 +20,7 @@ import {
   NEO_SCRIPT_HASH,
   NEP_SCRIPT_HASH
 } from "../../../consts/neo-contracts";
+import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
 
 export class SwapContract {
   network: INetworkType;
@@ -523,9 +523,8 @@ export class SwapContract {
 
   getReserve = async (
     tokenA: string,
-    tokenB: string,
-    connectedWallet?: IConnectedWallet
-  ): Promise<IReserveData> => {
+    tokenB: string
+  ): Promise<ISwapReserves> => {
     const scripts: any = [];
     const script = {
       scriptHash: this.contractHash,
@@ -537,71 +536,17 @@ export class SwapContract {
     };
     scripts.push(script);
 
-    if (connectedWallet) {
-      const senderHash = NeonWallet.getScriptHashFromAddress(
-        connectedWallet.account.address
-      );
-      const script1 = {
-        scriptHash: tokenA,
-        operation: "balanceOf",
-        args: [{ type: "Hash160", value: senderHash }]
-      };
-      const script2 = {
-        scriptHash: tokenB,
-        operation: "balanceOf",
-        args: [{ type: "Hash160", value: senderHash }]
-      };
-      scripts.push(script1);
-      scripts.push(script2);
-    }
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
     }
-    const pair: any = parseMapValue(res.stack[0] as any);
-    const obj = {
-      pair: {
-        [pair.tokenA]: {
-          symbol: pair.tokenASymbol,
-          decimals: pair.tokenADecimals,
-          reserveAmount: pair.amountA,
-          reserveAmountFormatted: withDecimal(
-            pair.amountA,
-            pair.tokenADecimals
-          ),
-          reserve: u.BigInteger.fromNumber(pair.amountA)
-        },
-        [pair.tokenB]: {
-          symbol: pair.tokenBSymbol,
-          decimals: pair.tokenBDecimals,
-          reserveAmount: pair.amountB,
-          reserveAmountFormatted: withDecimal(
-            pair.amountB,
-            pair.tokenBDecimals
-          ),
-          reserve: u.BigInteger.fromNumber(pair.amountB)
-        }
-      },
-      totalShare: pair.totalShare,
-      userBalances: {
-        [tokenA]: 0,
-        [tokenB]: 0
-      }
+    const reserves: any = parseMapValue(res.stack[0] as any);
+    // Neo swap changes its order at contract level.
+    return {
+      reserveA: reserves.amountA,
+      reserveB: reserves.amountB,
+      shares: reserves.totalShare
     };
-    if (connectedWallet) {
-      obj.userBalances[tokenA] = parseFloat(
-        u.BigInteger.fromNumber(res.stack[1].value as string).toDecimal(
-          obj.pair[tokenA].decimals
-        )
-      );
-
-      obj.userBalances[tokenB] = parseFloat(
-        u.BigInteger.fromNumber(res.stack[2].value as string).toDecimal(
-          obj.pair[tokenB].decimals
-        )
-      );
-    }
-    return obj;
   };
 
   getPairs = async (): Promise<IReserve[]> => {
@@ -640,7 +585,6 @@ export class SwapContract {
       ]
     };
     const res = await Network.read(this.network, [script]);
-    console.log(res);
     if (res.state === "FAULT") {
       return "0";
     } else {
@@ -650,7 +594,6 @@ export class SwapContract {
   };
 
   getSwapBEstimate = async (tokenA, tokenB, amountOut): Promise<string> => {
-    console.log(amountOut)
     const script = {
       scriptHash: this.contractHash,
       operation: "getSwapBEstimate",
@@ -894,7 +837,6 @@ export class SwapContract {
     ) {
       throw new Error(res.exception ? res.exception : "Something went wrong.");
     }
-    // return []
     // @ts-ignore
     return res.stack[0].value.map((item) => parseMapValue(item));
   };

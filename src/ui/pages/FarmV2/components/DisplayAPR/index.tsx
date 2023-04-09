@@ -1,7 +1,7 @@
 import { u } from "@cityofzion/neon-core";
 import React from "react";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { farmRouter } from "../../../../../common/routers";
+import { farmRouter, swapRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import { IPoolEnhanced } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
@@ -32,7 +32,7 @@ const DisplayAPR = ({
   nepPrice
 }: IDisplayAPRProps) => {
   const { data, error } = useOnChainData(
-    () => farmRouter.getReserves(chain, network, tokenA, tokenB),
+    () => swapRouter.getReserves(chain, network, tokenA, tokenB),
     []
   );
 

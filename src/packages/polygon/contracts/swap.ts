@@ -4,52 +4,37 @@ import {
   erc20ABI,
   multicall
 } from "@wagmi/core";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { Buffer } from "buffer";
 import { CONSTS } from "..";
-import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import FTWSwapABI from "./abi/FTWSwap.json";
-import { IFarmLPToken } from "../../../common/routers/farm/interfaces";
 import { INetworkType } from "../../neo/network";
 import { GLOBAL } from "../../../consts";
 import { AddLiquidityArgs, SwapArgs, SwapEstimateArgs } from "../interfaces";
-import { ISwapReserves } from "../../../common/routers/swap/interfaces";
+import {
+  ISwapLPToken,
+  ISwapReserves
+} from "../../../common/routers/swap/interfaces";
 
 export const getReserves = async (
   network: INetworkType,
-  tokenA: ITokenState,
-  tokenB: ITokenState
+  tokenA: string,
+  tokenB: string
 ): Promise<ISwapReserves> => {
   const res: any = await readContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getReserves",
-    args: [tokenA.hash, tokenB.hash]
-  });
-  return {
-    reserveA:
-      res.tokenA === tokenA.hash
-        ? ethers.utils.formatUnits(res.amountA, tokenA.decimals)
-        : ethers.utils.formatUnits(res.amountB, tokenA.decimals),
-    reserveB:
-      res.tokenB === tokenB.hash
-        ? ethers.utils.formatUnits(res.amountB, tokenB.decimals)
-        : ethers.utils.formatUnits(res.amountA, tokenB.decimals),
-    shares: res.shares.toString()
-  };
-};
-
-export const getReserve = async (
-  network: INetworkType,
-  tokenA: string,
-  tokenB: string
-): Promise<any> => {
-  return readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
-    abi: FTWSwapABI,
-    functionName: "getReserves",
     args: [tokenA, tokenB]
   });
+  // EVM swap doesn't change token order in the contract so we need to check its order by token hash
+  return {
+    reserveA:
+      res.tokenA === tokenA ? res.amountA.toString() : res.amountB.toString(),
+    reserveB:
+      res.tokenB === tokenB ? res.amountB.toString() : res.amountA.toString(),
+    shares: res.shares.toString()
+  };
 };
 
 export const getEstimated = async (
@@ -70,14 +55,14 @@ export const getEstimated = async (
 export const getLPTokens = async (
   network: INetworkType,
   owner: string
-): Promise<IFarmLPToken[]> => {
+): Promise<ISwapLPToken[]> => {
   const res: any = await readContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getTokensOf",
     args: [owner]
   });
-  const tokens: IFarmLPToken[] = [];
+  const tokens: ISwapLPToken[] = [];
 
   for (const tokenId of res) {
     const token = await getTokenURI(network, tokenId.toString());
@@ -89,8 +74,7 @@ export const getLPTokens = async (
 export const getTokenURI = async (
   network: INetworkType,
   tokenId: string
-): Promise<IFarmLPToken> => {
-  console.log(tokenId);
+): Promise<ISwapLPToken> => {
   const res = (await readContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
     abi: FTWSwapABI,
@@ -100,15 +84,16 @@ export const getTokenURI = async (
   const json = Buffer.from(res.substring(29), "base64").toString();
   const jsonObject = JSON.parse(json);
   return {
-    name: jsonObject.name,
+    tokenId: tokenId.toString(),
     tokenA: jsonObject.tokenA,
     tokenB: jsonObject.tokenB,
     symbolA: jsonObject.symbolA,
     symbolB: jsonObject.symbolB,
-    tokenId: tokenId.toString(),
-    amountA: ethers.utils.formatUnits(jsonObject.amountA, jsonObject.decimalsA),
-    amountB: ethers.utils.formatUnits(jsonObject.amountB, jsonObject.decimalsB),
-    sharesPercentage: (parseFloat(jsonObject.shares) / 10000).toString() // BPS
+    decimalsA: jsonObject.decimalsA,
+    decimalsB: jsonObject.decimalsB,
+    amountA: jsonObject.amountA,
+    amountB: jsonObject.amountB,
+    sharesPercentage: jsonObject.sharesPercentage
   };
 };
 

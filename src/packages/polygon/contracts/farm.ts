@@ -1,7 +1,6 @@
 import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
 import {
   IClaimable,
-  IFarmLPToken
 } from "../../../common/routers/farm/interfaces";
 import { TOKEN_LIST } from "../../../consts/tokens";
 import { POLYGON_CHAIN } from "../../../consts/chains";
@@ -17,6 +16,7 @@ import { Buffer } from "buffer";
 import { INetworkType } from "../../neo/network";
 import { CONSTS } from "..";
 import { GLOBAL } from "../../../consts";
+import { ISwapLPToken } from "../../../common/routers/swap/interfaces";
 
 export const getPools = async (network: INetworkType): Promise<any> => {
   const res: any = await readContract({
@@ -36,9 +36,9 @@ export const getPools = async (network: INetworkType): Promise<any> => {
       args: [pairId]
     });
 
-    const tokenA = TOKEN_LIST[POLYGON_CHAIN][pool.tokenA];
-    const tokenB = TOKEN_LIST[POLYGON_CHAIN][pool.tokenB];
-    const bonusToken = TOKEN_LIST[POLYGON_CHAIN][pool.bonusToken];
+    const tokenA = TOKEN_LIST[POLYGON_CHAIN][network][pool.tokenA];
+    const tokenB = TOKEN_LIST[POLYGON_CHAIN][network][pool.tokenB];
+    const bonusToken = TOKEN_LIST[POLYGON_CHAIN][network][pool.bonusToken];
 
     const hasBonusRewards = pool.bonusTokensPerSecond > 0;
     pools.push({
@@ -75,14 +75,14 @@ export const getPools = async (network: INetworkType): Promise<any> => {
 export const getStakedTokens = async (
   network: INetworkType,
   address: string
-): Promise<IFarmLPToken[]> => {
+): Promise<ISwapLPToken[]> => {
   const res: any = await readContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
     abi: FTWFarmABI,
     functionName: "getStakedTokens",
     args: [address]
   });
-  const tokens: IFarmLPToken[] = [];
+  const tokens: ISwapLPToken[] = [];
 
   for (const tokenId of res) {
     const token = await getTokenURI(network, tokenId.toString());
@@ -103,6 +103,7 @@ export const getClaimable = async (
     args: [address]
   });
   const rewards: IClaimableRewards[] = [];
+  console.log(TOKEN_LIST[POLYGON_CHAIN][network]);
   res.map((reward: any) => {
     const userShare = reward.shares.toString();
     if (userShare !== "0") {
@@ -174,8 +175,6 @@ export const claim = async (
     pairIds.push(item.pairId as any);
   });
   const formattedPairs: [string, string][][] = [pairs];
-  console.log(formattedPairs);
-  console.log(pairIds);
   const config = await prepareWriteContract({
     address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
     abi: FTWFarmABI,

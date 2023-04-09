@@ -47,8 +47,6 @@ const PairItem = ({
         <div className="is-flex" style={{ alignItems: "center" }}>
           <PairIcons
             chain={chain}
-            width="25px"
-            height="25px"
             network={network}
             tokenA={tokenA.slice(2)}
             tokenB={tokenB.slice(2)}
