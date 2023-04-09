@@ -594,7 +594,7 @@ export class SwapContract {
     }
   };
 
-  getSwapBEstimate = async (tokenA, tokenB, amountOut): Promise<string> => {
+  getSwapBEstimate = async (tokenA: string, tokenB: string, amountOut: string): Promise<string> => {
     const script = {
       scriptHash: this.contractHash,
       operation: "getSwapBEstimate",
