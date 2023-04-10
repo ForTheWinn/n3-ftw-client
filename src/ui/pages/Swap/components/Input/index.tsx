@@ -36,7 +36,6 @@ const Input = ({
   decimals,
   balanceOverflow
 }: IInputProps) => {
-  console.log(logo);
   return (
     <div>
       <div className="columns is-mobile" style={{ alignItems: "center" }}>

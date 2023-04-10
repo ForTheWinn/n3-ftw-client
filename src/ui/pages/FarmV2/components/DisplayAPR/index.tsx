@@ -1,18 +1,11 @@
 import { u } from "@cityofzion/neon-core";
 import React, { useEffect, useState } from "react";
-import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { swapRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
-import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { numberTrim } from "../../../../../packages/neo/utils";
 import { IFarmPair } from "../../../../../common/routers/farm/interfaces";
-import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
-import { TOKEN_LIST } from "../../../../../consts/tokens";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
-import { ethers } from "ethers";
 import { NEP_CONTRACT_HASH } from "../../../../../consts/contracts";
-import { off } from "process";
 import { getLPEstimate } from "../../../../../packages/polygon/contracts/swap";
 
 interface IDisplayAPRProps {

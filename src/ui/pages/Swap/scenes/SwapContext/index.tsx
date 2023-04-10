@@ -215,38 +215,38 @@ export const SwapContextProvider = (props: {
                 isReverse: swapInput.type === "B"
               };
               estimated = await swapRouter.getEstimate(chain, network, args);
-
-              if (swapInput.type === "A") {
-                estimated = ethers.utils.formatUnits(
-                  estimated,
-                  tokenB.decimals
-                );
-              } else {
-                estimated = ethers.utils.formatUnits(
-                  estimated,
-                  tokenA.decimals
-                );
-              }
             } else if (props.type === "liquidity") {
               if (reserves) {
-                estimated = await getLPEstimate(
-                  swapInput.value,
-                  swapInput.type === "A"
-                    ? reserves.reserveA
-                    : reserves.reserveB,
-                  swapInput.type === "A" ? reserves.reserveB : reserves.reserveA
+                const val = ethers.utils.parseUnits(
+                  swapInput.value.toString(),
+                  swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
                 );
+                estimated = val
+                  .mul(
+                    swapInput.type === "A"
+                      ? reserves.reserveB
+                      : reserves.reserveA
+                  )
+                  .div(
+                    swapInput.type === "A"
+                      ? reserves.reserveA
+                      : reserves.reserveB
+                  )
+                  .toString();
               }
             }
           }
         } catch (e: any) {
+          console.error(e);
           setError("Failed to fetch swap estimate. Check your inputs.");
         }
 
         if (swapInput.type === "A") {
+          estimated = ethers.utils.formatUnits(estimated, tokenB.decimals);
           setAmountBLoading(false);
           setAmountB(+estimated);
         } else {
+          estimated = ethers.utils.formatUnits(estimated, tokenA.decimals);
           setAmountALoading(false);
           setAmountA(+estimated);
         }

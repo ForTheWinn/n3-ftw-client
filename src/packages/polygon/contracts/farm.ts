@@ -31,7 +31,6 @@ export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
       args: [pairId]
     });
 
-    console.log(pool)
     const tokenA = TOKEN_LIST[POLYGON_CHAIN][network][pool.tokenA.toLowerCase()];
     const tokenB =
       TOKEN_LIST[POLYGON_CHAIN][network][pool.tokenB.toLowerCase()];
