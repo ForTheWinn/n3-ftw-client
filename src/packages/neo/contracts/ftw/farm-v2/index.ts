@@ -4,14 +4,18 @@ import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
-import { IClaimableRewards, IPool, IPoolEnhanced } from "./interfaces";
+import { IClaimableRewards, IPool } from "./interfaces";
 import { FARM_V2_SCRIPT_HASH } from "./consts";
 import { parseMapValue, withDecimal } from "../../../utils";
 import { ILPToken } from "../swap/interfaces";
 import { BOYZ_SCRIPT_HASH } from "../boyz/consts";
 import { TOKEN_LIST } from "../../../../../consts/tokens";
-import { CHAINS, NEO_CHAIN } from "../../../../../consts/chains";
-import { IClaimable } from "../../../../../common/routers/farm/interfaces";
+import { NEO_CHAIN } from "../../../../../consts/chains";
+import {
+  IClaimable,
+  IFarmPair
+} from "../../../../../common/routers/farm/interfaces";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
 export class FarmV2Contract {
   network: INetworkType;
@@ -205,7 +209,7 @@ export class FarmV2Contract {
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
-  getPools = async (): Promise<IPoolEnhanced[]> => {
+  getPools = async (): Promise<IFarmPair[]> => {
     const script = {
       scriptHash: this.contractHash,
       operation: "getPools",
@@ -213,19 +217,22 @@ export class FarmV2Contract {
     };
     const res: any = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
-      throw new Error(res.exception as string);
+      throw new Error(res.exception ? (res.exception as string) : WENT_WRONG);
     }
+
     return res.stack[0].value.map((pair) => {
       const pool: IPool = parseMapValue(pair);
       const hasBonusRewards = pool.bonusTokensPerSecond > 0;
       return {
         ...pool,
-        tokenALogo: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenA]
+        iconA: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenA]
           ? TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenA].icon
           : "",
-        tokenBLogo: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenB]
+        iconB: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenB]
           ? TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenB].icon
           : "",
+        symbolA: pool.tokenASymbol,
+        symbolB: pool.tokenBSymbol,
         nepRewardsPerDay: withDecimal(pool.nepTokensPerSecond * 86400, 8, true),
         bonusRewardsPerDay: hasBonusRewards
           ? withDecimal(
@@ -234,6 +241,8 @@ export class FarmV2Contract {
               true
             )
           : 0,
+        tokensStaked: pool.tokensStaked.toString(),
+        nepTokensPerSecond: pool.nepTokensPerSecond.toString(),
         hasBonusRewards
       };
     });

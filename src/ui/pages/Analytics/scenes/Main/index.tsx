@@ -5,12 +5,12 @@ import PageLayout from "../../../../components/Commons/PageLayout";
 import Pools from "./Pairs";
 import Tokens from "./Tokens";
 import PriceChart from "../../components/PriceChart";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
 import { ANALYTICS_ROUTE } from "../../../../../consts/neoRoutes";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { NEP_CONTRACT_HASH } from "../../../../../consts/contracts";
 
 const AnalyticsMain = () => {
-  const { network } = useApp();
+  const { chain, network } = useApp();
 
   useEffect(() => {
     document.title = "FTW Analytics";
@@ -34,7 +34,10 @@ const AnalyticsMain = () => {
         <div className="column is-6">
           <div className="box is-shadowless">
             <h1 className="title is-6">NEP</h1>
-            <PriceChart tokenId={"0x" + NEP_SCRIPT_HASH[network]} days={"10"} />
+            <PriceChart
+              tokenId={NEP_CONTRACT_HASH[chain][network]}
+              days={"10"}
+            />
           </div>
         </div>
         <div className="column is-6">

@@ -2,6 +2,9 @@ import { waitForTransaction, fetchToken } from "@wagmi/core";
 import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { INetworkType, Network } from "../../../packages/neo/network";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
+import { IPrices } from "../../../packages/neo/api/interfaces";
+import { RestAPI } from "../../../packages/neo/api";
+import { MAINNET } from "../../../consts/global";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -17,6 +20,15 @@ export const waitTransactionUntilSubmmited = async (
     case NEO_CHAIN:
       const res = await Network.getRawTx(txid, network);
       return true;
+  }
+};
+
+export const getPrices = async (chain: CHAINS): Promise<IPrices | undefined> => {
+  switch (chain) {
+    case NEO_CHAIN:
+      return new RestAPI(MAINNET).getPrices();
+    case POLYGON_CHAIN:
+      return undefined;
   }
 };
 

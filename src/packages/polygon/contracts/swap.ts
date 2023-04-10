@@ -39,8 +39,7 @@ export const getReserves = async (
 
 export const getEstimated = async (
   network: INetworkType,
-  args: SwapEstimateArgs,
-  decimals: number
+  args: SwapEstimateArgs
 ): Promise<string> => {
   const { tokenA, tokenB, amount, isReverse } = args;
   const res = await readContract({
@@ -49,7 +48,7 @@ export const getEstimated = async (
     functionName: "getSwapEstimated",
     args: [tokenA, tokenB, amount, isReverse]
   });
-  return ethers.utils.formatUnits(res as number, decimals);
+  return res as string;
 };
 
 export const getLPTokens = async (
@@ -99,16 +98,12 @@ export const getTokenURI = async (
 
 export const getLPEstimate = (
   amount: number,
-  decimals: number,
-  opponentDecimals: number,
   reserveAmount: string,
   opponentReserveAmount: string
 ): string => {
-  const _amount = ethers.utils.parseUnits(amount.toString(), decimals);
-  let estimated = _amount
-    .mul(ethers.utils.parseUnits(opponentReserveAmount, opponentDecimals))
-    .div(ethers.utils.parseUnits(reserveAmount, decimals));
-  return ethers.utils.formatUnits(estimated, opponentDecimals);
+  let estimated =
+    (amount * parseFloat(opponentReserveAmount)) / parseFloat(reserveAmount);
+  return estimated.toString();
 };
 
 export const swap = (network: INetworkType, args: SwapArgs) => {

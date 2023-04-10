@@ -7,8 +7,6 @@ export const LIST = [NEO_CHAIN, POLYGON_CHAIN];
 
 export const CONFIGS = {
   [NEO_CHAIN]: {
-
-    
     label: "Neo",
     color: "primary",
     icon: "/symbols/neo.svg"

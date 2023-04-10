@@ -1,4 +1,3 @@
-import { globalRouter } from "../common/routers";
 import { CHAINS } from "../consts/chains";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../consts/chains";
 import { MAINNET } from "../consts/global";
@@ -33,20 +32,6 @@ export const getExploler = (chain: string, network: INetworkType): string => {
       return "";
   }
 };
-
-// export const getTokenByHash = (
-//   chain: CHAINS,
-//   network: INetworkType,
-//   hash: string
-// ): ITokenState | undefined => {
-//   const result = TOKENS.SWAP_TOKEN_LIST[chain][network].find(
-//     (token) => token.hash === hash
-//   );
-//   if (result) {
-//     return result;
-//   }
-//   return undefined;
-// };
 
 export const getTokenByHash = (
   chain: CHAINS,

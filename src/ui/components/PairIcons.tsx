@@ -13,17 +13,17 @@ interface IPairIconsProps {
 }
 const PairIcons = ({ network, tokenA, tokenB, chain }: IPairIconsProps) => {
   let token1 = TOKEN_LIST[chain][network][tokenA]
-    ? TOKEN_LIST[chain][network][tokenA]
-    : undefined;
+    ? TOKEN_LIST[chain][network][tokenA].icon
+    : UNKNOWN_TOKEN_IMAGE;
 
   let token2 = TOKEN_LIST[chain][network][tokenB]
-    ? TOKEN_LIST[chain][network][tokenB]
-    : undefined;
+    ? TOKEN_LIST[chain][network][tokenB].icon
+    : UNKNOWN_TOKEN_IMAGE;
 
   return (
     <Space>
-      <Avatar src={token1 && token1.icon ? token1.icon : UNKNOWN_TOKEN_IMAGE} />
-      <Avatar src={token2 && token2.icon ? token2.icon : UNKNOWN_TOKEN_IMAGE} />
+      <Avatar src={token1} />
+      <Avatar src={token2} />
     </Space>
   );
 };

@@ -1,79 +1,111 @@
 import { u } from "@cityofzion/neon-core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { farmRouter, swapRouter } from "../../../../../common/routers";
+import { swapRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
-import { IPoolEnhanced } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { numberTrim } from "../../../../../packages/neo/utils";
+import { IFarmPair } from "../../../../../common/routers/farm/interfaces";
+import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
+import { TOKEN_LIST } from "../../../../../consts/tokens";
+import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
+import { ethers } from "ethers";
+import { NEP_CONTRACT_HASH } from "../../../../../consts/contracts";
+import { off } from "process";
+import { getLPEstimate } from "../../../../../packages/polygon/contracts/swap";
 
-interface IDisplayAPRProps extends IPoolEnhanced {
-  tokenA: string;
-  tokenB: string;
+interface IDisplayAPRProps {
   chain: CHAINS;
   network: INetworkType;
-  prices: IPrices;
-  nepPrice: number;
+  pair: IFarmPair;
+  // prices: IPrices;
+  // nepPrice: number;
 }
 
 const ONE_YEAR_IN_SECONDS = 31536000;
+
 const DisplayAPR = ({
   chain,
   network,
-  tokenA,
-  tokenB,
-  nepTokensPerSecond,
-  bonusTokensPerSecond,
-  bonusToken,
-  bonusTokenDecimals,
-  tokensStaked,
-  prices,
-  nepPrice
-}: IDisplayAPRProps) => {
-  const { data, error } = useOnChainData(
-    () => swapRouter.getReserves(chain, network, tokenA, tokenB),
-    []
-  );
+  // prices,
+  pair
+}: // nepPrice
+IDisplayAPRProps) => {
+  const {
+    tokenA,
+    tokenB,
+    tokensStaked,
+    nepTokensPerSecond,
+    bonusTokensPerSecond,
+    bonusToken,
+    hasBonusRewards
+  } = pair;
+  const [APR, setAPR] = useState(0);
+  const nepAddress = NEP_CONTRACT_HASH[chain][network];
 
-  if (!data) return <></>;
-  if (!prices[tokenA]) return <></>;
-  if (!prices[tokenB]) return <></>;
+  useEffect(() => {
+    async function checkTxid() {
+      try {
+        const { reserveA, reserveB, shares } = await swapRouter.getReserves(
+          chain,
+          network,
+          tokenA,
+          tokenB
+        );
 
-  let tokenAReserveAmount = parseFloat(
-    u.BigInteger.fromNumber(data.pair[tokenA].reserveAmount)
-      .mul(tokensStaked > 0 ? tokensStaked : 1)
-      .div(data.totalShare)
-      .toDecimal(data.pair[tokenA].decimals)
-  );
+        let nepRewards = parseFloat(nepTokensPerSecond) * ONE_YEAR_IN_SECONDS;
 
-  let tokenBReserveAmount = parseFloat(
-    u.BigInteger.fromNumber(data.pair[tokenB].reserveAmount)
-      .mul(tokensStaked > 0 ? tokensStaked : 1)
-      .div(data.totalShare)
-      .toDecimal(data.pair[tokenB].decimals)
-  );
+        let nepStaked = 0;
 
-  const TVL =
-    tokenAReserveAmount * prices[tokenA] + tokenBReserveAmount * prices[tokenB];
+        if (tokenA === nepAddress) {
+          nepStaked =
+            ((parseFloat(reserveA) * parseFloat(tokensStaked)) /
+              parseFloat(shares)) *
+            2;
+        } else if (tokenB === nepAddress) {
+          nepStaked =
+            ((parseFloat(reserveB) * parseFloat(tokensStaked)) /
+              parseFloat(shares)) *
+            2;
+        } else {
+          const r = await swapRouter.getReserves(
+            chain,
+            network,
+            nepAddress,
+            tokenA
+          );
+          const estimated = getLPEstimate(1_00000000, r.reserveA, r.reserveB);
 
-  const NEP_APR =
-    parseFloat(
-      u.BigInteger.fromNumber(
-        nepTokensPerSecond * ONE_YEAR_IN_SECONDS
-      ).toDecimal(8)
-    ) * nepPrice;
+          nepStaked =
+            ((parseFloat(reserveA) * parseFloat(tokensStaked)) /
+              parseFloat(shares)) *
+            2;
 
-  const BONUS_APR =
-    bonusTokensPerSecond > 0
-      ? parseFloat(
-          u.BigInteger.fromNumber(
-            bonusTokensPerSecond * ONE_YEAR_IN_SECONDS
-          ).toDecimal(bonusTokenDecimals)
-        ) * prices[bonusToken]
-      : 0;
+          nepStaked = nepStaked * (1_00000000 / parseFloat(estimated));
+        }
+        if (hasBonusRewards) {
+          const r = await swapRouter.getReserves(
+            chain,
+            network,
+            nepAddress,
+            bonusToken
+          );
+           const estimated = getLPEstimate(1_00000000, r.reserveA, r.reserveB);
 
-  const APR = ((NEP_APR + BONUS_APR) / TVL) * 100;
+          let bonusRewards = parseFloat(bonusTokensPerSecond) * ONE_YEAR_IN_SECONDS;
+
+          nepRewards = nepRewards + (bonusRewards * (1_00000000 / parseFloat(estimated)));
+
+        }
+
+        setAPR((nepRewards / nepStaked) * 100);
+      } catch (e: any) {
+        console.error(e);
+      }
+    }
+    checkTxid();
+  }, []);
 
   return <>{numberTrim(APR)}%</>;
 };

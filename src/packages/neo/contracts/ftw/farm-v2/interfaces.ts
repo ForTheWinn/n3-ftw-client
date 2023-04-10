@@ -28,13 +28,13 @@ export interface IPool {
   bonusTokensPerSecond: number;
 }
 
-export interface IPoolEnhanced extends IPool {
-  nepRewardsPerDay: string;
-  bonusRewardsPerDay: string;
-  hasBonusRewards: boolean;
-  tokenALogo: string
-  tokenBLogo: string
-}
+// export interface IPoolEnhanced extends IPool {
+//   nepRewardsPerDay: string;
+//   bonusRewardsPerDay: string;
+//   hasBonusRewards: boolean;
+//   tokenALogo: string
+//   tokenBLogo: string
+// }
 
 export interface ILPTokens {
   contractHash: string;

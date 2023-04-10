@@ -1,6 +1,26 @@
 
 // contracts
 export const SWAP_CONTRACT_HASH =
-  "0x8DC9E791E60065f4Ebc9602A09CBD7f13d6F9037";
+  "";
 export const FARM_CONTRACT_HASH =
-  "0x3f9c4D96F1E9E78308470a9767e7dCe9f077B8eD";
+  "";
+
+// tokens
+export const NEP_CONTRACT_HASH = "0xf7102573e4ea1779cf4f006401bdd07c454bcca4";
+
+const NEP_TOKEN = {
+  hash: NEP_CONTRACT_HASH,
+  symbol: "NEP",
+  icon: "/symbols/nep.png",
+  decimals: 8
+};
+
+
+export const TOKEN_LIST = {
+  [NEP_CONTRACT_HASH]: {
+    ...NEP_TOKEN
+  },
+
+};
+
+export const SWAP_TOKEN_LIST = [NEP_TOKEN];

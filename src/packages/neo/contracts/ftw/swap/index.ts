@@ -544,9 +544,9 @@ export class SwapContract {
     const reserves: any = parseMapValue(res.stack[0] as any);
     // Neo swap changes its order at contract level.
     return {
-      reserveA: reserves.amountA,
-      reserveB: reserves.amountB,
-      shares: reserves.totalShare
+      reserveA: reserves.amountA.toString(),
+      reserveB: reserves.amountB.toString(),
+      shares: reserves.totalShare.toString()
     };
   };
 
@@ -581,7 +581,6 @@ export class SwapContract {
         {
           type: "Integer",
           value: amount
-          // value: u.BigInteger.fromDecimal(amount, swapTokenDecimals).toString()
         }
       ]
     };
@@ -589,8 +588,8 @@ export class SwapContract {
     if (res.state === "FAULT") {
       return "0";
     } else {
-      const { estimated, fee, decimals } = parseMapValue(res.stack[0] as any);
-      return u.BigInteger.fromNumber(estimated).toDecimal(decimals);
+      const { estimated } = parseMapValue(res.stack[0] as any);
+      return estimated;
     }
   };
 
@@ -611,8 +610,8 @@ export class SwapContract {
     if (res.state === "FAULT") {
       return "0";
     } else {
-      const { estimated, decimals } = parseMapValue(res.stack[0] as any);
-      return u.BigInteger.fromNumber(estimated).toDecimal(decimals);
+      const { estimated } = parseMapValue(res.stack[0] as any);
+      return estimated;
     }
   };
 

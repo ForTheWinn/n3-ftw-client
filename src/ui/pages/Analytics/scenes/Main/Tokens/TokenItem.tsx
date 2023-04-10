@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import { INetworkType } from "../../../../../../packages/neo/network";
 import { decimalCuts, numberTrim } from "../../../../../../packages/neo/utils";
-import SymbolWithLogo from "./SymbolWithLogo";
 import { FaChartLine } from "react-icons/fa";
+import { Avatar, Space, Typography } from "antd";
+import { TOKEN_LIST } from "../../../../../../consts/tokens";
+import { CHAINS } from "../../../../../../consts/chains";
+import { UNKNOWN_TOKEN_IMAGE } from "../../../../../../consts/global";
+const { Text, Link } = Typography;
 
 interface ITokenItem {
+  chain: CHAINS;
   id: string;
   network: INetworkType;
   symbol: string;
   onClick: (id: string) => void;
 }
-const TokenItem = ({ id, symbol, network, onClick }: ITokenItem) => {
+const TokenItem = ({ id, symbol, chain, network, onClick }: ITokenItem) => {
   const [data, setData] = useState<any>();
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
@@ -30,10 +35,16 @@ const TokenItem = ({ id, symbol, network, onClick }: ITokenItem) => {
   }, []);
   if (isLoading) return <></>;
   if (data && data.totalLiquidityUSD === 0) return <></>;
+  const logo = TOKEN_LIST[chain][network][id]
+    ? TOKEN_LIST[chain][network][id].icon
+    : UNKNOWN_TOKEN_IMAGE;
   return (
     <tr>
       <td>
-        <SymbolWithLogo id={id} symbol={symbol} />
+        <Space>
+          <Avatar src={logo} />
+          <Text strong>{symbol}</Text>
+        </Space>
       </td>
       <td>{data ? "$" + numberTrim(data.price, decimalCuts(symbol)) : ""}</td>
       <td

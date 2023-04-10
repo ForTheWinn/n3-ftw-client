@@ -5,7 +5,8 @@ import PairIcons from "../../../../../components/PairIcons";
 import { numberTrim } from "../../../../../../packages/neo/utils";
 import { FaChartLine } from "react-icons/fa";
 import { useApp } from "../../../../../../common/hooks/use-app";
-
+import { Space, Typography } from "antd";
+const { Text, Link } = Typography;
 interface IPairItem {
   network: INetworkType;
   tokenA: string;
@@ -44,15 +45,15 @@ const PairItem = ({
   return (
     <tr>
       <td>
-        <div className="is-flex" style={{ alignItems: "center" }}>
+        <Space>
           <PairIcons
             chain={chain}
             network={network}
-            tokenA={tokenA.slice(2)}
-            tokenB={tokenB.slice(2)}
+            tokenA={tokenA}
+            tokenB={tokenB}
           />
-          <strong className="ml-3">{`${tokenASymbol}-${tokenBSymbol}`}</strong>
-        </div>
+          <Text strong>{`${tokenASymbol}-${tokenBSymbol}`}</Text>
+        </Space>
       </td>
       <td>
         {data

@@ -7,7 +7,7 @@ import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
 
 const Pairs = () => {
-  const { network } = useApp();
+  const { chain, network } = useApp();
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [isModalActive, setModalActive] = useState("");

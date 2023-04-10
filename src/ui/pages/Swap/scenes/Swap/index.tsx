@@ -58,6 +58,7 @@ const SwapMain = () => {
   return (
     <>
       <SwapNav
+        chain={chain}
         search={
           tokenA && tokenB
             ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`

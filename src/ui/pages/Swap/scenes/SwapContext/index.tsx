@@ -54,7 +54,6 @@ interface ISwapContext {
   toggleWalletSidebar: () => void;
 }
 
-
 export const SwapContext = createContext({} as ISwapContext);
 
 export const SwapContextProvider = (props: {
@@ -215,18 +214,23 @@ export const SwapContextProvider = (props: {
                   .toString(),
                 isReverse: swapInput.type === "B"
               };
-              estimated = await swapRouter.getEstimate(
-                chain,
-                network,
-                args,
-                swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
-              );
+              estimated = await swapRouter.getEstimate(chain, network, args);
+
+              if (swapInput.type === "A") {
+                estimated = ethers.utils.formatUnits(
+                  estimated,
+                  tokenB.decimals
+                );
+              } else {
+                estimated = ethers.utils.formatUnits(
+                  estimated,
+                  tokenA.decimals
+                );
+              }
             } else if (props.type === "liquidity") {
               if (reserves) {
                 estimated = await getLPEstimate(
                   swapInput.value,
-                  swapInput.type === "A" ? tokenA.decimals : tokenB.decimals,
-                  swapInput.type === "A" ? tokenB.decimals : tokenA.decimals,
                   swapInput.type === "A"
                     ? reserves.reserveA
                     : reserves.reserveB,

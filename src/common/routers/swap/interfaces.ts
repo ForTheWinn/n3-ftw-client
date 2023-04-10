@@ -7,8 +7,6 @@ export interface ISwapReserves {
   reserveA: string;
   reserveB: string;
   shares: string;
-  decimalsA?: string;
-  decimalsB?: string;
 }
 
 export interface ISwapLPToken {

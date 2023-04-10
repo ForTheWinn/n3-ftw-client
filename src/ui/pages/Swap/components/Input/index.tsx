@@ -1,8 +1,8 @@
 import React from "react";
 import { FaAngleDown } from "react-icons/fa";
 import NumberFormat from "react-number-format";
-import { BsQuestionSquare } from "react-icons/bs";
 import { Avatar } from "antd";
+import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 
 interface IInputProps {
   swapInitiated?: boolean;
@@ -36,6 +36,7 @@ const Input = ({
   decimals,
   balanceOverflow
 }: IInputProps) => {
+  console.log(logo);
   return (
     <div>
       <div className="columns is-mobile" style={{ alignItems: "center" }}>
@@ -43,7 +44,7 @@ const Input = ({
           <div className="level is-mobile">
             <div className="level-left">
               <div className="level-item mr-4 is-hidden-mobile">
-                <Avatar src={logo} />
+                <Avatar src={logo ? logo : UNKNOWN_TOKEN_IMAGE} />
               </div>
               <div className="level-item">
                 <div

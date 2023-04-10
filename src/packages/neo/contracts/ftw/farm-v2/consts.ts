@@ -1,6 +1,4 @@
-import { GLOBAL } from "../../../../../consts";
-
-const { TESTNET, MAINNET } = GLOBAL;
+import { MAINNET, TESTNET } from "../../../../../consts/global";
 
 export const FARM_V2_SCRIPT_HASH = {
   [TESTNET]: "0xacfe786cbbd1d2dd96f5f98b0ec9e987cbb20584",

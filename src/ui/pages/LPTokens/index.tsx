@@ -8,6 +8,8 @@ import { swapRouter } from "../../../common/routers";
 import { ISwapLPToken } from "../../../common/routers/swap/interfaces";
 import LPTokenCard from "../../components/LPTokenCard";
 import { WENT_WRONG } from "../../../consts/messages";
+import { CONFIGS } from "../../../consts/chains";
+import { Avatar, Divider, Space } from "antd";
 
 const LPTokens = () => {
   const location = useLocation();
@@ -44,16 +46,22 @@ const LPTokens = () => {
       <div className="columns is-centered">
         <div className="column is-half">
           <div className="box is-shadowless">
-            <h1 className="title is-5">LP Value Finder</h1>
-            <p className="subtitle is-7">
-              Enter LP token ID to find the token value.
-            </p>
+            <Space>
+              <Avatar src={CONFIGS[chain].icon} />
+              <div>
+                <h1 className="title is-5">LP Value Finder</h1>
+                <p className="subtitle is-7">
+                  Enter LP token ID to find the token value.
+                </p>
+              </div>
+            </Space>
+            <Divider />
             <div className="field has-addons">
               <div className="control is-expanded">
                 <input
                   value={id}
                   onChange={(e: any) => setId(e.target.value)}
-                  className="input"
+                  className="input is-shadowless"
                   type="text"
                   placeholder="Enter LP token ID"
                 />

@@ -6,10 +6,8 @@ import { SwapContract } from "../../../packages/neo/contracts";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 import {
   IClaimableRewards,
-  IPoolEnhanced
 } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
-import { withDecimal } from "../../../packages/neo/utils";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
 import {
   getPools,
@@ -20,30 +18,17 @@ import {
   claim as polygonClaim
 } from "../../../packages/polygon/contracts/farm";
 import {
-  getLPTokens as getPolygonLPTokens,
-  getReserves as getPolygonReserves,
   isApprovedForAll,
   setApprovalForAll
 } from "../../../packages/polygon/contracts/swap";
-import { IClaimable } from "./interfaces";
+import { IClaimable, IFarmPair } from "./interfaces";
 import { CONTRACTS, GLOBAL } from "../../../consts";
-import { ethers } from "ethers";
-import { getTokenByHash } from "../../../helpers";
 import { ISwapLPToken } from "../swap/interfaces";
-
-export const getPrices = (chain: CHAINS): Promise<IPrices> => {
-  switch (chain) {
-    case NEO_CHAIN:
-      return new RestAPI(GLOBAL.MAINNET).getPrices();
-    case POLYGON_CHAIN:
-      return new RestAPI(GLOBAL.MAINNET).getPrices();
-  }
-};
 
 export const getPoolList = (
   chain: CHAINS,
   network: INetworkType
-): Promise<IPoolEnhanced[]> => {
+): Promise<IFarmPair[]> => {
   switch (chain) {
     case NEO_CHAIN:
       return new FarmV2Contract(network).getPools();

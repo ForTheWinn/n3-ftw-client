@@ -7,7 +7,7 @@ import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
 
 const TokensAnalytics = () => {
-  const { network } = useApp();
+  const { chain, network } = useApp();
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [isModalActive, setModalActive] = useState("");
@@ -57,6 +57,7 @@ const TokensAnalytics = () => {
           <tbody>
             {data.map((token) => (
               <TokenItem
+                chain={chain}
                 onClick={handleTokenClick}
                 key={token.id}
                 id={token.id}

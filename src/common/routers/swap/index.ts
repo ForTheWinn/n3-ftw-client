@@ -75,7 +75,6 @@ export const getEstimate = async (
   chain: CHAINS,
   network: INetworkType,
   args: ISwapEstimateArgs,
-  decimals: number
 ) => {
   switch (chain) {
     case NEO_CHAIN:
@@ -95,35 +94,7 @@ export const getEstimate = async (
       }
 
     case POLYGON_CHAIN:
-      return polygonGetEstimated(network, args, decimals);
-  }
-};
-
-export const getLPEstimate = async (
-  chain: CHAINS,
-  network: INetworkType,
-  args: ISwapEstimateArgs,
-  decimals: number
-) => {
-  switch (chain) {
-    case NEO_CHAIN:
-      if (args.isReverse) {
-        return new SwapContract(network).getSwapBEstimate(
-          args.tokenA,
-          args.tokenB,
-          args.amount
-        );
-      } else {
-        return new SwapContract(network).getSwapEstimate(
-          args.tokenA,
-          args.tokenB,
-          args.isReverse ? args.tokenB : args.tokenA,
-          args.amount
-        );
-      }
-
-    case POLYGON_CHAIN:
-      return polygonGetEstimated(network, args, decimals);
+      return polygonGetEstimated(network, args);
   }
 };
 

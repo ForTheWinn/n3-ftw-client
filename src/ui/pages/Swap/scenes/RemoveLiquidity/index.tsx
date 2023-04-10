@@ -25,7 +25,6 @@ const RemoveLiquidity = () => {
     () => swapRouter.getLPTokens(chain, network, address),
     [address, network, refreshCount]
   );
-
   return (
     <>
       <HeaderBetween path={NEO_ROUTES.SWAP_PATH} title={"Withdraw liquidity"} />
