@@ -6,25 +6,16 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { numberTrim } from "../../../../../packages/neo/utils";
 import { IFarmPair } from "../../../../../common/routers/farm/interfaces";
 import { NEP_CONTRACT_HASH } from "../../../../../consts/contracts";
-import { getLPEstimate } from "../../../../../packages/polygon/contracts/swap";
 
 interface IDisplayAPRProps {
   chain: CHAINS;
   network: INetworkType;
   pair: IFarmPair;
-  // prices: IPrices;
-  // nepPrice: number;
 }
 
 const ONE_YEAR_IN_SECONDS = 31536000;
 
-const DisplayAPR = ({
-  chain,
-  network,
-  // prices,
-  pair
-}: // nepPrice
-IDisplayAPRProps) => {
+const DisplayAPR = ({ chain, network, pair }: IDisplayAPRProps) => {
   const {
     tokenA,
     tokenB,
@@ -68,14 +59,15 @@ IDisplayAPRProps) => {
             nepAddress,
             tokenA
           );
-          const estimated = getLPEstimate(1_00000000, r.reserveA, r.reserveB);
+          const estimated =
+            (1_00000000 * parseFloat(r.reserveB)) / parseFloat(r.reserveA);
 
           nepStaked =
             ((parseFloat(reserveA) * parseFloat(tokensStaked)) /
               parseFloat(shares)) *
             2;
 
-          nepStaked = nepStaked * (1_00000000 / parseFloat(estimated));
+          nepStaked = nepStaked * (1_00000000 / estimated);
         }
         if (hasBonusRewards) {
           const r = await swapRouter.getReserves(
@@ -84,12 +76,14 @@ IDisplayAPRProps) => {
             nepAddress,
             bonusToken
           );
-           const estimated = getLPEstimate(1_00000000, r.reserveA, r.reserveB);
 
-          let bonusRewards = parseFloat(bonusTokensPerSecond) * ONE_YEAR_IN_SECONDS;
+          const estimated =
+            (1_00000000 * parseFloat(r.reserveB)) / parseFloat(r.reserveA);
 
-          nepRewards = nepRewards + (bonusRewards * (1_00000000 / parseFloat(estimated)));
+          let bonusRewards =
+            parseFloat(bonusTokensPerSecond) * ONE_YEAR_IN_SECONDS;
 
+          nepRewards = nepRewards + bonusRewards * (1_00000000 / estimated);
         }
 
         setAPR((nepRewards / nepStaked) * 100);

@@ -45,3 +45,17 @@ export const getTokenByHash = (
     // return await globalRouter.fetchTokenInfo(chain, network, hash);
   }
 };
+
+export const getLPEstimate = (
+  amount: number,
+  reserveAmount: string,
+  opponentReserveAmount: string
+): string => {
+  console.log(amount);
+  console.log(reserveAmount);
+  console.log(opponentReserveAmount);
+  let estimated =
+    (amount * parseFloat(reserveAmount)) / parseFloat(opponentReserveAmount);
+
+  return estimated.toString();
+};

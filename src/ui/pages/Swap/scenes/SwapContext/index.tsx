@@ -23,7 +23,6 @@ import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import toast from "react-hot-toast";
-import { getLPEstimate } from "../../../../../packages/polygon/contracts/swap";
 import { getTokenByHash } from "../../../../../helpers";
 
 interface ISwapContext {

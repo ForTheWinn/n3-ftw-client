@@ -96,20 +96,6 @@ export const getTokenURI = async (
   };
 };
 
-export const getLPEstimate = (
-  amount: number,
-  reserveAmount: string,
-  opponentReserveAmount: string
-): string => {
-  console.log(amount)
-  console.log(reserveAmount);
-  console.log(opponentReserveAmount);
-  let estimated =
-    (amount * parseFloat(opponentReserveAmount)) / parseFloat(reserveAmount);
-    
-  return estimated.toString();
-};
-
 export const swap = (network: INetworkType, args: SwapArgs) => {
   const { tokenA, tokenB, amountIn, amountOut, isReverse } = args;
   return prepareWriteContract({
