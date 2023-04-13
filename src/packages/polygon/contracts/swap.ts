@@ -27,12 +27,17 @@ export const getReserves = async (
     functionName: "getReserves",
     args: [tokenA, tokenB]
   });
+  console.log(res);
   // EVM swap doesn't change token order in the contract so we need to check its order by token hash
   return {
     reserveA:
-      res.tokenA === tokenA ? res.amountA.toString() : res.amountB.toString(),
+      res.tokenA.toLowerCase() === tokenA
+        ? res.amountA.toString()
+        : res.amountB.toString(),
     reserveB:
-      res.tokenB === tokenB ? res.amountB.toString() : res.amountA.toString(),
+      res.tokenB.toLowerCase() === tokenB
+        ? res.amountB.toString()
+        : res.amountA.toString(),
     shares: res.shares.toString()
   };
 };
