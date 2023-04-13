@@ -27,6 +27,8 @@ const SwapMain = () => {
     slippage,
     noLiquidity,
     priceImpact,
+    inputError,
+    reservesError,
     onAfterSwapCompleted,
     setAssetChangeModalActive,
     setSettingsModalActive,
@@ -93,6 +95,7 @@ const SwapMain = () => {
         isAmountALoading={isAmountALoading}
         isAmountBLoading={isAmountBLoading}
         noLiquidity={noLiquidity}
+        inputError={inputError}
         onSwitch={onInputSwitch}
         onAssetChange={setAssetChangeModalActive}
         setSwapInputChange={onSwapInputChange}

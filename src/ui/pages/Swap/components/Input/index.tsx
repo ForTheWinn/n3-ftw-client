@@ -3,7 +3,7 @@ import { FaAngleDown } from "react-icons/fa";
 import NumberFormat from "react-number-format";
 import { Avatar } from "antd";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
-
+import { FaInfoCircle } from "react-icons/fa";
 interface IInputProps {
   swapInitiated?: boolean;
   contractHash: string;
@@ -20,6 +20,7 @@ interface IInputProps {
   errorMessage?: string;
   decimals?: number;
   balanceOverflow?: boolean;
+  hasEstimateError?: boolean;
 }
 const Input = ({
   isDisable,
@@ -34,7 +35,8 @@ const Input = ({
   userBalance,
   errorMessage,
   decimals,
-  balanceOverflow
+  balanceOverflow,
+  hasEstimateError
 }: IInputProps) => {
   return (
     <div>
@@ -66,7 +68,11 @@ const Input = ({
           </div>
         </div>
         <div className="column">
-          <div className={`control ${isLoading ? "is-loading" : ""}`}>
+          <div
+            className={`control has-icons-right ${
+              isLoading ? "is-loading" : ""
+            }`}
+          >
             <NumberFormat
               disabled={isDisable}
               readOnly={isReadOnly}
@@ -87,6 +93,14 @@ const Input = ({
               suffix={` ${symbol ? symbol : ""}`}
               allowLeadingZeros={false}
             />
+            {hasEstimateError ? (
+              <span className="icon is-small is-right">
+                <FaInfoCircle className="has-text-danger" size={"12"} />
+              </span>
+            ) : (
+              <></>
+            )}
+
             <div style={{ position: "absolute", width: "100%" }}>
               {errorMessage ? (
                 <p className="help is-danger has-text-right">{errorMessage}</p>

@@ -14,6 +14,7 @@ interface ISwapInputsProps {
   isAmountALoading: boolean;
   isAmountBLoading: boolean;
   noLiquidity?: boolean;
+  inputError?: string;
   onAssetChange: (type: "A" | "B") => void;
   onSwitch: () => void;
   setSwapInputChange: (val: ISwapInputState) => void;
@@ -29,26 +30,44 @@ const SwapInputs = ({
   isAmountALoading,
   isAmountBLoading,
   noLiquidity,
+  inputError,
   onSwitch,
   setSwapInputChange,
-  onAssetChange,
+  onAssetChange
 }: ISwapInputsProps) => {
+  const amountAOverflow = !!(
+    swapInput &&
+    swapInput.type === "A" &&
+    amountA &&
+    balances &&
+    amountA > parseFloat(balances.amountA)
+  );
 
-  const amountAOverflow =
-    !!(
-      swapInput &&
-      swapInput.type === "A" &&
-      amountA &&
-      balances &&
-      amountA > parseFloat(balances.amountA)
-    ) ||
-    !!(
-      swapInput &&
-      swapInput.type === "B" &&
-      amountA &&
-      balances &&
-      amountA > parseFloat(balances.amountA)
-    );
+  // ||
+  // !!(
+  //   swapInput &&
+  //   swapInput.type === "B" &&
+  //   amountA &&
+  //   balances &&
+  //   amountA > parseFloat(balances.amountA)
+  // );
+
+  const amountBOverflow = !!(
+    swapInput &&
+    swapInput.type === "B" &&
+    amountB &&
+    balances &&
+    amountB > parseFloat(balances.amountB)
+  );
+
+  // ||
+  // !!(
+  //   swapInput &&
+  //   swapInput.type === "B" &&
+  //   amountB &&
+  //   balances &&
+  //   amountB > parseFloat(balances.amountB)
+  // );
 
   return (
     <div className="pb-2">
@@ -63,13 +82,16 @@ const SwapInputs = ({
         setValue={(value) => {
           setSwapInputChange({
             type: "A",
-            value,
+            value
           });
         }}
         decimals={tokenA ? tokenA.decimals : 0}
         userBalance={balances ? parseFloat(balances.amountA) : undefined}
         isLoading={isAmountALoading}
         balanceOverflow={amountAOverflow}
+        hasEstimateError={
+          inputError && swapInput && swapInput.type === "A" ? true : false
+        }
       />
       <div className="pt-5 pb-5">
         <button onClick={onSwitch} className="button is-white is-fullwidth">
@@ -89,13 +111,16 @@ const SwapInputs = ({
         setValue={(value) => {
           setSwapInputChange({
             type: "B",
-            value,
+            value
           });
         }}
         decimals={tokenB ? tokenB.decimals : 0}
         userBalance={balances ? parseFloat(balances.amountB) : undefined}
         isLoading={isAmountBLoading}
-        // balanceOverflow={amountBOverflow}
+        balanceOverflow={amountBOverflow}
+        hasEstimateError={
+          inputError && swapInput && swapInput.type === "B" ? true : false
+        }
       />
     </div>
   );

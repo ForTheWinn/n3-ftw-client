@@ -40,6 +40,8 @@ interface ISwapContext {
   slippage: number;
   noLiquidity: boolean;
   priceImpact: number;
+  inputError?: string | undefined;
+  reservesError?: string | undefined;
   setTokenA: (token: ITokenState | undefined) => void;
   setTokenB: (token: ITokenState | undefined) => void;
   setAmountA: (amount: number | undefined) => void;
@@ -100,7 +102,8 @@ export const SwapContextProvider = (props: {
     "A" | "B" | undefined
   >();
 
-  const [error, setError] = useState<string | undefined>();
+  const [reservesError, setReservesError] = useState<string | undefined>();
+  const [inputError, setInputError] = useState<string | undefined>();
 
   const onSwapInputChange = (val: ISwapInputState) => {
     if (val.type === "A") {
@@ -145,7 +148,7 @@ export const SwapContextProvider = (props: {
 
   useEffect(() => {
     const load = async (_tokenA: ITokenState, _tokenB: ITokenState) => {
-      setError(undefined);
+      setReservesError(undefined);
       try {
         const res = await swapRouter.getReserves(
           chain,
@@ -153,6 +156,8 @@ export const SwapContextProvider = (props: {
           _tokenA.hash,
           _tokenB.hash
         );
+
+        console.log(res)
         setReserve(res);
 
         let _address =
@@ -178,7 +183,7 @@ export const SwapContextProvider = (props: {
           `/#${location.pathname}?tokenA=${_tokenA.hash}&tokenB=${_tokenB.hash}`
         );
       } catch (e) {
-        setError("Failed to fetch reserves.");
+        setReservesError("Failed to fetch reserves.");
         console.error(e);
       }
     };
@@ -190,17 +195,16 @@ export const SwapContextProvider = (props: {
   useEffect(() => {
     if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
       const delayDebounceFn = setTimeout(async () => {
-        setError(undefined);
+        setInputError(undefined);
         if (swapInput.type === "A") {
           setAmountBLoading(true);
         } else {
           setAmountALoading(true);
         }
 
-        let estimated;
-
         try {
           if (swapInput.value) {
+            let estimated;
             if (props.type === "swap") {
               const args = {
                 tokenA: tokenA.hash,
@@ -234,20 +238,22 @@ export const SwapContextProvider = (props: {
                   .toString();
               }
             }
+
+            if (swapInput.type === "A") {
+              estimated = ethers.utils.formatUnits(estimated, tokenB.decimals);
+              setAmountBLoading(false);
+              setAmountB(+estimated);
+            } else {
+              estimated = ethers.utils.formatUnits(estimated, tokenA.decimals);
+              setAmountALoading(false);
+              setAmountA(+estimated);
+            }
           }
         } catch (e: any) {
           console.error(e);
-          setError("Failed to fetch swap estimate. Check your inputs.");
-        }
-
-        if (swapInput.type === "A") {
-          estimated = ethers.utils.formatUnits(estimated, tokenB.decimals);
-          setAmountBLoading(false);
-          setAmountB(+estimated);
-        } else {
-          estimated = ethers.utils.formatUnits(estimated, tokenA.decimals);
+          setInputError("Failed to fetch estimate. Check your inputs.");
           setAmountALoading(false);
-          setAmountA(+estimated);
+          setAmountBLoading(false);
         }
       }, 800);
 
@@ -299,6 +305,8 @@ export const SwapContextProvider = (props: {
     slippage,
     noLiquidity,
     priceImpact,
+    inputError,
+    reservesError,
     setTokenA,
     setTokenB,
     setAmountA,
@@ -316,7 +324,6 @@ export const SwapContextProvider = (props: {
     <SwapContext.Provider value={contextValue}>
       <>
         {props.children}
-
         {isAssetChangeModalActive && (
           <TokenList
             chain={chain}
