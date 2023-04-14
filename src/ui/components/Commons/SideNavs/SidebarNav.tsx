@@ -16,8 +16,9 @@ const SidebarNav = () => {
         <p className="menu-label">Menu</p>
         <ul className="menu-list">
           {HEADER_ROUTES.map((route, i) => {
-            if (!route.chain.includes(chain)) return false;
-            if (!route.network.includes(network)) return false;
+           const _chain = route.chain[chain];
+           if (!_chain) return false;
+           if (!_chain.includes(network)) return false;
             return (
               <li key={`${route.label}${i}`}>
                 {route.category.length > 0 ? (
@@ -32,8 +33,9 @@ const SidebarNav = () => {
                     </NavLink>
                     <ul>
                       {route.category.map((item) => {
-                        if (!item.chain.includes(chain)) return false;
-                        if (!item.network.includes(network)) return false;
+                        const _chain = item.chain[chain];
+                        if (!_chain) return false;
+                        if (!_chain.includes(network)) return false;
                         return (
                           <li key={item.label}>
                             <NavLink

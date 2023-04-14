@@ -8,6 +8,7 @@ import RarityList from "./RarityList";
 import { IBoy } from "../../../packages/neo/contracts/ftw/boyz/interface";
 import PropertiesModal from "./PropertiesModal";
 import { useApp } from "../../../common/hooks/use-app";
+import { useResponsive } from "../../../common/hooks/use-responsive";
 
 const Boyz = () => {
   const [isFilterActive, setFilterActive] = useState(false);
@@ -22,7 +23,7 @@ const Boyz = () => {
     accessory: [],
     head: [],
     mouth: [],
-    background: ["Mint"]
+    background: []
   });
   const { network } = useApp();
   const [currentCategory, setCurrentCategory] = useState<string>("clothing");
@@ -54,7 +55,7 @@ const Boyz = () => {
     }
     fetchContractStatus();
   }, [network, filter]);
-
+  const { isDesktop } = useResponsive();
   return (
     <div>
       <Banner
@@ -72,7 +73,7 @@ const Boyz = () => {
                 <img
                   className="is-clickable"
                   onClick={() => setDetailModalActive(boy)}
-                  width="10%"
+                  width={isDesktop ? "5%" : "10%"}
                   src={boy.image}
                   alt={boy.no}
                 />

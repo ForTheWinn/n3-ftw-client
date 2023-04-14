@@ -11,8 +11,9 @@ export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
   return (
     <>
       {HEADER_ROUTES.map((route, i) => {
-        if (!route.chain.includes(chain)) return false;
-        if (!route.network.includes(network)) return false;
+        const _chain = route.chain[chain];
+        if (!_chain) return false;
+        if (!_chain.includes(network)) return false;
         if (route.category.length > 0) {
           return (
             <div
@@ -22,8 +23,9 @@ export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
               <div className="navbar-link">{route.label}</div>
               <div className="navbar-dropdown is-boxed">
                 {route.category.map((item, index) => {
-                  if (!item.chain.includes(chain)) return false;
-                  if (!item.network.includes(network)) return false;
+                   const _chain = item.chain[chain];
+                   if (!_chain) return false;
+                   if (!_chain.includes(network)) return false;
                   return (
                     <NavLink
                       key={`category-${item.label}-${item.label}${index}`}
