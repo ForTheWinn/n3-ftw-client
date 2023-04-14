@@ -10,9 +10,7 @@ export const CONFIGS = {
     label: "Neo",
     color: "primary",
     icon: "/symbols/neo.svg"
-  },
-
-  
+  },  
   [POLYGON_CHAIN]: {
     label: "Polygon",
     color: "info",

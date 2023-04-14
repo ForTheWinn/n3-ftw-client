@@ -1,3 +1,5 @@
+import FarmV2 from "../ui/pages/FarmV2";
+import Swap from "../ui/pages/Swap";
 import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
 import { MAINNET, TESTNET } from "./global";
 
@@ -94,7 +96,7 @@ const SWAP_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET]
   },
-  category: []
+  category: [],
 };
 
 const FARM_V2_PAGE_ROUTE = {
@@ -104,7 +106,7 @@ const FARM_V2_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET]
   },
-  category: []
+  category: [],
 };
 
 const LOCKER_PAGE_ROUTE = {
@@ -184,7 +186,7 @@ export const LOCKER_FINDER_PAGE_ROUTE = {
   label: "Locker Value Finder",
   path: LOCKER_SEARCH_PATH,
   chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [NEO_CHAIN]: [TESTNET, MAINNET]
   },
   category: []
 };

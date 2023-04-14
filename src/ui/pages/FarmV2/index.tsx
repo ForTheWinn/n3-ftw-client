@@ -7,6 +7,7 @@ import MyPositions from "./scenes/MyPositions";
 import CheckMarketStatus from "./components/CheckMarketStatus";
 import { useApp } from "../../../common/hooks/use-app";
 import { NEO_ROUTES } from "../../../consts";
+import ClaimRewards from "./scenes/ClaimRewards";
 
 const Farm = () => {
   const { chain, network } = useApp();
@@ -37,9 +38,9 @@ const Farm = () => {
                 />
               </div>
             </div>
-            {/* <div className="column is-4">
-              <ClaimRewards chain={chain} prices={data} />
-            </div> */}
+            <div className="column is-4">
+              <ClaimRewards chain={chain} />
+            </div>
           </div>
         </div>
       </div>
