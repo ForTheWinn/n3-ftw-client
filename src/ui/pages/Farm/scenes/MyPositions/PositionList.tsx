@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
-import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 import { RestAPI } from "../../../../../packages/neo/api";
 import PositionCard from "./PositionCard";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";

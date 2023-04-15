@@ -20,9 +20,7 @@ import {
   WATT_SCRIPT_HASH
 } from "./neo-contracts";
 
-
 import { MAINNET } from "../../../consts/global";
-
 
 export const MAINNET_TOKEN_LIST = {
   [NEP_SCRIPT_HASH[MAINNET]]: {
@@ -105,8 +103,8 @@ export const MAINNET_TOKEN_LIST = {
   },
   [NUDES_SCRIPT_HASH]: {
     hash: NUDES_SCRIPT_HASH,
-    symbol: "NUDES",
-    icon: "/symbols/nudes.png",
+    symbol: "TIPS",
+    icon: "/symbols/tips.svg",
     decimals: 8
   },
   [TED_SCRIPT_HASH]: {

@@ -29,7 +29,7 @@ const Banner = () => {
               </Link>
               <Link
                 to={NEO_ROUTES.SMITH_CREATE_NEP11_PATH}
-                className="button is-info is-light"
+                className="button is-success is-light"
               >
                 NFT Contract
               </Link>

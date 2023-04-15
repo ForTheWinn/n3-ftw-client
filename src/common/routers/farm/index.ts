@@ -4,9 +4,7 @@ import { RestAPI } from "../../../packages/neo/api";
 import { IPrices } from "../../../packages/neo/api/interfaces";
 import { SwapContract } from "../../../packages/neo/contracts";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
-import {
-  IClaimableRewards,
-} from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
+import { IClaimableRewards } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
 import {

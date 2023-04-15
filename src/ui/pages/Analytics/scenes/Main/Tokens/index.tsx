@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import TokenItem from "./TokenItem";
 import ModalCard from "../../../../../components/Modal";
 import TokenDetail from "../../TokenDetail";
 import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
+import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 
 const TokensAnalytics = () => {
   const { chain, network } = useApp();
-  const [data, setData] = useState<any[]>([]);
-  const [isLoading, setLoading] = useState(true);
   const [isModalActive, setModalActive] = useState("");
   const handleTokenClick = (id: string) => {
     setModalActive(id);
@@ -25,24 +24,13 @@ const TokensAnalytics = () => {
     setModalActive("");
   };
 
-  useEffect(() => {
-    async function fetch() {
-      try {
-        setLoading(true);
-        const res = await new RestAPI(network).getTokens();
-        setData(res);
-        setLoading(false);
-      } catch (e: any) {
-        setLoading(false);
-        // setError(e.message);
-      }
-    }
-    fetch();
+  const { data } = useOnChainData(() => {
+    return new RestAPI(network).getTokens();
   }, []);
   return (
     <div>
       <div className="table-container">
-        <table className="table is-fullwidth">
+        <table className="table is-fullwidth is-narrow">
           <thead>
             <tr>
               <th>Name</th>
@@ -55,7 +43,7 @@ const TokensAnalytics = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((token) => (
+            {data && data.map((token) => (
               <TokenItem
                 chain={chain}
                 onClick={handleTokenClick}

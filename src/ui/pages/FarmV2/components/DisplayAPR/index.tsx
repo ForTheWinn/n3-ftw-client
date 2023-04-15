@@ -94,7 +94,7 @@ const DisplayAPR = ({ chain, network, pair }: IDisplayAPRProps) => {
     checkTxid();
   }, []);
 
-  return <>{numberTrim(APR)}%</>;
+  return <span className="has-text-success-dark">{numberTrim(APR)}%</span>;
 };
 
 export default DisplayAPR;

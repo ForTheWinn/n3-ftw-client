@@ -5,6 +5,7 @@ import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import { IPrices } from "../../../packages/neo/api/interfaces";
 import { RestAPI } from "../../../packages/neo/api";
 import { MAINNET } from "../../../consts/global";
+import { base64ToString } from "../../../packages/neo/utils";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -23,7 +24,9 @@ export const waitTransactionUntilSubmmited = async (
   }
 };
 
-export const getPrices = async (chain: CHAINS): Promise<IPrices | undefined> => {
+export const getPrices = async (
+  chain: CHAINS
+): Promise<IPrices | undefined> => {
   switch (chain) {
     case NEO_CHAIN:
       return new RestAPI(MAINNET).getPrices();
@@ -63,7 +66,7 @@ export const fetchTokenInfo = async (
       const res = await Network.read(network, scripts);
       return {
         hash,
-        symbol: res.stack[0].value as string,
+        symbol: base64ToString(res.stack[0].value as string),
         decimals: res.stack[1].value as number,
         icon: ""
       };

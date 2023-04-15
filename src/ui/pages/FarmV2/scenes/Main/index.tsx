@@ -9,6 +9,7 @@ import { farmRouter } from "../../../../../common/routers";
 import { NEO_ROUTES } from "../../../../../consts";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { IFarmPair } from "../../../../../common/routers/farm/interfaces";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IStakingMainProps {
   chain: CHAINS;
@@ -26,17 +27,16 @@ const TableHeader = () => (
   </thead>
 );
 
-const StakingMain = ({
-  chain,
-  network,
-}: IStakingMainProps) => {
+const StakingMain = () => {
+  const {chain, network} = useApp();
   const [refresh, setRefresh] = useState(0);
   const handleRefresh = () => setRefresh(refresh + 1);
 
   const { data, error } = useOnChainData(
     () => farmRouter.getPoolList(chain, network),
-    [refresh, network]
+    [chain, refresh, network]
   );
+  
 
   return (
     <div>

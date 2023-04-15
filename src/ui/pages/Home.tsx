@@ -3,6 +3,8 @@ import Wave from "react-wavify";
 import { Link } from "react-router-dom";
 import SocialLinkGroup from "../components/Commons/SocialLinkGroup";
 import { NEO_ROUTES } from "../../consts";
+import { useApp } from "../../common/hooks/use-app";
+import { NEO_CHAIN } from "../../consts/chains";
 
 const CARDS: {
   title: string;
@@ -53,6 +55,7 @@ const Home = () => {
   useEffect(() => {
     document.title = "FTW";
   }, []);
+  const { chain } = useApp();
   return (
     <>
       <section className="hero is-white is-fullheight-with-navbar is-relative">
@@ -62,37 +65,29 @@ const Home = () => {
               <h1 className="title is-spaced is-size-4-mobile">
                 Forthewin Network
               </h1>
-              {/*<p className="subtitle is-size-6-mobile">The hub of NEP-17</p>*/}
-              <p className="subtitle is-size-6-mobile">
-                All-in-one solution for crypto startups
+              <p className="heading is-size-6-mobile">
+                DeFi / Web3 Tools / Cool NFTs
               </p>
-            </div>
-
-            <div className="columns is-multiline is-mobile">
-              {CARDS.map((card) => {
-                return (
-                  <div
-                    key={card.title}
-                    className="column is-2-desktop is-4-mobile"
-                  >
-                    <div className="is-shadowless">
-                      <Link to={card.link}>
-                        <figure
-                          className="image is-128x128-desktop"
-                          style={{ margin: "auto" }}
-                        >
-                          <img src={card.img} />
-                        </figure>
-                      </Link>
-                      <p className="is-size-6 is-size-7-mobile has-text-centered">
-                        <Link className={"has-text-dark"} to={card.link}>
-                          {card.title}
-                        </Link>
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+              <p>-</p>
+              {chain === NEO_CHAIN ? (
+                <div className="mt-3">
+                  <img alt="Neo Boyz #1065" width={150} src="/boyz/1065.png" />
+                  <br />
+                  <p className="heading is-size-6-mobile">Neo Boyz #1065</p>
+                </div>
+              ) : (
+                <div>
+                  <img
+                    alt="Matic Boyz"
+                    width={150}
+                    src="/boyz/sample-matic-boy.png"
+                  />
+                  <br />
+                  <p className="heading is-size-6-mobile">
+                    Matic Boyz - Coming soon
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

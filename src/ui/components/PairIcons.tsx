@@ -22,8 +22,8 @@ const PairIcons = ({ network, tokenA, tokenB, chain }: IPairIconsProps) => {
 
   return (
     <Space>
-      <Avatar src={token1} />
-      <Avatar src={token2} />
+      <Avatar size={"small"} src={token1} />
+      <Avatar size={"small"} src={token2} />
     </Space>
   );
 };

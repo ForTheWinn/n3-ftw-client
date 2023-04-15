@@ -5,11 +5,10 @@ import ModalCard from "../../../../../components/Modal";
 import PairDetail from "../../PairDetail";
 import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
+import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 
 const Pairs = () => {
   const { chain, network } = useApp();
-  const [data, setData] = useState<any[]>([]);
-  const [isLoading, setLoading] = useState(true);
   const [isModalActive, setModalActive] = useState("");
   const handleTokenClick = (id: string) => {
     setModalActive(id);
@@ -24,24 +23,14 @@ const Pairs = () => {
     window.history.replaceState(null, "", `#${NEO_ROUTES.ANALYTICS_PATH}`);
     setModalActive("");
   };
-  useEffect(() => {
-    async function fetch() {
-      try {
-        setLoading(true);
-        const res = await new RestAPI(network).getPairs();
-        setData(res);
-        setLoading(false);
-      } catch (e: any) {
-        setLoading(false);
-        // setError(e.message);
-      }
-    }
-    fetch();
+
+  const { data } = useOnChainData(() => {
+    return new RestAPI(network).getPairs();
   }, []);
   return (
     <div>
       <div className="table-container">
-        <table className="table is-fullwidth">
+        <table className="table is-fullwidth is-narrow">
           <thead>
             <tr>
               <th>Name</th>
@@ -52,7 +41,7 @@ const Pairs = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((pair) => (
+            {data && data.map((pair) => (
               <PairItem
                 onClick={() => handleTokenClick(pair.id)}
                 key={pair.id}

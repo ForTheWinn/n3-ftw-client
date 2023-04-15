@@ -8,26 +8,33 @@ import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contract
 import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 
 import { Radio, Divider } from "antd";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { globalRouter } from "../../../../../common/routers";
+import { CHAINS } from "../../../../../consts";
 
 interface IClaimListProps {
   bonus: number;
+  chain: CHAINS.CHAINS;
   network: INetworkType;
   isClaimNode: boolean;
   handleToggle: (item: any) => void;
   selectedItems: any[];
-  prices?: IPrices;
   rewards: IClaimableRewards[];
 }
 const ClaimList = ({
   bonus,
+  chain,
   network,
   isClaimNode,
   handleToggle,
   selectedItems,
-  prices,
   rewards
 }: IClaimListProps) => {
   const [rewardDisplayType, setRewardDisplayType] = useState<string>(REALTIME);
+  const { data, error } = useOnChainData(() => {
+    return globalRouter.getPrices(chain);
+  }, [chain]);
+  const prices: IPrices = data;
   return (
     <>
       {rewards.map((item: IClaimableRewards, i) => {
@@ -70,7 +77,7 @@ const ClaimList = ({
                           tokensStaked={item.tokensStaked}
                           share={item.share}
                           pricePerToken={
-                            prices ? prices["0x" + NEP_SCRIPT_HASH[network]] : 0
+                            prices ? prices[NEP_SCRIPT_HASH[network]] : 0
                           }
                         />
                       ) : (
@@ -83,7 +90,7 @@ const ClaimList = ({
                           tokensStaked={item.tokensStaked}
                           share={item.share}
                           pricePerToken={
-                            prices ? prices["0x" + NEP_SCRIPT_HASH[network]] : 0
+                            prices ? prices[+NEP_SCRIPT_HASH[network]] : 0
                           }
                         />
                       )}
@@ -101,7 +108,7 @@ const ClaimList = ({
                               tokensStaked={item.tokensStaked}
                               share={item.share}
                               pricePerToken={
-                                prices ? prices["0x" + item.bonusTokenHash] : 0
+                                prices ? prices[item.bonusTokenHash] : 0
                               }
                             />
                           ) : (
@@ -114,7 +121,7 @@ const ClaimList = ({
                               tokensStaked={item.tokensStaked}
                               share={item.share}
                               pricePerToken={
-                                prices ? prices["0x" + item.bonusTokenHash] : 0
+                                prices ? prices[item.bonusTokenHash] : 0
                               }
                             />
                           )}

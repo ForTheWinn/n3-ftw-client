@@ -157,7 +157,6 @@ export const SwapContextProvider = (props: {
           _tokenB.hash
         );
 
-        console.log(res)
         setReserve(res);
 
         let _address =

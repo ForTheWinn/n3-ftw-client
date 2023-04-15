@@ -6,51 +6,22 @@ import SwapHistory from "./SwapHistory";
 import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 import { TOKEN_LIST } from "../../../../../consts/tokens";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 
 interface ITokenDetailProps {
   tokenId: string;
 }
 const TokenDetail = ({ tokenId }: ITokenDetailProps) => {
   const { network, chain } = useApp();
-  const [data, setData] = useState<any>();
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function fetch() {
-      setError("");
-      setLoading(true);
-      try {
-        const res = await new RestAPI(network).getToken(tokenId);
-        setData(res);
-        setLoading(false);
-      } catch (e: any) {
-        setError(e.message);
-        setLoading(false);
-      }
-    }
-    fetch();
+  const { data } = useOnChainData(() => {
+    return new RestAPI(network).getToken(tokenId);
   }, [network]);
+
   if (!data) return <div></div>;
-  const hash = tokenId.substring(2);
-  const logo = TOKEN_LIST[chain][MAINNET][hash]
-    ? TOKEN_LIST[chain][MAINNET][hash].icon
-    : UNKNOWN_TOKEN_IMAGE;
+ 
   return (
     <div>
-      <div className="box is-shadowless">
-        <div className="level is-mobile">
-          <div className="level-left">
-            <div className="level-item">
-              <img width={"45px"} src={logo} alt={`${data.name} logo`} />
-            </div>
-            <div className="level-item">
-              <h1 className="title is-5 is-marginless">{data.name}</h1>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="columns is-multiline">
         <div className="column is-6">
           <div className="box is-shadowless">

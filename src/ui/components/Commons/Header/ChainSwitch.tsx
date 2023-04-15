@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { CHAINS } from "../../../../consts";
 import { useApp } from "../../../../common/hooks/use-app";
+import Avatar from "antd/es/avatar/avatar";
+import { Space, Switch } from "antd";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../../../consts/chains";
 
 const ChainSwitch = () => {
   const [isActive, setActive] = useState(false);
@@ -30,10 +33,17 @@ const ChainSwitch = () => {
             return (
               <div key={`chain${v}`} className="dropdown-item">
                 <button
-                  className={`button is-fullwidth is-small is-rounded is-${CHAINS.CONFIGS[v].color}`}
+                  className={`button is-fullwidth is-small is-${CHAINS.CONFIGS[v].color}`}
                   onClick={() => handleSwitch(v as CHAINS.CHAINS)}
                 >
-                  Switch to {CHAINS.CONFIGS[v].label}
+                  <Space>
+                    <Avatar
+                      style={{ background: "white" }}
+                      size="small"
+                      src={CHAINS.CONFIGS[v].icon}
+                    />
+                    <span>{CHAINS.CONFIGS[v].label}</span>
+                  </Space>
                 </button>
               </div>
             );

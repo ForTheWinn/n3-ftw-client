@@ -51,9 +51,6 @@ export const getLPEstimate = (
   reserveAmount: string,
   opponentReserveAmount: string
 ): string => {
-  console.log(amount);
-  console.log(reserveAmount);
-  console.log(opponentReserveAmount);
   let estimated =
     (amount * parseFloat(reserveAmount)) / parseFloat(opponentReserveAmount);
 

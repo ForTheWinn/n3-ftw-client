@@ -69,7 +69,6 @@ const Header = () => {
           <div className="navbar-item">
             <ChainSwitch />
           </div>
-          {/*<PendingTransaction />*/}
           <div className="navbar-item">
             <div className="buttons">
               <DisplayConnectedWallets />

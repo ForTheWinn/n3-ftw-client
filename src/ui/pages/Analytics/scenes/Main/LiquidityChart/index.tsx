@@ -13,6 +13,7 @@ import {
 import { Line } from "react-chartjs-2";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import { useApp } from "../../../../../../common/hooks/use-app";
+import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 // import Spinner from "../Spinner";
 
 ChartJS.register(
@@ -86,21 +87,9 @@ interface ILiquidityChartProps {
 }
 const LiquidityChart = ({ id, days }: ILiquidityChartProps) => {
   const { network } = useApp();
-  const [data, setData] = useState<any>();
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    async function fetch() {
-      try {
-        setLoading(true);
-        const res = await new RestAPI(network).getLiquidity(id, days);
-        setData(res);
-        setLoading(false);
-      } catch (e: any) {
-        setLoading(false);
-        // setError(e.message);
-      }
-    }
-    fetch();
+
+  const { data } = useOnChainData(() => {
+    return new RestAPI(network).getLiquidity(id, days);
   }, [network]);
 
   const dataset = useMemo(() => {

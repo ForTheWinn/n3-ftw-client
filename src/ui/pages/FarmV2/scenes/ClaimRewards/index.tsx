@@ -3,11 +3,10 @@ import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ClaimModal from "./ClaimModal";
 import { useApp } from "../../../../../common/hooks/use-app";
 import ClaimList from "./ClaimList";
-import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import BoyzStaking from "../../components/BoyzStaking";
 import { Link } from "react-router-dom";
 import { FARM_PATH } from "../../../../../consts/neoRoutes";
-import { CHAINS, NEO_CHAIN } from "../../../../../consts/chains";
+import { NEO_CHAIN } from "../../../../../consts/chains";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
@@ -16,13 +15,14 @@ import { NEP_LOGO } from "../../../../../consts/global";
 import { Avatar } from "antd";
 import { WENT_WRONG } from "../../../../../consts/messages";
 
-interface IClaimRewardsProps {
-  chain: CHAINS;
-  prices?: IPrices;
-}
-const ClaimRewards = ({ chain, prices }: IClaimRewardsProps) => {
-  const { toggleWalletSidebar, increaseRefreshCount, setTxid, refreshCount } =
-    useApp();
+const ClaimRewards = () => {
+  const {
+    chain,
+    toggleWalletSidebar,
+    increaseRefreshCount,
+    setTxid,
+    refreshCount
+  } = useApp();
   const { network } = useApp();
   const { connectedWallet } = useNeoWallets();
   const { isConnected, address } = useWalletRouter(chain);
@@ -56,7 +56,7 @@ const ClaimRewards = ({ chain, prices }: IClaimRewardsProps) => {
 
   const { data, error } = useOnChainData(
     () => farmRouter.getClaimable(chain, network, address),
-    [refreshCount]
+    [chain, refreshCount, address]
   );
 
   if (data) {
@@ -109,9 +109,9 @@ const ClaimRewards = ({ chain, prices }: IClaimRewardsProps) => {
 
         <div className="mb-3">
           <ClaimList
+            chain={chain}
             bonus={bonus}
             rewards={rewards}
-            prices={prices}
             handleToggle={(item) => {}}
             isClaimNode={false}
             selectedItems={[]}
@@ -138,8 +138,8 @@ const ClaimRewards = ({ chain, prices }: IClaimRewardsProps) => {
 
       {isClaimModalOpen && (
         <ClaimModal
+          chain={chain}
           bonus={bonus}
-          prices={prices}
           network={network}
           rewards={rewards}
           onClose={() => setClaimModalOpen(false)}

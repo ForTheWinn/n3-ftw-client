@@ -31,7 +31,7 @@ const TokenList = ({
   return (
     <Modal onClose={onClose}>
       {isCustomInputMode ? (
-        <ContractSearchInput onAssetClick={onAssetClick} />
+        <ContractSearchInput chain={chain} network={network} onAssetClick={onAssetClick} />
       ) : (
         <>
           <div className="columns is-multiline is-mobile">

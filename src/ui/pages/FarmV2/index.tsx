@@ -5,12 +5,10 @@ import StakingMain from "./scenes/Main";
 import Stake from "./scenes/Stake";
 import MyPositions from "./scenes/MyPositions";
 import CheckMarketStatus from "./components/CheckMarketStatus";
-import { useApp } from "../../../common/hooks/use-app";
 import { NEO_ROUTES } from "../../../consts";
 import ClaimRewards from "./scenes/ClaimRewards";
 
 const Farm = () => {
-  const { chain, network } = useApp();
 
   return (
     <PageLayout>
@@ -23,23 +21,21 @@ const Farm = () => {
                 <Route
                   exact={true}
                   path={NEO_ROUTES.FARM_V2_PATH}
-                  component={() => (
-                    <StakingMain chain={chain} network={network} />
-                  )}
+                  component={StakingMain}
                 />
                 <Route
                   exact={true}
                   path={NEO_ROUTES.FARM_V2_STAKE_PATH}
-                  component={() => <Stake chain={chain} network={network} />}
+                  component={Stake}
                 />
                 <Route
                   path={NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}
-                  component={() => <MyPositions chain={chain} />}
+                  component={MyPositions}
                 />
               </div>
             </div>
             <div className="column is-4">
-              <ClaimRewards chain={chain} />
+              <ClaimRewards />
             </div>
           </div>
         </div>

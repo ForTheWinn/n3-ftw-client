@@ -14,6 +14,7 @@ import { Line } from "react-chartjs-2";
 import { RestAPI } from "../../../../../packages/neo/api";
 import { numberTrim } from "../../../../../packages/neo/utils";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 
 ChartJS.register(
   CategoryScale,
@@ -66,28 +67,8 @@ interface ITokenPriceChartProps {
 }
 const TokenPriceChart = ({ tokenId, days }: ITokenPriceChartProps) => {
   const { network } = useApp();
-  const [data, setData] = useState<any>();
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    async function fetch() {
-      try {
-        setLoading(true);
-        const res = await new RestAPI(network).getNumbersWithRange(
-          tokenId,
-          days
-        );
-        // const lastPrice = await new RestAPI(network).getPrice(
-        //   tokenId
-        // );
-        setData(res);
-        setLoading(false);
-      } catch (e: any) {
-        console.error(e);
-        setLoading(false);
-        // setError(e.message);
-      }
-    }
-    fetch();
+  const { data } = useOnChainData(() => {
+    return new RestAPI(network).getNumbersWithRange(tokenId, days);
   }, [network]);
 
   const dataset = useMemo(() => {

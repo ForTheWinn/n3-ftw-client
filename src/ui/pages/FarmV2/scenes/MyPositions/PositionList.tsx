@@ -31,21 +31,19 @@ const PositionList = ({
         <div>
           {data.map((token: ISwapLPToken, i) => {
             return (
-              <>
-                <div className="media">
-                  <div className="media-content">
-                    <LPTokenCard {...token} />
-                  </div>
-                  <div className="media-right">
-                    <button
-                      onClick={() => onUnStake(token.tokenId)}
-                      className="button is-light is-small"
-                    >
-                      Withdraw
-                    </button>
-                  </div>
+              <div key={"farmv2-position" + i} className="media">
+                <div className="media-content">
+                  <LPTokenCard {...token} />
                 </div>
-              </>
+                <div className="media-right">
+                  <button
+                    onClick={() => onUnStake(token.tokenId)}
+                    className="button is-light is-small"
+                  >
+                    Withdraw
+                  </button>
+                </div>
+              </div>
             );
           })}
         </div>

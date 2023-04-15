@@ -10,12 +10,9 @@ import { farmRouter } from "../../../../../common/routers";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { NEO_ROUTES } from "../../../../../consts";
 
-interface IStakeProps {
-  chain: CHAINS;
-  network: INetworkType;
-}
-const Stake = ({ chain, network }: IStakeProps) => {
-  const { setTxid } = useApp();
+
+const Stake = () => {
+  const { setTxid, chain, network } = useApp();
   const { connectedWallet } = useNeoWallets();
   const { isConnected, address } = useWalletRouter(chain);
   const [refresh, setRefresh] = useState(0);

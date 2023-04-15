@@ -122,7 +122,6 @@ const Routes = () => {
       <>
         {pageRoutes.map((route) => {
           const _chain: any = route.chain[chain];
-          console.log(chain);
           return (
             <Route
               key={route.path}

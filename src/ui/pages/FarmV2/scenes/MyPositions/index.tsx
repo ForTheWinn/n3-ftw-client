@@ -4,16 +4,12 @@ import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
-import { CHAINS } from "../../../../../consts/chains";
 import { farmRouter } from "../../../../../common/routers";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { NEO_ROUTES } from "../../../../../consts";
 
-interface IMyPositionsProps {
-  chain: CHAINS;
-}
-const MyPositions = ({ chain }: IMyPositionsProps) => {
-  const { setTxid, network } = useApp();
+const MyPositions = () => {
+  const { setTxid, network, chain } = useApp();
   const { connectedWallet } = useNeoWallets();
   const { isConnected, address } = useWalletRouter(chain);
 

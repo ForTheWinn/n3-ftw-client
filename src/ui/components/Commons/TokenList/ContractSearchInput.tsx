@@ -4,14 +4,20 @@ import { FaAngleLeft } from "react-icons/fa";
 import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
 import { ethers } from "ethers";
 import { WENT_WRONG } from "../../../../consts/messages";
+import { globalRouter } from "../../../../common/routers";
+import { CHAINS } from "../../../../consts/chains";
+import { INetworkType } from "../../../../packages/neo/network";
 
 interface ContractSearchInputProps {
+  chain: CHAINS;
+  network: INetworkType;
   onAssetClick: (token: ITokenState) => void;
   filterDecimals?: boolean; // This to know use of swap or locker
 }
 const ContractSearchInput = ({
   onAssetClick,
-  filterDecimals
+  chain,
+  network
 }: ContractSearchInputProps) => {
   const [customContractHash, setContractHash] = useState("");
   const [contractInfo, setContractInfo] = useState<ITokenState | undefined>();
@@ -22,11 +28,13 @@ const ContractSearchInput = ({
 
     if (ethers.utils.isAddress(customContractHash)) {
       try {
-        const token = await fetchToken({
-          address: customContractHash as any
-        });
+        const token = await globalRouter.fetchTokenInfo(
+          chain,
+          network,
+          customContractHash
+        );
         setContractInfo({
-          hash: token.address,
+          hash: customContractHash,
           decimals: token.decimals,
           symbol: token.symbol,
           icon: ""
@@ -55,7 +63,7 @@ const ContractSearchInput = ({
           <div className="columns is-multiline">
             <div className="column is-12">
               <strong>Contract Hash</strong>
-              <p>0x{contractInfo.hash}</p>
+              <p>{contractInfo.hash}</p>
             </div>
             <div className="column is-6">
               <strong>Symbol</strong>
@@ -99,7 +107,7 @@ const ContractSearchInput = ({
         <>
           <h1 className="title is-5">Enter a contract hash</h1>
           <p className="subtitle is-7 has-text-grey">
-            Example: 0xef4073a0f2b305a38ec4050e4d3d28bc40ea63f5
+            Example: 0xf853a98ac55a756ae42379a312d55ddfdf7c8514
           </p>
           <hr />
           <div className="field">
