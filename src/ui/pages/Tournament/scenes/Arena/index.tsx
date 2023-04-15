@@ -4,8 +4,8 @@ import { ARENA_PATH } from "../../pageRoutes";
 import { Route, useLocation } from "react-router-dom";
 import Players from "./Players";
 import History from "./History";
-import { useWallet } from "../../../../../packages/provider";
 import { TournamentContract } from "../../../../../packages/neo/contracts/ftw/arena";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const Arena = (props) => {
   const location = useLocation();
@@ -19,7 +19,7 @@ const Arena = (props) => {
   }>();
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { network } = useWallet();
+  const { network } = useApp();
   useEffect(() => {
     async function fetchBetAmount() {
       setError("");

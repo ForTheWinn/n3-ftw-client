@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
-import { useWallet } from "../../../../../packages/provider";
 import DisplayNFT from "./DisplayNFT";
 import _ from "underscore";
-import { MAINNET } from "../../../../../packages/neo/consts";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { MAINNET } from "../../../../../consts/global";
+import { useApp } from "../../../../../common/hooks/use-app";
 interface ITokensProps {
   contractHash: string;
 }
 const Tokens = ({ contractHash }: ITokensProps) => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const { isLoaded, error, data } = useOnChainData(() => {
     return new SmithContract(network).totalSupply(contractHash);
   }, [network]);
@@ -49,7 +49,7 @@ const Tokens = ({ contractHash }: ITokensProps) => {
                     network === MAINNET
                       ? "explorer.onegate.space"
                       : "testmagnet.explorer.onegate.space"
-                  }/NFTtokeninfo/0x${contractHash}`}
+                  }/NFTtokeninfo/${contractHash}`}
                 >
                   <span className="icon">
                     <FaExternalLinkAlt />

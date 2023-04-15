@@ -1,13 +1,12 @@
-import { CONST } from "../../../index";
+import { GLOBAL } from "../../../../../consts";
+const { TESTNET, MAINNET } = GLOBAL;
 
 export const SMITH_SCRIPT_HASH = {
-  [CONST.PRIVATENET]: "f161ae138e0255b809612e4d26e540c94c83c0cc",
-  [CONST.TESTNET]: "adafc1daf7d3f3d9626c8cc3c24d1b94da0c295a",
-  [CONST.MAINNET]: "f860bbdcc5091a9ae7812b047fd325dfa7905ee1",
+  [TESTNET]: "0xadafc1daf7d3f3d9626c8cc3c24d1b94da0c295a",
+  [MAINNET]: "0xf860bbdcc5091a9ae7812b047fd325dfa7905ee1"
 };
 
 export const SMITH_NEP_FEE = {
-	[CONST.PRIVATENET]: 1000_00000000,
-	[CONST.TESTNET]: 1000_00000000,
-	[CONST.MAINNET]: 1000_00000000,
+  [TESTNET]: 1000_00000000,
+  [MAINNET]: 1000_00000000
 };

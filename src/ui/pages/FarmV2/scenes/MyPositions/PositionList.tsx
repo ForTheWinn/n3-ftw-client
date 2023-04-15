@@ -1,61 +1,49 @@
-import React, { useEffect, useState } from "react";
-import PositionCard from "./PositionCard";
+import React from "react";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
-import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
-import { RestAPI } from "../../../../../packages/neo/api";
+import { CHAINS } from "../../../../../consts/chains";
+import { farmRouter } from "../../../../../common/routers";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import LPTokenCard from "../../../../components/LPTokenCard";
+import { ISwapLPToken } from "../../../../../common/routers/swap/interfaces";
 
 interface IPositionListProps {
+  chain: CHAINS;
+  address: string;
   network: INetworkType;
-  connectedWallet: IConnectedWallet;
-  refresh: number;
   onUnStake: (tokenId: string) => void;
 }
 const PositionList = ({
+  chain,
   network,
-  connectedWallet,
-  refresh,
-  onUnStake,
+  address,
+  onUnStake
 }: IPositionListProps) => {
-
-  const [data, setData] = useState<any>();
-
-  useEffect(() => {
-    async function getData(wallet) {
-      try {
-        const tokens = await new FarmV2Contract(network).getStakedLPTokens(
-          wallet
-        );
-        const prices = await new RestAPI(network).getPrices();
-        setData({
-          tokens,
-          prices,
-        });
-      } catch (e: any) {
-        console.log(e);
-        console.log(e);
-      }
-    }
-    if (connectedWallet) {
-      getData(connectedWallet);
-    }
-  }, [connectedWallet, refresh, network]);
+  const { data, error } = useOnChainData(
+    () => farmRouter.getStakedLPTokens(chain, network, address),
+    []
+  );
 
   return (
     <div>
       {!data ? (
         <></>
-      ) : data.tokens.length > 0 ? (
+      ) : data.length > 0 ? (
         <div>
-          {data.tokens.map((item, i) => {
+          {data.map((token: ISwapLPToken, i) => {
             return (
-              <PositionCard
-                network={network}
-                key={"position" + i}
-                prices={data.prices}
-                {...item}
-                onUnStake={onUnStake}
-              />
+              <div key={"farmv2-position" + i} className="media">
+                <div className="media-content">
+                  <LPTokenCard {...token} />
+                </div>
+                <div className="media-right">
+                  <button
+                    onClick={() => onUnStake(token.tokenId)}
+                    className="button is-light is-small"
+                  >
+                    Withdraw
+                  </button>
+                </div>
+              </div>
             );
           })}
         </div>

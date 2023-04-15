@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../../../../components/PageLayout";
+import PageLayout from "../../../../../components/Commons/PageLayout";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { DAO_CHANNEL_PATH } from "../../../../../../consts";
 import ChannelForm from "../../../components/ChannelForm";
 import Modal from "../../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../../packages/ui/AfterTransactionSubmitted";
-import { useWallet } from "../../../../../../packages/provider";
+import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { u } from "@cityofzion/neon-core";
+import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 const Edit = () => {
   const params = useParams();
   const history = useHistory();
   const { contractHash } = params as any;
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState<string>();
   // const [refresh, setRefresh] = useState<string>();
   const [values, setValues] = useState<any>();
@@ -22,14 +24,14 @@ const Edit = () => {
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
 
   const handleAddChannel = async () => {
     if (connectedWallet && values.decimals) {
       const manifest = JSON.stringify({
-        logo: values.logo,
+        logo: values.logo
       });
       const txid = await new DaoContract(network).editChannel(
         connectedWallet,
@@ -46,7 +48,7 @@ const Edit = () => {
 
   const handleTxSuccess = () => {
     setTxid("");
-    history.push(`${DAO_CHANNEL_PATH}/${contractHash}`);
+    history.push(`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`);
   };
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const Edit = () => {
           ),
           logo: manifest.logo,
           decimals: res.decimals as any,
-          symbol: res.symbol as string,
+          symbol: res.symbol as string
         });
       } catch (e: any) {}
     }
@@ -72,7 +74,7 @@ const Edit = () => {
       <div className="columns  is-center">
         <div className="column is-half ">
           <Link
-            to={`${DAO_CHANNEL_PATH}/${contractHash}`}
+            to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
             className="button is-rounded is-small mb-3"
           >
             Back to list

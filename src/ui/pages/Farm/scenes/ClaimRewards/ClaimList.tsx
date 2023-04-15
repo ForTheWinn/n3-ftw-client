@@ -3,7 +3,7 @@ import CounterUp from "./CounterUp";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 interface IClaimListProps {
   network: INetworkType;
   connectedWallet?: IConnectedWallet;
@@ -20,7 +20,7 @@ const ClaimList = ({
   pRefresh,
   isClaimNode,
   handleToggle,
-  selectedItems,
+  selectedItems
 }: IClaimListProps) => {
   const { isLoaded, data } = useOnChainData(() => {
     return new StakingContract(network).getClaimable(connectedWallet);
@@ -59,14 +59,13 @@ const ClaimList = ({
 
                   <div className="level-right">
                     <div className="level-item">
-	                    <CounterUp
-		                    claimable={item.claimable}
-		                    rewardsPerDay={item.rewardsPerDay}
-	                    />
+                      <CounterUp
+                        claimable={item.claimable}
+                        rewardsPerDay={item.rewardsPerDay}
+                      />
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           );

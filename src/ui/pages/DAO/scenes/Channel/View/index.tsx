@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
-import { DAO_CHANNEL_PATH } from "../../../../../../consts";
-import { useWallet } from "../../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import Modal from "../../../../../components/Modal";
 import toast from "react-hot-toast";
-import AfterTransactionSubmitted from "../../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import VoteList from "./VoteList";
 import VotingPeriod from "./components/VotingPeriod";
 import VotingProgress from "./components/VotingProgress";
@@ -15,25 +14,28 @@ import VoteModal from "./components/VoteModal";
 import UserVotes from "./components/UserVotes";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
+import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 const ProposalView = () => {
   const params = useParams();
+  const { network } = useApp();
   const { contractHash, proposalNo } = params as any;
-  const { network, connectedWallet } = useWallet();
+  const { connectedWallet } = useNeoWallets();
   const [isVoteModalActive, setVoteModalActive] = useState(false);
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [vote, setVote] = useState({
     vote: "",
     voteIndex: "",
-    amount: "",
+    amount: ""
   });
 
   const onVoteOptionClick = (op, i) => {
     setVote({
       vote: op,
       voteIndex: i,
-      amount: vote.amount,
+      amount: vote.amount
     });
     setVoteModalActive(true);
   };
@@ -41,7 +43,7 @@ const ProposalView = () => {
   const handleVoteAmount = (v) => {
     setVote({
       ...vote,
-      amount: v,
+      amount: v
     });
   };
 
@@ -51,7 +53,7 @@ const ProposalView = () => {
     setVote({
       vote: "",
       voteIndex: "",
-      amount: "",
+      amount: ""
     });
   };
 
@@ -102,7 +104,7 @@ const ProposalView = () => {
     <div className="columns">
       <div className="column is-8 is-offset-2">
         <Link
-          to={`${DAO_CHANNEL_PATH}/${contractHash}`}
+          to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
           className="button is-rounded is-small mb-3"
         >
           Back to list

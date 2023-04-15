@@ -1,62 +1,54 @@
-import React, {useEffect, useState} from "react";
-import PageLayout from "../../../../../components/PageLayout";
-import {useWallet} from "../../../../../../packages/provider";
-import {RestAPI} from "../../../../../../packages/neo/api";
+import React, { useEffect, useState } from "react";
+import PageLayout from "../../../../../components/Commons/PageLayout";
+import { RestAPI } from "../../../../../../packages/neo/api";
 import DataTable from "react-data-table-component";
-import PairIcons from "../../../../../components/PairIcons";
-import {MAINNET} from "../../../../../../packages/neo/consts";
-import {numberTrim} from "../../../../../../packages/neo/utils";
+import { numberTrim } from "../../../../../../packages/neo/utils";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 const columns = [
-	{
-		name: "Name",
-		selector: (row) => row.name,
-		cell: (row) => {
-			return (
-				<div className="is-flex is-center">
-					{/*<PairIcons*/}
-					{/*	network={MAINNET}*/}
-					{/*	tokenA={row.token_A_id.slice(2)}*/}
-					{/*	tokenB={row.token_B_id.slice(2)}*/}
-					{/*/>*/}
-					<span className="ml-2">{row.name}</span>
-				</div>
-			);
-		},
-	},
-	{
-		name: "Staked Liquidity",
-		selector: (row) =>
-			row.tvl > 0 ? "$" + numberTrim(row.tvl) : "-",
-	},
-	{
-		name: "Claimed Rewards",
-		selector: (row) => (row.rewards > 0 ? "$" + numberTrim(row.rewards) : "-"),
-	},
-	{
-		name: "APR",
-		selector: (row) => `${row.APR}%`,
-	},
+  {
+    name: "Name",
+    selector: (row) => row.name,
+    cell: (row) => {
+      return (
+        <div className="is-flex is-center">
+          <span className="ml-2">{row.name}</span>
+        </div>
+      );
+    }
+  },
+  {
+    name: "Staked Liquidity",
+    selector: (row) => (row.tvl > 0 ? "$" + numberTrim(row.tvl) : "-")
+  },
+  {
+    name: "Claimed Rewards",
+    selector: (row) => (row.rewards > 0 ? "$" + numberTrim(row.rewards) : "-")
+  },
+  {
+    name: "APR",
+    selector: (row) => `${row.APR}%`
+  }
 ];
 
 const FarmAnalytics = (props) => {
-	const { network } = useWallet();
-	const [data, setData] = useState([]);
-	const [isLoading, setLoading] = useState(true);
-	useEffect(() => {
-		async function fetch() {
-			try {
-				setLoading(true);
-				const res = await new RestAPI(network).getFarms();
-				setData(res);
-				setLoading(false);
-			} catch (e: any) {
-				setLoading(false);
-				// setError(e.message);
-			}
-		}
-		fetch();
-	}, []);
+  const { network } = useApp();
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  useEffect(() => {
+    async function fetch() {
+      try {
+        setLoading(true);
+        const res = await new RestAPI(network).getFarms();
+        setData(res);
+        setLoading(false);
+      } catch (e: any) {
+        setLoading(false);
+        // setError(e.message);
+      }
+    }
+    fetch();
+  }, []);
   return (
     <div>
       <section className="hero is-white is-small">
@@ -71,13 +63,13 @@ const FarmAnalytics = (props) => {
         </div>
       </section>
       <PageLayout>
-	      <div className="box is-shadowless">
-		      <DataTable
-			      columns={columns}
-			      data={data}
-			      progressPending={isLoading}
-		      />
-	      </div>
+        <div className="box is-shadowless">
+          <DataTable
+            columns={columns}
+            data={data}
+            progressPending={isLoading}
+          />
+        </div>
       </PageLayout>
     </div>
   );

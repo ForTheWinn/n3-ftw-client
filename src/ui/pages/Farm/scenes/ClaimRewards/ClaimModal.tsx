@@ -4,7 +4,7 @@ import ModalCard from "../../../../components/Modal";
 import { toDecimal } from "../../../../../packages/neo/utils";
 import ClaimList from "./ClaimList";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 
 const ClaimModal = (props: {
   network: INetworkType;

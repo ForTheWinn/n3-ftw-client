@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
-import HeaderBetween from "../../../../components/HeaderBetween";
-import { GASFI_PATH } from "../../../../../consts";
+import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
 import moment from "moment";
 import { DRAWING_FREQUENCY } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
+import { NEO_ROUTES } from "../../../../../consts";
 
-const MyStaking = (props) => {
+const MyStaking = () => {
   const history = useHistory();
   const { toggleWalletSidebar } = useApp();
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IStakeResult | undefined>(undefined);
   const [error, setError] = useState();
@@ -37,7 +38,7 @@ const MyStaking = (props) => {
 
   const handleSuccess = () => {
     setTxid("");
-    history.push(GASFI_PATH);
+    history.push(NEO_ROUTES.GASFI_PATH);
   };
 
   useEffect(() => {
@@ -54,7 +55,6 @@ const MyStaking = (props) => {
     }
     fetch();
   }, [connectedWallet, network]);
-  console.log(data);
   let canUnstake = false;
 
   if (data) {
@@ -63,17 +63,14 @@ const MyStaking = (props) => {
     if (now > canUnstakeAfter) {
       canUnstake = true;
     }
-		console.log( parseFloat(data.stakedAt) + DRAWING_FREQUENCY)
   }
-
-
 
   return (
     <div>
       <div className="columns is-centered">
         <div className="column is-half">
           <div className="box is-shadowless">
-            <HeaderBetween path={GASFI_PATH} title={"My staking"} />
+            <HeaderBetween path={NEO_ROUTES.GASFI_PATH} title={"My staking"} />
           </div>
           {!connectedWallet ? (
             <button
@@ -100,7 +97,16 @@ const MyStaking = (props) => {
                   </div>
                 </div>
               </div>
-              {data && !canUnstake ? <div className={" mb-5"}>You can unstake after {moment(parseFloat(data.stakedAt) + DRAWING_FREQUENCY).format("lll")}</div> : <></>}
+              {data && !canUnstake ? (
+                <div className={" mb-5"}>
+                  You can unstake after{" "}
+                  {moment(parseFloat(data.stakedAt) + DRAWING_FREQUENCY).format(
+                    "lll"
+                  )}
+                </div>
+              ) : (
+                <></>
+              )}
               <button
                 disabled={!canUnstake}
                 onClick={onSubmit}

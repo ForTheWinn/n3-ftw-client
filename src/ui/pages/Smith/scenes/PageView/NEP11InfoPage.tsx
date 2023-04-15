@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
-import {
-  MAINNET,
-  UNKNOWN_TOKEN_IMAGE,
-} from "../../../../../packages/neo/consts";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import Tokens from "../NEP11/Tokens";
 import NEP11MintFormModal from "./NEP11MintFormModal";
 import { toast } from "react-hot-toast";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import Modal from "../../../../components/Modal";
-import PageLayout from "../../../../components/PageLayout";
-import { SMITH_PATH, SMITH_PATH_NEP11 } from "../../../../../consts";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import NEP17UpdateFormModal from "./NEP17UpdateFormModal";
 import { handleError } from "../../../../../packages/neo/utils/errors";
+import { NEO_ROUTES, GLOBAL } from "../../../../../consts";
+import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEP11InfoPage = () => {
   const params = useParams();
   const { contractHash } = params as any;
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [isMintModalActive, setMintModalActive] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [txid, setTxid] = useState<string>();
@@ -35,7 +34,7 @@ const NEP11InfoPage = () => {
     if (connectedWallet) {
       const manifest = JSON.stringify({
         logo: values.logo,
-        website: values.website,
+        website: values.website
       });
       try {
         if (isAdmin) {
@@ -110,7 +109,10 @@ const NEP11InfoPage = () => {
       <PageLayout>
         <div className="columns ">
           <div className="column is-2">
-            <Link to={SMITH_PATH_NEP11} className="button mb-3 is-rounded">
+            <Link
+              to={NEO_ROUTES.SMITH_PATH_NEP11}
+              className="button mb-3 is-rounded"
+            >
               Back to Main
             </Link>
           </div>
@@ -145,10 +147,11 @@ const NEP11InfoPage = () => {
                     <a
                       target="_blank"
                       href={`https://${
-                        network === MAINNET
+                        network === GLOBAL.MAINNET
                           ? "explorer.onegate.space"
                           : "testmagnet.explorer.onegate.space"
-                      }/contractinfo/0x${contractHash}`}
+                      }/contractinfo/${contractHash}`}
+                      rel="noreferrer"
                     >
                       <FaExternalLinkAlt />
                     </a>
@@ -164,6 +167,7 @@ const NEP11InfoPage = () => {
                         className="has-text-dark"
                         target="_blank"
                         href={manifest.website}
+                        rel="noreferrer"
                       >
                         {manifest.website}
                       </a>

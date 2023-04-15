@@ -1,5 +1,4 @@
 export const handleError = (e): string => {
-  console.log(e);
   if (typeof e === "string") {
     return e;
   } else if (typeof e === "object") {

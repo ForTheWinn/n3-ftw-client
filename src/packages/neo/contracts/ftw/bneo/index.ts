@@ -2,9 +2,9 @@ import { INetworkType } from "../../../network";
 import {
   BNEO_SCRIPT_HASH,
   GAS_SCRIPT_HASH,
-  NEO_SCRIPT_HASH,
-} from "../../../consts/nep17-list";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+  NEO_SCRIPT_HASH
+} from "../../../consts/neo-contracts";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
@@ -31,22 +31,22 @@ export class BNEOContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Hash160",
-          value: this.contractHash,
+          value: this.contractHash
         },
         {
           type: "Integer",
-          value: amount,
+          value: amount
         },
         {
           type: "Any",
-          value: null,
-        },
+          value: null
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -64,22 +64,22 @@ export class BNEOContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Hash160",
-          value: this.contractHash,
+          value: this.contractHash
         },
         {
           type: "Integer",
-          value: amount * 100000,
+          value: amount * 100000
         },
         {
           type: "Any",
-          value: null,
-        },
+          value: null
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };

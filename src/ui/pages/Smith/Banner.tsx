@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import {
-  SMITH_CREATE_NEP11_PATH,
-  SMITH_CREATE_NEP17_PATH,
-} from "../../../consts";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaInfoCircle } from "react-icons/fa";
 import ModalCard from "../../components/Modal";
 import SmithInfo from "./components/SmithInfo";
+import { NEO_ROUTES } from "../../../consts";
 
 const Banner = () => {
   const [isInfoModalActive, setInfoModalActive] = useState(false);
@@ -25,14 +22,14 @@ const Banner = () => {
           <div className="level-item">
             <div className="buttons">
               <Link
-                to={SMITH_CREATE_NEP17_PATH}
+                to={NEO_ROUTES.SMITH_CREATE_NEP17_PATH}
                 className="button is-success is-light"
               >
                 Token Contract
               </Link>
               <Link
-                to={SMITH_CREATE_NEP11_PATH}
-                className="button is-info is-light"
+                to={NEO_ROUTES.SMITH_CREATE_NEP11_PATH}
+                className="button is-success is-light"
               >
                 NFT Contract
               </Link>

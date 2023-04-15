@@ -1,16 +1,6 @@
-export interface IReserveData {
-  pair: {
-    [key: string]: {
-      symbol: string;
-      decimals: number;
-      reserveAmount: number;
-    };
-  };
-  userBalances: {
-    [key: string]: number;
-  };
-  totalShare: number;
-}
+import { u } from "@cityofzion/neon-core";
+
+
 
 export interface ISwapsHistory {
   totalItems: number;
@@ -35,23 +25,6 @@ export interface ILPHistory {
     };
   };
 }
-//
-// export interface IPairInfo {
-//   reserve: IReserve;
-//   pair: Balance;
-//   balances: Balance;
-// }
-//
-// interface Balance {
-//   [key: string]: number;
-// }
-
-// export interface ILPTokens {
-//   name: string;
-//   tokenId: string;
-//   lockUntil: string;
-//   amount: number;
-// }
 
 export interface IReserve {
   tokenA: string;
@@ -86,6 +59,11 @@ export interface ILPToken {
   tokenB: string;
   symbolA: string;
   symbolB: string;
+  amountA: string;
+  amountB: string;
+  decimalsA: string;
+  decimalsB: string;
+  sharesPercentage: string;
 }
 
 // For verification

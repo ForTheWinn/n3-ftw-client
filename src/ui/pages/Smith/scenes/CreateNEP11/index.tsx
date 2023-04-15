@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
-import { SMITH_PATH_NEP11 } from "../../../../../consts";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
+import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEP11FormModal = () => {
   const history = useHistory();
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState<string>();
   const [values, setValues] = useState({
     name: "",
     symbol: "",
     author: "",
     description: "",
-    email: "",
+    email: ""
   });
   const [isBalanceLoading, setBalanceLoading] = useState(false);
   const [balances, setBalances] = useState<{
@@ -28,7 +30,7 @@ const NEP11FormModal = () => {
     nepBalance: number;
   }>({
     gasBalance: 0,
-    nepBalance: 0,
+    nepBalance: 0
   });
 
   const hasEmoji = detectEmojiInString(values) !== 0;
@@ -36,7 +38,7 @@ const NEP11FormModal = () => {
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
 
@@ -92,7 +94,7 @@ const NEP11FormModal = () => {
 
   const onSuccess = () => {
     setTxid("");
-    history.push(SMITH_PATH_NEP11);
+    history.push(NEO_ROUTES.SMITH_PATH_NEP11);
   };
 
   useEffect(() => {
@@ -258,6 +260,7 @@ const NEP11FormModal = () => {
                       href={
                         "https://github.com/ForTheWinn/public-contracts/blob/main/FTWSmithNep11/FTWSmithNep11.cs"
                       }
+                      rel="noreferrer"
                     >
                       here
                     </a>

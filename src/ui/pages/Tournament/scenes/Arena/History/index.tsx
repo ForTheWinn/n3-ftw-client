@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "bulma-pagination-react";
-import { useWallet } from "../../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { TournamentContract } from "../../../../../../packages/neo/contracts/ftw/arena";
 import NFTDetailModal from "./NFTDetailModal";
 import HistoryTable from "./HistoryTable";
 import Replay from "./Replay";
-import AfterTransactionSubmitted from "../../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import Modal from "../../../../../components/Modal";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 interface IHistoryProps {
   arenaNo: string;
@@ -19,7 +20,8 @@ const History = ({ arenaNo }: IHistoryProps) => {
   const [history, setHistory] = useState<any>();
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const onNFTModalActive = (obj) => setNftModalActive(obj);
   const onReplayModalActive = (obj) => setReplayModalActive(obj);
 

@@ -1,5 +1,4 @@
 import React from "react";
-import { toDecimal } from "../../../../../packages/neo/utils";
 import moment from "moment";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { SwapContract } from "../../../../../packages/neo/contracts";

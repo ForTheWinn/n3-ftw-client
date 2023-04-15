@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/PageLayout";
-import { useWallet } from "../../../packages/provider";
+import PageLayout from "../../components/Commons/PageLayout";
+import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
 import Banner from "./Banner";
 import { RestAPI } from "../../../packages/neo/api";
 import Modal from "../../components/Modal";
 import RarityList from "./RarityList";
 import { IBoy } from "../../../packages/neo/contracts/ftw/boyz/interface";
 import PropertiesModal from "./PropertiesModal";
+import { useApp } from "../../../common/hooks/use-app";
+import { useResponsive } from "../../../common/hooks/use-responsive";
 
 const Boyz = () => {
   const [isFilterActive, setFilterActive] = useState(false);
@@ -21,17 +23,17 @@ const Boyz = () => {
     accessory: [],
     head: [],
     mouth: [],
-    background: ["Mint"],
+    background: []
   });
+  const { network } = useApp();
   const [currentCategory, setCurrentCategory] = useState<string>("clothing");
   const [boyz, setBoyz] = useState<any>([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { network } = useWallet();
 
   const onFilterChange = (newFilter: any) => {
     setFilter({
-      ...newFilter,
+      ...newFilter
     });
     setFilterActive(false);
   };
@@ -53,10 +55,14 @@ const Boyz = () => {
     }
     fetchContractStatus();
   }, [network, filter]);
-
+  const { isDesktop } = useResponsive();
   return (
     <div>
-      <Banner filter={filter} setFilter={setFilter} setFilterActive={() => setFilterActive(true)} />
+      <Banner
+        filter={filter}
+        setFilter={setFilter}
+        setFilterActive={() => setFilterActive(true)}
+      />
       <PageLayout>
         {isLoading ? (
           <div>Loading boyz..</div>
@@ -67,7 +73,7 @@ const Boyz = () => {
                 <img
                   className="is-clickable"
                   onClick={() => setDetailModalActive(boy)}
-                  width="10%"
+                  width={isDesktop ? "5%" : "10%"}
                   src={boy.image}
                   alt={boy.no}
                 />

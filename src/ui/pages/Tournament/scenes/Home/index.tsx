@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { TOURNAMENT_PATH } from "../../../../../consts";
-import PageLayout from "../../../../components/PageLayout";
-import { useWallet } from "../../../../../packages/provider";
-import { MAINNET } from "../../../../../packages/neo/consts";
+import { NEO_ROUTES, GLOBAL } from "../../../../../consts";
+import PageLayout from "../../../../components/Commons/PageLayout";
+import { useApp } from "../../../../../common/hooks/use-app";
 
-const ArenaHome = (props) => {
-  const { network } = useWallet();
+const ArenaHome = () => {
+  const { network } = useApp();
   let ARENA_LIST = ["4", "8", "16", "32", "64", "128", "256"];
-  if (network === MAINNET) {
+  if (network === GLOBAL.MAINNET) {
     ARENA_LIST = ["8", "16", "32", "64", "128"];
   }
   return (
@@ -17,7 +16,7 @@ const ArenaHome = (props) => {
         backgroundImage: 'url("/assets/arena-bg.jpeg")',
         backgroundSize: "cover",
         height: "calc(100vh - 52px)",
-        backgroundPosition: "center",
+        backgroundPosition: "center"
       }}
     >
       <PageLayout>
@@ -33,7 +32,7 @@ const ArenaHome = (props) => {
                 // className={`notification has-text-centered ${ARENA_COLOR[arena]}`}
               >
                 <Link
-                  to={TOURNAMENT_PATH + "/" + arena}
+                  to={NEO_ROUTES.TOURNAMENT_PATH + "/" + arena}
                   className="title has-text-white"
                 >
                   ARENA {arena}

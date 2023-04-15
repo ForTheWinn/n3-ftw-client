@@ -1,9 +1,9 @@
 import React from "react";
 import { TournamentContract } from "../../../../packages/neo/contracts/ftw/arena";
 import toast from "react-hot-toast";
-import { useWallet } from "../../../../packages/provider";
-import { TOURNAMENT_TIME_PADDING } from "../../../../packages/neo/contracts/ftw/arena/consts";
-import {handleError} from "../../../../packages/neo/utils/errors";
+import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
+import { handleError } from "../../../../packages/neo/utils/errors";
+import { useApp } from "../../../../common/hooks/use-app";
 
 interface IPlayButtonProps {
   arenaNo: string;
@@ -16,7 +16,8 @@ interface IPlayButtonProps {
   };
 }
 const PlayButton = ({ arenaNo, onSubmitted, status }: IPlayButtonProps) => {
-  const { connectedWallet, network, addPendingTransaction } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const onPlay = async () => {
     if (connectedWallet && status) {
       // try {
@@ -38,10 +39,9 @@ const PlayButton = ({ arenaNo, onSubmitted, status }: IPlayButtonProps) => {
           connectedWallet,
           arenaNo
         );
-        addPendingTransaction(res);
         onSubmitted(res);
       } catch (e: any) {
-	      toast.error(handleError(e));
+        toast.error(handleError(e));
       }
     } else {
       toast.error("Please connect wallet.");

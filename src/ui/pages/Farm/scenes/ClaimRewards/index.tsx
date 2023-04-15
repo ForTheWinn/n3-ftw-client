@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ClaimModal from "./ClaimModal";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import LogoIcon from "../../../../components/LogoIcon";
-import { NEP_LOGO } from "../../../../../packages/neo/contracts/ftw/farm/consts";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import ClaimList from "./ClaimList";
+import { NEP_LOGO } from "../../../../../consts/global";
+import { Avatar } from "antd";
 
 interface IClaimRewardsProps {
   pRefresh: number;
 }
 const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
-  const { toggleWalletSidebar } = useApp();
-  const { network, connectedWallet } = useWallet();
+  const { toggleWalletSidebar, network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [isClaimModalOpen, setClaimModalOpen] = useState(false);
@@ -53,7 +53,7 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
       <div className="level is-mobile">
         <div className="level-left">
           <div className="level-item">
-            <LogoIcon img={NEP_LOGO} />
+            <Avatar src={NEP_LOGO} />
           </div>
           <div className="level-item">
             <h1 className="title is-7 ">Rewards</h1>

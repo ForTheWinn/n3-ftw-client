@@ -2,28 +2,30 @@ import React, { useState } from "react";
 import { detectEmojiInString } from "../../../Smith/helpers";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { Link, useHistory } from "react-router-dom";
-import { DAO_PATH } from "../../../../../consts";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import VerifyContract from "./VerifyContract";
 import ChannelForm from "../../components/ChannelForm";
+import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IAddChannelProps {
   onAdd: (values) => void;
 }
 const CreateChannel = ({ onAdd }: IAddChannelProps) => {
   const history = useHistory();
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState<string>();
   const [values, setValues] = useState({
     symbol: "",
     contractHash: "",
     decimals: "",
     minTokens: "",
-    logo: "",
+    logo: ""
   });
 
   const hasEmoji = detectEmojiInString(values) !== 0;
@@ -31,7 +33,7 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
 
@@ -44,14 +46,14 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
       ...values,
       contractHash,
       symbol,
-      decimals,
+      decimals
     });
   };
 
   const handleAddChannel = async () => {
     if (connectedWallet) {
       const manifest = JSON.stringify({
-        logo: values.logo,
+        logo: values.logo
       });
       const txid = await new DaoContract(network).createChannel(
         connectedWallet,
@@ -68,14 +70,17 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
 
   const handleTxSuccess = () => {
     setTxid("");
-    history.push(DAO_PATH);
+    history.push(NEO_ROUTES.DAO_PATH);
   };
 
   return (
     <PageLayout>
       <div className="columns">
         <div className="column is-8 is-offset-2">
-          <Link to={DAO_PATH} className="button is-rounded is-small mb-3">
+          <Link
+            to={NEO_ROUTES.DAO_PATH}
+            className="button is-rounded is-small mb-3"
+          >
             Back to list
           </Link>
 

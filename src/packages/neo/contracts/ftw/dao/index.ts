@@ -1,6 +1,6 @@
 import { INetworkType, Network } from "../../../network";
 
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { DAO_SCRIPT_HASH } from "./consts";
@@ -34,31 +34,31 @@ export class DaoContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
+          value: contractHash
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Integer",
           value: u.BigInteger.fromDecimal(
             minTokens,
             parseFloat(decimals)
-          ).toString(),
+          ).toString()
         },
         {
           type: "String",
-          value: metadata,
-        },
+          value: metadata
+        }
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, contractHash],
-        },
-      ],
+          allowedContracts: [this.contractHash, contractHash]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -79,28 +79,28 @@ export class DaoContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
+          value: contractHash
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(minTokens, decimals).toString(),
+          value: u.BigInteger.fromDecimal(minTokens, decimals).toString()
         },
         {
           type: "String",
-          value: manifest,
-        },
+          value: manifest
+        }
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, contractHash],
-        },
-      ],
+          allowedContracts: [this.contractHash, contractHash]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -120,7 +120,7 @@ export class DaoContract {
     const optionsToInvokeParams = options.map((op) => {
       return {
         type: "String",
-        value: op,
+        value: op
       };
     });
     const invokeScript = {
@@ -129,40 +129,40 @@ export class DaoContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
+          value: contractHash
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "String",
-          value: title,
+          value: title
         },
         {
           type: "String",
-          value: description,
+          value: description
         },
         {
           type: "Array",
-          value: optionsToInvokeParams,
+          value: optionsToInvokeParams
         },
         {
           type: "Integer",
-          value: start,
+          value: start
         },
         {
           type: "Integer",
-          value: end,
-        },
+          value: end
+        }
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, contractHash],
-        },
-      ],
+          allowedContracts: [this.contractHash, contractHash]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -184,35 +184,35 @@ export class DaoContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
+          value: contractHash
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Integer",
-          value: proposalNo,
+          value: proposalNo
         },
         {
           type: "Integer",
-          value: optionIndex,
+          value: optionIndex
         },
         {
           type: "Integer",
           value: u.BigInteger.fromDecimal(
             voteAmount,
             parseFloat(decimals)
-          ).toString(),
-        },
+          ).toString()
+        }
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, contractHash],
-        },
-      ],
+          allowedContracts: [this.contractHash, contractHash]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -231,16 +231,16 @@ export class DaoContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
+          value: contractHash
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Integer",
-          value: proposalNo,
-        },
+          value: proposalNo
+        }
       ],
       // signers: [
       //   {
@@ -249,7 +249,7 @@ export class DaoContract {
       //     allowedContracts: [this.contractHash, contractHash],
       //   },
       // ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -268,16 +268,16 @@ export class DaoContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash,
+          value: contractHash
         },
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Integer",
-          value: proposalNo,
-        },
+          value: proposalNo
+        }
       ],
       // signers: [
       // 	{
@@ -286,7 +286,7 @@ export class DaoContract {
       // 		allowedContracts: [this.contractHash, contractHash],
       // 	},
       // ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -297,8 +297,8 @@ export class DaoContract {
       operation: "getChannels",
       args: [
         { type: "Integer", value: perPage },
-        { type: "Integer", value: page },
-      ],
+        { type: "Integer", value: page }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -311,14 +311,14 @@ export class DaoContract {
     const script1 = {
       scriptHash: this.contractHash,
       operation: "getChannel",
-      args: [{ type: "Hash160", value: contractHash }],
+      args: [{ type: "Hash160", value: contractHash }]
     };
     const res = await Network.read(this.network, [script1]);
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
     }
     return {
-      ...parseMapValue(res.stack[0] as any),
+      ...parseMapValue(res.stack[0] as any)
     };
   };
 
@@ -333,13 +333,13 @@ export class DaoContract {
       args: [
         { type: "Hash160", value: contractHash },
         { type: "Integer", value: perPage },
-        { type: "Integer", value: page },
-      ],
+        { type: "Integer", value: page }
+      ]
     };
     const script2 = {
       scriptHash: this.contractHash,
       operation: "getChannel",
-      args: [{ type: "Hash160", value: contractHash }],
+      args: [{ type: "Hash160", value: contractHash }]
     };
     const res = await Network.read(this.network, [script1, script2]);
     if (res.state === "FAULT") {
@@ -347,7 +347,7 @@ export class DaoContract {
     }
     return {
       proposals: parseMapValue(res.stack[0] as any),
-      channel: parseMapValue(res.stack[1] as any),
+      channel: parseMapValue(res.stack[1] as any)
     };
   };
 
@@ -361,13 +361,13 @@ export class DaoContract {
       operation: "getProposal",
       args: [
         { type: "Hash160", value: contractHash },
-        { type: "Integer", value: proposalNo },
-      ],
+        { type: "Integer", value: proposalNo }
+      ]
     };
     const script2 = {
       scriptHash: this.contractHash,
       operation: "getChannel",
-      args: [{ type: "Hash160", value: contractHash }],
+      args: [{ type: "Hash160", value: contractHash }]
     };
 
     const scripts = [script1, script2];
@@ -379,7 +379,7 @@ export class DaoContract {
       scripts.push({
         scriptHash: contractHash,
         operation: "balanceOf",
-        args: [{ type: "Hash160", value: senderHash }],
+        args: [{ type: "Hash160", value: senderHash }]
       });
     }
 
@@ -395,7 +395,7 @@ export class DaoContract {
     return {
       proposal,
       channel,
-      balance,
+      balance
     };
   };
 
@@ -412,8 +412,8 @@ export class DaoContract {
         { type: "Hash160", value: contractHash },
         { type: "Integer", value: proposalNo },
         { type: "Integer", value: perPage },
-        { type: "Integer", value: page },
-      ],
+        { type: "Integer", value: page }
+      ]
     };
 
     const res = await Network.read(this.network, [script]);
@@ -441,8 +441,8 @@ export class DaoContract {
         { type: "Hash160", value: senderHash },
         { type: "Integer", value: proposalNo },
         { type: "Integer", value: perPage },
-        { type: "Integer", value: page },
-      ],
+        { type: "Integer", value: page }
+      ]
     };
 
     const res = await Network.read(this.network, [script]);
@@ -464,18 +464,18 @@ export class DaoContract {
       operation: "hasPermission",
       args: [
         { type: "Hash160", value: contractHash },
-        { type: "Hash160", value: senderHash },
-      ],
+        { type: "Hash160", value: senderHash }
+      ]
     };
     const script2 = {
       scriptHash: contractHash,
       operation: "symbol",
-      args: [],
+      args: []
     };
     const script3 = {
       scriptHash: contractHash,
       operation: "decimals",
-      args: [],
+      args: []
     };
 
     const res = await Network.read(this.network, [script1, script2, script3]);
@@ -485,13 +485,13 @@ export class DaoContract {
     return {
       hasPermission: res.stack[0].value as boolean,
       symbol: base64ToString(res.stack[1].value as string),
-      decimals: res.stack[2].value as string,
+      decimals: res.stack[2].value as string
     };
   };
   static getMetadata = (str) => {
     try {
       return JSON.parse(str);
-    } catch (e: any) {
+    } catch (e) {
       return {};
     }
   };

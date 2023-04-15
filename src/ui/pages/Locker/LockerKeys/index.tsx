@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../packages/provider";
+import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import { ILockerKeyToken } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import LockerKeyCard from "./LockerKeyCard";
 import ConnectWalletButton from "../../../components/ConnectWalletButton";
 import toast from "react-hot-toast";
 import Modal from "../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
+import { useApp } from "../../../../common/hooks/use-app";
 
 const LockerKeys = () => {
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [data, setData] = useState<{
     items: ILockerKeyToken[];
   }>();
@@ -41,7 +43,7 @@ const LockerKeys = () => {
       try {
         const items = await new LockerContract(network).getLockerKeys(address);
         setData({
-          items,
+          items
         });
       } catch (e: any) {
         console.error(e);
@@ -85,7 +87,9 @@ const LockerKeys = () => {
                           );
                         })
                       ) : (
-	                      <tr><td colSpan={6}>No keys</td></tr>
+                        <tr>
+                          <td colSpan={6}>No keys</td>
+                        </tr>
                       )
                     ) : (
                       <></>

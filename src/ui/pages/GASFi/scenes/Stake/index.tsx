@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { POSITION_RANGE } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useHistory } from "react-router-dom";
-import { GASFI_PATH } from "../../../../../consts";
 import { IMainData } from "../Main";
 import About from "../Main/About";
+import { NEO_ROUTES } from "../../../../../consts";
 
-const Stake = (props) => {
+const Stake = () => {
   const history = useHistory();
   const { toggleWalletSidebar } = useApp();
   const [position, setPosition] = useState<number | undefined>();
   const [amount, setAmount] = useState<number | undefined>();
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IMainData | undefined>(undefined);
   const [error, setError] = useState();
@@ -47,7 +48,7 @@ const Stake = (props) => {
 
   const handleSuccess = () => {
     setTxid("");
-    history.push(GASFI_PATH);
+    history.push(NEO_ROUTES.GASFI_PATH);
   };
 
   const handleClickBalance = () => {
@@ -64,7 +65,6 @@ const Stake = (props) => {
         setData(res);
         setLoading(false);
       } catch (e: any) {
-        console.log(e);
         setError(e.message);
         setLoading(false);
       }

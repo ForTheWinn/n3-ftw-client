@@ -1,26 +1,18 @@
 import React, { useEffect } from "react";
-import { ANALYTICS_ROUTE } from "../../../../../consts";
-import { useWallet } from "../../../../../packages/provider";
-import ProductNotSupportedInNetwork from "../../../../components/ProductNotSupportedInNetwork";
 import LiquidityChart from "./LiquidityChart";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import Pools from "./Pairs";
 import Tokens from "./Tokens";
 import PriceChart from "../../components/PriceChart";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { NEP_CONTRACT_HASH } from "../../../../../consts/contracts";
 
 const AnalyticsMain = () => {
-  const { network } = useWallet();
+  const { chain, network } = useApp();
 
   useEffect(() => {
     document.title = "FTW Analytics";
   }, []);
-
-  if (!ANALYTICS_ROUTE.network.includes(network)) {
-    return (
-      <ProductNotSupportedInNetwork title={"Analytics"} network={network} />
-    );
-  }
 
   return (
     <PageLayout>
@@ -34,7 +26,10 @@ const AnalyticsMain = () => {
         <div className="column is-6">
           <div className="box is-shadowless">
             <h1 className="title is-6">NEP</h1>
-            <PriceChart tokenId={"0x" + NEP_SCRIPT_HASH[network]} days={"10"} />
+            <PriceChart
+              tokenId={NEP_CONTRACT_HASH[chain][network]}
+              days={"10"}
+            />
           </div>
         </div>
         <div className="column is-6">
@@ -43,7 +38,7 @@ const AnalyticsMain = () => {
             style={{
               height: "600px",
               width: "100%",
-              overflowY: "scroll",
+              overflowY: "scroll"
             }}
           >
             <h1 className="title is-6">Tokens</h1>
@@ -56,7 +51,7 @@ const AnalyticsMain = () => {
             style={{
               height: "600px",
               width: "100%",
-              overflowY: "scroll",
+              overflowY: "scroll"
             }}
           >
             <h1 className="title is-6">Pairs</h1>

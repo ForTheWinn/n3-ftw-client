@@ -1,153 +1,96 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Input from "../../components/Input";
 import { FaExchangeAlt } from "react-icons/fa";
-import { SwapContract } from "../../../../../packages/neo/contracts";
-import { INetworkType } from "../../../../../packages/neo/network";
-import { ITokenState } from ".";
-import {
-  BNEO_SCRIPT_HASH,
-  GAS_SCRIPT_HASH,
-  NEO_SCRIPT_HASH,
-} from "../../../../../packages/neo/consts/nep17-list";
+import { ISwapInputState, ITokenState } from "./interfaces";
+import { IUserTokenBalances } from "../../../../../common/routers/swap/interfaces";
 
 interface ISwapInputsProps {
-  network: INetworkType;
   tokenA?: ITokenState;
   tokenB?: ITokenState;
   amountA?: number;
   amountB?: number;
+  balances?: IUserTokenBalances;
+  swapInput?: ISwapInputState;
+  isAmountALoading: boolean;
+  isAmountBLoading: boolean;
+  noLiquidity?: boolean;
+  inputError?: string;
   onAssetChange: (type: "A" | "B") => void;
   onSwitch: () => void;
-  setAmountA: (val?: number) => void;
-  setAmountB: (val?: number) => void;
-  noLiquidity?: boolean;
-  userTokenABalance?: number;
-  userTokenBBalance?: number;
-  setSwapType: (type: "AtoB" | "BtoA") => void;
-}
-
-interface ISearchTerm {
-  type: "A" | "B";
-  value?: number;
+  setSwapInputChange: (val: ISwapInputState) => void;
 }
 
 const SwapInputs = ({
-  setSwapType,
-  network,
   tokenA,
   tokenB,
-  onAssetChange,
   amountA,
   amountB,
-  onSwitch,
-  userTokenABalance,
-  userTokenBBalance,
-  setAmountA,
-  setAmountB,
+  balances,
+  swapInput,
+  isAmountALoading,
+  isAmountBLoading,
   noLiquidity,
+  inputError,
+  onSwitch,
+  setSwapInputChange,
+  onAssetChange
 }: ISwapInputsProps) => {
-  const [searchTerm, setSearchTerm] = useState<ISearchTerm>();
-  const [isAmountALoading, setAmountALoading] = useState(false);
-  const [isAmountBLoading, setAmountBLoading] = useState(false);
+  const amountAOverflow = !!(
+    swapInput &&
+    swapInput.type === "A" &&
+    amountA &&
+    balances &&
+    amountA > parseFloat(balances.amountA)
+  );
 
-  useEffect(() => {
-    if (tokenA && tokenB && searchTerm && searchTerm.value) {
-      const bNEOHash = BNEO_SCRIPT_HASH[network];
+  // ||
+  // !!(
+  //   swapInput &&
+  //   swapInput.type === "B" &&
+  //   amountA &&
+  //   balances &&
+  //   amountA > parseFloat(balances.amountA)
+  // );
 
-      if (
-        (tokenA.hash === NEO_SCRIPT_HASH && tokenB.hash === bNEOHash) ||
-        (tokenA.hash === bNEOHash && tokenB.hash === NEO_SCRIPT_HASH)
-      ) {
-        if (searchTerm.type === "A") {
-          setAmountB(searchTerm.value);
-        } else {
-          setAmountA(searchTerm.value);
-        }
-      } else {
+  const amountBOverflow = !!(
+    swapInput &&
+    swapInput.type === "B" &&
+    amountB &&
+    balances &&
+    amountB > parseFloat(balances.amountB)
+  );
 
-	      const delayDebounceFn = setTimeout(async () => {
-		      if (searchTerm.type === "A") {
-			      setAmountBLoading(true);
-		      } else {
-			      setAmountALoading(true);
-		      }
-
-		      let estimated;
-
-		      const tokenAHash =
-			      tokenA.hash === NEO_SCRIPT_HASH
-				      ? BNEO_SCRIPT_HASH[network]
-				      : tokenA.hash;
-
-		      const tokenBHash =
-			      tokenB.hash === NEO_SCRIPT_HASH
-				      ? BNEO_SCRIPT_HASH[network]
-				      : tokenB.hash;
-
-		      if (searchTerm.type === "A") {
-			      estimated = await new SwapContract(network).getSwapEstimate(
-				      tokenAHash,
-				      tokenBHash,
-				      tokenAHash,
-				      tokenA.hash === NEO_SCRIPT_HASH ? 8 : tokenA.decimals,
-				      searchTerm.value
-			      );
-		      } else {
-			      estimated = await new SwapContract(network).getSwapBEstimate(
-				      tokenAHash,
-				      tokenBHash,
-				      tokenB.hash === NEO_SCRIPT_HASH ? 8 : tokenB.decimals,
-				      searchTerm.value
-			      );
-		      }
-		      if (searchTerm.type === "A") {
-			      setAmountBLoading(false);
-			      setAmountB(+estimated);
-		      } else {
-			      setAmountALoading(false);
-			      setAmountA(+estimated);
-		      }
-	      }, 800);
-
-	      return () => clearTimeout(delayDebounceFn);
-      }
-    }
-
-  }, [searchTerm]);
+  // ||
+  // !!(
+  //   swapInput &&
+  //   swapInput.type === "B" &&
+  //   amountB &&
+  //   balances &&
+  //   amountB > parseFloat(balances.amountB)
+  // );
 
   return (
     <div className="pb-2">
       <Input
         contractHash={tokenA ? tokenA.hash : ""}
         symbol={tokenA ? tokenA.symbol : undefined}
-        isDisable={
-          !tokenA || !tokenB || noLiquidity || tokenB.hash === NEO_SCRIPT_HASH
-        }
+        logo={tokenA ? tokenA.icon : undefined}
+        isDisable={!tokenA || !tokenB || noLiquidity}
         heading="Sell"
         onClickAsset={() => onAssetChange("A")}
         val={amountA}
         setValue={(value) => {
-          setAmountA(value);
-          setSearchTerm({
+          setSwapInputChange({
             type: "A",
-            value,
+            value
           });
-          setSwapType("AtoB");
         }}
-        decimals={tokenA ? tokenA.decimals : userTokenABalance}
-        userBalance={userTokenABalance}
+        decimals={tokenA ? tokenA.decimals : 0}
+        userBalance={balances ? parseFloat(balances.amountA) : undefined}
         isLoading={isAmountALoading}
-        balanceOverflow={
-          !!(amountA && userTokenABalance && amountA > userTokenABalance)
-        }
-        errorMessage={
-          tokenA &&
-          tokenA.hash === GAS_SCRIPT_HASH &&
-          amountA &&
-          userTokenABalance &&
-          amountA === userTokenABalance
-            ? "You need to have more GAS for a tx fee"
-            : undefined
+        balanceOverflow={amountAOverflow}
+        hasEstimateError={
+          inputError && swapInput && swapInput.type === "A" ? true : false
         }
       />
       <div className="pt-5 pb-5">
@@ -158,25 +101,26 @@ const SwapInputs = ({
       <Input
         contractHash={tokenB ? tokenB.hash : ""}
         symbol={tokenB ? tokenB.symbol : undefined}
-        isDisable={
-          !tokenA || !tokenB || noLiquidity || tokenA.hash === NEO_SCRIPT_HASH
-        }
+        logo={tokenB ? tokenB.icon : undefined}
+        isDisable={!tokenA || !tokenB || noLiquidity}
         heading="Buy"
         onClickAsset={() => {
           onAssetChange("B");
         }}
         val={amountB}
         setValue={(value) => {
-          setAmountB(value);
-          setSearchTerm({
+          setSwapInputChange({
             type: "B",
-            value,
+            value
           });
-          setSwapType("BtoA");
         }}
-        decimals={tokenB ? tokenB.decimals : undefined}
-        userBalance={userTokenBBalance}
+        decimals={tokenB ? tokenB.decimals : 0}
+        userBalance={balances ? parseFloat(balances.amountB) : undefined}
         isLoading={isAmountBLoading}
+        balanceOverflow={amountBOverflow}
+        hasEstimateError={
+          inputError && swapInput && swapInput.type === "B" ? true : false
+        }
       />
     </div>
   );

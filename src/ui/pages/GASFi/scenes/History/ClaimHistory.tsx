@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IClaim } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { useApp } from "../../../../../common/hooks/use-app";
 
@@ -27,7 +27,7 @@ const ClaimHistory = ({ connectedWallet, network }: IClaimHistoryProps) => {
         setData(res);
         setLoading(false);
       } catch (e: any) {
-        console.log(e);
+        console.error(e);
         setError(e.message);
         setLoading(false);
       }

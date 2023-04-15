@@ -1,54 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FARM_V2_STAKE_POSITIONS_PATH } from "../../../../../consts";
-import StakingPairCard from "./StakingPairCard";
-import { useWallet } from "../../../../../packages/provider";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
-import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
-import { IPrices } from "../../../../../packages/neo/api/interfaces";
+import { CHAINS, CONFIGS } from "../../../../../consts/chains";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { Avatar, Space } from "antd";
+import DisplayAPR from "../../components/DisplayAPR";
+import { farmRouter } from "../../../../../common/routers";
+import { NEO_ROUTES } from "../../../../../consts";
+import { INetworkType } from "../../../../../packages/neo/network";
+import { IFarmPair } from "../../../../../common/routers/farm/interfaces";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IStakingMainProps {
-  prices?: IPrices;
+  chain: CHAINS;
+  network: INetworkType;
 }
-const StakingMain = ({ prices }: IStakingMainProps) => {
-  const { network } = useWallet();
+
+const TableHeader = () => (
+  <thead>
+    <tr>
+      <th>Pool</th>
+      <th>Rewards</th>
+      <th>APR</th>
+      <th></th>
+    </tr>
+  </thead>
+);
+
+const StakingMain = () => {
+  const {chain, network} = useApp();
   const [refresh, setRefresh] = useState(0);
-  const [data, setData] = useState<any>();
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const handleRefresh = () => setRefresh(refresh + 1);
-  useEffect(() => {
-    async function fetch() {
-      setError("");
-      setLoading(true);
-      try {
-        const pools = await new FarmV2Contract(network).getPools();
-        setData(pools);
-        setLoading(false);
-      } catch (e: any) {
-        setLoading(false);
-        setError(e.message);
-      }
-    }
-    fetch();
-  }, [refresh, network]);
+
+  const { data, error } = useOnChainData(
+    () => farmRouter.getPoolList(chain, network),
+    [chain, refresh, network]
+  );
+  
+
   return (
     <div>
       <div className="level is-mobile">
         <div className="level-left">
           <div className="level-item">
-            <h1 className="title is-5 ">Double Farm</h1>
+            <Space>
+              <Avatar src={CONFIGS[chain].icon} />
+              <h1 className="title is-5 is-marginless">Farm</h1>
+            </Space>
           </div>
         </div>
         <div className="level-right">
           <div className="level-item">
             <div className="buttons">
               <Link
-                to={FARM_V2_STAKE_POSITIONS_PATH}
+                to={`${NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}`}
                 className="button is-light is-small is-rounded"
               >
-                My positions
+                My staking
               </Link>
             </div>
           </div>
@@ -56,7 +64,7 @@ const StakingMain = ({ prices }: IStakingMainProps) => {
       </div>
       <hr />
       <div>
-        {isLoading ? (
+        {!data ? (
           <div>Loading..</div>
         ) : error ? (
           <ErrorNotificationWithRefresh
@@ -66,26 +74,42 @@ const StakingMain = ({ prices }: IStakingMainProps) => {
         ) : (
           <div className="table-container">
             <table className="table is-fullwidth">
-              <thead>
-                <tr>
-                  <th>Pool</th>
-                  <th>Reward tokens</th>
-                  <th>APR</th>
-                  <th></th>
-                </tr>
-              </thead>
+              <TableHeader />
               <tbody>
-                {data.map((item, i) => (
-                  <StakingPairCard
-                    key={"sc" + i}
-                    {...item}
-                    tokenAPrice={prices ? prices["0x" + item.tokenA] : 0}
-                    tokenBPrice={prices ? prices["0x" + item.tokenB] : 0}
-                    nepPrice={prices ? prices["0x" + NEP_SCRIPT_HASH[network]] : 0}
-                    bonusTokenPrice={
-                      prices ? prices["0x" + item.bonusToken] : 0
-                    }
-                  />
+                {data.map((pair: IFarmPair, i) => (
+                  <tr key={"pool-farm-" + i}>
+                    <td>
+                      <Space>
+                        <Avatar size="small" src={pair.iconA} />
+                        <Avatar size="small" src={pair.iconB} />
+                        <small>
+                          {pair.symbolA} / {pair.symbolB}
+                        </small>
+                      </Space>
+                    </td>
+                    <td>
+                      {`${pair.nepRewardsPerDay} NEP`}
+                      <br />
+                      {pair.hasBonusRewards && (
+                        <>{`${pair.bonusRewardsPerDay} ${pair.bonusTokenSymbol}`}</>
+                      )}
+                    </td>
+                    <td>
+                      <DisplayAPR
+                        chain={chain}
+                        network={network}
+                        pair={pair}
+                      />
+                    </td>
+                    <td className="has-text-right">
+                      <Link
+                        to={`${NEO_ROUTES.FARM_V2_STAKE_PATH}?tokenA=${pair.tokenA}&tokenB=${pair.tokenB}&tokenASymbol=${pair.symbolA}&tokenBSymbol=${pair.symbolB}`}
+                        className="button is-primary is-small"
+                      >
+                        Stake
+                      </Link>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>

@@ -1,41 +1,46 @@
-import React, {useEffect} from "react";
-import PageLayout from "../../components/PageLayout";
-import {
-  SWAP_PATH,
-  SWAP_PATH_HISTORY,
-  SWAP_PATH_LIQUIDITY_ADD,
-  SWAP_PATH_LIQUIDITY_REMOVE,
-  SWAP_PATH_LP_LIST,
-  SWAP_POOL_PATH,
-} from "../../../consts";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
-import Liquidity from "./scenes/AddLiquidity";
-import History from "./scenes/History";
-import Trade from "./scenes/Swap";
-import Pools from "./scenes/PairsFromChain";
+
+import PageLayout from "../../components/Commons/PageLayout";
+import SwapMain from "./scenes/Swap";
+import { SwapContextProvider } from "./scenes/SwapContext";
+import { NEO_ROUTES } from "../../../consts";
+import AddLiquidity from "./scenes/AddLiquidity";
 import RemoveLiquidity from "./scenes/RemoveLiquidity";
-import Providers from "./scenes/Providers";
-import MarketStatus from "./components/CheckMarketStatus";
 
 const Swap = () => {
-	useEffect(() => {
-		document.title =
-			"FTW Swap";
-	}, []);
+  useEffect(() => {
+    document.title = "FTW Swap";
+  }, []);
+
   return (
     <div>
       <PageLayout>
         <div className="columns is-centered">
           <div className="column is-half">
-	          <MarketStatus />
-            <div className="box is-shadowless">
-              <Route exact={true} path={SWAP_PATH} component={Trade} />
-              <Route path={SWAP_POOL_PATH} component={Pools} />
-              <Route path={SWAP_PATH_HISTORY} component={History} />
-              <Route path={SWAP_PATH_LP_LIST} component={Providers} />
-              <Route path={SWAP_PATH_LIQUIDITY_ADD} component={Liquidity} />
+            <div
+              className="box is-shadowless is-relative"
+              style={{ overflow: "hidden" }}
+            >
               <Route
-                path={SWAP_PATH_LIQUIDITY_REMOVE}
+                exact={true}
+                path={NEO_ROUTES.SWAP_PATH}
+                component={() => (
+                  <SwapContextProvider type="swap">
+                    <SwapMain />
+                  </SwapContextProvider>
+                )}
+              />
+              <Route
+                path={NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}
+                component={() => (
+                  <SwapContextProvider type="liquidity">
+                    <AddLiquidity />
+                  </SwapContextProvider>
+                )}
+              />
+              <Route
+                path={NEO_ROUTES.SWAP_PATH_LIQUIDITY_REMOVE}
                 component={RemoveLiquidity}
               />
             </div>

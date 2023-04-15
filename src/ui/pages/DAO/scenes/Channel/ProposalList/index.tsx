@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import { Link, NavLink, useParams } from "react-router-dom";
-import { useWallet } from "../../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import moment from "moment";
 import TextTruncate from "react-text-truncate";
-import { DAO_CHANNEL_PATH } from "../../../../../../consts";
 import ChannelCard from "../../../components/ChannelCard";
-import removeMd  from "remove-markdown";
+import removeMd from "remove-markdown";
+import { NEO_ROUTES } from "../../../../../../consts";
+import { useApp } from "../../../../../../common/hooks/use-app";
 const ProposalList = () => {
   const params = useParams();
   const { contractHash } = params as any;
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [page] = useState("1");
   const { isLoaded, error, data } = useOnChainData(() => {
     return new DaoContract(network).getProposals(contractHash, "30", page);
@@ -35,10 +37,10 @@ const ProposalList = () => {
                         const now = moment().valueOf();
                         const end = item.end;
                         const isActive = now < end;
-												const desc = removeMd(item.description);
+                        const desc = removeMd(item.description);
                         return (
                           <Link
-                            to={`${DAO_CHANNEL_PATH}/${contractHash}/proposal/${item.no}`}
+                            to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}/proposal/${item.no}`}
                             className="panel-block is-block"
                             key={`proposal-${i}`}
                           >
@@ -91,7 +93,7 @@ const ProposalList = () => {
                     <NavLink
                       exact={true}
                       activeClassName={"is-active"}
-                      to={`${DAO_CHANNEL_PATH}/${contractHash}`}
+                      to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
                     >
                       Proposals
                     </NavLink>
@@ -99,7 +101,7 @@ const ProposalList = () => {
                   <li>
                     <NavLink
                       activeClassName={"is-active"}
-                      to={`${DAO_CHANNEL_PATH}/${contractHash}/create`}
+                      to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}/create`}
                     >
                       New proposal
                     </NavLink>
@@ -110,7 +112,7 @@ const ProposalList = () => {
                     <li>
                       <NavLink
                         activeClassName={"is-active"}
-                        to={`${DAO_CHANNEL_PATH}/${contractHash}/edit`}
+                        to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}/edit`}
                       >
                         Edit channel
                       </NavLink>

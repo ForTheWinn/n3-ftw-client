@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { INetworkType } from "../../../../../../packages/neo/network";
 import { RestAPI } from "../../../../../../packages/neo/api";
 import { withDecimal } from "../../../../../../packages/neo/utils";
 import TruncatedAddress from "../../../../../components/TruncatedAddress";
-import Pagination from "bulma-pagination-react";
+import { Pagination } from "antd";
 import moment from "moment";
-import { MAINNET_TOKEN_LIST } from "../../../../../../packages/neo/contracts/ftw/swap/mainnet-token-list";
+import { MAINNET_TOKEN_LIST } from "../../../../../../packages/neo/consts/mainnet-token-list";
+import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 
 interface ISwapHistoryProps {
   id: string;
@@ -13,24 +14,11 @@ interface ISwapHistoryProps {
 }
 const SwapHistory = ({ network, id }: ISwapHistoryProps) => {
   const [page, setPage] = useState(1);
-  const [data, setData] = useState<any>();
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  useEffect(() => {
-    async function fetch() {
-      setError("");
-      setLoading(true);
-      try {
-        const res = await new RestAPI(network).getSingleSwapHistory(id, page);
-        setData(res);
-        setLoading(false);
-      } catch (e: any) {
-        setError(e.message);
-        setLoading(false);
-      }
-    }
-    fetch();
+
+  const { data } = useOnChainData(() => {
+    return new RestAPI(network).getSingleSwapHistory(id, page);
   }, [network, page]);
+
   return (
     <div>
       <div className="table-container">
@@ -44,31 +32,26 @@ const SwapHistory = ({ network, id }: ISwapHistoryProps) => {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan={4}>Loading..</td>
-              </tr>
-            ) : error ? (
-              <div>{error}</div>
-            ) : data ? (
+            {data ? (
               data.items.length > 0 ? (
                 data.items.map((swap, i) => {
-                  const tokenIn = MAINNET_TOKEN_LIST[swap.base_id.substring(2)];
-                  const tokenOut =
-                    MAINNET_TOKEN_LIST[swap.quote_id.substring(2)];
+                  const tokenIn = MAINNET_TOKEN_LIST[swap.base_id];
+                  const tokenOut = MAINNET_TOKEN_LIST[swap.quote_id];
                   return (
                     <tr key={`single-swap-${i}`}>
                       <td>
                         {tokenIn ? (
-                          <>
-                            {withDecimal(
-                              swap.base_amount,
-                              tokenIn.decimals,
-                              true
-                            )}
-                            &nbsp;
-                            <strong>{tokenIn.symbol}</strong>
-                          </>
+                          <div>
+                            <span>
+                              {withDecimal(
+                                swap.base_amount,
+                                tokenIn.decimals,
+                                true
+                              )}
+                            </span>
+
+                            <span className="heading">{tokenIn.symbol}</span>
+                          </div>
                         ) : (
                           <>{swap.base_amount}</>
                         )}
@@ -76,14 +59,12 @@ const SwapHistory = ({ network, id }: ISwapHistoryProps) => {
                       <td>
                         {tokenOut ? (
                           <>
-                            {" "}
                             {withDecimal(
                               swap.quote_amount,
                               tokenOut.decimals,
                               true
                             )}
-                            &nbsp;
-                            <strong>{tokenOut.symbol}</strong>
+                            <span className="heading">{tokenOut.symbol}</span>
                           </>
                         ) : (
                           <>{swap.quote_amount}</>
@@ -102,29 +83,23 @@ const SwapHistory = ({ network, id }: ISwapHistoryProps) => {
                 </tr>
               )
             ) : (
-              <tr>
-                <td>Something went wrong</td>
-              </tr>
+              <></>
             )}
           </tbody>
-          {data && data.totalPages > 1 && (
-            <tfoot>
-              <tr>
-                <td colSpan={6}>
-                  <Pagination
-                    pages={data.totalPages}
-                    currentPage={page}
-                    onChange={(_page) => {
-                      if (page !== _page) {
-                        setPage(_page);
-                      }
-                    }}
-                  />
-                </td>
-              </tr>
-            </tfoot>
-          )}
         </table>
+        {data && data.totalPages > 1 && (
+          <Pagination
+            current={page}
+            pageSize={data.perPage}
+            total={data.totalItems}
+            showSizeChanger={false}
+            onChange={(_page) => {
+              if (page !== _page) {
+                setPage(_page);
+              }
+            }}
+          />
+        )}
       </div>
     </div>
   );

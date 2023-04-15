@@ -1,10 +1,10 @@
 import { sc, u, wallet } from "@cityofzion/neon-core";
 import { BigNumber } from "@ethersproject/bignumber";
 import moment from "moment";
-import { IBalance } from "../wallet/interfaces";
+import { IBalance } from "../wallets/interfaces";
 import {
   StackItemLike,
-  StackItemMap,
+  StackItemMap
 } from "@cityofzion/neon-core/lib/sc/StackItem";
 
 export const truncateAddress = (address: string) => {
@@ -42,11 +42,17 @@ export const convertContractCallParam = (param: any) => {
   }
 };
 
-export const base64ToAddress = (str: string): string =>
-  wallet.getAddressFromScriptHash(base64ToHash160(str));
+export const base64ToAddress = (str: string): string => {
+  try {
+    const hash = base64ToHash160(str);
+    return wallet.getAddressFromScriptHash(hash);
+  } catch (e) {
+    return "";
+  }
+};
 
 export const base64ToHash160 = (str: string): string =>
-  u.reverseHex(u.base642hex(str));
+  "0x" + u.reverseHex(u.base642hex(str));
 
 export const base64ToString = (str: string): string =>
   u.HexString.fromBase64(str).toAscii().toString();
@@ -138,7 +144,7 @@ const stringList = [
   "image",
   "1_tokenId",
   "2_tokenId",
-  "3_tokenId",
+  "3_tokenId"
 ];
 const addressList = ["owner", "account", "creator", "receiver"];
 const hash160List = [
@@ -148,7 +154,7 @@ const hash160List = [
   "tokenIn",
   "tokenOut",
   "bonusToken",
-  "bonusTokenHash",
+  "bonusTokenHash"
 ];
 const dateList = ["createdAt", "1_createdAt", "2_createdAt", "3_createdAt"];
 const intList = [
@@ -193,6 +199,7 @@ const intList = [
   "totalPosition",
   "claimableAmount",
   "estimated",
+  "sharesPercentage"
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {

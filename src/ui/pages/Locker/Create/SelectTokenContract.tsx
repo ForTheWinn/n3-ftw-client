@@ -1,7 +1,9 @@
 import React from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
-import AssetListModal from "../../Swap/components/AssetListModal";
+import { ITokenState } from "../../Swap/scenes/Swap/interfaces";
 import { IContractState } from "./index";
+import TokenList from "../../../components/Commons/TokenList";
+import { useApp } from "../../../../common/hooks/use-app";
 
 interface ISelectTokenContractProps {
   contract?: IContractState;
@@ -9,8 +11,9 @@ interface ISelectTokenContractProps {
 }
 const SelectTokenContract = ({
   contract,
-  onContractChange,
+  onContractChange
 }: ISelectTokenContractProps) => {
+  const { chain, network } = useApp();
   const [isModalActive, setModalActive] = React.useState(false);
   return (
     <div className="field">
@@ -48,19 +51,17 @@ const SelectTokenContract = ({
       )}
 
       {isModalActive ? (
-        <AssetListModal
+        <TokenList
+          chain={chain}
+          network={network}
           activeTokenInput={"A"}
           tokenAHash={undefined}
           tokenBHash={undefined}
-          onAssetClick={(
-            assetHash: string,
-            symbol: string,
-            decimals: number
-          ) => {
+          onAssetClick={(token: ITokenState) => {
             onContractChange({
-              assetHash,
-              symbol,
-              decimals,
+              assetHash: token.hash,
+              symbol: token.symbol,
+              decimals: token.decimals
             });
             setModalActive(false);
           }}

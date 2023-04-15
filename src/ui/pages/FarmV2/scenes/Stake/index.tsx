@@ -1,66 +1,48 @@
 import React, { useState } from "react";
-import { FARM_V2_PATH} from "../../../../../consts";
-import HeaderBetween from "../../../../components/HeaderBetween";
-import { useWallet } from "../../../../../packages/provider";
-import { toast } from "react-hot-toast";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import HeaderBetween from "../../../../components/Commons/HeaderBetween";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenList from "./LPTokenList";
-import { handleError } from "../../../../../packages/neo/utils/errors";
-import {FarmV2Contract} from "../../../../../packages/neo/contracts/ftw/farm-v2";
+import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
+import { CHAINS } from "../../../../../consts/chains";
+import { INetworkType } from "../../../../../packages/neo/network";
+import { farmRouter } from "../../../../../common/routers";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { NEO_ROUTES } from "../../../../../consts";
 
-const Stake = ({ onRefresh }) => {
-  const { network, connectedWallet } = useWallet();
-  const [txid, setTxid] = useState("");
+
+const Stake = () => {
+  const { setTxid, chain, network } = useApp();
+  const { connectedWallet } = useNeoWallets();
+  const { isConnected, address } = useWalletRouter(chain);
   const [refresh, setRefresh] = useState(0);
 
-  const onStakeLP = async (tokenId) => {
-    if (connectedWallet) {
-      try {
-        const res = await new FarmV2Contract(network).stake(
-          connectedWallet,
-          tokenId
-        );
-        setTxid(res);
-      } catch (e: any) {
-        toast.error(handleError(e));
-      }
-    } else {
-      toast.error("Please connect wallet");
-    }
+  const onStake = async (tokenId: string) => {
+    const txid = await farmRouter.stakeLPToken(
+      chain,
+      network,
+      tokenId,
+      address,
+      connectedWallet
+    );
+    setTxid(txid);
   };
 
-  const onSuccess = () => {
-    onRefresh();
-    setRefresh(refresh + 1);
-    setTxid("");
-  };
   return (
     <div>
-      <HeaderBetween path={FARM_V2_PATH} title={`Stake LP tokens`} />
+      <HeaderBetween path={NEO_ROUTES.FARM_V2_PATH} title={`Stake LP tokens`} />
       <hr />
-      {connectedWallet ? (
+      {isConnected ? (
         <LPTokenList
+          chain={chain}
           refresh={refresh}
-          connectedWallet={connectedWallet}
+          address={address}
           network={network}
-          onStakeLP={onStakeLP}
+          onStake={onStake}
           onRefresh={() => setRefresh(refresh + 1)}
         />
       ) : (
         <ConnectWalletButton />
-      )}
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
       )}
     </div>
   );

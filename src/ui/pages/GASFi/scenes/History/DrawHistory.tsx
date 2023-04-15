@@ -6,9 +6,10 @@ import { IDrawsResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/i
 import { withDecimal } from "../../../../../packages/neo/utils";
 import moment from "moment";
 import { IMainData } from "../Main";
-import { IConnectedWallet } from "../../../../../packages/neo/wallet/interfaces";
+import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
 export interface IDrawHistoryProps {
   network: INetworkType;
@@ -24,22 +25,6 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
   const [page, setPage] = useState(1);
   const [txid, setTxid] = useState("");
 
-  // const onClaim = async (drawNo: number) => {
-  //   if (connectedWallet) {
-  //     try {
-  //       const tx = await new GasFiContract(network).claim(
-  //         connectedWallet,
-  //         drawNo
-  //       );
-  //       setTxid(tx);
-  //     } catch (e: any) {
-  //       toast.error(e.message);
-  //     }
-  //   } else {
-  //     // toggleWalletSidebar();
-  //   }
-  // };
-
   const handleSuccess = () => {
     setTxid("");
   };
@@ -52,7 +37,7 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
         setDrawHistory(res);
         setLoading(false);
       } catch (e: any) {
-        console.log(e);
+        console.error(e);
         setError(e.message);
         setLoading(false);
       }
@@ -90,23 +75,6 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
                         <>{`${withDecimal(item.totalReward, 8, true)} GAS`}</>
                       </td>
                       <td>{moment(item.createdAt).format("lll")}</td>
-                      {/*{data && data.staking ? (*/}
-                      {/*  <td>*/}
-                      {/*    {data.staking.startAt <= item.drawNo &&*/}
-                      {/*    data.staking.position === item.position ? (*/}
-                      {/*      <button*/}
-                      {/*        onClick={() => onClaim(item.drawNo)}*/}
-                      {/*        className="button is-small is-primary"*/}
-                      {/*      >*/}
-                      {/*        Claim*/}
-                      {/*      </button>*/}
-                      {/*    ) : (*/}
-                      {/*      <div></div>*/}
-                      {/*    )}*/}
-                      {/*  </td>*/}
-                      {/*) : (*/}
-                      {/*  <></>*/}
-                      {/*)}*/}
                     </tr>
                   );
                 })
@@ -117,7 +85,7 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
               )
             ) : (
               <tr>
-                <td>Something went wrong</td>
+                <td>{WENT_WRONG}</td>
               </tr>
             )}
           </tbody>

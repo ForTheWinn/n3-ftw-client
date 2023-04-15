@@ -1,50 +1,30 @@
 import React from "react";
-import LogoIcon from "./LogoIcon";
-import { ASSET_LIST } from "../../packages/neo/contracts/ftw/swap/consts";
-import { UNKNOWN_TOKEN_IMAGE } from "../../packages/neo/consts";
 import { INetworkType } from "../../packages/neo/network";
+import { UNKNOWN_TOKEN_IMAGE } from "../../consts/global";
+import { CHAINS } from "../../consts";
+import { TOKEN_LIST } from "../../consts/tokens";
+import { Avatar, Space } from "antd";
 
 interface IPairIconsProps {
   network: INetworkType;
   tokenA: string;
   tokenB: string;
-  width?: string;
-  height?: string;
+  chain: CHAINS.CHAINS;
 }
-const PairIcons = ({
-  network,
-  tokenA,
-  tokenB,
-  width,
-  height,
-}: IPairIconsProps) => {
-  let token1 = ASSET_LIST[network][tokenA]
-    ? ASSET_LIST[network][tokenA]
-    : undefined;
+const PairIcons = ({ network, tokenA, tokenB, chain }: IPairIconsProps) => {
+  let token1 = TOKEN_LIST[chain][network][tokenA]
+    ? TOKEN_LIST[chain][network][tokenA].icon
+    : UNKNOWN_TOKEN_IMAGE;
 
-  let token2 = ASSET_LIST[network][tokenB]
-    ? ASSET_LIST[network][tokenB]
-    : undefined;
-
-  // if (token2 && token2.contractHash === NEP_SCRIPT_HASH[network]) {
-  //   const _token1 = token1;
-  //   token1 = token2;
-  //   token2 = _token1;
-  // }
+  let token2 = TOKEN_LIST[chain][network][tokenB]
+    ? TOKEN_LIST[chain][network][tokenB].icon
+    : UNKNOWN_TOKEN_IMAGE;
 
   return (
-    <div className="is-flex">
-      <LogoIcon
-        width={width}
-        height={width}
-        img={token1 && token1.logo ? token1.logo : UNKNOWN_TOKEN_IMAGE}
-      />
-      <LogoIcon
-        width={width}
-        height={width}
-        img={token2 && token2.logo ? token2.logo : UNKNOWN_TOKEN_IMAGE}
-      />
-    </div>
+    <Space>
+      <Avatar size={"small"} src={token1} />
+      <Avatar size={"small"} src={token2} />
+    </Space>
   );
 };
 

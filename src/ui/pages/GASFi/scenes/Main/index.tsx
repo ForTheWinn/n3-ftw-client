@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import StakeHeader from "./StakeHeader";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import {
   IClaimableResult,
   IStakeResult,
-  IStatusResult,
+  IStatusResult
 } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
-import Countdown from "react-countdown";
-import DrawBtn from "./DrawBtn";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import History from "../History";
-import moment from "moment";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 export interface IMainData {
   status: IStatusResult;
@@ -23,9 +21,9 @@ export interface IMainData {
   bNEOBalance?: number;
 }
 
-
 const Main = (props) => {
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IMainData | undefined>(undefined);
   const [error, setError] = useState();
@@ -57,7 +55,7 @@ const Main = (props) => {
         setData(res);
         setLoading(false);
       } catch (e: any) {
-        console.log(e);
+        console.error(e);
         setError(e.message);
         setLoading(false);
       }
@@ -103,7 +101,7 @@ const Main = (props) => {
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      alignItems: "center",
+                      alignItems: "center"
                     }}
                   >
                     <div>
@@ -125,7 +123,7 @@ const Main = (props) => {
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      alignItems: "center",
+                      alignItems: "center"
                     }}
                   >
                     <button
@@ -146,7 +144,7 @@ const Main = (props) => {
           )}
 
           <div className="box is-shadowless">
-	          <h6 className="title is-6">History</h6>
+            <h6 className="title is-6">History</h6>
             {/*<div className="level">*/}
             {/*  <div className="level-left">*/}
             {/*    <div className="level-item">*/}

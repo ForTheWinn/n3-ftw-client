@@ -1,8 +1,9 @@
-import { CONST } from "..";
+import { GLOBAL } from "../../../consts";
+
+const { MAINNET, TESTNET } = GLOBAL;
 
 export const ENDPOINT = {
-  [CONST.PRIVATENET]: "http://localhost:3000",
-  [CONST.TESTNET]: "https://api.forthewin.network/testnet",
-  [CONST.MAINNET]: "https://api.forthewin.network/mainnet",
+  [TESTNET]: "https://api.forthewin.network/testnet",
+  [MAINNET]: "https://api.forthewin.network/mainnet"
   // [CONST.MAINNET]: "http://localhost:3000/mainnet",
 };

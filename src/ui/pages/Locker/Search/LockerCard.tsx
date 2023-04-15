@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { u } from "@cityofzion/neon-core";
-import { useWallet } from "../../../../packages/provider";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import {
   ILocker,
-  ILockerContract,
+  ILockerContract
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { FaLock, FaUnlock } from "react-icons/fa";
 import CountdownRender from "../components/CountdownRender";
+import { useApp } from "../../../../common/hooks/use-app";
+import { truncateAddress } from "../../../../packages/neo/utils";
 
 interface ILockerByUserCardProps extends ILocker {}
 
 const LockerCard = (locker: ILockerByUserCardProps) => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const [data, setData] = useState<ILockerContract | undefined>();
   const releaseAt = moment.unix(locker.releaseAt / 1000);
 
@@ -33,7 +34,7 @@ const LockerCard = (locker: ILockerByUserCardProps) => {
   return (
     <tr key={locker.lockerNo}>
       <td>{locker.lockerNo}</td>
-      <td>{locker.contractHash}</td>
+      <td>{truncateAddress(locker.contractHash)}</td>
       <td>{data ? data.symbol : ""}</td>
       <td>
         {data

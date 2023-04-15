@@ -1,65 +1,75 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
-import { SwapContract } from "../../../../../packages/neo/contracts";
-import { toast } from "react-hot-toast";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
-import HeaderBetween from "../../../../components/HeaderBetween";
-import { SWAP_PATH } from "../../../../../consts";
-import LPTokenList from "./LPTokenList";
+import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
-import {handleError} from "../../../../../packages/neo/utils/errors";
+import LPTokenCard from "../../../../components/LPTokenCard";
+import RemoveLiquidityModal from "./RemoveLiquidityModal";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { NEO_ROUTES } from "../../../../../consts";
+import { swapRouter } from "../../../../../common/routers";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 
 const RemoveLiquidity = () => {
-  const { network, connectedWallet } = useWallet();
-  const [txid, setTxid] = useState("");
-  const [refresh, setRefresh] = useState(0);
+  const { network, chain, refreshCount, increaseRefreshCount } = useApp();
+  const { isConnected, address } = useWalletRouter(chain);
 
-  const onRemoveLiquidity = async (tokenId: string) => {
-    if (connectedWallet) {
-      try {
-        const res = await new SwapContract(network).remove(
-          connectedWallet,
-          tokenId
-        );
-        setTxid(res);
-      } catch (e: any) {
-	      toast.error(handleError(e));
-      }
-    } else {
-      toast.error("Please connect wallet");
-    }
+  const [tokenIdForInvoke, setTokenIdForInvoke] = useState<
+    string | undefined
+  >();
+
+  const onReset = () => {
+    increaseRefreshCount();
+    setTokenIdForInvoke(undefined);
   };
-
-  const onSuccess = () => {
-    setRefresh(refresh + 1);
-    setTxid("");
-  };
-
+  const { isLoaded, error, data } = useOnChainData(
+    () => swapRouter.getLPTokens(chain, network, address),
+    [address, network, refreshCount]
+  );
   return (
     <>
-      <HeaderBetween path={SWAP_PATH} title={"Withdraw liquidity"} />
+      <HeaderBetween path={NEO_ROUTES.SWAP_PATH} title={"Withdraw liquidity"} />
       <hr />
-      {connectedWallet ? (
-        <LPTokenList
-          connectedWallet={connectedWallet}
-          network={network}
-          refresh={refresh}
-          onRemoveLiquidity={onRemoveLiquidity}
-        />
+      {isConnected ? (
+        <>
+          {!isLoaded ? (
+            <div>Loading..</div>
+          ) : data.length > 0 ? (
+            data.map((token) => {
+              return (
+                <div key={token.tokenId} className="media">
+                  <div className="media-content">
+                    <LPTokenCard {...token} />
+                  </div>
+                  <div className="media-right">
+                    <button
+                      onClick={() => setTokenIdForInvoke(token.tokenId)}
+                      className="button is-light is-small"
+                    >
+                      Withdraw
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div>Your wallet doesn't have any LP tokens.</div>
+          )}
+        </>
       ) : (
         <ConnectWalletButton />
       )}
 
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
+      {address && tokenIdForInvoke ? (
+        <RemoveLiquidityModal
+          chain={chain}
+          network={network}
+          address={address}
+          tokenId={tokenIdForInvoke}
+          onSuccess={onReset}
+          onCancel={onReset}
+        />
+      ) : (
+        <></>
       )}
     </>
   );

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../packages/provider";
+import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import toast from "react-hot-toast";
 import Modal from "../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
 import DatePicker from "react-datepicker";
 import SelectTokenContract from "./SelectTokenContract";
 import NumberFormat from "react-number-format";
@@ -10,12 +10,11 @@ import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import moment from "moment";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { LOCKER_USER_PATH } from "../../../../consts";
 import { wallet } from "@cityofzion/neon-core";
 import { SmithContract } from "../../../../packages/neo/contracts/ftw/smith";
 import { LOCKER_NEP_FEE } from "../../../../packages/neo/contracts/ftw/locker/consts";
-// import MDEditor from "@uiw/react-md-editor";
-// import rehypeSanitize from "rehype-sanitize";
+import { NEO_ROUTES } from "../../../../consts";
+import { useApp } from "../../../../common/hooks/use-app";
 
 export interface IContractState {
   assetHash: string;
@@ -27,7 +26,8 @@ const Create = () => {
   const location = useLocation();
   const history = useHistory();
   const params = queryString.parse(location.search);
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [contract, setContractHash] = useState<IContractState | undefined>(
     undefined
   );
@@ -49,7 +49,7 @@ const Create = () => {
     nepBalance: number;
   }>({
     gasBalance: 0,
-    nepBalance: 0,
+    nepBalance: 0
   });
 
   const onSubmit = async () => {
@@ -95,7 +95,9 @@ const Create = () => {
 
   const onSuccess = () => {
     if (connectedWallet) {
-      history.push(`${LOCKER_USER_PATH}/${connectedWallet.account.address}`);
+      history.push(
+        `${NEO_ROUTES.LOCKER_USER_PATH}/${connectedWallet.account.address}`
+      );
     }
   };
 
@@ -113,7 +115,7 @@ const Create = () => {
           setContractHash({
             assetHash: contract.contractHash,
             decimals: contract.decimals,
-            symbol: contract.symbol,
+            symbol: contract.symbol
           });
         }
 

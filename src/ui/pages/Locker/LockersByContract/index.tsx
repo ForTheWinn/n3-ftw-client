@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useWallet } from "../../../../packages/provider";
 import Pagination from "bulma-pagination-react";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import {
   ILockerContract,
-  ILockersByToken,
+  ILockersByToken
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { FaPlus } from "react-icons/fa";
-import { LOCKER_CREATE_PATH } from "../../../../consts";
 import LockerCard from "./LockerCard";
+import { NEO_ROUTES } from "../../../../consts";
+import { useApp } from "../../../../common/hooks/use-app";
 
 const LockersByContract = () => {
-  const { network } = useWallet();
+  const { network } = useApp();
   const [page, setPage] = useState(1);
   const params = useParams();
   const { contractHash } = params as any;
@@ -33,7 +33,7 @@ const LockersByContract = () => {
         );
         setData({
           contract,
-          items,
+          items
         });
       } catch (e: any) {
         console.error(e);
@@ -59,7 +59,7 @@ const LockersByContract = () => {
                   <div className="level-item">
                     <div className="buttons">
                       <Link
-                        to={`${LOCKER_CREATE_PATH}?contractHash=${data.contract.contractHash}`}
+                        to={`${NEO_ROUTES.LOCKER_CREATE_PATH}?contractHash=${data.contract.contractHash}`}
                         className="button is-white"
                       >
                         <FaPlus />

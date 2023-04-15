@@ -4,30 +4,40 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { DISPLAY_OPTIONS, REALTIME } from "./consts";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import RewardsInRange from "./RewardsInRange";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/nep17-list";
+import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
 import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
+
+import { Radio, Divider } from "antd";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { globalRouter } from "../../../../../common/routers";
+import { CHAINS } from "../../../../../consts";
+
 interface IClaimListProps {
   bonus: number;
+  chain: CHAINS.CHAINS;
   network: INetworkType;
   isClaimNode: boolean;
   handleToggle: (item: any) => void;
   selectedItems: any[];
-  prices?: IPrices;
   rewards: IClaimableRewards[];
 }
 const ClaimList = ({
   bonus,
+  chain,
   network,
   isClaimNode,
   handleToggle,
   selectedItems,
-  prices,
-  rewards,
+  rewards
 }: IClaimListProps) => {
   const [rewardDisplayType, setRewardDisplayType] = useState<string>(REALTIME);
+  const { data, error } = useOnChainData(() => {
+    return globalRouter.getPrices(chain);
+  }, [chain]);
+  const prices: IPrices = data;
   return (
     <>
-      {rewards.map((item, i) => {
+      {rewards.map((item: IClaimableRewards, i) => {
         let isSelected = false;
         selectedItems.forEach((_item) => {
           if (item.tokenA === _item.tokenA && item.tokenB === _item.tokenB) {
@@ -35,7 +45,7 @@ const ClaimList = ({
           }
         });
         return (
-          <div key={`claim-${i}`} className="media">
+          <div key={`claimlist-${i}`} className="media">
             {isClaimNode && (
               <div className="media-left">
                 <input
@@ -67,7 +77,7 @@ const ClaimList = ({
                           tokensStaked={item.tokensStaked}
                           share={item.share}
                           pricePerToken={
-                            prices ? prices["0x" + NEP_SCRIPT_HASH[network]] : 0
+                            prices ? prices[NEP_SCRIPT_HASH[network]] : 0
                           }
                         />
                       ) : (
@@ -80,13 +90,13 @@ const ClaimList = ({
                           tokensStaked={item.tokensStaked}
                           share={item.share}
                           pricePerToken={
-                            prices ? prices["0x" + NEP_SCRIPT_HASH[network]] : 0
+                            prices ? prices[+NEP_SCRIPT_HASH[network]] : 0
                           }
                         />
                       )}
                     </small>
 
-                    {item.bonusTokensPerSecond > 0 ? (
+                    {parseFloat(item.bonusTokensPerSecond) > 0 ? (
                       <div className="mt-2">
                         <small>
                           {rewardDisplayType === REALTIME ? (
@@ -98,7 +108,7 @@ const ClaimList = ({
                               tokensStaked={item.tokensStaked}
                               share={item.share}
                               pricePerToken={
-                                prices ? prices["0x" + item.bonusTokenHash] : 0
+                                prices ? prices[item.bonusTokenHash] : 0
                               }
                             />
                           ) : (
@@ -111,7 +121,7 @@ const ClaimList = ({
                               tokensStaked={item.tokensStaked}
                               share={item.share}
                               pricePerToken={
-                                prices ? prices["0x" + item.bonusTokenHash] : 0
+                                prices ? prices[item.bonusTokenHash] : 0
                               }
                             />
                           )}
@@ -129,31 +139,33 @@ const ClaimList = ({
       })}
 
       {rewards.length > 0 ? (
-        <div className="media" style={{ alignItems: "center" }}>
-          <div className="media-left is-hidden-mobile">
-            <span className="has-text-weight-medium">Estimate</span>
-          </div>
-          <div className="media-content">
-            <div className="field has-addons is-fullwidth">
-              {DISPLAY_OPTIONS.map((op) => {
-                return (
-                  <p className="control">
-                    <button
-                      onClick={() => setRewardDisplayType(op.val)}
-                      className={`button is-small ${
-                        rewardDisplayType === op.val
-                          ? "is-active is-success is-light"
-                          : ""
-                      }`}
-                    >
-                      <span>{op.label}</span>
-                    </button>
-                  </p>
-                );
-              })}
+        <>
+          <Divider />
+          <div className="level">
+            <div className="level-left is-hidden-mobile">
+              <div className="level-item">
+                <strong>Estimate</strong>
+              </div>
+            </div>
+            <div className="level-right">
+              <div className="level-item">
+                <Radio.Group
+                  size="small"
+                  value={rewardDisplayType}
+                  onChange={(e) => setRewardDisplayType(e.target.value)}
+                >
+                  {DISPLAY_OPTIONS.map((op) => {
+                    return (
+                      <Radio.Button key={op.val} value={op.val}>
+                        {op.label}
+                      </Radio.Button>
+                    );
+                  })}
+                </Radio.Group>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       ) : (
         <></>
       )}

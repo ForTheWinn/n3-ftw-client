@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { TournamentContract } from "../../../../../../packages/neo/contracts/ftw/arena";
 import DisplayRuneWithProperties from "../../../components/DisplayRuneWithProperties";
 import PlayerModal from "./components/PlayerModal";
 import { IRuneMeta } from "../../../../../../packages/neo/contracts/ftw/rune/interfaces";
 import RegisterButton from "./components/ArenaRegisterButton";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 const Players = ({ arenaNo, gameNo }: { arenaNo: string; gameNo?: number }) => {
   const [playerModalActive, setPlayerModalActive] = useState<
@@ -15,7 +16,8 @@ const Players = ({ arenaNo, gameNo }: { arenaNo: string; gameNo?: number }) => {
   const [players, setPlayers] = useState<any>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
 
   useEffect(() => {
     async function fetchContractStatus() {

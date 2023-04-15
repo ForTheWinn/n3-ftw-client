@@ -1,11 +1,12 @@
 import React from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
-import {FarmV2Contract} from "../../../../../packages/neo/contracts/ftw/farm-v2";
+import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const MarketStatus = () => {
-  const { network, connectedWallet } = useWallet();
+  const { connectedWallet } = useNeoWallets();
+  const { network } = useApp();
   const { isLoaded, data } = useOnChainData(() => {
     return new FarmV2Contract(network).getMarketStatus();
   }, [connectedWallet, network]);

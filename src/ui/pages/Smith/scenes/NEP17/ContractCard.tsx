@@ -1,10 +1,8 @@
 import React from "react";
 import { ISmithNEP17Record } from "../../../../../packages/neo/contracts/ftw/smith/interfaces";
-import {
-  UNKNOWN_TOKEN_IMAGE,
-} from "../../../../../packages/neo/consts";
 import { Link } from "react-router-dom";
-import { SMITH_CONTRACT_NEP17_PATH } from "../../../../../consts";
+import { NEO_ROUTES } from "../../../../../consts";
+import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 
 interface IContractCardProps {
   data: ISmithNEP17Record;
@@ -13,7 +11,7 @@ const ContractCard = ({ data }: IContractCardProps) => {
   const manifest = data.manifest ? JSON.parse(data.manifest) : {};
   return (
     <div>
-      <Link to={`${SMITH_CONTRACT_NEP17_PATH}/${data.contractHash}`}>
+      <Link to={`${NEO_ROUTES.SMITH_CONTRACT_NEP17_PATH}/${data.contractHash}`}>
         <div className="has-text-centered">
           <div
             className="image mb-3"

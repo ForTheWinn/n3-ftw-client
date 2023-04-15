@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
-import { useWallet } from "../../../packages/provider";
-import { NFTContract } from "../../../packages/neo/contracts";
 import { IBoy } from "../../../packages/neo/contracts/ftw/boyz/interface";
 import { BoyzContract } from "../../../packages/neo/contracts/ftw/boyz";
+import { useApp } from "../../../common/hooks/use-app";
 
 interface IPropertiesModal {
   data: IBoy;
@@ -16,14 +15,14 @@ const boxStyle = {
   margin: "auto",
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
+  alignItems: "center"
 };
 
 const PropertiesModal = ({ data, onClose }: IPropertiesModal) => {
   const [item, setItem] = useState<any>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { network } = useWallet();
+  const { network } = useApp();
 
   useEffect(() => {
     async function fetchContractStatus() {
@@ -42,7 +41,6 @@ const PropertiesModal = ({ data, onClose }: IPropertiesModal) => {
     }
     fetchContractStatus();
   }, [network]);
-  console.log(item);
   return (
     <Modal onClose={onClose}>
       {isLoading ? (
@@ -64,10 +62,14 @@ const PropertiesModal = ({ data, onClose }: IPropertiesModal) => {
               style={{ justifyContent: "center" }}
             >
               <div className="control">
-                <span className="tag is-primary is-light">Bg: {data.background}</span>
+                <span className="tag is-primary is-light">
+                  Bg: {data.background}
+                </span>
               </div>
               <div className="control">
-                <span className="tag is-primary is-light">Body: {data.body}</span>
+                <span className="tag is-primary is-light">
+                  Body: {data.body}
+                </span>
               </div>
               <div className="control">
                 <span className="tag is-primary is-light">
@@ -75,16 +77,24 @@ const PropertiesModal = ({ data, onClose }: IPropertiesModal) => {
                 </span>
               </div>
               <div className="control">
-                <span className="tag is-primary is-light">Eyes: {data.eyes}</span>
+                <span className="tag is-primary is-light">
+                  Eyes: {data.eyes}
+                </span>
               </div>
               <div className="control">
-                <span className="tag is-primary is-light">Head: {data.head}</span>
+                <span className="tag is-primary is-light">
+                  Head: {data.head}
+                </span>
               </div>
               <div className="control">
-                <span className="tag is-primary is-light">Mouth: {data.mouth}</span>
+                <span className="tag is-primary is-light">
+                  Mouth: {data.mouth}
+                </span>
               </div>
               <div className="control">
-                <span className="tag is-primary is-light">Acc: {data.accessory}</span>
+                <span className="tag is-primary is-light">
+                  Acc: {data.accessory}
+                </span>
               </div>
             </div>
           </div>

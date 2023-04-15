@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import ContractCard from "./ContractCard";
 import Pagination from "bulma-pagination-react";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import Banner from "../../Banner";
-import PageLayout from "../../../../components/PageLayout";
-import { SMITH_PATH, SMITH_PATH_NEP11 } from "../../../../../consts";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import { Link, useLocation } from "react-router-dom";
+import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEP17Smith = () => {
   const location = useLocation();
   const [page, setPage] = useState(1);
-  const { connectedWallet, network } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const { isLoaded, error, data } = useOnChainData(() => {
     return new SmithContract(network).getNEP17Records(page);
   }, [connectedWallet, network, page]);
@@ -29,19 +31,23 @@ const NEP17Smith = () => {
                     <ul>
                       <li
                         className={
-                          location.pathname === SMITH_PATH ? "is-active" : ""
-                        }
-                      >
-                        <Link to={SMITH_PATH}>Token Showcase</Link>
-                      </li>
-                      <li
-                        className={
-                          location.pathname === SMITH_PATH_NEP11
+                          location.pathname === NEO_ROUTES.SMITH_PATH
                             ? "is-active"
                             : ""
                         }
                       >
-                        <Link to={SMITH_PATH_NEP11}>&nbsp; NFT Showcase</Link>
+                        <Link to={NEO_ROUTES.SMITH_PATH}>Token Showcase</Link>
+                      </li>
+                      <li
+                        className={
+                          location.pathname === NEO_ROUTES.SMITH_PATH_NEP11
+                            ? "is-active"
+                            : ""
+                        }
+                      >
+                        <Link to={NEO_ROUTES.SMITH_PATH_NEP11}>
+                          &nbsp; NFT Showcase
+                        </Link>
                       </li>
                     </ul>
                   </div>

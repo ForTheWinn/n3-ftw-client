@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Modal from "../../../../components/Modal";
 import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import DisplayBoy from "../MyBoyz/DisplayBoy";
 import StakingModal from "./StakingModal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import toast from "react-hot-toast";
 import { IBoyStaked } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 interface IBoyzStakingProps {
   boyz: IBoyStaked[];
@@ -16,7 +17,8 @@ const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
   const [isModalActive, setModalActive] = useState(false);
   const [lot, setLot] = useState<IBoyStaked>();
   const [txid, setTxid] = useState("");
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const handleStake = async (tokenId: string, lotNo: string) => {
     if (connectedWallet) {
       const res = await new FarmV2Contract(network).stakeBoy(
@@ -57,6 +59,7 @@ const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
               target="_blank"
               href="https://docs.forthewin.network/boyz#utilities"
               className="is-size-7 has-text-grey-light"
+              rel="noreferrer"
             >
               <small>Learn more</small>
             </a>

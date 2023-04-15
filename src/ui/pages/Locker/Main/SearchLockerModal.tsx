@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
-import { useWallet } from "../../../../packages/provider";
 import { toast } from "react-hot-toast";
 import { ILocker } from "../../../../packages/neo/contracts/ftw/locker/interface";
+import { useApp } from "../../../../common/hooks/use-app";
 
-const SearchLockerModal = (props) => {
-  const { network } = useWallet();
+const SearchLockerModal = () => {
+  const { network } = useApp();
   const [lockerNo, setLockerNo] = useState("");
   const [locker, setLocker] = useState<ILocker | undefined>();
   const [isLoading, setLoading] = useState(false);

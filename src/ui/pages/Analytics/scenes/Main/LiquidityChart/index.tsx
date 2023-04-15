@@ -8,11 +8,12 @@ import {
   Title,
   Tooltip,
   Filler,
-  Legend,
+  Legend
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { useWallet } from "../../../../../../packages/provider";
 import { RestAPI } from "../../../../../../packages/neo/api";
+import { useApp } from "../../../../../../common/hooks/use-app";
+import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 // import Spinner from "../Spinner";
 
 ChartJS.register(
@@ -30,39 +31,39 @@ export const options = {
   responsive: true,
   elements: {
     line: {
-      tension: 0.4,
+      tension: 0.4
     },
     point: {
-      radius: 0,
-    },
+      radius: 0
+    }
   },
   plugins: {
     legend: {
-      display: false,
+      display: false
     },
     tooltip: {
-      enabled: false,
-    },
+      enabled: false
+    }
   },
   scales: {
     y: {
       prefix: "$",
       grid: {
-        color: "white",
+        color: "white"
       },
       ticks: {
         callback: (value) => {
           return "$" + value.toLocaleString();
-        },
-      },
+        }
+      }
     },
     x: {
       // display:false,
       grid: {
-        color: "white",
-      },
-    },
-  },
+        color: "white"
+      }
+    }
+  }
 };
 
 const labels = ["January", "February", "March", "April", "May", "June", "July"];
@@ -75,9 +76,9 @@ export const data = {
       // label: undefined,
       data: [1, 2, 3, 4, 5, 6, 7],
       borderColor: "rgba(32, 226, 47, 1)",
-      backgroundColor: "rgba(32, 226, 47, 0.56)",
-    },
-  ],
+      backgroundColor: "rgba(32, 226, 47, 0.56)"
+    }
+  ]
 };
 
 interface ILiquidityChartProps {
@@ -85,22 +86,10 @@ interface ILiquidityChartProps {
   days: string;
 }
 const LiquidityChart = ({ id, days }: ILiquidityChartProps) => {
-  const { network } = useWallet();
-  const [data, setData] = useState<any>();
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    async function fetch() {
-      try {
-        setLoading(true);
-        const res = await new RestAPI(network).getLiquidity(id, days);
-        setData(res);
-        setLoading(false);
-      } catch (e: any) {
-        setLoading(false);
-        // setError(e.message);
-      }
-    }
-    fetch();
+  const { network } = useApp();
+
+  const { data } = useOnChainData(() => {
+    return new RestAPI(network).getLiquidity(id, days);
   }, [network]);
 
   const dataset = useMemo(() => {
@@ -112,9 +101,9 @@ const LiquidityChart = ({ id, days }: ILiquidityChartProps) => {
           // label: undefined,
           data: data && data.data ? data.data : [],
           borderColor: "rgba(32, 226, 47, 1)",
-          backgroundColor: "rgba(32, 226, 47, 0.56)",
-        },
-      ],
+          backgroundColor: "rgba(32, 226, 47, 0.56)"
+        }
+      ]
     };
   }, [data]);
 

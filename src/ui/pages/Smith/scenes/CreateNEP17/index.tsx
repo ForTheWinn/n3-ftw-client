@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useWallet } from "../../../../../packages/provider";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
 import NumberFormat from "react-number-format";
 import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
-import { SMITH_PATH } from "../../../../../consts";
 import Modal from "../../../../components/Modal";
-import PageLayout from "../../../../components/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
+import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const NEP17FormModal = () => {
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const history = useHistory();
   const [txid, setTxid] = useState<string>();
   const [isBalanceLoading, setBalanceLoading] = useState(false);
@@ -23,7 +25,7 @@ const NEP17FormModal = () => {
     nepBalance: number;
   }>({
     gasBalance: 0,
-    nepBalance: 0,
+    nepBalance: 0
   });
   const [values, setValues] = useState({
     name: "",
@@ -32,12 +34,12 @@ const NEP17FormModal = () => {
     totalSupply: "",
     author: "",
     description: "",
-    email: "",
+    email: ""
   });
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
   const hasEmoji = detectEmojiInString(values) !== 0;
@@ -95,7 +97,7 @@ const NEP17FormModal = () => {
 
   const onSuccess = () => {
     setTxid("");
-    history.push(SMITH_PATH);
+    history.push(NEO_ROUTES.SMITH_PATH);
   };
 
   // const firstInput = useRef(null);
@@ -318,6 +320,7 @@ const NEP17FormModal = () => {
                       href={
                         "https://github.com/ForTheWinn/public-contracts/blob/main/FTWSmithNep17-v3/FTWSmithNep17-v3.cs"
                       }
+                      rel="noreferrer"
                     >
                       here
                     </a>

@@ -1,6 +1,6 @@
 import { INetworkType, Network } from "../../../network";
 import { SWAP_SCRIPT_HASH } from "../swap/consts";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { tx, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
@@ -9,7 +9,7 @@ import { IClaimableRewards, ILPTokens, IStakingPairs } from "./interfaces";
 import {
   parseClaimableMap,
   parsePairsMap,
-  parseStakedLPTokensMap,
+  parseStakedLPTokensMap
 } from "./helpers";
 
 export class StakingContract {
@@ -34,20 +34,20 @@ export class StakingContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "String",
-          value: tokenId,
-        },
+          value: tokenId
+        }
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, SWAP_SCRIPT_HASH[this.network]],
-        },
-      ],
+          allowedContracts: [this.contractHash, SWAP_SCRIPT_HASH[this.network]]
+        }
+      ]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -65,14 +65,14 @@ export class StakingContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "String",
-          value: tokenId,
-        },
+          value: tokenId
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -91,18 +91,18 @@ export class StakingContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Hash160",
-          value: tokenA,
+          value: tokenA
         },
         {
           type: "Hash160",
-          value: tokenB,
-        },
+          value: tokenB
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -120,7 +120,7 @@ export class StakingContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Array",
@@ -130,18 +130,18 @@ export class StakingContract {
               value: [
                 {
                   type: "Hash160",
-                  value: item.tokenA,
+                  value: item.tokenA
                 },
                 {
                   type: "Hash160",
-                  value: item.tokenB,
-                },
-              ],
+                  value: item.tokenB
+                }
+              ]
             };
-          }),
-        },
+          })
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -150,7 +150,7 @@ export class StakingContract {
     const script = {
       scriptHash: this.contractHash,
       operation: "getPairs",
-      args: [],
+      args: []
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -164,11 +164,9 @@ export class StakingContract {
       scriptHash: this.contractHash,
       operation: "getTVL",
       args: [
-
-	      { type: "Hash160", value: tokenA },
-	      { type: "Hash160", value: tokenB },
-
-      ],
+        { type: "Hash160", value: tokenA },
+        { type: "Hash160", value: tokenB }
+      ]
     };
     const res = await Network.read(this.network, [script]);
 
@@ -178,15 +176,15 @@ export class StakingContract {
   getStakedLPTokens = async (
     connectedWallet: IConnectedWallet
   ): Promise<ILPTokens[]> => {
-	  const senderHash = NeonWallet.getScriptHashFromAddress(
-		  connectedWallet.account.address
-	  );
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
     const scripts = [
       {
         scriptHash: this.contractHash,
         operation: "getLPTokens",
-        args: [{ type: "Hash160", value: senderHash }],
-      },
+        args: [{ type: "Hash160", value: senderHash }]
+      }
     ];
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {
@@ -201,15 +199,15 @@ export class StakingContract {
     if (!connectedWallet) {
       return [];
     } else {
-	    const senderHash = NeonWallet.getScriptHashFromAddress(
-		    connectedWallet.account.address
-	    );
+      const senderHash = NeonWallet.getScriptHashFromAddress(
+        connectedWallet.account.address
+      );
       const scripts = [
         {
           scriptHash: this.contractHash,
           operation: "getClaimable",
-          args: [{ type: "Hash160", value: senderHash }],
-        },
+          args: [{ type: "Hash160", value: senderHash }]
+        }
       ];
       const res = await Network.read(this.network, scripts);
       if (res.state !== "FAULT") {
@@ -226,8 +224,8 @@ export class StakingContract {
       {
         scriptHash: this.contractHash,
         operation: "getMarketStatus",
-        args: [],
-      },
+        args: []
+      }
     ];
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {

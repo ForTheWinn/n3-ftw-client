@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import HeaderBetween from "../../../../components/HeaderBetween";
-import { FARM_PATH } from "../../../../../consts";
-import { useWallet } from "../../../../../packages/provider";
+import HeaderBetween from "../../../../components/Commons/HeaderBetween";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { toast } from "react-hot-toast";
 import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
 import { handleError } from "../../../../../packages/neo/utils/errors";
+import { NEO_ROUTES } from "../../../../../consts";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 const MyPositions = ({ onRefresh }) => {
-  const { network, connectedWallet } = useWallet();
+  const { network } = useApp();
+  const { connectedWallet } = useNeoWallets();
   const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
 
@@ -39,7 +41,7 @@ const MyPositions = ({ onRefresh }) => {
 
   return (
     <div>
-      <HeaderBetween path={FARM_PATH} title={`My staking`} />
+      <HeaderBetween path={NEO_ROUTES.FARM_PATH} title={`My staking`} />
       <hr />
       {connectedWallet ? (
         <PositionList

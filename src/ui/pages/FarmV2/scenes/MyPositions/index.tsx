@@ -1,66 +1,41 @@
-import React, { useState } from "react";
-import HeaderBetween from "../../../../components/HeaderBetween";
-import {FARM_V2_PATH} from "../../../../../consts";
-import { useWallet } from "../../../../../packages/provider";
-import { toast } from "react-hot-toast";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../packages/ui/AfterTransactionSubmitted";
+import React from "react";
+import HeaderBetween from "../../../../components/Commons/HeaderBetween";
+import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
-import { handleError } from "../../../../../packages/neo/utils/errors";
-import {FarmV2Contract} from "../../../../../packages/neo/contracts/ftw/farm-v2";
+import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
+import { farmRouter } from "../../../../../common/routers";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { NEO_ROUTES } from "../../../../../consts";
 
-const MyPositions = ({ onRefresh }) => {
-  const { network, connectedWallet } = useWallet();
-  const [txid, setTxid] = useState("");
-  const [refresh, setRefresh] = useState(0);
+const MyPositions = () => {
+  const { setTxid, network, chain } = useApp();
+  const { connectedWallet } = useNeoWallets();
+  const { isConnected, address } = useWalletRouter(chain);
 
-  const onUnStake = async (tokenId) => {
-    if (connectedWallet) {
-      try {
-        const res = await new FarmV2Contract(network).remove(
-          connectedWallet,
-          tokenId
-        );
-        setTxid(res);
-      } catch (e: any) {
-        toast.error(handleError(e));
-      }
-    } else {
-      toast.error("Please connect wallet");
-    }
-  };
-
-  const onSuccess = () => {
-    onRefresh();
-    setRefresh(refresh + 1);
-    setTxid("");
+  const onUnStake = async (tokenId: string) => {
+    const txid = await farmRouter.unStakeLPToken(
+      chain,
+      network,
+      tokenId,
+      connectedWallet
+    );
+    setTxid(txid);
   };
 
   return (
     <div>
-      <HeaderBetween path={FARM_V2_PATH} title={`My staking`} />
+      <HeaderBetween path={NEO_ROUTES.FARM_V2_PATH} title={`My staking`} />
       <hr />
-      {connectedWallet ? (
+      {isConnected ? (
         <PositionList
+          chain={chain}
           network={network}
-          connectedWallet={connectedWallet}
-          refresh={refresh}
+          address={address}
           onUnStake={onUnStake}
         />
       ) : (
         <ConnectWalletButton />
-      )}
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
       )}
     </div>
   );

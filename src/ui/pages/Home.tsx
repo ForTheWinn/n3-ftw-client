@@ -1,17 +1,10 @@
 import React, { useEffect } from "react";
 import Wave from "react-wavify";
-import {
-  BOYZ_PATH,
-  BRAND_KIT_PATH,
-  DAO_PATH,
-  FARM_V2_PATH,
-  GALLERY_PATH,
-  LOCKER_PATH,
-  SMITH_PATH,
-  SWAP_PATH,
-} from "../../consts";
 import { Link } from "react-router-dom";
-import SocialLinkGroup from "../components/SocialLinkGroup";
+import SocialLinkGroup from "../components/Commons/SocialLinkGroup";
+import { NEO_ROUTES } from "../../consts";
+import { useApp } from "../../common/hooks/use-app";
+import { NEO_CHAIN } from "../../consts/chains";
 
 const CARDS: {
   title: string;
@@ -24,46 +17,47 @@ const CARDS: {
     title: "Mint",
     type: "Utility",
     img: "520/smith.png",
-    link: SMITH_PATH,
+    link: NEO_ROUTES.SMITH_PATH
   },
   {
     title: "Swap",
     type: "DeFi",
     img: "520/swap.png",
-    link: SWAP_PATH,
+    link: NEO_ROUTES.SWAP_PATH
   },
   {
     title: "Staking",
     type: "DeFi",
     img: "520/farm.png",
-    link: FARM_V2_PATH,
+    link: NEO_ROUTES.FARM_V2_PATH
   },
   {
     title: "Vesting",
     type: "Utility",
     img: "520/rune.png",
-    link: LOCKER_PATH,
+    link: NEO_ROUTES.LOCKER_PATH
   },
   {
     title: "DAO",
     type: "Utility",
     img: "520/dao.png",
-    link: DAO_PATH,
+    link: NEO_ROUTES.DAO_PATH
   },
   {
     title: "NEP",
     type: "Governance token",
     img: "520/nep.png",
-    link: "/swap?tokenA=d2a4cff31913016155e38e474a2c06d08be276cf&tokenB=f853a98ac55a756ae42379a312d55ddfdf7c8514",
-  },
+    link: "/swap?tokenA=d2a4cff31913016155e38e474a2c06d08be276cf&tokenB=f853a98ac55a756ae42379a312d55ddfdf7c8514"
+  }
 ];
 
 const Home = () => {
   useEffect(() => {
     document.title = "FTW";
   }, []);
+  const { chain } = useApp();
   return (
-    <div>
+    <>
       <section className="hero is-white is-fullheight-with-navbar is-relative">
         <div className="hero-body">
           <div className="container">
@@ -71,48 +65,41 @@ const Home = () => {
               <h1 className="title is-spaced is-size-4-mobile">
                 Forthewin Network
               </h1>
-              {/*<p className="subtitle is-size-6-mobile">The hub of NEP-17</p>*/}
-              <p className="subtitle is-size-6-mobile">
-                All-in-one solution for crypto startups
+              <p className="heading is-size-6-mobile">
+                DeFi / Web3 Tools / Cool NFTs
               </p>
-            </div>
-
-            <div className="columns is-multiline is-mobile">
-              {CARDS.map((card) => {
-                return (
-                  <div
-                    key={card.title}
-                    className="column is-2-desktop is-4-mobile"
-                  >
-                    <div className="is-shadowless">
-                      <Link to={card.link}>
-                        <figure
-                          className="image is-128x128-desktop"
-                          style={{ margin: "auto" }}
-                        >
-                          <img src={card.img} />
-                        </figure>
-                      </Link>
-                      <p className="is-size-6 is-size-7-mobile has-text-centered">
-                        <Link className={"has-text-dark"} to={card.link}>
-                          {card.title}
-                        </Link>
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+              <p>-</p>
+              {chain === NEO_CHAIN ? (
+                <div className="mt-3">
+                  <img alt="Neo Boyz #1065" width={150} src="/boyz/1065.png" />
+                  <br />
+                  <p className="heading is-size-6-mobile">Neo Boyz #1065</p>
+                </div>
+              ) : (
+                <div>
+                  <img
+                    alt="Matic Boyz"
+                    width={150}
+                    src="/boyz/sample-matic-boy.png"
+                  />
+                  <br />
+                  <p className="heading is-size-6-mobile">
+                    Matic Boyz - Coming soon
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <div className="hero-foot">
+
+        <div className="hero-foot is-hidden-mobile">
           <Wave
             fill="#000"
             paused={false}
             options={{
               height: 10,
               amplitude: 30,
-              speed: 0.15,
+              speed: 0.15
             }}
           />
           <div
@@ -122,7 +109,7 @@ const Home = () => {
               bottom: 0,
               position: "absolute",
               backgroundColor: "black",
-              zIndex: 999,
+              zIndex: 999
             }}
           ></div>
         </div>
@@ -149,17 +136,18 @@ const Home = () => {
               <h6 className="title is-6 has-text-white">DeFi</h6>
               <ul className="footer-links">
                 <li>
-                  <Link to={SWAP_PATH} className="has-text-white">
+                  <Link to={NEO_ROUTES.SWAP_PATH} className="has-text-white">
                     Swap
                   </Link>
                 </li>
                 <li>
-                  <Link to={FARM_V2_PATH} className="has-text-white">
+                  <Link to={NEO_ROUTES.FARM_V2_PATH} className="has-text-white">
                     Farm
                   </Link>
                 </li>
                 <li>
                   <a
+                    rel="noreferrer"
                     target="_blank"
                     href={"https://bridge.poly.network/"}
                     className="has-text-white"
@@ -174,12 +162,12 @@ const Home = () => {
               <h6 className="title is-6 has-text-white">Web3 tools</h6>
               <ul className="footer-links">
                 <li>
-                  <Link to={SMITH_PATH} className="has-text-white">
+                  <Link to={NEO_ROUTES.SMITH_PATH} className="has-text-white">
                     Token Launcher
                   </Link>
                 </li>
                 <li>
-                  <Link to={SMITH_PATH} className="has-text-white">
+                  <Link to={NEO_ROUTES.SMITH_PATH} className="has-text-white">
                     Locker
                   </Link>
                 </li>
@@ -189,12 +177,12 @@ const Home = () => {
               <h6 className="title is-6 has-text-white">NFTs</h6>
               <ul className="footer-links">
                 <li>
-                  <Link to={GALLERY_PATH} className="has-text-white">
+                  <Link to={NEO_ROUTES.GALLERY_PATH} className="has-text-white">
                     Runes
                   </Link>
                 </li>
                 <li>
-                  <Link to={BOYZ_PATH} className="has-text-white">
+                  <Link to={NEO_ROUTES.BOYZ_PATH} className="has-text-white">
                     Neo Boyz
                   </Link>
                 </li>
@@ -213,6 +201,7 @@ const Home = () => {
               <ul className="footer-links">
                 <li>
                   <a
+                    rel="noreferrer"
                     target="_blank"
                     href="https://docs.forthewin.network/"
                     className="has-text-white"
@@ -222,12 +211,16 @@ const Home = () => {
                   </a>
                 </li>
                 <li>
-                  <Link to={BRAND_KIT_PATH} className="has-text-white">
+                  <Link
+                    to={NEO_ROUTES.BRAND_KIT_PATH}
+                    className="has-text-white"
+                  >
                     Brand Kit
                   </Link>
                 </li>
                 <li>
                   <a
+                    rel="noreferrer"
                     target="_blank"
                     href={"https://neonewstoday.com/?s=forthewin"}
                     className="has-text-white"
@@ -238,10 +231,10 @@ const Home = () => {
                 </li>
                 <li>
                   <a
+                    rel="noreferrer"
                     target="_blank"
                     href={"https://test.forthewin.network"}
                     className="has-text-white"
-                    rel="noreferrer"
                   >
                     TestNet
                   </a>
@@ -251,7 +244,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

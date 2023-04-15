@@ -1,14 +1,21 @@
 import { INetworkType, Network } from "../../../network";
 import { SWAP_SCRIPT_HASH } from "../swap/consts";
-import { IConnectedWallet } from "../../../wallet/interfaces";
+import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
-import {IBoyStaked, IClaimableRewards, IPool} from "./interfaces";
+import { IClaimableRewards, IPool } from "./interfaces";
 import { FARM_V2_SCRIPT_HASH } from "./consts";
-import { parseMapValue } from "../../../utils";
+import { parseMapValue, withDecimal } from "../../../utils";
 import { ILPToken } from "../swap/interfaces";
 import { BOYZ_SCRIPT_HASH } from "../boyz/consts";
+import { TOKEN_LIST } from "../../../../../consts/tokens";
+import { NEO_CHAIN } from "../../../../../consts/chains";
+import {
+  IClaimable,
+  IFarmPair
+} from "../../../../../common/routers/farm/interfaces";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
 export class FarmV2Contract {
   network: INetworkType;
@@ -32,18 +39,18 @@ export class FarmV2Contract {
       args: [
         {
           type: "Hash160",
-          value: this.contractHash,
+          value: this.contractHash
         },
         {
           type: "String",
-          value: tokenId,
+          value: tokenId
         },
         {
           type: "String",
-          value: "1",
-        },
+          value: "1"
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -61,14 +68,14 @@ export class FarmV2Contract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "String",
-          value: tokenId,
-        },
+          value: tokenId
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -87,18 +94,18 @@ export class FarmV2Contract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Hash160",
-          value: tokenA,
+          value: tokenA
         },
         {
           type: "Hash160",
-          value: tokenB,
-        },
+          value: tokenB
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -116,7 +123,7 @@ export class FarmV2Contract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "Array",
@@ -126,18 +133,18 @@ export class FarmV2Contract {
               value: [
                 {
                   type: "Hash160",
-                  value: item.tokenA,
+                  value: item.tokenA
                 },
                 {
                   type: "Hash160",
-                  value: item.tokenB,
-                },
-              ],
+                  value: item.tokenB
+                }
+              ]
             };
-          }),
-        },
+          })
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -156,18 +163,18 @@ export class FarmV2Contract {
       args: [
         {
           type: "Hash160",
-          value: this.contractHash,
+          value: this.contractHash
         },
         {
           type: "String",
-          value: tokenId,
+          value: tokenId
         },
         {
           type: "Integer",
-          value: lotNo,
-        },
+          value: lotNo
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -186,49 +193,69 @@ export class FarmV2Contract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
+          value: senderHash
         },
         {
           type: "String",
-          value: tokenId,
+          value: tokenId
         },
         {
           type: "Integer",
-          value: lotNo,
-        },
+          value: lotNo
+        }
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
-  getPools = async (): Promise<IPool[]> => {
+  getPools = async (): Promise<IFarmPair[]> => {
     const script = {
       scriptHash: this.contractHash,
       operation: "getPools",
-      args: [],
+      args: []
     };
     const res: any = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
-      throw new Error(res.exception as string);
+      throw new Error(res.exception ? (res.exception as string) : WENT_WRONG);
     }
+
     return res.stack[0].value.map((pair) => {
-      return parseMapValue(pair);
+      const pool: IPool = parseMapValue(pair);
+      const hasBonusRewards = pool.bonusTokensPerSecond > 0;
+      return {
+        ...pool,
+        iconA: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenA]
+          ? TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenA].icon
+          : "",
+        iconB: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenB]
+          ? TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenB].icon
+          : "",
+        symbolA: pool.tokenASymbol,
+        symbolB: pool.tokenBSymbol,
+        nepRewardsPerDay: withDecimal(pool.nepTokensPerSecond * 86400, 8, true),
+        bonusRewardsPerDay: hasBonusRewards
+          ? withDecimal(
+              pool.bonusTokensPerSecond * 86400,
+              pool.bonusTokenDecimals,
+              true
+            )
+          : 0,
+        tokensStaked: pool.tokensStaked.toString(),
+        nepTokensPerSecond: pool.nepTokensPerSecond.toString(),
+        hasBonusRewards
+      };
     });
   };
 
-  getStakedLPTokens = async (
-    connectedWallet: IConnectedWallet
-  ): Promise<ILPToken[]> => {
-    const senderHash = NeonWallet.getScriptHashFromAddress(
-      connectedWallet.account.address
-    );
+  getStakedLPTokens = async (address: string): Promise<ILPToken[]> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(address);
     const scripts = [
       {
         scriptHash: this.contractHash,
         operation: "getLPTokens",
-        args: [{ type: "Hash160", value: senderHash }],
-      },
+        args: [{ type: "Hash160", value: senderHash }]
+      }
     ];
     const res: any = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {
@@ -239,20 +266,13 @@ export class FarmV2Contract {
     });
   };
 
-  getClaimable = async (
-    connectedWallet: IConnectedWallet
-  ): Promise<{
-    boyz: IBoyStaked[];
-    rewards: IClaimableRewards[];
-  }> => {
-    const senderHash = NeonWallet.getScriptHashFromAddress(
-      connectedWallet.account.address
-    );
+  getClaimable = async (address: string): Promise<IClaimable> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(address);
     const scripts = [
       {
         scriptHash: this.contractHash,
         operation: "getClaimable",
-        args: [{ type: "Hash160", value: senderHash }],
+        args: [{ type: "Hash160", value: senderHash }]
       },
       {
         scriptHash: this.contractHash,
@@ -260,10 +280,10 @@ export class FarmV2Contract {
         args: [
           {
             type: "Hash160",
-            value: senderHash,
-          },
-        ],
-      },
+            value: senderHash
+          }
+        ]
+      }
     ];
     const res: any = await Network.read(this.network, scripts);
     if (res.state !== "FAULT") {
@@ -271,35 +291,57 @@ export class FarmV2Contract {
         return parseMapValue(pair);
       });
 
-      const boyz = parseMapValue(res.stack[1]);
+      const boyzObj = parseMapValue(res.stack[1]);
+      const boyz = [
+        {
+          lotNo: "1",
+          tokenId: boyzObj["1_tokenId"],
+          tier: boyzObj["1_tier"],
+          createdAt: boyzObj["1_createdAt"]
+        },
+        {
+          lotNo: "2",
+          tokenId: boyzObj["2_tokenId"],
+          tier: boyzObj["2_tier"],
+          createdAt: boyzObj["2_createdAt"]
+        },
+        {
+          lotNo: "3",
+          tokenId: boyzObj["3_tokenId"],
+          tier: boyzObj["3_tier"],
+          createdAt: boyzObj["3_createdAt"]
+        }
+      ];
+
+      let bonus = 0;
+      let team = 0;
+
+      boyz.forEach((b) => {
+        if (b.tier === "1") {
+          bonus = bonus + 1;
+        } else if (b.tier === "2") {
+          bonus = bonus + 0.75;
+        } else if (b.tier === "3") {
+          bonus = bonus + 0.5;
+        }
+        if (b.tokenId) {
+          team++;
+        }
+      });
+      if (team === 3) {
+        bonus = bonus + 1;
+      }
 
       return {
         rewards,
-        boyz: [
-          {
-            lotNo: "1",
-            tokenId: boyz["1_tokenId"],
-            tier: boyz["1_tier"],
-            createdAt: boyz["1_createdAt"],
-          },
-          {
-            lotNo: "2",
-            tokenId: boyz["2_tokenId"],
-            tier: boyz["2_tier"],
-            createdAt: boyz["2_createdAt"],
-          },
-          {
-            lotNo: "3",
-            tokenId: boyz["3_tokenId"],
-            tier: boyz["3_tier"],
-            createdAt: boyz["3_createdAt"],
-          },
-        ],
+        boyz,
+        bonus
       };
     } else {
       return {
         boyz: [],
         rewards: [],
+        bonus: 0
       };
     }
   };
@@ -317,9 +359,9 @@ export class FarmV2Contract {
       args: [
         {
           type: "Hash160",
-          value: senderHash,
-        },
-      ],
+          value: senderHash
+        }
+      ]
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -333,8 +375,8 @@ export class FarmV2Contract {
       {
         scriptHash: this.contractHash,
         operation: "getMarketStatus",
-        args: [],
-      },
+        args: []
+      }
     ];
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {
