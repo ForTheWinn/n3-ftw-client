@@ -4,12 +4,12 @@ import { useApp } from "../../../common/hooks/use-app";
 import { useOnChainData } from "../../../common/hooks/use-onchain-data";
 import { RestAPI } from "../../../packages/neo/api";
 import { GMContract } from "../../../packages/neo/contracts/gm";
-import { useWallet } from "../../../packages/provider";
-import AfterTransactionSubmitted from "../../../packages/ui/AfterTransactionSubmitted";
 import Level from "../../components/Level";
 import Modal from "../../components/Modal";
-import PageLayout from "../../components/PageLayout";
 import KeyCard from "./components/KeyCard";
+import PageLayout from "../../components/Commons/PageLayout";
+import AfterTransactionSubmitted from "../../components/NeoComponents/AfterTransactionSubmitted";
+import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
 
 const KeysLoading = () => {
   return (
@@ -39,8 +39,8 @@ const KeysSoldout = () => {
 };
 
 const NEPKeys = () => {
-  const { network, connectedWallet } = useWallet();
-  const { toggleWalletSidebar } = useApp();
+  const { connectedWallet } = useNeoWallets();
+  const { network, toggleWalletSidebar } = useApp();
   const [txid, setTxid] = useState("");
   const { data, isLoaded } = useOnChainData(
     () =>

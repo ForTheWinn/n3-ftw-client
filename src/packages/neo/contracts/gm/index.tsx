@@ -1,8 +1,8 @@
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../..";
-import { NEP_SCRIPT_HASH } from "../../consts/nep17-list";
 import { INetworkType } from "../../network";
-import { IConnectedWallet } from "../../wallet/interfaces";
+import { IConnectedWallet } from "../../wallets/interfaces";
+import { NEP_SCRIPT_HASH } from "../../consts/neo-contracts";
 
 export class GMContract {
   network: INetworkType;
@@ -26,7 +26,6 @@ export class GMContract {
         account: senderHash,
         scopes: tx.WitnessScope.CustomContracts,
         allowedContracts: [
-          // contract.assetHash,
           NEP_SCRIPT_HASH[this.network],
           this.contractHash,
         ],

@@ -6,51 +6,6 @@ import { NEO_ROUTES } from "../../consts";
 import { useApp } from "../../common/hooks/use-app";
 import { NEO_CHAIN } from "../../consts/chains";
 
-const CARDS: {
-  title: string;
-  type: string;
-  desc?: string;
-  img: string;
-  link: string;
-}[] = [
-  {
-    title: "Mint",
-    type: "Utility",
-    img: "520/smith.png",
-    link: NEO_ROUTES.SMITH_PATH
-  },
-  {
-    title: "Swap",
-    type: "DeFi",
-    img: "520/swap.png",
-    link: NEO_ROUTES.SWAP_PATH
-  },
-  {
-    title: "Staking",
-    type: "DeFi",
-    img: "520/farm.png",
-    link: NEO_ROUTES.FARM_V2_PATH
-  },
-  {
-    title: "Vesting",
-    type: "Utility",
-    img: "520/rune.png",
-    link: NEO_ROUTES.LOCKER_PATH
-  },
-  {
-    title: "DAO",
-    type: "Utility",
-    img: "520/dao.png",
-    link: NEO_ROUTES.DAO_PATH
-  },
-  {
-    title: "NEP",
-    type: "Governance token",
-    img: "520/nep.png",
-    link: "/swap?tokenA=d2a4cff31913016155e38e474a2c06d08be276cf&tokenB=f853a98ac55a756ae42379a312d55ddfdf7c8514"
-  }
-];
-
 const Home = () => {
   useEffect(() => {
     document.title = "FTW";
@@ -151,7 +106,6 @@ const Home = () => {
                     target="_blank"
                     href={"https://bridge.poly.network/"}
                     className="has-text-white"
-                    rel="noreferrer"
                   >
                     NEP Bridge
                   </a>
@@ -205,7 +159,6 @@ const Home = () => {
                     target="_blank"
                     href="https://docs.forthewin.network/"
                     className="has-text-white"
-                    rel="noreferrer"
                   >
                     Document
                   </a>
@@ -224,7 +177,6 @@ const Home = () => {
                     target="_blank"
                     href={"https://neonewstoday.com/?s=forthewin"}
                     className="has-text-white"
-                    rel="noreferrer"
                   >
                     Press
                   </a>
