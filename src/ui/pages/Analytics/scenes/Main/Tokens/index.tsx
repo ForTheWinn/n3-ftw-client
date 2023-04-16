@@ -3,9 +3,9 @@ import { RestAPI } from "../../../../../../packages/neo/api";
 import TokenItem from "./TokenItem";
 import ModalCard from "../../../../../components/Modal";
 import TokenDetail from "../../TokenDetail";
-import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
+import { ANALYTICS_PATH, ANALYTICS_TOKENS_PATH } from "../../../../../../consts/neoRoutes";
 
 const TokensAnalytics = () => {
   const { chain, network } = useApp();
@@ -15,12 +15,12 @@ const TokensAnalytics = () => {
     window.history.replaceState(
       null,
       "",
-      `#${NEO_ROUTES.ANALYTICS_TOKENS_PATH}/${id}`
+      `#${ANALYTICS_TOKENS_PATH}/${id}`
     );
   };
 
   const handleModalClose = () => {
-    window.history.replaceState(null, "", `#${NEO_ROUTES.ANALYTICS_PATH}`);
+    window.history.replaceState(null, "", `#${ANALYTICS_PATH}`);
     setModalActive("");
   };
 

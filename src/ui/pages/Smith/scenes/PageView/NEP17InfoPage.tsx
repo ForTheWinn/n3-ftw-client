@@ -10,9 +10,9 @@ import AfterTransactionSubmitted from "../../../../components/NeoComponents/Afte
 import NEP17UpdateFormModal from "./NEP17UpdateFormModal";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import { handleError } from "../../../../../packages/neo/utils/errors";
-import { NEO_ROUTES, GLOBAL } from "../../../../../consts";
-import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
+import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { SMITH_PATH } from "../../../../../consts/neoRoutes";
 
 const NEP17InfoPage = () => {
   const params = useParams();
@@ -74,7 +74,7 @@ const NEP17InfoPage = () => {
       <PageLayout>
         <div className="columns ">
           <div className="column is-2">
-            <Link to={NEO_ROUTES.SMITH_PATH} className="button mb-3 is-rounded">
+            <Link to={SMITH_PATH} className="button mb-3 is-rounded">
               Back to Main
             </Link>
           </div>
@@ -112,7 +112,7 @@ const NEP17InfoPage = () => {
                       <a
                         target="_blank"
                         href={`https://${
-                          network === GLOBAL.MAINNET
+                          network === MAINNET
                             ? "explorer.onegate.space"
                             : "testmagnet.explorer.onegate.space"
                         }/contractinfo/${contractHash}`}

@@ -7,8 +7,8 @@ import Pagination from "bulma-pagination-react";
 import Banner from "../../Banner";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import { Link, useLocation } from "react-router-dom";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { SMITH_PATH, SMITH_PATH_NEP11 } from "../../../../../consts/neoRoutes";
 const NEP11Smith = () => {
   const location = useLocation();
   const [page, setPage] = useState(1);
@@ -30,23 +30,19 @@ const NEP11Smith = () => {
                     <ul>
                       <li
                         className={
-                          location.pathname === NEO_ROUTES.SMITH_PATH
-                            ? "is-active"
-                            : ""
+                          location.pathname === SMITH_PATH ? "is-active" : ""
                         }
                       >
-                        <Link to={NEO_ROUTES.SMITH_PATH}>Token Showcase</Link>
+                        <Link to={SMITH_PATH}>Token Showcase</Link>
                       </li>
                       <li
                         className={
-                          location.pathname === NEO_ROUTES.SMITH_PATH_NEP11
+                          location.pathname === SMITH_PATH_NEP11
                             ? "is-active"
                             : ""
                         }
                       >
-                        <Link to={NEO_ROUTES.SMITH_PATH_NEP11}>
-                          &nbsp; NFT Showcase
-                        </Link>
+                        <Link to={SMITH_PATH_NEP11}>&nbsp; NFT Showcase</Link>
                       </li>
                     </ul>
                   </div>

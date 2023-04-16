@@ -12,9 +12,9 @@ import Modal from "../../../../components/Modal";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import NEP17UpdateFormModal from "./NEP17UpdateFormModal";
 import { handleError } from "../../../../../packages/neo/utils/errors";
-import { NEO_ROUTES, GLOBAL } from "../../../../../consts";
-import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
+import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { SMITH_PATH_NEP11 } from "../../../../../consts/neoRoutes";
 
 const NEP11InfoPage = () => {
   const params = useParams();
@@ -110,7 +110,7 @@ const NEP11InfoPage = () => {
         <div className="columns ">
           <div className="column is-2">
             <Link
-              to={NEO_ROUTES.SMITH_PATH_NEP11}
+              to={SMITH_PATH_NEP11}
               className="button mb-3 is-rounded"
             >
               Back to Main
@@ -147,7 +147,7 @@ const NEP11InfoPage = () => {
                     <a
                       target="_blank"
                       href={`https://${
-                        network === GLOBAL.MAINNET
+                        network === MAINNET
                           ? "explorer.onegate.space"
                           : "testmagnet.explorer.onegate.space"
                       }/contractinfo/${contractHash}`}

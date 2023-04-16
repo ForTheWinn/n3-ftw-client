@@ -4,12 +4,9 @@ import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenList from "./LPTokenList";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
-import { CHAINS } from "../../../../../consts/chains";
-import { INetworkType } from "../../../../../packages/neo/network";
 import { farmRouter } from "../../../../../common/routers";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { NEO_ROUTES } from "../../../../../consts";
-
+import { FARM_V2_PATH } from "../../../../../consts/neoRoutes";
 
 const Stake = () => {
   const { setTxid, chain, network } = useApp();
@@ -30,7 +27,7 @@ const Stake = () => {
 
   return (
     <div>
-      <HeaderBetween path={NEO_ROUTES.FARM_V2_PATH} title={`Stake LP tokens`} />
+      <HeaderBetween path={FARM_V2_PATH} title={`Stake LP tokens`} />
       <hr />
       {isConnected ? (
         <LPTokenList

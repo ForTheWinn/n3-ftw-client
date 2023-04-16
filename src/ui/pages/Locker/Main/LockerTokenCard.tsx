@@ -1,11 +1,12 @@
 import React from "react";
 import { u } from "@cityofzion/neon-core";
 import { useHistory } from "react-router-dom";
-import { CHAINS, NEO_ROUTES } from "../../../../consts";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../consts/global";
 import { TOKEN_LIST } from "../../../../consts/tokens";
+import { CHAINS } from "../../../../consts/chains";
+import { LOCKER_PATH } from "../../../../consts/neoRoutes";
 interface ILockerTokenCardProps {
-  chain: CHAINS.CHAINS;
+  chain: CHAINS;
   lockedAmount: number;
   decimals: number;
   contractHash: string;
@@ -30,7 +31,7 @@ const LockerTokenCard = ({
   return (
     <div
       onClick={() => {
-        history.push(`${NEO_ROUTES.LOCKER_PATH}/contracts/${contractHash}`);
+        history.push(`${LOCKER_PATH}/contracts/${contractHash}`);
       }}
       className="box has-text-centered is-hoverable"
     >

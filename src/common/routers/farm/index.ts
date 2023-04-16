@@ -1,8 +1,5 @@
 import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
 import { writeContract } from "@wagmi/core";
-import { RestAPI } from "../../../packages/neo/api";
-import { IPrices } from "../../../packages/neo/api/interfaces";
-import { SwapContract } from "../../../packages/neo/contracts";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 import { IClaimableRewards } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
@@ -20,8 +17,9 @@ import {
   setApprovalForAll
 } from "../../../packages/polygon/contracts/swap";
 import { IClaimable, IFarmPair } from "./interfaces";
-import { CONTRACTS, GLOBAL } from "../../../consts";
 import { ISwapLPToken } from "../swap/interfaces";
+import { CONTRACT_LIST } from "../../../consts/contracts";
+import { FARM } from "../../../consts/global";
 
 export const getPoolList = (
   chain: CHAINS,
@@ -96,12 +94,12 @@ export const stakeLPToken = async (
         !(await isApprovedForAll(
           network,
           address,
-          CONTRACTS.CONTRACT_LIST[chain][network][GLOBAL.FARM]
+          CONTRACT_LIST[chain][network][FARM]
         ))
       ) {
         const config = await setApprovalForAll(
           network,
-          CONTRACTS.CONTRACT_LIST[chain][network][GLOBAL.FARM]
+          CONTRACT_LIST[chain][network][FARM]
         );
         const res = await writeContract(config);
         await res.wait();

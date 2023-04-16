@@ -11,10 +11,10 @@ import {
   isApprovedForAll,
   setApprovalForAll
 } from "../../../../../packages/polygon/contracts/swap";
-import { CONTRACTS } from "../../../../../consts";
 import { SWAP } from "../../../../../consts/global";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
+import { CONTRACT_LIST } from "../../../../../consts/contracts";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -51,7 +51,7 @@ const RemoveLiquidityModal = ({
     const doAction = async () => {
       if (chain !== NEO_CHAIN) {
         try {
-          const contractAddress = CONTRACTS.CONTRACT_LIST[chain][network][SWAP];
+          const contractAddress = CONTRACT_LIST[chain][network][SWAP];
           setApproveError(false);
           if (await isApprovedForAll(network, address, contractAddress)) {
             setApproved(true);

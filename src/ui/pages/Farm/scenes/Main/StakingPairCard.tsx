@@ -8,8 +8,8 @@ import {
   BNEO_SCRIPT_HASH,
   GAS_SCRIPT_HASH
 } from "../../../../../packages/neo/consts/neo-contracts";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { FARM_STAKE_PATH } from "../../../../../consts/neoRoutes";
 
 const StakingPairCard = (props: IStakingPairs) => {
   const history = useHistory();
@@ -28,7 +28,7 @@ const StakingPairCard = (props: IStakingPairs) => {
       className="is-clickable"
       onClick={() =>
         history.push(
-          `${NEO_ROUTES.FARM_STAKE_PATH}?tokenA=${props.tokenA}&tokenB=${props.tokenB}&tokenASymbol=${props.tokenASymbol}&tokenBSymbol=${props.tokenBSymbol}`
+          `${FARM_STAKE_PATH}?tokenA=${props.tokenA}&tokenB=${props.tokenB}&tokenASymbol=${props.tokenASymbol}&tokenBSymbol=${props.tokenBSymbol}`
         )
       }
     >

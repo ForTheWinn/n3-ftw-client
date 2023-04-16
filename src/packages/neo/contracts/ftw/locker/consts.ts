@@ -1,5 +1,4 @@
-import { GLOBAL } from "../../../../../consts";
-const { TESTNET, MAINNET } = GLOBAL;
+import { MAINNET, TESTNET } from "../../../../../consts/global";
 
 export const LOCKER_SCRIPT_HASH = {
   [TESTNET]: "0x31e6889f099e645ff2c281b2d77a0119fe44f178",

@@ -4,9 +4,13 @@ import { Route } from "react-router-dom";
 import PageLayout from "../../components/Commons/PageLayout";
 import SwapMain from "./scenes/Swap";
 import { SwapContextProvider } from "./scenes/SwapContext";
-import { NEO_ROUTES } from "../../../consts";
 import AddLiquidity from "./scenes/AddLiquidity";
 import RemoveLiquidity from "./scenes/RemoveLiquidity";
+import {
+  SWAP_PATH,
+  SWAP_PATH_LIQUIDITY_ADD,
+  SWAP_PATH_LIQUIDITY_REMOVE
+} from "../../../consts/neoRoutes";
 
 const Swap = () => {
   useEffect(() => {
@@ -24,7 +28,7 @@ const Swap = () => {
             >
               <Route
                 exact={true}
-                path={NEO_ROUTES.SWAP_PATH}
+                path={SWAP_PATH}
                 component={() => (
                   <SwapContextProvider type="swap">
                     <SwapMain />
@@ -32,7 +36,7 @@ const Swap = () => {
                 )}
               />
               <Route
-                path={NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}
+                path={SWAP_PATH_LIQUIDITY_ADD}
                 component={() => (
                   <SwapContextProvider type="liquidity">
                     <AddLiquidity />
@@ -40,7 +44,7 @@ const Swap = () => {
                 )}
               />
               <Route
-                path={NEO_ROUTES.SWAP_PATH_LIQUIDITY_REMOVE}
+                path={SWAP_PATH_LIQUIDITY_REMOVE}
                 component={RemoveLiquidity}
               />
             </div>

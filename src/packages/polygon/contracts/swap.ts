@@ -6,15 +6,15 @@ import {
 } from "@wagmi/core";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
-import { CONSTS } from "..";
 import FTWSwapABI from "./abi/FTWSwap.json";
 import { INetworkType } from "../../neo/network";
-import { GLOBAL } from "../../../consts";
 import { AddLiquidityArgs, SwapArgs, SwapEstimateArgs } from "../interfaces";
 import {
   ISwapLPToken,
   ISwapReserves
 } from "../../../common/routers/swap/interfaces";
+import { CONTRACT_LIST } from "../consts";
+import { SWAP } from "../../../consts/global";
 
 export const getReserves = async (
   network: INetworkType,
@@ -22,7 +22,7 @@ export const getReserves = async (
   tokenB: string
 ): Promise<ISwapReserves> => {
   const res: any = await readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getReserves",
     args: [tokenA, tokenB]
@@ -47,7 +47,7 @@ export const getEstimated = async (
 ): Promise<string> => {
   const { tokenA, tokenB, amount, isReverse } = args;
   const res = await readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getSwapEstimated",
     args: [tokenA, tokenB, amount, isReverse]
@@ -60,7 +60,7 @@ export const getLPTokens = async (
   owner: string
 ): Promise<ISwapLPToken[]> => {
   const res: any = await readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getTokensOf",
     args: [owner]
@@ -79,7 +79,7 @@ export const getTokenURI = async (
   tokenId: string
 ): Promise<ISwapLPToken> => {
   const res = (await readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "tokenURI",
     args: [tokenId]
@@ -103,7 +103,7 @@ export const getTokenURI = async (
 export const swap = (network: INetworkType, args: SwapArgs) => {
   const { tokenA, tokenB, amountIn, amountOut, isReverse } = args;
   return prepareWriteContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "swap",
     args: [tokenA, tokenB, amountIn, amountOut, isReverse]
@@ -113,7 +113,7 @@ export const swap = (network: INetworkType, args: SwapArgs) => {
 export const provide = (network: INetworkType, args: AddLiquidityArgs) => {
   const { tokenA, tokenB, amountA, amountB, slippage } = args;
   return prepareWriteContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "addLiquidity",
     args: [tokenA, amountA, tokenB, amountB, slippage]
@@ -122,7 +122,7 @@ export const provide = (network: INetworkType, args: AddLiquidityArgs) => {
 
 export const removeLiquidity = (network: INetworkType, tokenId: string) => {
   return prepareWriteContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "removeLiquidity",
     args: [tokenId]
@@ -135,7 +135,7 @@ export const approve = (network: INetworkType, token) => {
     abi: erc20ABI,
     functionName: "approve",
     args: [
-      CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+      CONTRACT_LIST[network][SWAP] as any,
       ethers.constants.MaxUint256
     ]
   });
@@ -155,7 +155,7 @@ export const getAllowances = (
         functionName: "allowance",
         args: [
           address as `0x${string}`,
-          CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as `0x${string}`
+          CONTRACT_LIST[network][SWAP] as `0x${string}`
         ]
       },
       {
@@ -164,7 +164,7 @@ export const getAllowances = (
         functionName: "allowance",
         args: [
           address as `0x${string}`,
-          CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as `0x${string}`
+          CONTRACT_LIST[network][SWAP] as `0x${string}`
         ]
       }
     ]
@@ -177,7 +177,7 @@ export const isApprovedForAll = (
   contractHash: string
 ) => {
   return readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "isApprovedForAll",
     args: [owner, contractHash]
@@ -189,7 +189,7 @@ export const setApprovalForAll = (
   contractHash: string
 ) => {
   return prepareWriteContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.SWAP] as any,
+    address: CONTRACT_LIST[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "setApprovalForAll",
     args: [contractHash, true]

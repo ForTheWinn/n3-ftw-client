@@ -6,7 +6,7 @@ import Stake from "./scenes/Stake";
 import MyPositions from "./scenes/MyPositions";
 import ClaimRewards from "./scenes/ClaimRewards";
 import CheckMarketStatus from "./components/CheckMarketStatus";
-import { NEO_ROUTES } from "../../../consts";
+import { FARM_PATH, FARM_STAKE_PATH, FARM_STAKE_POSITIONS_PATH } from "../../../consts/neoRoutes";
 
 const Farm = () => {
   const [refresh, setRefresh] = useState(0);
@@ -23,18 +23,18 @@ const Farm = () => {
               <div className="box is-shadowless">
                 <Route
                   exact={true}
-                  path={NEO_ROUTES.FARM_PATH}
+                  path={FARM_PATH}
                   component={StakingMain}
                 />
                 <Route
                   exact={true}
-                  path={NEO_ROUTES.FARM_STAKE_PATH}
+                  path={FARM_STAKE_PATH}
                   component={() => (
                     <Stake onRefresh={() => setRefresh(refresh + 1)} />
                   )}
                 />
                 <Route
-                  path={NEO_ROUTES.FARM_STAKE_POSITIONS_PATH}
+                  path={FARM_STAKE_POSITIONS_PATH}
                   component={() => (
                     <MyPositions onRefresh={() => setRefresh(refresh + 1)} />
                   )}

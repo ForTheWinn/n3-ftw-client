@@ -1,12 +1,12 @@
 import React from "react";
 import { FaMinus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { NEO_ROUTES } from "../../../../../../../consts";
+import { SWAP_PATH_LIQUIDITY_REMOVE } from "../../../../../../../consts/neoRoutes";
 
 const RemoveLiquidityButton = () => {
   return (
     <Link
-      to={NEO_ROUTES.SWAP_PATH_LIQUIDITY_REMOVE}
+      to={SWAP_PATH_LIQUIDITY_REMOVE}
       data-tip
       data-for="removeLiquidity"
       className="button is-small is-white"

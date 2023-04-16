@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
-import { CHAINS, CONFIGS } from "../../../../../consts/chains";
+import { CONFIGS } from "../../../../../consts/chains";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { Avatar, Space } from "antd";
 import DisplayAPR from "../../components/DisplayAPR";
 import { farmRouter } from "../../../../../common/routers";
-import { NEO_ROUTES } from "../../../../../consts";
-import { INetworkType } from "../../../../../packages/neo/network";
 import { IFarmPair } from "../../../../../common/routers/farm/interfaces";
 import { useApp } from "../../../../../common/hooks/use-app";
-
-interface IStakingMainProps {
-  chain: CHAINS;
-  network: INetworkType;
-}
+import {
+  FARM_V2_STAKE_PATH,
+  FARM_V2_STAKE_POSITIONS_PATH
+} from "../../../../../consts/neoRoutes";
 
 const TableHeader = () => (
   <thead>
@@ -28,7 +25,7 @@ const TableHeader = () => (
 );
 
 const StakingMain = () => {
-  const {chain, network} = useApp();
+  const { chain, network } = useApp();
   const [refresh, setRefresh] = useState(0);
   const handleRefresh = () => setRefresh(refresh + 1);
 
@@ -36,7 +33,6 @@ const StakingMain = () => {
     () => farmRouter.getPoolList(chain, network),
     [chain, refresh, network]
   );
-  
 
   return (
     <div>
@@ -53,7 +49,7 @@ const StakingMain = () => {
           <div className="level-item">
             <div className="buttons">
               <Link
-                to={`${NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}`}
+                to={`${FARM_V2_STAKE_POSITIONS_PATH}`}
                 className="button is-light is-small is-rounded"
               >
                 My staking
@@ -95,15 +91,11 @@ const StakingMain = () => {
                       )}
                     </td>
                     <td>
-                      <DisplayAPR
-                        chain={chain}
-                        network={network}
-                        pair={pair}
-                      />
+                      <DisplayAPR chain={chain} network={network} pair={pair} />
                     </td>
                     <td className="has-text-right">
                       <Link
-                        to={`${NEO_ROUTES.FARM_V2_STAKE_PATH}?tokenA=${pair.tokenA}&tokenB=${pair.tokenB}&tokenASymbol=${pair.symbolA}&tokenBSymbol=${pair.symbolB}`}
+                        to={`${FARM_V2_STAKE_PATH}?tokenA=${pair.tokenA}&tokenB=${pair.tokenB}&tokenASymbol=${pair.symbolA}&tokenBSymbol=${pair.symbolB}`}
                         className="button is-primary is-small"
                       >
                         Stake

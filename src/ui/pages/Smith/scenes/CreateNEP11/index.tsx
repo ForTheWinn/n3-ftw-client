@@ -9,8 +9,8 @@ import { useHistory } from "react-router-dom";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { SMITH_PATH_NEP11 } from "../../../../../consts/neoRoutes";
 
 const NEP11FormModal = () => {
   const history = useHistory();
@@ -94,7 +94,7 @@ const NEP11FormModal = () => {
 
   const onSuccess = () => {
     setTxid("");
-    history.push(NEO_ROUTES.SMITH_PATH_NEP11);
+    history.push(SMITH_PATH_NEP11);
   };
 
   useEffect(() => {

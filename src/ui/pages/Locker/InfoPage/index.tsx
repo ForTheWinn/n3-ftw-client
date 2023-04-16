@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { wallet } from "@cityofzion/neon-core";
 import { LOCKER_SCRIPT_HASH } from "../../../../packages/neo/contracts/ftw/locker/consts";
 import { FaKey, FaSearch } from "react-icons/fa";
-import { NEO_ROUTES } from "../../../../consts";
+import {
+  LOCKER_CREATE_PATH,
+  LOCKER_USER_PATH
+} from "../../../../consts/neoRoutes";
 const LockerInfoPage = ({ network }) => {
   return (
     <div>
@@ -15,14 +18,14 @@ const LockerInfoPage = ({ network }) => {
         </p>
         <h6>How to lock</h6>
         <p>
-          Go to <Link to={NEO_ROUTES.LOCKER_CREATE_PATH}>Create page</Link> and
-          fill out the form.
+          Go to <Link to={LOCKER_CREATE_PATH}>Create page</Link> and fill out
+          the form.
         </p>
         <h6>How to unlock</h6>
         <ul>
           <li>
-            Go to <Link to={NEO_ROUTES.LOCKER_USER_PATH}>Key page</Link>. It
-            displays all keys that the connected wallet has.
+            Go to <Link to={LOCKER_USER_PATH}>Key page</Link>. It displays all
+            keys that the connected wallet has.
           </li>
           <li>
             Or, send your key to the locker contract. Address is{" "}
@@ -52,6 +55,7 @@ const LockerInfoPage = ({ network }) => {
           <a
             href={`https://explorer.onegate.space/contractinfo/0x${LOCKER_SCRIPT_HASH[network]}`}
             target="_blank"
+            rel="noreferrer"
           >
             Browse
           </a>

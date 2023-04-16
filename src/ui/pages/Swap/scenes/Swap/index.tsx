@@ -10,6 +10,7 @@ import { NEO_ROUTES } from "../../../../../consts";
 import { useSwap } from "../SwapContext";
 import { Divider } from "antd";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
+import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/neoRoutes";
 
 const SwapMain = () => {
   const {
@@ -28,7 +29,6 @@ const SwapMain = () => {
     noLiquidity,
     priceImpact,
     inputError,
-    reservesError,
     onAfterSwapCompleted,
     setAssetChangeModalActive,
     setSettingsModalActive,
@@ -74,7 +74,7 @@ const SwapMain = () => {
       {noLiquidity && tokenA && tokenB ? (
         <ProvideLPInfo
           path={{
-            pathname: `${NEO_ROUTES.SWAP_PATH_LIQUIDITY_ADD}`,
+            pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
             search:
               tokenA && tokenB
                 ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`

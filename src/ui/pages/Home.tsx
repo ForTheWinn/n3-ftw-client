@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import Wave from "react-wavify";
 import { Link } from "react-router-dom";
 import SocialLinkGroup from "../components/Commons/SocialLinkGroup";
-import { NEO_ROUTES } from "../../consts";
 import { useApp } from "../../common/hooks/use-app";
 import { NEO_CHAIN } from "../../consts/chains";
+import { BOYZ_PATH, BRAND_KIT_PATH, FARM_V2_PATH, GALLERY_PATH, SMITH_PATH, SWAP_PATH } from "../../consts/neoRoutes";
 
 const Home = () => {
   useEffect(() => {
@@ -91,12 +91,12 @@ const Home = () => {
               <h6 className="title is-6 has-text-white">DeFi</h6>
               <ul className="footer-links">
                 <li>
-                  <Link to={NEO_ROUTES.SWAP_PATH} className="has-text-white">
+                  <Link to={SWAP_PATH} className="has-text-white">
                     Swap
                   </Link>
                 </li>
                 <li>
-                  <Link to={NEO_ROUTES.FARM_V2_PATH} className="has-text-white">
+                  <Link to={FARM_V2_PATH} className="has-text-white">
                     Farm
                   </Link>
                 </li>
@@ -116,12 +116,12 @@ const Home = () => {
               <h6 className="title is-6 has-text-white">Web3 tools</h6>
               <ul className="footer-links">
                 <li>
-                  <Link to={NEO_ROUTES.SMITH_PATH} className="has-text-white">
+                  <Link to={SMITH_PATH} className="has-text-white">
                     Token Launcher
                   </Link>
                 </li>
                 <li>
-                  <Link to={NEO_ROUTES.SMITH_PATH} className="has-text-white">
+                  <Link to={SMITH_PATH} className="has-text-white">
                     Locker
                   </Link>
                 </li>
@@ -131,12 +131,12 @@ const Home = () => {
               <h6 className="title is-6 has-text-white">NFTs</h6>
               <ul className="footer-links">
                 <li>
-                  <Link to={NEO_ROUTES.GALLERY_PATH} className="has-text-white">
+                  <Link to={GALLERY_PATH} className="has-text-white">
                     Runes
                   </Link>
                 </li>
                 <li>
-                  <Link to={NEO_ROUTES.BOYZ_PATH} className="has-text-white">
+                  <Link to={BOYZ_PATH} className="has-text-white">
                     Neo Boyz
                   </Link>
                 </li>
@@ -165,7 +165,7 @@ const Home = () => {
                 </li>
                 <li>
                   <Link
-                    to={NEO_ROUTES.BRAND_KIT_PATH}
+                    to={BRAND_KIT_PATH}
                     className="has-text-white"
                   >
                     Brand Kit

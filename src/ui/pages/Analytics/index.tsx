@@ -4,27 +4,27 @@ import AnalyticsMain from "./scenes/Main";
 import PairDetail from "./scenes/PairDetail";
 import TokenDetail from "./scenes/TokenDetail";
 import PageLayout from "../../components/Commons/PageLayout";
-import { NEO_ROUTES } from "../../../consts";
+import { ANALYTICS_PAIRS_PATH, ANALYTICS_PATH, ANALYTICS_TOKENS_PATH } from "../../../consts/neoRoutes";
 
-const Analytics = (props) => {
+const Analytics = () => {
   return (
     <div>
       <Switch>
         <Route
           exact={true}
-          path={NEO_ROUTES.ANALYTICS_PATH}
+          path={ANALYTICS_PATH}
           component={AnalyticsMain}
         />
         <Route
           exact={true}
-          path={`${NEO_ROUTES.ANALYTICS_PAIRS_PATH}/:pairId`}
+          path={`${ANALYTICS_PAIRS_PATH}/:pairId`}
           component={(props) => {
             return <PairDetail id={props.match.params.pairId} />;
           }}
         />
         <Route
           exact={true}
-          path={`${NEO_ROUTES.ANALYTICS_TOKENS_PATH}/:tokenId`}
+          path={`${ANALYTICS_TOKENS_PATH}/:tokenId`}
           component={(props) => {
             return (
               <PageLayout>

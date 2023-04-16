@@ -8,8 +8,8 @@ import {
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { FaPlus } from "react-icons/fa";
 import LockerCard from "./LockerCard";
-import { NEO_ROUTES } from "../../../../consts";
 import { useApp } from "../../../../common/hooks/use-app";
+import { LOCKER_CREATE_PATH } from "../../../../consts/neoRoutes";
 
 const LockersByContract = () => {
   const { network } = useApp();
@@ -59,7 +59,7 @@ const LockersByContract = () => {
                   <div className="level-item">
                     <div className="buttons">
                       <Link
-                        to={`${NEO_ROUTES.LOCKER_CREATE_PATH}?contractHash=${data.contract.contractHash}`}
+                        to={`${LOCKER_CREATE_PATH}?contractHash=${data.contract.contractHash}`}
                         className="button is-white"
                       >
                         <FaPlus />

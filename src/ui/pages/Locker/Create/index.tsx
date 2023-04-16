@@ -13,8 +13,8 @@ import queryString from "query-string";
 import { wallet } from "@cityofzion/neon-core";
 import { SmithContract } from "../../../../packages/neo/contracts/ftw/smith";
 import { LOCKER_NEP_FEE } from "../../../../packages/neo/contracts/ftw/locker/consts";
-import { NEO_ROUTES } from "../../../../consts";
 import { useApp } from "../../../../common/hooks/use-app";
+import { LOCKER_USER_PATH } from "../../../../consts/neoRoutes";
 
 export interface IContractState {
   assetHash: string;
@@ -96,7 +96,7 @@ const Create = () => {
   const onSuccess = () => {
     if (connectedWallet) {
       history.push(
-        `${NEO_ROUTES.LOCKER_USER_PATH}/${connectedWallet.account.address}`
+        `${LOCKER_USER_PATH}/${connectedWallet.account.address}`
       );
     }
   };

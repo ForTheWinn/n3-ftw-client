@@ -1,6 +1,4 @@
-import { GLOBAL } from "../../../../../consts";
-const { TESTNET, MAINNET } = GLOBAL;
-
+import { MAINNET, TESTNET } from "../../../../../consts/global";
 
 export const BOYZ_SCRIPT_HASH = {
   [TESTNET]: "0x9a15c5e62bb1eb9fa06605edcf71fea880da94ac",

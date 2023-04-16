@@ -1,5 +1,4 @@
-import { GLOBAL } from "../../../../../consts";
-const { TESTNET, MAINNET } = GLOBAL;
+import { MAINNET, TESTNET } from "../../../../../consts/global";
 
 export const RUNE_SCRIPT_HASH = {
   [TESTNET]: "0x9f30d01b85887d0927c01640d5789d908e7c315a",

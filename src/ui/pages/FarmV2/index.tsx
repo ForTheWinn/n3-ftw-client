@@ -5,11 +5,14 @@ import StakingMain from "./scenes/Main";
 import Stake from "./scenes/Stake";
 import MyPositions from "./scenes/MyPositions";
 import CheckMarketStatus from "./components/CheckMarketStatus";
-import { NEO_ROUTES } from "../../../consts";
 import ClaimRewards from "./scenes/ClaimRewards";
+import {
+  FARM_V2_PATH,
+  FARM_V2_STAKE_PATH,
+  FARM_V2_STAKE_POSITIONS_PATH
+} from "../../../consts/neoRoutes";
 
 const Farm = () => {
-
   return (
     <PageLayout>
       <div className="columns">
@@ -20,16 +23,16 @@ const Farm = () => {
               <div className="box is-shadowless">
                 <Route
                   exact={true}
-                  path={NEO_ROUTES.FARM_V2_PATH}
+                  path={FARM_V2_PATH}
                   component={StakingMain}
                 />
                 <Route
                   exact={true}
-                  path={NEO_ROUTES.FARM_V2_STAKE_PATH}
+                  path={FARM_V2_STAKE_PATH}
                   component={Stake}
                 />
                 <Route
-                  path={NEO_ROUTES.FARM_V2_STAKE_POSITIONS_PATH}
+                  path={FARM_V2_STAKE_POSITIONS_PATH}
                   component={MyPositions}
                 />
               </div>

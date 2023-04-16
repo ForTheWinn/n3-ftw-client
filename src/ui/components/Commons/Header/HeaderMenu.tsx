@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { CHAINS } from "../../../../consts/chains";
-import { HEADER_ROUTES } from "../../../../consts";
 import { INetworkType } from "../../../../packages/neo/network";
+import { HEADER_ROUTES } from "../../../../consts/navRoutes";
 interface IHeaderMenuProps {
   chain: CHAINS;
   network: INetworkType;
@@ -23,9 +23,9 @@ export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
               <div className="navbar-link">{route.label}</div>
               <div className="navbar-dropdown is-boxed">
                 {route.category.map((item, index) => {
-                   const _chain = item.chain[chain];
-                   if (!_chain) return false;
-                   if (!_chain.includes(network)) return false;
+                  const _chain = item.chain[chain];
+                  if (!_chain) return false;
+                  if (!_chain.includes(network)) return false;
                   return (
                     <NavLink
                       key={`category-${item.label}-${item.label}${index}`}

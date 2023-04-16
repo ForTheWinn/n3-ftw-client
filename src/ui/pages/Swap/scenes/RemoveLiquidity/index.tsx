@@ -4,10 +4,10 @@ import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenCard from "../../../../components/LPTokenCard";
 import RemoveLiquidityModal from "./RemoveLiquidityModal";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { NEO_ROUTES } from "../../../../../consts";
 import { swapRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
+import { SWAP_PATH } from "../../../../../consts/neoRoutes";
 
 const RemoveLiquidity = () => {
   const { network, chain, refreshCount, increaseRefreshCount } = useApp();
@@ -27,7 +27,7 @@ const RemoveLiquidity = () => {
   );
   return (
     <>
-      <HeaderBetween path={NEO_ROUTES.SWAP_PATH} title={"Withdraw liquidity"} />
+      <HeaderBetween path={SWAP_PATH} title={"Withdraw liquidity"} />
       <hr />
       {isConnected ? (
         <>

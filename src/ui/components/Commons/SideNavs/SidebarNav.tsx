@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useApp } from "../../../../common/hooks/use-app";
-import { HEADER_ROUTES } from "../../../../consts";
 import SocialLinkGroup from "../SocialLinkGroup";
+import { HEADER_ROUTES } from "../../../../consts/navRoutes";
 
 const SidebarNav = () => {
   const { chain, network } = useApp();
@@ -16,9 +16,9 @@ const SidebarNav = () => {
         <p className="menu-label">Menu</p>
         <ul className="menu-list">
           {HEADER_ROUTES.map((route, i) => {
-           const _chain = route.chain[chain];
-           if (!_chain) return false;
-           if (!_chain.includes(network)) return false;
+            const _chain = route.chain[chain];
+            if (!_chain) return false;
+            if (!_chain.includes(network)) return false;
             return (
               <li key={`${route.label}${i}`}>
                 {route.category.length > 0 ? (

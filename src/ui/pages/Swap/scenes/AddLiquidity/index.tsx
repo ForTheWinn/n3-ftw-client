@@ -7,9 +7,9 @@ import Nav from "./components/Nav";
 import ProvideLPInfo from "../../components/ProvideLPInfo";
 import ActionModal from "../../components/ActionModal";
 
-import { NEO_ROUTES } from "../../../../../consts";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { Divider } from "antd";
+import { SWAP_PATH } from "../../../../../consts/neoRoutes";
 
 const Liquidity = () => {
   const {
@@ -51,7 +51,7 @@ const Liquidity = () => {
   };
 
   const toMain = {
-    pathname: `${NEO_ROUTES.SWAP_PATH}`,
+    pathname: `${SWAP_PATH}`,
     search:
       tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : ""
   };

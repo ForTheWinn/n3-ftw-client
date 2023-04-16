@@ -7,8 +7,8 @@ import { FaInfoCircle, FaKey, FaPlus, FaSearch } from "react-icons/fa";
 import SearchLockerModal from "./SearchLockerModal";
 import ModalCard from "../../../components/Modal";
 import LockerInfoPage from "../InfoPage";
-import { NEO_ROUTES } from "../../../../consts";
 import { useApp } from "../../../../common/hooks/use-app";
+import { LOCKER_CREATE_PATH, LOCKER_SEARCH_PATH, LOCKER_USER_PATH } from "../../../../consts/neoRoutes";
 
 const LockerMain = () => {
   const { chain, network } = useApp();
@@ -35,19 +35,19 @@ const LockerMain = () => {
                 <div className="level-item">
                   <div className="buttons">
                     <Link
-                      to={NEO_ROUTES.LOCKER_CREATE_PATH}
+                      to={LOCKER_CREATE_PATH}
                       className="button is-white"
                     >
                       <FaPlus />
                     </Link>
                     <Link
-                      to={NEO_ROUTES.LOCKER_SEARCH_PATH}
+                      to={LOCKER_SEARCH_PATH}
                       className="button is-white"
                     >
                       <FaSearch />
                     </Link>
                     <Link
-                      to={NEO_ROUTES.LOCKER_USER_PATH}
+                      to={LOCKER_USER_PATH}
                       className="button is-white"
                     >
                       <FaKey />

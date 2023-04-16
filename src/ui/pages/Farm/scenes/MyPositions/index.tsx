@@ -8,8 +8,8 @@ import AfterTransactionSubmitted from "../../../../components/NeoComponents/Afte
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
 import { handleError } from "../../../../../packages/neo/utils/errors";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { FARM_PATH } from "../../../../../consts/neoRoutes";
 
 const MyPositions = ({ onRefresh }) => {
   const { network } = useApp();
@@ -41,7 +41,7 @@ const MyPositions = ({ onRefresh }) => {
 
   return (
     <div>
-      <HeaderBetween path={NEO_ROUTES.FARM_PATH} title={`My staking`} />
+      <HeaderBetween path={FARM_PATH} title={`My staking`} />
       <hr />
       {connectedWallet ? (
         <PositionList

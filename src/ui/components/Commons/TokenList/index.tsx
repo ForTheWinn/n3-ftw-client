@@ -6,9 +6,9 @@ import SwapTokenCard from "../../../pages/Swap/components/TokenCard";
 import Modal from "../../Modal";
 
 import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
-import { TOKENS } from "../../../../consts";
-import { CHAINS, POLYGON_CHAIN } from "../../../../consts/chains";
+import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
+import { SWAP_TOKEN_LIST } from "../../../../consts/tokens";
 
 interface IAssetListModalProps {
   chain: CHAINS;
@@ -35,7 +35,7 @@ const TokenList = ({
       ) : (
         <>
           <div className="columns is-multiline is-mobile">
-            {TOKENS.SWAP_TOKEN_LIST[chain][network].map((token) => {
+            {SWAP_TOKEN_LIST[chain][network].map((token) => {
               return (
                 <SwapTokenCard
                   key={token.hash}

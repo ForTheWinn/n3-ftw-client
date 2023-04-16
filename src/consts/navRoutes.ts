@@ -1,3 +1,3 @@
-import { NEO_ROUTES} from ".";
+import { ROUTES } from "./neoRoutes";
 
-export const HEADER_ROUTES = NEO_ROUTES.ROUTES;
+export const HEADER_ROUTES = ROUTES;

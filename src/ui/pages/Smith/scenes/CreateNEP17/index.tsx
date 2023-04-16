@@ -11,8 +11,8 @@ import PageLayout from "../../../../components/Commons/PageLayout";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { SMITH_PATH } from "../../../../../consts/neoRoutes";
 
 const NEP17FormModal = () => {
   const { network } = useApp();
@@ -97,7 +97,7 @@ const NEP17FormModal = () => {
 
   const onSuccess = () => {
     setTxid("");
-    history.push(NEO_ROUTES.SMITH_PATH);
+    history.push(SMITH_PATH);
   };
 
   // const firstInput = useRef(null);

@@ -12,11 +12,11 @@ import Header from "./components/Commons/Header/Header";
 import WalletSidebar from "./components/Commons/SideNavs/WalletSidebar";
 import MobileMenuSlider from "./components/Commons/SideNavs/MobileMenuSlider";
 import TxHandler from "./components/Commons/TxHandler";
-import { GLOBAL } from "../consts";
 import Routes from "./Routes";
+import { TESTNET } from "../consts/global";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [process.env.REACT_APP_NETWORK === GLOBAL.TESTNET ? polygonMumbai : polygon],
+  [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygon],
   [publicProvider()]
 );
 

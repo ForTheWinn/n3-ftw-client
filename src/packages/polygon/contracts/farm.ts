@@ -2,20 +2,19 @@ import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
 import { IClaimable, IFarmPair } from "../../../common/routers/farm/interfaces";
 import { TOKEN_LIST } from "../../../consts/tokens";
 import { POLYGON_CHAIN } from "../../../consts/chains";
-import {} from "../consts";
+import { CONTRACT_LIST } from "../consts";
 import { IClaimableRewards } from "../../neo/contracts/ftw/farm-v2/interfaces";
 import { withDecimal } from "../../neo/utils";
 import FTWFarmABI from "./abi/FTWFarm.json";
 import { getTokenURI } from "./swap";
 import { Buffer } from "buffer";
 import { INetworkType } from "../../neo/network";
-import { CONSTS } from "..";
-import { GLOBAL } from "../../../consts";
 import { ISwapLPToken } from "../../../common/routers/swap/interfaces";
+import { FARM } from "../../../consts/global";
 
 export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
   const res: any = await readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
+    address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "getAllPoolIds",
     args: []
@@ -25,7 +24,7 @@ export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
 
   for (const pairId of res) {
     const pool: any = await readContract({
-      address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
+      address: CONTRACT_LIST[network][FARM] as any,
       abi: FTWFarmABI,
       functionName: "getPool",
       args: [pairId]
@@ -74,7 +73,7 @@ export const getStakedTokens = async (
   address: string
 ): Promise<ISwapLPToken[]> => {
   const res: any = await readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
+    address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "getStakedTokens",
     args: [address]
@@ -94,7 +93,7 @@ export const getClaimable = async (
   address: string
 ): Promise<IClaimable> => {
   const res: any = await readContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
+    address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "getClaimable",
     args: [address]
@@ -137,7 +136,7 @@ export const stake = async (
   tokenId: string
 ): Promise<string> => {
   const config = await prepareWriteContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
+    address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "stake",
     args: [tokenId]
@@ -151,7 +150,7 @@ export const unStake = async (
   tokenId: string
 ): Promise<string> => {
   const config = await prepareWriteContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
+    address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "unStake",
     args: [tokenId]
@@ -172,7 +171,7 @@ export const claim = async (
   });
   const formattedPairs: [string, string][][] = [pairs];
   const config = await prepareWriteContract({
-    address: CONSTS.CONTRACT_LIST[network][GLOBAL.FARM] as any,
+    address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "claimMany",
     args: [pairIds]

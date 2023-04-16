@@ -6,7 +6,7 @@ import PositionList from "./PositionList";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { NEO_ROUTES } from "../../../../../consts";
+import { FARM_V2_PATH } from "../../../../../consts/neoRoutes";
 
 const MyPositions = () => {
   const { setTxid, network, chain } = useApp();
@@ -25,7 +25,7 @@ const MyPositions = () => {
 
   return (
     <div>
-      <HeaderBetween path={NEO_ROUTES.FARM_V2_PATH} title={`My staking`} />
+      <HeaderBetween path={FARM_V2_PATH} title={`My staking`} />
       <hr />
       {isConnected ? (
         <PositionList

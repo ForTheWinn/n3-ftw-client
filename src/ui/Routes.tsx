@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { Route } from "react-router-dom";
-import { NEO_ROUTES } from "../consts";
 
 import Runes from "./pages/Rune";
 import Home from "./pages/Home";
@@ -22,11 +21,26 @@ import { NEO_CHAIN, POLYGON_CHAIN } from "../consts/chains";
 import { MAINNET, TESTNET } from "../consts/global";
 import NoChainSupport from "./pages/ChainRouting/NoChainSupport";
 import NoNetworkSupport from "./pages/ChainRouting/NoNetworkSupport";
+import {
+  ANALYTICS_PATH,
+  BOYZ_PATH,
+  BRAND_KIT_PATH,
+  FARM_PATH,
+  FARM_V2_PATH,
+  GALLERY_PATH,
+  HOME_PATH,
+  LOCKER_PATH,
+  LP_TOKENS_PATH,
+  MIGRATION_PATH,
+  SMITH_PATH,
+  SWAP_PATH,
+  TOURNAMENT_PATH
+} from "../consts/neoRoutes";
 
 const pageRoutes = [
   {
     exact: true,
-    path: NEO_ROUTES.HOME_PATH,
+    path: HOME_PATH,
     component: Home,
     chain: {
       [NEO_CHAIN]: [TESTNET, MAINNET],
@@ -34,7 +48,7 @@ const pageRoutes = [
     }
   },
   {
-    path: NEO_ROUTES.SWAP_PATH,
+    path: SWAP_PATH,
     component: Swap,
     chain: {
       [NEO_CHAIN]: [TESTNET, MAINNET],
@@ -42,21 +56,21 @@ const pageRoutes = [
     }
   },
   {
-    path: NEO_ROUTES.FARM_PATH,
+    path: FARM_PATH,
     component: Farm,
     chain: {
       [NEO_CHAIN]: [MAINNET]
     }
   },
   {
-    path: NEO_ROUTES.LOCKER_PATH,
+    path: LOCKER_PATH,
     component: Locker,
     chain: {
       [NEO_CHAIN]: [TESTNET, MAINNET]
     }
   },
   {
-    path: NEO_ROUTES.FARM_V2_PATH,
+    path: FARM_V2_PATH,
     component: FarmV2,
     chain: {
       [NEO_CHAIN]: [TESTNET, MAINNET],
@@ -64,35 +78,35 @@ const pageRoutes = [
     }
   },
   {
-    path: NEO_ROUTES.SMITH_PATH,
+    path: SMITH_PATH,
     component: Smith,
     chain: {
       [NEO_CHAIN]: [TESTNET, MAINNET]
     }
   },
   {
-    path: NEO_ROUTES.ANALYTICS_PATH,
+    path: ANALYTICS_PATH,
     component: Analytics,
     chain: {
       [NEO_CHAIN]: [MAINNET]
     }
   },
   {
-    path: NEO_ROUTES.GALLERY_PATH,
+    path: GALLERY_PATH,
     component: Runes,
     chain: {
       [NEO_CHAIN]: [MAINNET]
     }
   },
   {
-    path: NEO_ROUTES.BOYZ_PATH,
+    path: BOYZ_PATH,
     component: Boyz,
     chain: {
       [NEO_CHAIN]: [MAINNET]
     }
   },
   {
-    path: NEO_ROUTES.LP_TOKENS_PATH,
+    path: LP_TOKENS_PATH,
     component: LPTokens,
     chain: {
       [NEO_CHAIN]: [TESTNET, MAINNET],
@@ -100,14 +114,14 @@ const pageRoutes = [
     }
   },
   {
-    path: NEO_ROUTES.MIGRATION_PATH,
+    path: MIGRATION_PATH,
     component: Migration,
     chain: {
       [NEO_CHAIN]: [MAINNET]
     }
   },
   {
-    path: NEO_ROUTES.TOURNAMENT_PATH,
+    path: TOURNAMENT_PATH,
     component: Tournament,
     chain: {
       [NEO_CHAIN]: [MAINNET]
@@ -136,7 +150,7 @@ const Routes = () => {
             />
           );
         })}
-        <Route path={NEO_ROUTES.BRAND_KIT_PATH} component={BrandKit} />
+        <Route path={BRAND_KIT_PATH} component={BrandKit} />
         {/* <Route path={NEO_ROUTES.GASFI_PATH} component={GASFi} /> */}
         {/* <Route path={NEO_ROUTES.BRIDGE_PATH} component={Bridge} /> */}
       </>
