@@ -1,10 +1,17 @@
 import { IConnectedWallet, ITransaction, IWalletType } from "./interfaces";
-import { NEO_LINE, NEON, O3, ONE_GATE, WALLET_LIST } from "../consts";
+import {
+  NEO_LINE,
+  NEO_LINE_MOBILE,
+  NEON,
+  O3,
+  ONE_GATE,
+  WALLET_LIST
+} from "../consts";
 import { u } from "@cityofzion/neon-core";
 import { INetworkType } from "../network";
 import { LocalStorage } from "../local-storage";
 import moment from "moment";
-import { initNeoLine } from "./neoline";
+import { initNeoLine, initNeoLineMobile } from "./neoline";
 import { initOG } from "./onegate";
 import { initO3 } from "./o3";
 import { initNeon } from "./neon";
@@ -27,13 +34,16 @@ export class WalletAPI {
       case NEON:
         instance = await initNeon(network);
         break;
+      case NEO_LINE_MOBILE:
+        instance = await initNeoLineMobile();
+        break;
       case ONE_GATE:
         instance = await initOG();
         break;
     }
     return {
       key: walletType,
-      ...instance,
+      ...instance
     };
   };
 
@@ -44,8 +54,7 @@ export class WalletAPI {
     invokeScript: any,
     extraSystemFee?: string
   ): Promise<string> => {
-
-		if (
+    if (
       connectedWallet.network &&
       connectedWallet.network.defaultNetwork &&
       connectedWallet.network.defaultNetwork !== currentNetwork
@@ -65,18 +74,15 @@ export class WalletAPI {
       contractHash: invokeScript.scriptHash,
       method: invokeScript.operation,
       args: invokeScript.args,
-      createdAt: moment().format("lll"),
+      createdAt: moment().format("lll")
     };
 
     if (connectedWallet.key === NEON) {
-
       const invocations = [invokeScript];
       const signers = invokeScript.signers;
       const res = await instance.invokeFunction({ invocations, signers });
-	    submittedTx.txid = res;
-
+      submittedTx.txid = res;
     } else {
-
       if (extraSystemFee) {
         if (walletType === ONE_GATE) {
           invokeScript.extraSystemFee = u.BigInteger.fromDecimal(
@@ -89,11 +95,11 @@ export class WalletAPI {
       }
 
       const res = await instance.invoke(invokeScript, currentNetwork);
-	    submittedTx.txid = res.txid;
+      submittedTx.txid = res.txid;
     }
 
-	  LocalStorage.addTransaction(submittedTx);
-	  return submittedTx.txid;
+    LocalStorage.addTransaction(submittedTx);
+    return submittedTx.txid;
   };
 
   /* Control signing and send transaction. TODO:Need to improve type hardcoding later */
@@ -103,7 +109,6 @@ export class WalletAPI {
     invokeArgs: object[],
     signers: object[]
   ): Promise<string> => {
-
     if (
       connectedWallet.network &&
       connectedWallet.network.defaultNetwork &&
@@ -125,7 +130,7 @@ export class WalletAPI {
       method: "multiple",
       args: [],
       invokeScript: invokeArgs,
-      createdAt: moment().format("lll"),
+      createdAt: moment().format("lll")
     };
 
     if (connectedWallet.key === NEON) {
@@ -134,7 +139,7 @@ export class WalletAPI {
 			 */
       submittedTx.txid = await instance.invokeFunction({
         invocations: invokeArgs,
-        signers,
+        signers
       });
     } else if (connectedWallet.key === NEO_LINE) {
       /**
@@ -142,7 +147,7 @@ export class WalletAPI {
 		 */
       const res = await instance.invokeMultiple({
         invokeArgs,
-        signers,
+        signers
       });
       submittedTx.txid = res.txid;
     } else if (connectedWallet.key === ONE_GATE) {
@@ -151,7 +156,7 @@ export class WalletAPI {
 	     */
       const res = await instance.invokeMultiple({
         invocations: invokeArgs,
-        signers,
+        signers
       });
       submittedTx.txid = res.txid;
     } else {
@@ -161,7 +166,7 @@ export class WalletAPI {
       const invokeRes = await instance.invokeMulti({
         invokeArgs,
         signers,
-        network: currentNetwork,
+        network: currentNetwork
       });
       submittedTx.txid = invokeRes.txid;
     }
