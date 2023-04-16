@@ -1,4 +1,4 @@
-import { IConnectedWallet, ITransaction, IWalletType } from "./interfaces";
+import { IConnectedWallet, IWalletType } from "./interfaces";
 import {
   NEO_LINE,
   NEO_LINE_MOBILE,
@@ -7,14 +7,12 @@ import {
   ONE_GATE,
   WALLET_LIST
 } from "../consts";
-import { u } from "@cityofzion/neon-core";
 import { INetworkType } from "../network";
-import { LocalStorage } from "../local-storage";
-import moment from "moment";
 import { initNeoLine, initNeoLineMobile } from "./neoline";
 import { initOG } from "./onegate";
 import { initO3 } from "./o3";
 import { initNeon } from "./neon";
+import { tx } from "@cityofzion/neon-core";
 
 export class WalletAPI {
   static list = WALLET_LIST;
@@ -64,42 +62,26 @@ export class WalletAPI {
       );
     }
 
-    const instance = connectedWallet.instance;
-    const walletType = connectedWallet.key;
+    // This is a hotfix for onegage signer scope bug
+    if (connectedWallet.key === ONE_GATE) {
+      invokeScript.signers = invokeScript.signers.map((signer) => {
+        return {
+          ...signer,
+          scopes: tx.toString(signer.scopes)
+        };
+      });
+    }
 
-    const submittedTx: ITransaction = {
-      network: currentNetwork,
-      wallet: walletType,
-      txid: "",
-      contractHash: invokeScript.scriptHash,
-      method: invokeScript.operation,
-      args: invokeScript.args,
-      createdAt: moment().format("lll")
-    };
+    const instance = connectedWallet.instance;
 
     if (connectedWallet.key === NEON) {
       const invocations = [invokeScript];
       const signers = invokeScript.signers;
-      const res = await instance.invokeFunction({ invocations, signers });
-      submittedTx.txid = res;
+      return await instance.invokeFunction({ invocations, signers });
     } else {
-      if (extraSystemFee) {
-        if (walletType === ONE_GATE) {
-          invokeScript.extraSystemFee = u.BigInteger.fromDecimal(
-            extraSystemFee,
-            8
-          ).toString();
-        } else {
-          invokeScript.extraSystemFee = extraSystemFee;
-        }
-      }
-
       const res = await instance.invoke(invokeScript, currentNetwork);
-      submittedTx.txid = res.txid;
+      return res.txid;
     }
-
-    LocalStorage.addTransaction(submittedTx);
-    return submittedTx.txid;
   };
 
   /* Control signing and send transaction. TODO:Need to improve type hardcoding later */
@@ -120,58 +102,38 @@ export class WalletAPI {
     }
 
     const instance = connectedWallet.instance;
-    const walletType = connectedWallet.key;
-
-    const submittedTx: ITransaction = {
-      network: currentNetwork,
-      wallet: walletType,
-      txid: "",
-      contractHash: "multiple",
-      method: "multiple",
-      args: [],
-      invokeScript: invokeArgs,
-      createdAt: moment().format("lll")
-    };
 
     if (connectedWallet.key === NEON) {
-      /**
-			NEON
-			 */
-      submittedTx.txid = await instance.invokeFunction({
+      return await instance.invokeFunction({
         invocations: invokeArgs,
         signers
       });
-    } else if (connectedWallet.key === NEO_LINE) {
-      /**
-		Neo Line
-		 */
+    } else if (connectedWallet.key === NEO_LINE || connectedWallet.key === NEO_LINE_MOBILE) {
       const res = await instance.invokeMultiple({
         invokeArgs,
         signers
       });
-      submittedTx.txid = res.txid;
+      return res.txid;
     } else if (connectedWallet.key === ONE_GATE) {
-      /**
-		OG
-	     */
+      // This is a hotfix for onegage signer scope bug
+      const ogSigners = signers.map((s: any) => {
+        return {
+          ...s,
+          scopes: tx.toString(s.scopes)
+        };
+      });
       const res = await instance.invokeMultiple({
         invocations: invokeArgs,
-        signers
+        signers: ogSigners
       });
-      submittedTx.txid = res.txid;
+      return res.txid;
     } else {
-      /**
-		 O3
-	     */
       const invokeRes = await instance.invokeMulti({
         invokeArgs,
         signers,
         network: currentNetwork
       });
-      submittedTx.txid = invokeRes.txid;
+      return invokeRes.txid;
     }
-
-    LocalStorage.addTransaction(submittedTx);
-    return submittedTx.txid;
   };
 }
