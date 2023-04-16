@@ -17,7 +17,8 @@ import {
   TGAS_SCRIPT_HASH,
   TTM_SCRIPT_HASH,
   USDT_SCRIPT_HASH,
-  WATT_SCRIPT_HASH
+  WATT_SCRIPT_HASH,
+  _7F_SCRIPT_HASH
 } from "./neo-contracts";
 
 import { MAINNET } from "../../../consts/global";
@@ -135,6 +136,12 @@ export const MAINNET_TOKEN_LIST = {
     hash: GLC_SCRIPT_HASH,
     symbol: "GLC",
     icon: "/symbols/glc.png",
+    decimals: 8
+  },
+   [_7F_SCRIPT_HASH]: {
+    hash: _7F_SCRIPT_HASH,
+    symbol: "7f",
+    icon: "/symbols/7f.png",
     decimals: 8
   }
 };

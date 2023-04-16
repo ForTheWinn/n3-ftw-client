@@ -16,7 +16,6 @@ export const HIST_SCRIPT_HASH = "0xaf348a1ff998291cbf207fd6ba342da74593599f";
 export const TGAS_SCRIPT_HASH = "0x56199aa066633745de4d603e6477881455c08243";
 export const TTM_SCRIPT_HASH = "0xc0283310a5117b9d007941e8a0dc3dae9593f65c";
 
-
 export const FTW_SCRIPT_HASH = {
   [TESTNET]: "0xc1a56650f12420405c5b7e2634eb3779a0c3e396",
   [MAINNET]: "0x9f8b20c31bb9e45003f2d9f316d2caf1dcd1bf20"
@@ -54,14 +53,5 @@ export const FRANK_SCRIPT_HASH = "0xa06cfd7ae9dd7befb7bf8e5b8c5902c969182de0";
 export const HOOD_SCRIPT_HASH = "0xc8d56cac2dd82e2da605ccae6865a99da491b97e";
 export const B$_SCRIPT_HASH = "0x3782720ad22ecfdd26cc99135dbc6739a47a38c9";
 export const GLC_SCRIPT_HASH = "0x77dc8cadcaef3694ab0f23901d8d9d825b19e6a2";
+export const _7F_SCRIPT_HASH = "0x8d91c0b210dcd568d287711a4c1c54c7ae392814";
 
-export const CONTRACT_LIST = {
-  [MAINNET]: {
-    [SWAP]: "",
-    [FARM]: ""
-  },
-  [TESTNET]: {
-    [SWAP]: "",
-    [FARM]: ""
-  }
-};
