@@ -109,7 +109,6 @@ export class LockerContract {
         invokeScript
       );
     } else {
-      console.log(invokeCount);
       const invokes: any[] = [];
       for (var i = 0; i < invokeCount; ++i) {
         invokes.push(invokeScript);

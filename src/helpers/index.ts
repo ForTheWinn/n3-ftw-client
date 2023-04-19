@@ -56,3 +56,32 @@ export const getLPEstimate = (
 
   return estimated.toString();
 };
+
+export const findTradePaths = (
+  tokenList,
+  sourceToken: ITokenState,
+  targetToken: ITokenState,
+  maxDepth = 3
+) => {
+  const paths: ITokenState[][] = [];
+
+  function dfs(currentToken: ITokenState, currentPath: ITokenState[], depth) {
+    if (depth > maxDepth) return;
+
+    if (currentToken === targetToken) {
+      // @ts-ignore
+      paths.push(currentPath);
+      return;
+    }
+    const nextTokens = tokenList[currentToken.hash].pairs;
+    for (const nextToken of nextTokens) {
+      const _nextToken = tokenList[nextToken];
+      if (!currentPath.includes(_nextToken)) {
+        dfs(_nextToken, [...currentPath, _nextToken], depth + 1);
+      }
+    }
+  }
+
+  dfs(sourceToken, [sourceToken], 1);
+  return paths;
+};

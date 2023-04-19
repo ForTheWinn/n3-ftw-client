@@ -6,7 +6,6 @@ import SwapButton from "../../components/SwapButton";
 import SwapNav from "./components/SwapNav";
 
 import ActionModal from "../../components/ActionModal";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useSwap } from "../SwapContext";
 import { Divider } from "antd";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
@@ -102,25 +101,28 @@ const SwapMain = () => {
         setSwapInputChange={onSwapInputChange}
       />
 
-      {/* {tokenA && tokenB && amountA ? (
-        <PriceComparison
-          tokenA={tokenA}
-          tokenB={tokenB}
-          amountIn={amountA}
-        />
-      ) : (
-        <></>
-      )} */}
-
       {tokenA && tokenB && reserves && amountA && amountB ? (
-        <SwapDetails
-          tokenA={tokenA}
-          tokenB={tokenB}
-          amountA={amountA}
-          amountB={amountB}
-          priceImpact={priceImpact}
-          slippage={slippage}
-        />
+        <>
+          <Divider />
+
+          <SwapDetails
+            tokenA={tokenA}
+            tokenB={tokenB}
+            amountA={amountA}
+            amountB={amountB}
+            priceImpact={priceImpact}
+            slippage={slippage}
+          />
+          <div className="mt-2">
+            <PriceComparison
+              chain={chain}
+              network={network}
+              tokenA={tokenA}
+              tokenB={tokenB}
+              amountIn={amountA}
+            />
+          </div>
+        </>
       ) : (
         <></>
       )}

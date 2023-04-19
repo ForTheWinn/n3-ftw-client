@@ -35,8 +35,8 @@ const SwapDetails = ({
 
   return (
     <>
-      <hr />
       <Collapse
+        size="small"
         bordered={false}
         defaultActiveKey={[]}
         expandIcon={({ isActive }) => (
