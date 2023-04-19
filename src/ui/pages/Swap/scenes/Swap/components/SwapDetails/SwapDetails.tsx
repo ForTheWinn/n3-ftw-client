@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { getAfterSlippage } from "../../../../../../../packages/neo/contracts/ftw/swap/helpers";
 import { numberTrim } from "../../../../../../../packages/neo/utils";
 import { priceImpactFormat } from "../../helpers";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import { CaretRightOutlined } from "@ant-design/icons";
 
 import { ITokenState } from "../../interfaces";
 import PriceRatio from "./PriceRatio";
+import { Collapse } from "antd";
+const { Panel } = Collapse;
 
 interface ISwapDetailsProps {
   tokenA: ITokenState;
@@ -34,30 +36,26 @@ const SwapDetails = ({
   return (
     <>
       <hr />
-      <div className="level is-mobile">
-        <div className="level-left">
-          <div className="level-item">
+      <Collapse
+        bordered={false}
+        defaultActiveKey={[]}
+        expandIcon={({ isActive }) => (
+          <CaretRightOutlined rotate={isActive ? 90 : 0} />
+        )}
+      >
+        <Panel
+          header={
             <PriceRatio
               symbolA={tokenA.symbol}
               symbolB={tokenB.symbol}
               amountA={amountA}
               amountB={amountB}
+              decimalsA={tokenA.decimals}
+              decimalsB={tokenB.decimals}
             />
-          </div>
-        </div>
-        <div className="level-right">
-          <div className="level-item">
-            <button
-              onClick={() => setActive(!isActive)}
-              className="button is-small is-white"
-            >
-              {isActive ? <FaCaretUp /> : <FaCaretDown />}
-            </button>
-          </div>
-        </div>
-      </div>
-      {isActive && (
-        <div className="notification content is-small">
+          }
+          key="1"
+        >
           <div className="level">
             <div className="level-left">
               <div className="level-item">Expected output</div>
@@ -78,7 +76,6 @@ const SwapDetails = ({
               <div className="level-item">{priceImpactFormat(priceImpact)}</div>
             </div>
           </div>
-
           <div className="level">
             <div className="level-left">
               <div className="level-item">
@@ -93,8 +90,8 @@ const SwapDetails = ({
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </Panel>
+      </Collapse>
     </>
   );
 };

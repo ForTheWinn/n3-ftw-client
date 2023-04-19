@@ -11,6 +11,7 @@ import { useSwap } from "../SwapContext";
 import { Divider } from "antd";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/neoRoutes";
+import PriceComparison from "./components/PriceComparison";
 
 const SwapMain = () => {
   const {
@@ -101,7 +102,17 @@ const SwapMain = () => {
         setSwapInputChange={onSwapInputChange}
       />
 
-      {tokenA && tokenB && reserves && amountA && amountB && reserves ? (
+      {/* {tokenA && tokenB && amountA ? (
+        <PriceComparison
+          tokenA={tokenA}
+          tokenB={tokenB}
+          amountIn={amountA}
+        />
+      ) : (
+        <></>
+      )} */}
+
+      {tokenA && tokenB && reserves && amountA && amountB ? (
         <SwapDetails
           tokenA={tokenA}
           tokenB={tokenB}
