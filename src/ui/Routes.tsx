@@ -52,7 +52,7 @@ const pageRoutes = [
     component: Swap,
     chain: {
       [NEO_CHAIN]: [TESTNET, MAINNET],
-      [POLYGON_CHAIN]: [TESTNET]
+      [POLYGON_CHAIN]: [TESTNET, MAINNET]
     }
   },
   {

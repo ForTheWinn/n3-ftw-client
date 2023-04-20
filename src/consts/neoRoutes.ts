@@ -94,9 +94,9 @@ const SWAP_PAGE_ROUTE = {
   path: SWAP_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
-  category: [],
+  category: []
 };
 
 const FARM_V2_PAGE_ROUTE = {
