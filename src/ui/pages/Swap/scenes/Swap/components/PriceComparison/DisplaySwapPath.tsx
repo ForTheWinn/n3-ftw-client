@@ -6,6 +6,7 @@ import { swapRouter } from "../../../../../../../common/routers";
 import { Avatar, Space } from "antd";
 import Level from "../../../../../../components/Level";
 import { ethers } from "ethers";
+import { SwapRightOutlined } from "@ant-design/icons";
 
 interface IDisplaySwapPathProps {
   chain: CHAINS;
@@ -27,7 +28,7 @@ const DisplaySwapPath = ({
     async function doLoad(_path, _amount) {
       setLoading(true);
       try {
-        let swapAmount = ethers.utils
+        let swapAmount: string = ethers.utils
           .parseUnits(_amount.toString(), path[0].decimals)
           .toString();
         for (let i = 0; i < _path.length - 1; i++) {
@@ -44,7 +45,7 @@ const DisplaySwapPath = ({
         setOutput(
           parseFloat(swapAmount) > 0
             ? ethers.utils.formatUnits(
-                swapAmount.toString(),
+                swapAmount,
                 path[path.length - 1].decimals
               ) +
                 " " +
@@ -61,6 +62,7 @@ const DisplaySwapPath = ({
   }, [path, chain, network, amountIn]);
   return (
     <Level
+      isMobile
       left={
         <Space>
           {path.map((p, i) => {
@@ -72,6 +74,7 @@ const DisplaySwapPath = ({
                   key={"path-token" + i}
                   src={p.icon}
                 />
+                {i !== path.length - 1 && <SwapRightOutlined />}
               </Space>
             );
           })}

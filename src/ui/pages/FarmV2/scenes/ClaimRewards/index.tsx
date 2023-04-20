@@ -130,8 +130,8 @@ const ClaimRewards = () => {
 
       {chain === NEO_CHAIN && (
         <div className="has-text-centered">
-          <Link to={FARM_PATH} className="has-text-grey-light is-size-7">
-            Go to legacy farm
+          <Link to={FARM_PATH} className="button is-white is-block is-small">
+            Legacy farm
           </Link>
         </div>
       )}

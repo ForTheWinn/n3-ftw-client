@@ -56,19 +56,19 @@ const SwapDetails = ({
           }
           key="1"
         >
-          <div className="level">
+          <div className="level is-mobile">
             <div className="level-left">
               <div className="level-item">Expected output</div>
             </div>
             <div className="level-right">
               <div className="level-item has-text-right">
                 <span className="has-text-weight-semibold">
-                  {expected} {tokenB.symbol}
+                  {expected} <br /> {tokenB.symbol}
                 </span>
               </div>
             </div>
           </div>
-          <div className="level">
+          <div className="level  is-mobile">
             <div className="level-left">
               <div className="level-item">Price impact</div>
             </div>
@@ -76,7 +76,7 @@ const SwapDetails = ({
               <div className="level-item">{priceImpactFormat(priceImpact)}</div>
             </div>
           </div>
-          <div className="level">
+          <div className="level  is-mobile">
             <div className="level-left">
               <div className="level-item">
                 Minimum received after slippage

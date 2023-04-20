@@ -75,7 +75,7 @@ export const getEstimate = async (
   chain: CHAINS,
   network: INetworkType,
   args: ISwapEstimateArgs,
-) => {
+): Promise<string> => {
   switch (chain) {
     case NEO_CHAIN:
       if (args.isReverse) {

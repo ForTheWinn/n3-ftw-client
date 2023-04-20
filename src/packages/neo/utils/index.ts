@@ -198,7 +198,6 @@ const intList = [
   "totalReward",
   "totalPosition",
   "claimableAmount",
-  "estimated",
   "sharesPercentage"
 ];
 const classify = (k: string): any => {

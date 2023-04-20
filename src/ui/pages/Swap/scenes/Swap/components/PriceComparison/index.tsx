@@ -36,7 +36,7 @@ const PriceComparison = ({
       <Collapse
         size="small"
         bordered={false}
-        defaultActiveKey={["1"]}
+        defaultActiveKey={[]}
         expandIcon={({ isActive }) => (
           <CaretRightOutlined rotate={isActive ? 90 : 0} />
         )}

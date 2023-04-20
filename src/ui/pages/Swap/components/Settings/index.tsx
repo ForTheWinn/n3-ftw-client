@@ -34,7 +34,7 @@ const SwapSettings = ({
               allowNegative={false}
               decimalScale={2}
               inputMode="decimal"
-              className="input is-small is-shadowless"
+              className="input is-small is-shadowless is-fullwidth"
               value={slippage}
               onValueChange={(value) => {
                 onSlippageChange(value.floatValue);
