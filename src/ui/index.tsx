@@ -1,6 +1,7 @@
 import React from "react";
 import { WagmiConfig, createClient, configureChains } from "wagmi";
 import { polygon, polygonMumbai } from "wagmi/chains";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { publicProvider } from "wagmi/providers/public";
 import { HashRouter as Router, Route } from "react-router-dom";
@@ -17,7 +18,15 @@ import { TESTNET } from "../consts/global";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygon],
-  [publicProvider()]
+  [
+    alchemyProvider({
+      apiKey: process.env.REACT_APP_ALCHEMY_API_KEY
+        ? process.env.REACT_APP_ALCHEMY_API_KEY
+        : "",
+      priority: 0
+    }),
+    publicProvider()
+  ]
 );
 
 const client = createClient({
