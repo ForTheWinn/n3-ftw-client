@@ -73,7 +73,9 @@ export const findTradePaths = (
       paths.push(currentPath);
       return;
     }
-    const nextTokens = tokenList[currentToken.hash].pairs;
+    const nextTokens = tokenList[currentToken.hash].pairs
+      ? tokenList[currentToken.hash].pairs
+      : [];
     for (const nextToken of nextTokens) {
       const _nextToken = tokenList[nextToken];
       if (!currentPath.includes(_nextToken)) {
