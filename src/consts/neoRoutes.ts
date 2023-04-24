@@ -49,6 +49,7 @@ export const LOCKER_SEARCH_PATH = "/locker/search";
 /* 
   NFT
 */
+export const NFT_PATH = "/NFT";
 export const COLLECTION_PATH = "/NFT/collection";
 export const GALLERY_PATH = "/NFT/gallery";
 export const BOYZ_PATH = "/NFT/neo-boyz";
@@ -78,9 +79,11 @@ export const MIGRATION_PATH = "/migration";
 export const TOURNAMENT_PATH = "/arena";
 export const IDO_PATH = "/ido";
 /* 
-  Archive
+  Tools
 */
-export const TOOLS_ROUTE = "/tools";
+export const TOOLS_PATH = "/tools";
+export const TOOLS_AIRDROP_PATH = "/tools/airdrop";
+export const TOOLS_LP_TOKENS_PATH = "/tools/lp-tokens";
 
 /* 
   Deprecated
@@ -105,24 +108,6 @@ const FARM_V2_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET]
-  },
-  category: [],
-};
-
-const LOCKER_PAGE_ROUTE = {
-  label: "Locker",
-  path: LOCKER_PATH,
-  chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET]
-  },
-  category: []
-};
-
-const SMITH_PAGE_ROUTE = {
-  label: "Smith",
-  path: SMITH_PATH,
-  chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET]
   },
   category: []
 };
@@ -156,6 +141,8 @@ export const MIGRATION_PAGE_ROUTE = {
 
 export const NEO_BOYZ_PAGE_ROUTE = {
   label: "Neo Boyz",
+  icon: "/boyz/5.png",
+  description: "1111 unique collectible characters stored on Neo blockchain",
   path: BOYZ_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET]
@@ -165,9 +152,44 @@ export const NEO_BOYZ_PAGE_ROUTE = {
 
 export const RUNES_PAGE_ROUTE = {
   label: "Runes",
+  icon: "/assets/rune.svg",
+  description: "500 algorithms-generated, stored onchain NFT",
   path: GALLERY_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET]
+  },
+  category: []
+};
+
+const LOCKER_PAGE_ROUTE = {
+  label: "Locker",
+  icon: "/logo/FTW_KEY.png",
+  description: "Send your tokens with a timelock",
+  path: LOCKER_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: []
+};
+
+const SMITH_PAGE_ROUTE = {
+  label: "Smith",
+  icon: "/520/smith.png",
+  description: "Launch your tokens without codes",
+  path: SMITH_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: []
+};
+
+const AIRDROP_PAGE_ROUTE = {
+  label: "Batch Transfer",
+  icon: "",
+  description: "",
+  path: TOOLS_AIRDROP_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET]
   },
   category: []
 };
@@ -177,25 +199,16 @@ export const LP_FINER_PAGE_ROUTE = {
   path: LP_TOKENS_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
   category: []
 };
 
-export const LOCKER_FINDER_PAGE_ROUTE = {
-  label: "Locker Value Finder",
-  path: LOCKER_SEARCH_PATH,
+export const NFT_ROUTE = {
+  label: "NFT",
+  path: NFT_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET]
-  },
-  category: []
-};
-
-const NFT_ROUTE = {
-  label: "NFT",
-  path: GALLERY_PATH,
-  chain: {
-    [NEO_CHAIN]: [MAINNET]
   },
   category: [{ ...NEO_BOYZ_PAGE_ROUTE }, { ...RUNES_PAGE_ROUTE }]
 };
@@ -209,18 +222,30 @@ const ARCHIVE_ROUTE = {
   category: [{ ...ARENA_PAGE_ROUTE }, { ...MIGRATION_PAGE_ROUTE }]
 };
 
-const TOOLS_PAGE_ROUTE = {
-  label: "Tools",
-  path: TOOLS_ROUTE,
+export const TOOLS_LP_FINER_PAGE_ROUTE = {
+  label: "LP Token Value Finder",
+  icon: "/logo/FTW_LP.png",
+  description: "View LP token value by token id",
+  path: TOOLS_LP_TOKENS_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: []
+};
+
+export const TOOLS_PAGE_ROUTE = {
+  label: "Tools",
+  path: TOOLS_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
   category: [
     { ...SMITH_PAGE_ROUTE },
     { ...LOCKER_PAGE_ROUTE },
-    { ...LP_FINER_PAGE_ROUTE },
-    { ...LOCKER_FINDER_PAGE_ROUTE }
+    { ...TOOLS_LP_FINER_PAGE_ROUTE }
+    // { ...AIRDROP_PAGE_ROUTE }
   ]
 };
 

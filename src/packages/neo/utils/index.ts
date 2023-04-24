@@ -289,3 +289,33 @@ export function numberToByteString(num: string) {
       .join("")
   );
 }
+
+export const getNEP17TransferScript = (
+  scriptHash: string,
+  from: string,
+  to: string,
+  amount: string
+) => {
+  return {
+    operation: "transfer",
+    scriptHash: scriptHash,
+    args: [
+      {
+        type: "Hash160",
+        value: from
+      },
+      {
+        type: "Hash160",
+        value: to
+      },
+      {
+        type: "Integer",
+        value: amount
+      },
+      {
+        type: "Any",
+        value: null
+      }
+    ]
+  };
+};

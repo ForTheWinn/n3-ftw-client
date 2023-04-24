@@ -15,12 +15,7 @@ import { SmithContract } from "../../../../packages/neo/contracts/ftw/smith";
 import { LOCKER_NEP_FEE } from "../../../../packages/neo/contracts/ftw/locker/consts";
 import { useApp } from "../../../../common/hooks/use-app";
 import { LOCKER_USER_PATH } from "../../../../consts/neoRoutes";
-
-export interface IContractState {
-  assetHash: string;
-  symbol: string;
-  decimals: number;
-}
+import { ITokenState } from "../../Swap/scenes/Swap/interfaces";
 
 const Create = () => {
   const location = useLocation();
@@ -28,7 +23,7 @@ const Create = () => {
   const params = queryString.parse(location.search);
   const { network } = useApp();
   const { connectedWallet } = useNeoWallets();
-  const [contract, setContractHash] = useState<IContractState | undefined>(
+  const [contract, setContractHash] = useState<ITokenState | undefined>(
     undefined
   );
   const [receiver, setReceiver] = useState(
@@ -65,8 +60,8 @@ const Create = () => {
       }
 
       if (keys === 0 || keys === undefined || keys > 10) {
-          toast.error("Lockers needs to be 1 ~ 10.");
-          return;
+        toast.error("Lockers needs to be 1 ~ 10.");
+        return;
       }
 
       try {
@@ -89,33 +84,28 @@ const Create = () => {
     }
   };
 
-  const handleContractChange = (contract: IContractState | undefined) => {
+  const handleContractChange = (contract: ITokenState | undefined) => {
     setContractHash(contract);
   };
 
   const onSuccess = () => {
     if (connectedWallet) {
-      history.push(
-        `${LOCKER_USER_PATH}/${connectedWallet.account.address}`
-      );
+      history.push(`${LOCKER_USER_PATH}/${connectedWallet.account.address}`);
     }
   };
-
-  // const hasEmoji = useMemo(() => {
-  //   return emojiRegexExp.test(description);
-  // }, [description]);
 
   useEffect(() => {
     async function fetch() {
       try {
-        if (params && params.contractHash) {
+        if (params && params.hash) {
           const contract = await new LockerContract(network).getContract(
-            params.contractHash
+            params.hash
           );
           setContractHash({
-            assetHash: contract.contractHash,
+            hash: contract.contractHash,
             decimals: contract.decimals,
-            symbol: contract.symbol
+            symbol: contract.symbol,
+            icon: ""
           });
         }
 

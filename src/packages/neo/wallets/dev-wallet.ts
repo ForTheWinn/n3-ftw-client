@@ -71,19 +71,6 @@ export class DevWallet {
     const txObj = await DevWallet.build(rpcClient, invokeScript);
     txObj.sign(DevWallet.account, version.protocol.network);
     const txid = await rpcClient.sendRawTransaction(txObj);
-    // // tslint:disable-next-line:no-console
-    //   JSON.stringify(
-    //     {
-    //       RPC: rpc,
-    //       Transaction: txObj,
-    //       Network: version,
-    //       "Network Fee": txObj.networkFee.toDecimal(8).toString(),
-    //       "System Fee": txObj.systemFee.toDecimal(8).toString(),
-    //     },
-    //     null,
-    //     4
-    //   )
-    // );
     return {
       txid,
       nodeUrl: rpcClient.url

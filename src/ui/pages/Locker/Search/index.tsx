@@ -8,6 +8,7 @@ import LockerCard from "./LockerCard";
 import { NEO_ROUTES } from "../../../../consts";
 import { useApp } from "../../../../common/hooks/use-app";
 import { SpinnerRoundFilled } from "spinners-react";
+import PageLayout from "../../../components/Commons/PageLayout";
 
 const LockerSearch = () => {
   const location = useLocation();
@@ -57,7 +58,7 @@ const LockerSearch = () => {
     }
   }, [network]);
   return (
-    <>
+    <PageLayout>
       <div className="columns is-centered">
         <div className="column is-half">
           <div className="box is-shadowless">
@@ -129,7 +130,7 @@ const LockerSearch = () => {
           )}
         </div>
       </div>
-    </>
+    </PageLayout>
   );
 };
 

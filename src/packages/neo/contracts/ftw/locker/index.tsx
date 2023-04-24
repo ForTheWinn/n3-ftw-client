@@ -13,6 +13,7 @@ import {
   ILockersByToken
 } from "./interface";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
+import { ITokenState } from "../../../../../ui/pages/Swap/scenes/Swap/interfaces";
 
 export class LockerContract {
   network: INetworkType;
@@ -25,11 +26,7 @@ export class LockerContract {
 
   create = async (
     connectedWallet: IConnectedWallet,
-    contract: {
-      assetHash: string;
-      symbol: string;
-      decimals: number;
-    },
+    contract: ITokenState,
     receiver: string,
     amount: number,
     releaseAt: number,
@@ -47,7 +44,7 @@ export class LockerContract {
         account: senderHash,
         scopes: tx.WitnessScope.CustomContracts,
         allowedContracts: [
-          contract.assetHash,
+          contract.hash,
           NEP_SCRIPT_HASH[this.network],
           this.contractHash
         ]
@@ -60,7 +57,7 @@ export class LockerContract {
       args: [
         {
           type: "Hash160",
-          value: contract.assetHash
+          value: contract.hash
         },
         {
           type: "Hash160",
@@ -93,7 +90,7 @@ export class LockerContract {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
           allowedContracts: [
-            contract.assetHash,
+            contract.hash,
             NEP_SCRIPT_HASH[this.network],
             this.contractHash
           ]

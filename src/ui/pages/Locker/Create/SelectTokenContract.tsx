@@ -1,13 +1,12 @@
 import React from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
-import { ITokenState } from "../../Swap/scenes/Swap/interfaces";
-import { IContractState } from "./index";
 import TokenList from "../../../components/Commons/TokenList";
 import { useApp } from "../../../../common/hooks/use-app";
+import { ITokenState } from "../../Swap/scenes/Swap/interfaces";
 
 interface ISelectTokenContractProps {
-  contract?: IContractState;
-  onContractChange: (contract: IContractState | undefined) => void;
+  contract?: ITokenState;
+  onContractChange: (contract: ITokenState | undefined) => void;
 }
 const SelectTokenContract = ({
   contract,
@@ -17,13 +16,13 @@ const SelectTokenContract = ({
   const [isModalActive, setModalActive] = React.useState(false);
   return (
     <div className="field">
-      <label className="label">Token contract hash</label>
+      <label className="label">Token</label>
       {contract ? (
         <div>
           <div className="level">
             <div className="level-left">
               <div className="level-item">
-                {`${contract.symbol} - 0x${contract.assetHash}`}
+                {`${contract.symbol} - ${contract.hash}`}
               </div>
               <div className="level-item">
                 <button
@@ -40,7 +39,7 @@ const SelectTokenContract = ({
         <div className="control">
           <button
             onClick={() => setModalActive(true)}
-            className="button is-black"
+            className="button is-dark"
           >
             <span className="icon">
               <FaPlus />
@@ -58,11 +57,7 @@ const SelectTokenContract = ({
           tokenAHash={undefined}
           tokenBHash={undefined}
           onAssetClick={(token: ITokenState) => {
-            onContractChange({
-              assetHash: token.hash,
-              symbol: token.symbol,
-              decimals: token.decimals
-            });
+            onContractChange(token);
             setModalActive(false);
           }}
           onClose={() => setModalActive(false)}

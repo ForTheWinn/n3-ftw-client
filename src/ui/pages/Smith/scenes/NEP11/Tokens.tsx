@@ -49,7 +49,7 @@ const Tokens = ({ contractHash }: ITokensProps) => {
                     network === MAINNET
                       ? "explorer.onegate.space"
                       : "testmagnet.explorer.onegate.space"
-                  }/NFTtokeninfo/${contractHash}`}
+                  }/NFTtokeninfo/${contractHash}`} rel="noreferrer"
                 >
                   <span className="icon">
                     <FaExternalLinkAlt />

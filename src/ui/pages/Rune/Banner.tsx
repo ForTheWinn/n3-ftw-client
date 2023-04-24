@@ -14,7 +14,7 @@ const Banner = ({ onMint, network }: IBannerProps) => {
           <div className="columns">
             <div className="column">
               <div>
-                <h1 className="title">FTW Runes</h1>
+                <h1 className="title has-text-success">FTW Runes</h1>
                 <p className="subtitle">
                   Algorithms-generated, stored onchain NFT
                 </p>
@@ -78,13 +78,16 @@ const Banner = ({ onMint, network }: IBannerProps) => {
                 </div>
               </div>
             </div>
-	          <div className="column is-flex" style={{ alignItems: "center" }}>
-                <figure
-                  className="image"
-                  style={{ width: "250px", margin: "0 auto" }}
-                >
-                  <img src="/logo/NEP_Logo_Runes.svg" />
-                </figure>
+            <div className="column is-flex" style={{ alignItems: "center" }}>
+              <figure
+                className="image"
+                style={{ width: "250px", margin: "0 auto" }}
+              >
+                <img
+                  src="/assets/fusion.png"
+                  alt="FTW Rune and Cryotonaut = Fusion"
+                />
+              </figure>
             </div>
           </div>
         </div>

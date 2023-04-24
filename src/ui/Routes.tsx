@@ -32,10 +32,14 @@ import {
   LOCKER_PATH,
   LP_TOKENS_PATH,
   MIGRATION_PATH,
+  NFT_PATH,
   SMITH_PATH,
   SWAP_PATH,
+  TOOLS_PATH,
   TOURNAMENT_PATH
 } from "../consts/neoRoutes";
+import Tools from "./pages/Tools";
+import NFTCollections from "./pages/NFTCollections";
 
 const pageRoutes = [
   {
@@ -85,32 +89,25 @@ const pageRoutes = [
     }
   },
   {
+    path: TOOLS_PATH,
+    component: Tools,
+    chain: {
+      [NEO_CHAIN]: [TESTNET, MAINNET],
+      [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    }
+  },
+  {
+    path: NFT_PATH,
+    component: NFTCollections,
+    chain: {
+      [NEO_CHAIN]: [TESTNET, MAINNET],
+    }
+  },
+  {
     path: ANALYTICS_PATH,
     component: Analytics,
     chain: {
       [NEO_CHAIN]: [MAINNET]
-    }
-  },
-  {
-    path: GALLERY_PATH,
-    component: Runes,
-    chain: {
-      [NEO_CHAIN]: [MAINNET]
-    }
-  },
-  {
-    path: BOYZ_PATH,
-    component: Boyz,
-    chain: {
-      [NEO_CHAIN]: [MAINNET]
-    }
-  },
-  {
-    path: LP_TOKENS_PATH,
-    component: LPTokens,
-    chain: {
-      [NEO_CHAIN]: [TESTNET, MAINNET],
-      [POLYGON_CHAIN]: [TESTNET]
     }
   },
   {

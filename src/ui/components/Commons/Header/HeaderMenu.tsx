@@ -20,7 +20,9 @@ export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
               key={`header-${route.label}${i}`}
               className="navbar-item has-dropdown is-hoverable"
             >
-              <div className="navbar-link">{route.label}</div>
+                <NavLink className="navbar-link" to={route.path}>
+                  {route.label}
+                </NavLink>
               <div className="navbar-dropdown is-boxed">
                 {route.category.map((item, index) => {
                   const _chain = item.chain[chain];

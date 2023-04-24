@@ -52,7 +52,7 @@ const TxReceipt = ({
             <h1 className="title is-5">Submitted</h1>
             <p className="subtitle is-7">Your transaction accepted</p>
             <div className="block">
-              <a target="_blank" href={`${explorer}${txid}`} rel="noreferrer">
+              <a target="_blank" href={`${explorer}/${txid}`} rel="noreferrer">
                 View txid on explorer
               </a>
             </div>

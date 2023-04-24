@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import TxReceipt from "./TxReceipt";
 import { useApp } from "../../../../common/hooks/use-app";
-import { getTxBrowser } from "./helpers";
 import Modal from "../../Modal";
 import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
+import { getExploler } from "../../../../helpers";
 
 const TxHandler = () => {
   const { chain, network, txid, resetTxid } = useApp();
@@ -35,7 +35,7 @@ const TxHandler = () => {
         error={hasError}
         onSuccess={resetTxid}
         onError={resetTxid}
-        explorer={getTxBrowser(chain, network)}
+        explorer={getExploler(chain, network)}
       />
     </Modal>
   );

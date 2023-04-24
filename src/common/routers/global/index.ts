@@ -35,6 +35,7 @@ export const getPrices = async (
   }
 };
 
+
 export const fetchTokenInfo = async (
   chain: CHAINS,
   network: INetworkType,

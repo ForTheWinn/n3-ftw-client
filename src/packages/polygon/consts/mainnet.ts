@@ -1,5 +1,6 @@
 // contracts
-export const SWAP_CONTRACT_HASH = "0xce432034f30ed0012d54af92fb958ab7662d0c85";
+// export const SWAP_CONTRACT_HASH = "0xce432034f30ed0012d54af92fb958ab7662d0c85";
+export const SWAP_CONTRACT_HASH = "0x7f8354B2DD34d3A79f29bd9BD00b6c13378C88B0";
 export const FARM_CONTRACT_HASH = "";
 
 // tokens

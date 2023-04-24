@@ -44,7 +44,7 @@ const Tournament = () => {
             </div>
             <div className="column">
               <figure className="image">
-                <img src={"/assets/54.png"} />
+                <img src={"/assets/fusion.png"} />
               </figure>
               <p className="is-size-7 is-italic has-text-centered">
                 Fused a cryptonaut and a rune
