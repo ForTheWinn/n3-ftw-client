@@ -90,7 +90,7 @@ const ClaimList = ({
                           tokensStaked={item.tokensStaked}
                           share={item.share}
                           pricePerToken={
-                            prices ? prices[+NEP_SCRIPT_HASH[network]] : 0
+                            prices ? prices[NEP_SCRIPT_HASH[network]] : 0
                           }
                         />
                       )}
