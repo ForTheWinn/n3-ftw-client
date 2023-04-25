@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaWallet } from "react-icons/fa";
 import Logo from "./Logo";
 import { useApp } from "../../../../common/hooks/use-app";
@@ -63,6 +63,13 @@ const Header = () => {
         <div className="navbar-menu ml-3">
           <div className="navbar-start">
             <HeaderMenu chain={chain} network={network} />
+            <NavLink
+              activeClassName="is-active"
+              to={"/event"}
+              className="navbar-item has-background-black has-text-white has-text-weight-bold"
+            >
+              Concensus 2023
+            </NavLink>
           </div>
         </div>
         <div className="navbar-end is-hidden-touch">

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/Commons/PageLayout";
+import PageLayout from "../../../../components/Commons/PageLayout";
 import { SpinnerRoundFilled } from "spinners-react";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router-dom";
-import { useApp } from "../../../common/hooks/use-app";
-import { swapRouter } from "../../../common/routers";
-import { ISwapLPToken } from "../../../common/routers/swap/interfaces";
-import LPTokenCard from "../../components/LPTokenCard";
-import { WENT_WRONG } from "../../../consts/messages";
-import { CONFIGS } from "../../../consts/chains";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { swapRouter } from "../../../../../common/routers";
+import { ISwapLPToken } from "../../../../../common/routers/swap/interfaces";
+import LPTokenCard from "../../../../components/LPTokenCard";
+import { WENT_WRONG } from "../../../../../consts/messages";
+import { CONFIGS } from "../../../../../consts/chains";
 import { Avatar, Divider, Space } from "antd";
 
 const LPTokens = () => {

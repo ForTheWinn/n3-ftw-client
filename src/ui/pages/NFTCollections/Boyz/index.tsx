@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/Commons/PageLayout";
-import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
+import PageLayout from "../../../components/Commons/PageLayout";
+import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import Banner from "./Banner";
-import { RestAPI } from "../../../packages/neo/api";
-import Modal from "../../components/Modal";
+import { RestAPI } from "../../../../packages/neo/api";
+import Modal from "../../../components/Modal";
 import RarityList from "./RarityList";
-import { IBoy } from "../../../packages/neo/contracts/ftw/boyz/interface";
+import { IBoy } from "../../../../packages/neo/contracts/ftw/boyz/interface";
 import PropertiesModal from "./PropertiesModal";
-import { useApp } from "../../../common/hooks/use-app";
-import { useResponsive } from "../../../common/hooks/use-responsive";
+import { useApp } from "../../../../common/hooks/use-app";
+import { useResponsive } from "../../../../common/hooks/use-responsive";
 
 const Boyz = () => {
   const [isFilterActive, setFilterActive] = useState(false);

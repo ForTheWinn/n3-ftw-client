@@ -1,5 +1,21 @@
+import Analytics from "../ui/pages/Analytics";
+import BrandKit from "../ui/pages/BrandKit";
+import Concensus2023 from "../ui/pages/Events/Concensus";
+import Farm from "../ui/pages/Farm";
 import FarmV2 from "../ui/pages/FarmV2";
+import Home from "../ui/pages/Home";
+import Locker from "../ui/pages/Locker";
+import NFTCollections from "../ui/pages/NFTCollections";
+import Boyz from "../ui/pages/NFTCollections/Boyz";
+import Fusion from "../ui/pages/NFTCollections/Fusion";
+import NFTCollectionMain from "../ui/pages/NFTCollections/Main";
+import Rune from "../ui/pages/NFTCollections/Rune";
+import Smith from "../ui/pages/Smith";
 import Swap from "../ui/pages/Swap";
+import Tools from "../ui/pages/Tools";
+import Airdrop from "../ui/pages/Tools/scenes/Airdrop";
+import LPTokens from "../ui/pages/Tools/scenes/LPTokens";
+import ToolsMain from "../ui/pages/Tools/scenes/Main";
 import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
 import { MAINNET, TESTNET } from "./global";
 
@@ -51,9 +67,11 @@ export const LOCKER_SEARCH_PATH = "/locker/search";
 */
 export const NFT_PATH = "/NFT";
 export const COLLECTION_PATH = "/NFT/collection";
-export const GALLERY_PATH = "/NFT/gallery";
+export const RUNE_PATH = "/NFT/gallery";
 export const BOYZ_PATH = "/NFT/neo-boyz";
-export const LP_TOKENS_PATH = "/NFT/lp-tokens";
+export const LP_TOKENS_PATH = "/NFT/lp-tokens"; // DO NOT REMOVE: this is used in some NFT descriptions
+export const FUSION_PATH = "/NFT/fusion";
+export const MATIC_BOYZ_PATH = "/NFT/matic-boyz";
 /* 
   GAS-FI
 */
@@ -84,7 +102,10 @@ export const IDO_PATH = "/ido";
 export const TOOLS_PATH = "/tools";
 export const TOOLS_AIRDROP_PATH = "/tools/airdrop";
 export const TOOLS_LP_TOKENS_PATH = "/tools/lp-tokens";
-
+/* 
+  Event
+*/
+export const EVENT_PATH = "/event";
 /* 
   Deprecated
 */
@@ -92,6 +113,9 @@ export const DAO_PATH = "/dao";
 export const DAO_CHANNEL_CREATE_PATH = "/dao/create";
 export const DAO_CHANNEL_PATH = "/dao/channel";
 
+/* 
+  DeFi
+*/
 const SWAP_PAGE_ROUTE = {
   label: "Swap",
   path: SWAP_PATH,
@@ -99,7 +123,8 @@ const SWAP_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
-  category: []
+  category: [],
+  component: Swap
 };
 
 const FARM_V2_PAGE_ROUTE = {
@@ -109,7 +134,8 @@ const FARM_V2_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET]
   },
-  category: []
+  category: [],
+  component: FarmV2
 };
 
 export const ANALYTICS_ROUTE = {
@@ -118,25 +144,25 @@ export const ANALYTICS_ROUTE = {
   chain: {
     [NEO_CHAIN]: [MAINNET]
   },
-  category: []
+  category: [],
+  component: Analytics
 };
 
-export const ARENA_PAGE_ROUTE = {
-  label: "Arena",
-  path: TOURNAMENT_PATH,
-  chain: {
-    [NEO_CHAIN]: [MAINNET]
-  },
-  category: []
-};
+/* 
+  NFT Collections
+*/
 
-export const MIGRATION_PAGE_ROUTE = {
-  label: "Migration",
-  path: MIGRATION_PATH,
+export const NFT_MAIN_PAGE_ROUTE = {
+  label: "NFT Collections",
+  exact: true,
+  path: NFT_PATH,
   chain: {
-    [NEO_CHAIN]: [MAINNET]
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
-  category: []
+  category: [],
+  noShow: true,
+  component: NFTCollectionMain
 };
 
 export const NEO_BOYZ_PAGE_ROUTE = {
@@ -147,18 +173,78 @@ export const NEO_BOYZ_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [MAINNET]
   },
-  category: []
+  category: [],
+  component: Boyz
 };
+
+// export const MATIC_BOYZ_PAGE_ROUTE = {
+//   label: "Matic Boyz",
+//   icon: "/boyz/sample-matic-boy.png",
+//   description: "Coming soon",
+//   path: BOYZ_PATH,
+//   chain: {
+//     [NEO_CHAIN]: [MAINNET],
+//     [POLYGON_CHAIN]: [MAINNET]
+//   },
+//   category: [],
+//   component: M
+// };
 
 export const RUNES_PAGE_ROUTE = {
   label: "Runes",
   icon: "/assets/rune.svg",
   description: "500 algorithms-generated, stored onchain NFT",
-  path: GALLERY_PATH,
+  path: RUNE_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET]
   },
-  category: []
+  category: [],
+  component: Rune
+};
+
+export const FUSION_PAGE_ROUTE = {
+  label: "Fusion",
+  icon: "/assets/fusion.png",
+  description: "NFT Game Collaboration between TOTHEMOON UNIVERSE and FTW.",
+  path: FUSION_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET]
+  },
+  category: [],
+  component: Fusion
+};
+
+export const NFT_ROUTE = {
+  label: "NFT",
+  path: NFT_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET]
+    // [POLYGON_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: [
+    NFT_MAIN_PAGE_ROUTE,
+    NEO_BOYZ_PAGE_ROUTE,
+    RUNES_PAGE_ROUTE,
+    FUSION_PAGE_ROUTE
+  ],
+  component: NFTCollections
+};
+
+/* 
+  Tools
+*/
+
+export const TOOLS_MAIN_PAGE_ROUTE = {
+  label: "Web3 Tools",
+  exact: true,
+  path: TOOLS_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: [],
+  noShow: true,
+  component: ToolsMain
 };
 
 const LOCKER_PAGE_ROUTE = {
@@ -169,7 +255,8 @@ const LOCKER_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET]
   },
-  category: []
+  category: [],
+  component: Locker
 };
 
 const SMITH_PAGE_ROUTE = {
@@ -180,7 +267,8 @@ const SMITH_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET]
   },
-  category: []
+  category: [],
+  component: Smith
 };
 
 const AIRDROP_PAGE_ROUTE = {
@@ -191,38 +279,12 @@ const AIRDROP_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET]
   },
-  category: []
+  category: [],
+  noShow: true,
+  component: Airdrop
 };
 
-export const LP_FINER_PAGE_ROUTE = {
-  label: "LP Value Finder",
-  path: LP_TOKENS_PATH,
-  chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
-  },
-  category: []
-};
-
-export const NFT_ROUTE = {
-  label: "NFT",
-  path: NFT_PATH,
-  chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET]
-  },
-  category: [{ ...NEO_BOYZ_PAGE_ROUTE }, { ...RUNES_PAGE_ROUTE }]
-};
-
-const ARCHIVE_ROUTE = {
-  label: "Archive",
-  path: ARCHIVE_PATH,
-  chain: {
-    [NEO_CHAIN]: [MAINNET]
-  },
-  category: [{ ...ARENA_PAGE_ROUTE }, { ...MIGRATION_PAGE_ROUTE }]
-};
-
-export const TOOLS_LP_FINER_PAGE_ROUTE = {
+export const TOOLS_LP_FINDER_PAGE_ROUTE = {
   label: "LP Token Value Finder",
   icon: "/logo/FTW_LP.png",
   description: "View LP token value by token id",
@@ -231,7 +293,8 @@ export const TOOLS_LP_FINER_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
-  category: []
+  category: [],
+  component: LPTokens
 };
 
 export const TOOLS_PAGE_ROUTE = {
@@ -242,30 +305,127 @@ export const TOOLS_PAGE_ROUTE = {
     [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
   category: [
-    { ...SMITH_PAGE_ROUTE },
-    { ...LOCKER_PAGE_ROUTE },
-    { ...TOOLS_LP_FINER_PAGE_ROUTE }
-    // { ...AIRDROP_PAGE_ROUTE }
-  ]
+    TOOLS_MAIN_PAGE_ROUTE,
+    SMITH_PAGE_ROUTE,
+    LOCKER_PAGE_ROUTE,
+    TOOLS_LP_FINDER_PAGE_ROUTE,
+    AIRDROP_PAGE_ROUTE
+  ],
+  component: Tools
+};
+
+/*
+  Event routes
+*/
+const EVENT_PAGE_ROUTE = {
+  label: "Concensus 2023",
+  exact: true,
+  path: EVENT_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: [],
+  noShow: true,
+  component: Concensus2023
+};
+
+/*
+  No show routes
+*/
+
+const HOME_PAGE_ROUTE = {
+  label: "Home",
+  exact: true,
+  path: HOME_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: [],
+  noShow: true,
+  component: Home
+};
+
+const FARM_PAGE_ROUTE = {
+  label: "Farm",
+  path: FARM_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET]
+  },
+  category: [],
+  noShow: true,
+  component: Farm
+};
+
+export const LP_FINDER_PAGE_ROUTE = {
+  label: "LP Value Finder",
+  path: LP_TOKENS_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: [],
+  noShow: true,
+  component: LPTokens
+};
+
+const BRAND_PAGE_ROUTE = {
+  label: "Brand Kit",
+  path: BRAND_KIT_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET],
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+  },
+  category: [],
+  noShow: true,
+  component: BrandKit
 };
 
 export const ROUTES = [
   SWAP_PAGE_ROUTE,
   FARM_V2_PAGE_ROUTE,
-  TOOLS_PAGE_ROUTE,
   ANALYTICS_ROUTE,
+  TOOLS_PAGE_ROUTE,
   NFT_ROUTE,
-  ARCHIVE_ROUTE
+  EVENT_PAGE_ROUTE,
+  // Route only, No menu in display
+  LP_FINDER_PAGE_ROUTE,
+  FARM_PAGE_ROUTE,
+  BRAND_PAGE_ROUTE,
+  HOME_PAGE_ROUTE,
+  { ...SMITH_PAGE_ROUTE, noShow: true },
+  { ...LOCKER_PAGE_ROUTE, noShow: true }
 ];
 
 // Pending pages
 
-const FARM_PAGE_ROUTE = {
-  label: "Farm",
-  path: FARM_PATH,
-  network: [MAINNET],
-  category: []
-};
+// export const ARENA_PAGE_ROUTE = {
+//   label: "Arena",
+//   path: TOURNAMENT_PATH,
+//   chain: {
+//     [NEO_CHAIN]: [MAINNET]
+//   },
+//   category: []
+// };
+
+// export const MIGRATION_PAGE_ROUTE = {
+//   label: "Migration",
+//   path: MIGRATION_PATH,
+//   chain: {
+//     [NEO_CHAIN]: [MAINNET]
+//   },
+//   category: []
+// };
+
+// const ARCHIVE_ROUTE = {
+//   label: "Archive",
+//   path: ARCHIVE_PATH,
+//   chain: {
+//     [NEO_CHAIN]: [MAINNET]
+//   },
+//   category: [{ ...ARENA_PAGE_ROUTE }, { ...MIGRATION_PAGE_ROUTE }]
+// };
 
 const BRIDGE_PAGE_ROUTE = {
   label: "Bridge",

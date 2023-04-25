@@ -30,7 +30,9 @@ const LockerInfoPage = ({ network }) => {
           <li>
             Or, send your key to the locker contract. Address is{" "}
             <strong>
-              {wallet.getAddressFromScriptHash(LOCKER_SCRIPT_HASH[network])}
+              {wallet.getAddressFromScriptHash(
+                LOCKER_SCRIPT_HASH[network].substring(2)
+              )}
             </strong>
           </li>
         </ul>
@@ -51,7 +53,7 @@ const LockerInfoPage = ({ network }) => {
         </ul>
         <h6>Locker contract hash</h6>
         <p>
-          0x{LOCKER_SCRIPT_HASH[network]} [
+          {LOCKER_SCRIPT_HASH[network]} [
           <a
             href={`https://explorer.onegate.space/contractinfo/0x${LOCKER_SCRIPT_HASH[network]}`}
             target="_blank"

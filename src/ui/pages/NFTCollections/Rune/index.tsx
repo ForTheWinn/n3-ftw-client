@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../components/Commons/PageLayout";
+import PageLayout from "../../../components/Commons/PageLayout";
 import PropertiesModal from "./PropertiesModal";
 import toast from "react-hot-toast";
-import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
-import { NFTContract } from "../../../packages/neo/contracts";
+import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
+import { NFTContract } from "../../../../packages/neo/contracts";
 import Banner from "./Banner";
-import { RestAPI } from "../../../packages/neo/api";
-import { RUNE_PHASE_FILTER } from "../../../packages/neo/contracts/ftw/rune/consts";
-import AfterTransactionSubmitted from "../../components/NeoComponents/AfterTransactionSubmitted";
-import Modal from "../../components/Modal";
-import { handleError } from "../../../packages/neo/utils/errors";
-import { useApp } from "../../../common/hooks/use-app";
+import { RestAPI } from "../../../../packages/neo/api";
+import { RUNE_PHASE_FILTER } from "../../../../packages/neo/contracts/ftw/rune/consts";
+import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
+import Modal from "../../../components/Modal";
+import { handleError } from "../../../../packages/neo/utils/errors";
+import { useApp } from "../../../../common/hooks/use-app";
 
 const Gallery = () => {
   const [txid, setTxid] = useState("");

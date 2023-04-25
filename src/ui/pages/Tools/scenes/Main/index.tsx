@@ -15,14 +15,15 @@ const ToolsMain = () => {
             <h1 className="title is-5">Web3 Tools</h1>
           </div>
 
-          {TOOLS_PAGE_ROUTE.category.map((p) => {
+          {TOOLS_PAGE_ROUTE.category.map((p: any) => {
             const _chain: any = p.chain[chain];
             if (!_chain) return <></>;
             if (!_chain.includes(network)) return <></>;
+            if (p.noShow) return false;
             return (
               <div className="media box is-shadowless" key={p.path}>
                 <div className="media-left">
-                  <Avatar size="large" src={p.icon} />
+                  <Avatar size={64} src={p.icon} />
                 </div>
                 <div className="media-content">
                   <Link to={p.path} className="has-text-dark">

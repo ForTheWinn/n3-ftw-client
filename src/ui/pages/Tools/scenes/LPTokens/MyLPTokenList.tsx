@@ -1,6 +1,6 @@
 import React from "react";
-import { useOnChainData } from "../../../common/hooks/use-onchain-data";
-import { SwapContract } from "../../../packages/neo/contracts";
+import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { SwapContract } from "../../../../../packages/neo/contracts";
 import MyLPTokenItem from "./MyLPTokenItem";
 
 const MyLPTokenList = ({ connectedWallet, network, prices }) => {

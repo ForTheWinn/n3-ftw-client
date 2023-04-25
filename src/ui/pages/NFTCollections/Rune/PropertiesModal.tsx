@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Modal from "../../components/Modal";
-import { NFTContract } from "../../../packages/neo/contracts";
-import { useApp } from "../../../common/hooks/use-app";
+import Modal from "../../../components/Modal";
+import { NFTContract } from "../../../../packages/neo/contracts";
+import { useApp } from "../../../../common/hooks/use-app";
 
 interface IPropertiesModal {
   tokenId: string;

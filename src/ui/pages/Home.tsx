@@ -4,7 +4,14 @@ import { Link } from "react-router-dom";
 import SocialLinkGroup from "../components/Commons/SocialLinkGroup";
 import { useApp } from "../../common/hooks/use-app";
 import { NEO_CHAIN } from "../../consts/chains";
-import { BOYZ_PATH, BRAND_KIT_PATH, FARM_V2_PATH, GALLERY_PATH, SMITH_PATH, SWAP_PATH } from "../../consts/neoRoutes";
+import {
+  BOYZ_PATH,
+  BRAND_KIT_PATH,
+  FARM_V2_PATH,
+  RUNE_PATH,
+  SMITH_PATH,
+  SWAP_PATH
+} from "../../consts/neoRoutes";
 
 const Home = () => {
   useEffect(() => {
@@ -131,7 +138,7 @@ const Home = () => {
               <h6 className="title is-6 has-text-white">NFTs</h6>
               <ul className="footer-links">
                 <li>
-                  <Link to={GALLERY_PATH} className="has-text-white">
+                  <Link to={RUNE_PATH} className="has-text-white">
                     Runes
                   </Link>
                 </li>
@@ -164,10 +171,7 @@ const Home = () => {
                   </a>
                 </li>
                 <li>
-                  <Link
-                    to={BRAND_KIT_PATH}
-                    className="has-text-white"
-                  >
+                  <Link to={BRAND_KIT_PATH} className="has-text-white">
                     Brand Kit
                   </Link>
                 </li>

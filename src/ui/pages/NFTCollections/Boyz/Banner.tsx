@@ -22,7 +22,7 @@ const Banner = ({ filter, setFilter, setFilterActive }: IBanner) => {
           <div className="columns">
             <div className="column">
               <div>
-                <h1 className="title has-text-primary">Neo Boyz</h1>
+                <h1 className="title">Neo Boyz</h1>
                 <p className="subtitle">
                   1111 unique collectible characters stored on Neo blockchain.
                 </p>

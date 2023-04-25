@@ -29,7 +29,6 @@ const LINK_TOKEN = {
   icon: "/symbols/unknown.png"
 };
 
-// export const POLYGON_TOKENS: IToken[] = [NEP_TOKEN, TEST_TOKEN];
 
 export const TOKEN_LIST = {
   [NEP_CONTRACT_HASH]: {

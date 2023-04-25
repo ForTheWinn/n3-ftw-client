@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Modal from "../../components/Modal";
-import { IBoy } from "../../../packages/neo/contracts/ftw/boyz/interface";
-import { BoyzContract } from "../../../packages/neo/contracts/ftw/boyz";
-import { useApp } from "../../../common/hooks/use-app";
+import Modal from "../../../components/Modal";
+import { IBoy } from "../../../../packages/neo/contracts/ftw/boyz/interface";
+import { BoyzContract } from "../../../../packages/neo/contracts/ftw/boyz";
+import { useApp } from "../../../../common/hooks/use-app";
 
 interface IPropertiesModal {
   data: IBoy;

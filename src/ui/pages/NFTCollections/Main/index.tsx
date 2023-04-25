@@ -15,14 +15,15 @@ const NFTCollectionMain = () => {
             <h1 className="title is-5">NFT Collections</h1>
           </div>
 
-          {NFT_ROUTE.category.map((p) => {
+          {NFT_ROUTE.category.map((p: any) => {
             const _chain: any = p.chain[chain];
             if (!_chain) return <></>;
             if (!_chain.includes(network)) return <></>;
+            if (p.noShow) return false;
             return (
               <div className="media box is-shadowless" key={p.path}>
                 <div className="media-left">
-                  <Avatar size="large" src={p.icon} />
+                  <Avatar size={64} src={p.icon} />
                 </div>
                 <div className="media-content">
                   <Link to={p.path} className="has-text-dark">
@@ -33,6 +34,16 @@ const NFTCollectionMain = () => {
               </div>
             );
           })}
+
+          <div className="media box is-shadowless">
+            <div className="media-left">
+              <Avatar size={80} src={"/boyz/sample-matic-boy.png"} />
+            </div>
+            <div className="media-content">
+              <strong>Matic Boyz</strong>
+              <p>Coming soon on Polygon</p>
+            </div>
+          </div>
         </div>
       </div>
     </PageLayout>

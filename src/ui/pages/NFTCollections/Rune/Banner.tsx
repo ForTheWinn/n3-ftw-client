@@ -1,5 +1,5 @@
 import React from "react";
-import { INetworkType } from "../../../packages/neo/network";
+import { INetworkType } from "../../../../packages/neo/network";
 interface IBannerProps {
   network: INetworkType;
   filter: string;
@@ -14,7 +14,7 @@ const Banner = ({ onMint, network }: IBannerProps) => {
           <div className="columns">
             <div className="column">
               <div>
-                <h1 className="title has-text-success">FTW Runes</h1>
+                <h1 className="title">FTW Runes</h1>
                 <p className="subtitle">
                   Algorithms-generated, stored onchain NFT
                 </p>
@@ -79,15 +79,18 @@ const Banner = ({ onMint, network }: IBannerProps) => {
               </div>
             </div>
             <div className="column is-flex" style={{ alignItems: "center" }}>
-              <figure
-                className="image"
+              <div
+                className="has-text-centered"
                 style={{ width: "250px", margin: "0 auto" }}
               >
-                <img
-                  src="/assets/fusion.png"
-                  alt="FTW Rune and Cryotonaut = Fusion"
-                />
-              </figure>
+                <figure className="image">
+                  <img
+                    src="/assets/rune.svg"
+                    alt="FTW Rune and Cryotonaut = Fusion"
+                  />
+                </figure>
+                <small>Rune #313</small>
+              </div>
             </div>
           </div>
         </div>

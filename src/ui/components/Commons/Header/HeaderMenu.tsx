@@ -10,24 +10,26 @@ interface IHeaderMenuProps {
 export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
   return (
     <>
-      {HEADER_ROUTES.map((route, i) => {
+      {HEADER_ROUTES.map((route: any, i) => {
         const _chain = route.chain[chain];
         if (!_chain) return false;
         if (!_chain.includes(network)) return false;
+        if (route.noShow) return false;
         if (route.category.length > 0) {
           return (
             <div
               key={`header-${route.label}${i}`}
               className="navbar-item has-dropdown is-hoverable"
             >
-                <NavLink className="navbar-link" to={route.path}>
-                  {route.label}
-                </NavLink>
-              <div className="navbar-dropdown is-boxed">
+              <NavLink className="navbar-link" to={route.path}>
+                {route.label}
+              </NavLink>
+              <div className="navbar-dropdown">
                 {route.category.map((item, index) => {
                   const _chain = item.chain[chain];
                   if (!_chain) return false;
                   if (!_chain.includes(network)) return false;
+                   if (item.noShow) return false;
                   return (
                     <NavLink
                       key={`category-${item.label}-${item.label}${index}`}

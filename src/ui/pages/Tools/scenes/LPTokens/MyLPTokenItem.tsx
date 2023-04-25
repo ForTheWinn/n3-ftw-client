@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { SwapContract } from "../../../packages/neo/contracts";
-import { ILPToken } from "../../../packages/neo/contracts/ftw/swap/interfaces";
+import { SwapContract } from "../../../../../packages/neo/contracts";
+import { ILPToken } from "../../../../../packages/neo/contracts/ftw/swap/interfaces";
 import { u } from "@cityofzion/neon-core";
-import { INetworkType } from "../../../packages/neo/network";
+import { INetworkType } from "../../../../../packages/neo/network";
 interface IMyTokenItemProps {
   network: INetworkType;
   token: ILPToken;
