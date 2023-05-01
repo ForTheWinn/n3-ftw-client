@@ -7,7 +7,6 @@ import SwapNav from "./components/SwapNav";
 
 import ActionModal from "../../components/ActionModal";
 import { useSwap } from "../SwapContext";
-import { Divider } from "antd";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/neoRoutes";
 import PriceComparison from "./components/PriceComparison";
@@ -69,7 +68,7 @@ const SwapMain = () => {
         onSettingClick={() => setSettingsModalActive(true)}
       />
 
-      <Divider />
+      <hr />
 
       {noLiquidity && tokenA && tokenB ? (
         <ProvideLPInfo
@@ -103,7 +102,7 @@ const SwapMain = () => {
 
       {tokenA && tokenB && reserves && amountA && amountB ? (
         <>
-          <Divider />
+          <hr />
 
           <SwapDetails
             tokenA={tokenA}
@@ -127,7 +126,7 @@ const SwapMain = () => {
         <></>
       )}
 
-      <Divider />
+      <hr />
 
       <SwapButton
         label="Swap"

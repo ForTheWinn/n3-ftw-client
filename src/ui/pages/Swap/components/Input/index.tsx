@@ -1,14 +1,13 @@
 import React from "react";
 import { FaAngleDown } from "react-icons/fa";
 import NumberFormat from "react-number-format";
-import { Avatar } from "antd";
+import { Avatar, Space } from "antd";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 import { FaInfoCircle } from "react-icons/fa";
+import { ITokenState } from "../../scenes/Swap/interfaces";
 interface IInputProps {
+  token?: ITokenState;
   swapInitiated?: boolean;
-  contractHash: string;
-  symbol?: string;
-  logo?: string;
   val?: number;
   heading?: string;
   isLoading?: boolean;
@@ -18,14 +17,12 @@ interface IInputProps {
   userBalance?: number;
   isDisable?: boolean;
   errorMessage?: string;
-  decimals?: number;
   balanceOverflow?: boolean;
   hasEstimateError?: boolean;
 }
 const Input = ({
+  token,
   isDisable,
-  symbol,
-  logo,
   val,
   heading,
   setValue,
@@ -34,52 +31,53 @@ const Input = ({
   isReadOnly,
   userBalance,
   errorMessage,
-  decimals,
   balanceOverflow,
   hasEstimateError
 }: IInputProps) => {
   return (
     <div>
+    
       <div className="columns is-mobile" style={{ alignItems: "center" }}>
         <div className="column is-narrow">
-          <div className="level is-mobile">
-            <div className="level-left">
-              <div className="level-item mr-4 is-hidden-mobile">
-                <Avatar src={logo ? logo : UNKNOWN_TOKEN_IMAGE} />
-              </div>
-              <div className="level-item">
-                <div
-                  onClick={onClickAsset}
-                  className="is-clickable"
-                  style={{ width: "60px" }}
-                >
-                  {heading && <p className="heading">{heading}</p>}
-                  <div style={{ alignItems: "center", display: "flex" }}>
-                    <span className="has-text-weight-bold">
-                      {symbol ? symbol : "Select"}
-                    </span>
-                    <span className="icon">
-                      <FaAngleDown />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div style={{ width: "130px" }}>
+            <button
+              onClick={onClickAsset}
+              className={`button is-small is-rounded ${
+                token ? "is-white" : "is-light"
+              }`}
+            >
+              {token ? (
+                <Space>
+                  <Avatar
+                    size="small"
+                    src={token.icon ? token.icon : UNKNOWN_TOKEN_IMAGE}
+                  />
+                  <span className="has-text-weight-semibold">
+                    {token.symbol}
+                  </span>
+                  <span className="icon">
+                    <FaAngleDown />
+                  </span>
+                </Space>
+              ) : (
+                "Select Token"
+              )}
+            </button>
           </div>
         </div>
         <div className="column">
           <div
-            className={`control has-icons-right ${
-              isLoading ? "is-loading" : ""
-            }`}
+            className={`control is-large ${
+              hasEstimateError ? "has-icons-right" : ""
+            } ${isLoading ? "has-icons-right is-loading" : ""}`}
           >
             <NumberFormat
               disabled={isDisable}
               readOnly={isReadOnly}
               placeholder="0.00"
-              decimalScale={decimals !== undefined ? decimals : 8}
+              decimalScale={token ? token.decimals : undefined}
               inputMode="decimal"
-              className={`input is-shadowless ${
+              className={`input is-shadowless is-large is-borderless ${
                 balanceOverflow ? "is-danger" : ""
               }`}
               value={val !== undefined ? val : ""}
@@ -90,12 +88,12 @@ const Input = ({
                 }
               }}
               thousandSeparator={true}
-              suffix={` ${symbol ? symbol : ""}`}
+              // suffix={token?.symbol}
               allowLeadingZeros={false}
             />
             {hasEstimateError ? (
-              <span className="icon is-small is-right">
-                <FaInfoCircle className="has-text-danger" size={"12"} />
+              <span className="icon is-large is-right">
+                <FaInfoCircle className="has-text-danger" />
               </span>
             ) : (
               <></>
@@ -115,8 +113,7 @@ const Input = ({
                     userBalance && userBalance > 0 ? "is-clickable" : ""
                   }`}
                 >
-                  {userBalance ? userBalance.toLocaleString() : 0}{" "}
-                  {symbol ? symbol : ""}
+                  Balance: {userBalance ? userBalance.toLocaleString() : 0}{" "}
                 </p>
               ) : (
                 <></>

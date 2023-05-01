@@ -60,16 +60,13 @@ const LPInputs = ({
     <>
       <div className="pb-2">
         <Input
+          token={tokenA}
           isLoading={false}
           isDisable={!tokenA}
           heading="Pair A"
           onClickAsset={() => {
             onAssetChange("A");
           }}
-          contractHash={tokenA ? tokenA.hash : ""}
-          symbol={tokenA ? tokenA.symbol : ""}
-          logo={tokenA ? tokenA.icon : undefined}
-          decimals={tokenA ? tokenA.decimals : undefined}
           val={amountA}
           setValue={(value) => {
             setSwapInputChange({
@@ -89,16 +86,13 @@ const LPInputs = ({
       </div>
 
       <Input
+        token={tokenB}
         isLoading={false}
         isDisable={!tokenB}
         heading="Pair B"
         onClickAsset={() => {
           onAssetChange("B");
         }}
-        contractHash={tokenB ? tokenB.hash : ""}
-        symbol={tokenB ? tokenB.symbol : ""}
-        logo={tokenB ? tokenB.icon : undefined}
-        decimals={tokenB ? tokenB.decimals : undefined}
         val={amountB}
         setValue={(value) => {
           setSwapInputChange({

@@ -1,6 +1,6 @@
 import React from "react";
 import Input from "../../components/Input";
-import { FaExchangeAlt } from "react-icons/fa";
+import { FaArrowDown, FaExchangeAlt } from "react-icons/fa";
 import { ISwapInputState, ITokenState } from "./interfaces";
 import { IUserTokenBalances } from "../../../../../common/routers/swap/interfaces";
 
@@ -54,9 +54,7 @@ const SwapInputs = ({
   return (
     <div className="pb-2">
       <Input
-        contractHash={tokenA ? tokenA.hash : ""}
-        symbol={tokenA ? tokenA.symbol : undefined}
-        logo={tokenA ? tokenA.icon : undefined}
+        token={tokenA}
         isDisable={!tokenA || !tokenB || noLiquidity}
         heading="Sell"
         onClickAsset={() => onAssetChange("A")}
@@ -67,7 +65,6 @@ const SwapInputs = ({
             value
           });
         }}
-        decimals={tokenA ? tokenA.decimals : 0}
         userBalance={balances ? parseFloat(balances.amountA) : undefined}
         isLoading={isAmountALoading}
         balanceOverflow={amountAOverflow}
@@ -77,13 +74,11 @@ const SwapInputs = ({
       />
       <div className="pt-5 pb-5">
         <button onClick={onSwitch} className="button is-white is-fullwidth">
-          <FaExchangeAlt />
+          <FaArrowDown />
         </button>
       </div>
       <Input
-        contractHash={tokenB ? tokenB.hash : ""}
-        symbol={tokenB ? tokenB.symbol : undefined}
-        logo={tokenB ? tokenB.icon : undefined}
+        token={tokenB}
         isDisable={!tokenA || !tokenB || noLiquidity}
         heading="Buy"
         onClickAsset={() => {
@@ -96,7 +91,6 @@ const SwapInputs = ({
             value
           });
         }}
-        decimals={tokenB ? tokenB.decimals : 0}
         userBalance={balances ? parseFloat(balances.amountB) : undefined}
         isLoading={isAmountBLoading}
         balanceOverflow={amountBOverflow}
