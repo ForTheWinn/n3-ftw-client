@@ -1,6 +1,7 @@
+import { FaAdjust, FaArrowUp } from "react-icons/fa";
 import Analytics from "../ui/pages/Analytics";
 import BrandKit from "../ui/pages/BrandKit";
-import Concensus2023 from "../ui/pages/Events/Concensus";
+import Consensus2023 from "../ui/pages/Events/Consensus";
 import Farm from "../ui/pages/Farm";
 import FarmV2 from "../ui/pages/FarmV2";
 import Home from "../ui/pages/Home";
@@ -273,21 +274,22 @@ const SMITH_PAGE_ROUTE = {
 
 const AIRDROP_PAGE_ROUTE = {
   label: "Batch Transfer",
-  icon: "",
-  description: "",
+  // @ts-ignore
+  icon: FaArrowUp,
+  description: "It helps to transfer multi transfers",
   path: TOOLS_AIRDROP_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET]
   },
   category: [],
-  noShow: true,
+  // noShow: true,
   component: Airdrop
 };
 
 export const TOOLS_LP_FINDER_PAGE_ROUTE = {
   label: "LP Token Value Finder",
   icon: "/logo/FTW_LP.png",
-  description: "View LP token value by token id",
+  description: "Find FTW Swap LP token value by token id",
   path: TOOLS_LP_TOKENS_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
@@ -318,7 +320,7 @@ export const TOOLS_PAGE_ROUTE = {
   Event routes
 */
 const EVENT_PAGE_ROUTE = {
-  label: "Concensus 2023",
+  label: "Consensus 2023",
   exact: true,
   path: EVENT_PATH,
   chain: {
@@ -327,7 +329,7 @@ const EVENT_PAGE_ROUTE = {
   },
   category: [],
   noShow: true,
-  component: Concensus2023
+  component: Consensus2023
 };
 
 /*

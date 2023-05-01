@@ -1,9 +1,5 @@
 import { rpc, sc, u } from "@cityofzion/neon-core";
-import {
-  MAINNET_CONFIG,
-  TESTNET_CONFIG,
-  TESTNET_CONFIG_2
-} from "../consts";
+import { MAINNET_CONFIG, TESTNET_CONFIG, TESTNET_CONFIG_2 } from "../consts";
 import { InvokeResult, Query } from "@cityofzion/neon-core/lib/rpc";
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc/Query";
 import { convertContractCallParam } from "../utils";
@@ -70,7 +66,7 @@ export class Network {
     );
     // Return selected one
     return notifications.find(
-      (n: any) => n.contract === "0x" + scriptHash && n.eventname === eventName
+      (n: any) => n.contract === scriptHash && n.eventname === eventName
     );
   };
 

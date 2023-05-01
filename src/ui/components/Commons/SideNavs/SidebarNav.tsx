@@ -15,10 +15,11 @@ const SidebarNav = () => {
       <aside className="menu p-5">
         <p className="menu-label">Menu</p>
         <ul className="menu-list">
-          {HEADER_ROUTES.map((route, i) => {
+          {HEADER_ROUTES.map((route: any, i) => {
             const _chain = route.chain[chain];
             if (!_chain) return false;
             if (!_chain.includes(network)) return false;
+            if (route.noShow) return false;
             return (
               <li key={`${route.label}${i}`}>
                 {route.category.length > 0 ? (
@@ -36,6 +37,7 @@ const SidebarNav = () => {
                         const _chain = item.chain[chain];
                         if (!_chain) return false;
                         if (!_chain.includes(network)) return false;
+                        if (item.noShow) return false;
                         return (
                           <li key={item.label}>
                             <NavLink

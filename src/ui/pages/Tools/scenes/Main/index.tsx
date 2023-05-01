@@ -23,7 +23,11 @@ const ToolsMain = () => {
             return (
               <div className="media box is-shadowless" key={p.path}>
                 <div className="media-left">
-                  <Avatar size={64} src={p.icon} />
+                  <Avatar
+                    size={64}
+                    icon={typeof p.icon === "string" ? undefined : <p.icon color="black" background="white" />}
+                    src={typeof p.icon === "string" ? p.icon : undefined}
+                  />
                 </div>
                 <div className="media-content">
                   <Link to={p.path} className="has-text-dark">

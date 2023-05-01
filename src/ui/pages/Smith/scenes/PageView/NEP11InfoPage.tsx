@@ -143,7 +143,7 @@ const NEP11InfoPage = () => {
                   <div className="content">
                     <strong>Contract Hash</strong>
                     <br />
-                    0x{contractHash}{" "}
+                    {contractHash}{" "}
                     <a
                       target="_blank"
                       href={`https://${
@@ -156,9 +156,9 @@ const NEP11InfoPage = () => {
                       <FaExternalLinkAlt />
                     </a>
                     <br />
-                    <strong>Contract Owner</strong>
+                    {/* <strong>Contract Owner</strong>
                     <br />
-                    {data.owner}
+                    {data.owner} */}
                     <br />
                     <strong>Website</strong>
                     <br />

@@ -108,7 +108,7 @@ const NEP17InfoPage = () => {
 
                     <h6>Contract Hash</h6>
                     <p>
-                      0x{contractHash}{" "}
+                      {contractHash}{" "}
                       <a
                         target="_blank"
                         href={`https://${
@@ -121,8 +121,8 @@ const NEP17InfoPage = () => {
                         <FaExternalLinkAlt />
                       </a>
                     </p>
-                    <h6>Contract Owner</h6>
-                    <p>{data.owner}</p>
+                    {/* <h6>Contract Owner</h6>
+                    <p>{data.owner}</p> */}
 
                     <h6>Author</h6>
                     <p>{data.author ? data.author : "Unknown"}</p>

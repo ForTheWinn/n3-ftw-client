@@ -141,7 +141,7 @@ export class RestAPI {
   async getGMOrders(filter): Promise<any> {
     const defaultFilters = {
       chain: "n3",
-      contract: "0x" + LOCKER_SCRIPT_HASH[this.network],
+      contract: LOCKER_SCRIPT_HASH[this.network],
       ...filter,
     };
 

@@ -43,15 +43,6 @@ const SwapInputs = ({
     amountA > parseFloat(balances.amountA)
   );
 
-  // ||
-  // !!(
-  //   swapInput &&
-  //   swapInput.type === "B" &&
-  //   amountA &&
-  //   balances &&
-  //   amountA > parseFloat(balances.amountA)
-  // );
-
   const amountBOverflow = !!(
     swapInput &&
     swapInput.type === "B" &&
@@ -59,15 +50,6 @@ const SwapInputs = ({
     balances &&
     amountB > parseFloat(balances.amountB)
   );
-
-  // ||
-  // !!(
-  //   swapInput &&
-  //   swapInput.type === "B" &&
-  //   amountB &&
-  //   balances &&
-  //   amountB > parseFloat(balances.amountB)
-  // );
 
   return (
     <div className="pb-2">

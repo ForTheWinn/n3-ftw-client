@@ -7,6 +7,7 @@ import { ethers } from "ethers";
 import { INetworkType } from "../../../packages/neo/network";
 import { wallet } from "../../../packages/neo";
 import { DEFAULT_WITNESS_SCOPE } from "../../../packages/neo/consts";
+import { IMassTransaferList } from "./interfaces";
 
 export interface IExcelData {
   type: any;
@@ -43,9 +44,7 @@ export const generatePrivatekeys = (
 export const massTransfers = async (
   chain: CHAINS,
   network: INetworkType,
-  token: ITokenState,
-  amount: number,
-  list: string[],
+  list: IMassTransaferList[],
   connectedWallet?: IConnectedWallet
 ): Promise<string> => {
   console.log(connectedWallet);
@@ -57,14 +56,12 @@ export const massTransfers = async (
         );
         const batch: any[] = [];
 
-        list.forEach((address) => {
+        list.forEach((item) => {
           const script = getNEP17TransferScript(
-            token.hash,
+            item.hash,
             senderHash,
-            neonWallet.getScriptHashFromAddress(address),
-            ethers.utils
-              .parseUnits(amount.toString(), token.decimals)
-              .toString()
+            neonWallet.getScriptHashFromAddress(item.address),
+            item.amount,
           );
           batch.push(script);
         });

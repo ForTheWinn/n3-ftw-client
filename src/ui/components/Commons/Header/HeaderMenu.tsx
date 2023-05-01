@@ -29,7 +29,7 @@ export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
                   const _chain = item.chain[chain];
                   if (!_chain) return false;
                   if (!_chain.includes(network)) return false;
-                   if (item.noShow) return false;
+                  if (item.noShow) return false;
                   return (
                     <NavLink
                       key={`category-${item.label}-${item.label}${index}`}
