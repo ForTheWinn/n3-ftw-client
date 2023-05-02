@@ -29,6 +29,7 @@
     "bulma": "^0.9.3",
     "bulma-pagination-react": "^0.1.1",
     "chart.js": "^3.8.0",
+    "decimal.js": "^10.4.3",
     "ethers": "^5.7.2",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",

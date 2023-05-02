@@ -8,8 +8,8 @@ import InputDivider from "../../components/InputDivider";
 interface ILPInputsProps {
   tokenA?: ITokenState;
   tokenB?: ITokenState;
-  amountA?: number;
-  amountB?: number;
+  amountA?: string;
+  amountB?: string;
   balances?: IUserTokenBalances;
   swapInput?: ISwapInputState;
   onAssetChange: (type: "A" | "B") => void;
@@ -26,37 +26,37 @@ const LPInputs = ({
   onAssetChange,
   setSwapInputChange
 }: ILPInputsProps) => {
-  const amountAOverflow =
-    !!(
-      swapInput &&
-      swapInput.type === "A" &&
-      amountA &&
-      balances &&
-      amountA > parseFloat(balances.amountA)
-    ) ||
-    !!(
-      swapInput &&
-      swapInput.type === "B" &&
-      amountA &&
-      balances &&
-      amountA > parseFloat(balances.amountA)
-    );
+  // const amountAOverflow =
+  //   !!(
+  //     swapInput &&
+  //     swapInput.type === "A" &&
+  //     amountA &&
+  //     balances &&
+  //     parseFloat(amountA) > parseFloat(balances.amountA)
+  //   ) ||
+  //   !!(
+  //     swapInput &&
+  //     swapInput.type === "B" &&
+  //     amountA &&
+  //     balances &&
+  //     parseFloat(amountA) > parseFloat(balances.amountA)
+  //   );
 
-  const amountBOverflow =
-    !!(
-      swapInput &&
-      swapInput.type === "B" &&
-      amountB &&
-      balances &&
-      amountB > parseFloat(balances.amountB)
-    ) ||
-    !!(
-      swapInput &&
-      swapInput.type === "B" &&
-      amountB &&
-      balances &&
-      amountB > parseFloat(balances.amountB)
-    );
+  // const amountBOverflow =
+  //   !!(
+  //     swapInput &&
+  //     swapInput.type === "B" &&
+  //     amountB &&
+  //     balances &&
+  //     amountB > parseFloat(balances.amountB)
+  //   ) ||
+  //   !!(
+  //     swapInput &&
+  //     swapInput.type === "B" &&
+  //     amountB &&
+  //     balances &&
+  //     amountB > parseFloat(balances.amountB)
+  //   );
   return (
     <>
       <div className="box is-shadowless mb-0">

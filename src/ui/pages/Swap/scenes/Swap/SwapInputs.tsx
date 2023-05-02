@@ -14,8 +14,8 @@ interface ISwapInputsProps {
   reserves?: ISwapReserves;
   tokenA?: ITokenState;
   tokenB?: ITokenState;
-  amountA?: number;
-  amountB?: number;
+  amountA?: string;
+  amountB?: string;
   balances?: IUserTokenBalances;
   swapInput?: ISwapInputState;
   isAmountALoading: boolean;

@@ -13,7 +13,7 @@ const { Panel } = Collapse;
 interface IPriceComparisonProps {
   tokenA: ITokenState;
   tokenB: ITokenState;
-  amountIn: number;
+  amountIn: string;
   chain: CHAINS;
   network: INetworkType;
 }

@@ -36,10 +36,10 @@ export class SwapContract {
     connectedWallet: IConnectedWallet,
     tokenA: string,
     tokenADecimals: number,
-    amountA: number,
+    amountA: string,
     tokenB: string,
     tokenBDecimals: number,
-    amountB: number,
+    amountB: string,
     lockUntil: number,
     slippage: number
   ): Promise<string> => {
@@ -237,10 +237,10 @@ export class SwapContract {
     connectedWallet: IConnectedWallet,
     tokenA: string,
     tokenADecimals: number,
-    amountA: number,
+    amountA: string,
     tokenB: string,
     tokenBDecimals: number,
-    amountB: number // Slippage
+    amountB: string // Slippage
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
@@ -380,8 +380,8 @@ export class SwapContract {
     tokenADecimals: number,
     tokenB: string,
     tokenBDecimals: number,
-    amountOut: number,
-    maxTokenAAmount: number
+    amountOut: string,
+    maxTokenAAmount: string
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
@@ -585,7 +585,6 @@ export class SwapContract {
       ]
     };
     const res = await Network.read(this.network, [script]);
-    console.log(res)
     if (res.state === "FAULT") {
       return "0";
     } else {

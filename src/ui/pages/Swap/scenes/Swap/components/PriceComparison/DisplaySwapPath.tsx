@@ -12,7 +12,7 @@ interface IDisplaySwapPathProps {
   chain: CHAINS;
   network: INetworkType;
   path: ITokenState[];
-  amountIn: number;
+  amountIn: string;
 }
 const DisplaySwapPath = ({
   path,

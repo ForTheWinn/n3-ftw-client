@@ -5,6 +5,7 @@ import React, {
   useState,
   useRef
 } from "react";
+import Decimal from "decimal.js";
 import { ISwapInputState, ITokenState } from "../Swap/interfaces";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
@@ -30,8 +31,8 @@ interface ISwapContext {
   network: INetworkType;
   tokenA: ITokenState | undefined;
   tokenB: ITokenState | undefined;
-  amountA: number | undefined;
-  amountB: number | undefined;
+  amountA: string | undefined;
+  amountB: string | undefined;
   isAmountALoading: boolean;
   isAmountBLoading: boolean;
   swapInput: ISwapInputState | undefined;
@@ -44,8 +45,8 @@ interface ISwapContext {
   hasReservesError: boolean;
   setTokenA: (token: ITokenState | undefined) => void;
   setTokenB: (token: ITokenState | undefined) => void;
-  setAmountA: (amount: number | undefined) => void;
-  setAmountB: (amount: number | undefined) => void;
+  setAmountA: (amount: string | undefined) => void;
+  setAmountB: (amount: string | undefined) => void;
   setSwapInput: (v: ISwapInputState | undefined) => void;
   setAssetChangeModalActive: (v: "A" | "B" | undefined) => void;
   setSettingsModalActive: (v: boolean) => void;
@@ -76,8 +77,8 @@ export const SwapContextProvider = (props: {
   const [tokenA, setTokenA] = useState<ITokenState | undefined>();
   const [tokenB, setTokenB] = useState<ITokenState | undefined>();
 
-  const [amountA, setAmountA] = useState<number | undefined>();
-  const [amountB, setAmountB] = useState<number | undefined>();
+  const [amountA, setAmountA] = useState<string | undefined>();
+  const [amountB, setAmountB] = useState<string | undefined>();
 
   const [isAmountALoading, setAmountALoading] = useState(false);
   const [isAmountBLoading, setAmountBLoading] = useState(false);
@@ -202,7 +203,7 @@ export const SwapContextProvider = (props: {
                 tokenB: tokenB.hash,
                 amount: ethers.utils
                   .parseUnits(
-                    swapInput.value.toString(),
+                    swapInput.value,
                     swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
                   )
                   .toString(),
@@ -233,11 +234,11 @@ export const SwapContextProvider = (props: {
             if (swapInput.type === "A") {
               estimated = ethers.utils.formatUnits(estimated, tokenB.decimals);
               setAmountBLoading(false);
-              setAmountB(+estimated);
+              setAmountB(estimated);
             } else {
               estimated = ethers.utils.formatUnits(estimated, tokenA.decimals);
               setAmountALoading(false);
-              setAmountA(+estimated);
+              setAmountA(estimated);
             }
           }
         } catch (e: any) {
@@ -301,14 +302,35 @@ export const SwapContextProvider = (props: {
   if (tokenA && tokenB && reserves) {
     noLiquidity = reserves.shares === "0";
     if (amountA && amountB) {
-      priceImpact =
-        (amountB /
-          parseFloat(
-            ethers.utils.formatUnits(reserves.reserveB, tokenB.decimals)
-          )) *
-        100;
+      try {
+        const parsedAmountB = new Decimal(amountB).mul(
+          new Decimal(10).pow(tokenB.decimals)
+        );
+        const reserveB = ethers.BigNumber.from(reserves.reserveB);
+
+        priceImpact = parsedAmountB
+          .div(reserveB.toString())
+          .mul(100)
+          .toNumber();
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
+
+  console.log(priceImpact);
+
+  // if (tokenA && tokenB && reserves) {
+  //   noLiquidity = reserves.shares === "0";
+  //   if (amountA && amountB) {
+  //     priceImpact =
+  //       (parseFloat(amountB) /
+  //         parseFloat(
+  //           ethers.utils.formatUnits(reserves.reserveB, tokenB.decimals)
+  //         )) *
+  //       100;
+  //   }
+  // }
   const contextValue = {
     chain,
     network,

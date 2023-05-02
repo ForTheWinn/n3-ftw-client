@@ -7,5 +7,5 @@ export interface ITokenState {
 
 export interface ISwapInputState {
   type: "A" | "B";
-  value?: number;
+  value?: string;
 }

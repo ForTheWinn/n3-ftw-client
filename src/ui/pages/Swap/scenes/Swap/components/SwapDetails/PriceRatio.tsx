@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { numberTrim } from "../../../../../../../packages/neo/utils";
 interface IPriceRationProps {
-  amountA: number;
-  amountB: number;
+  amountA: string;
+  amountB: string;
   symbolA: string;
   symbolB: string;
   decimalsA: number;
@@ -17,9 +17,9 @@ const PriceRatio = ({
   decimalsB,
 }: IPriceRationProps) => {
   const [isReversed, setReversed] = useState(false);
-  let ratio = amountA / amountB;
+  let ratio = parseFloat(amountA) / parseFloat(amountB);
   if (isReversed) {
-    ratio = amountB / amountA;
+    ratio = parseFloat(amountB) / parseFloat(amountA);
   }
   return (
     <p onClick={() => setReversed(!isReversed)} className="is-clickable">

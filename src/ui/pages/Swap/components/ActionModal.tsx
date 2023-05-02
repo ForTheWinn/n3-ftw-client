@@ -30,8 +30,8 @@ interface IActionModalProps {
   address: string;
   tokenA: ITokenState;
   tokenB: ITokenState;
-  amountA: number;
-  amountB: number;
+  amountA: string;
+  amountB: string;
   slippage: number;
   method: "swap" | "provide";
   isReverse: boolean;

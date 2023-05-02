@@ -12,8 +12,8 @@ const { Panel } = Collapse;
 interface ISwapDetailsProps {
   tokenA: ITokenState;
   tokenB: ITokenState;
-  amountA: number;
-  amountB: number;
+  amountA: string;
+  amountB: string;
   priceImpact: number;
   slippage: number;
 }
@@ -27,10 +27,10 @@ const SwapDetails = ({
 }: ISwapDetailsProps) => {
 
   const tolerance = numberTrim(
-    getAfterSlippage(amountB, slippage),
+    parseFloat(getAfterSlippage(amountB, slippage)),
     tokenB.decimals
   );
-  const expected = numberTrim(amountB, tokenB.decimals);
+  const expected = numberTrim(parseFloat(amountB), tokenB.decimals);
 
   console.log(priceImpact)
 

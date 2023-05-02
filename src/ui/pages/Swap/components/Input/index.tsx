@@ -1,16 +1,16 @@
 import React from "react";
 import { FaAngleDown } from "react-icons/fa";
 import NumberFormat from "react-number-format";
-import { Avatar, Space } from "antd";
+import { Avatar } from "antd";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 import { ITokenState } from "../../scenes/Swap/interfaces";
 
 interface IInputProps {
   token?: ITokenState;
-  val?: number;
+  val?: string;
   isLoading?: boolean;
   userBalance?: string;
-  setValue: (val?: number) => void;
+  setValue: (val?: string) => void;
   onClickAsset: () => void;
 }
 
@@ -44,7 +44,7 @@ const Input = ({
               allowNegative={false}
               onValueChange={(value, e) => {
                 if (e.source === "event") {
-                  setValue(value.floatValue);
+                  setValue(value.value);
                 }
               }}
               thousandSeparator={true}
@@ -96,7 +96,7 @@ const Input = ({
             <p
               onClick={(e) => {
                 if (userBalance) {
-                  setValue(parseFloat(userBalance));
+                  setValue(userBalance);
                 }
               }}
               className={`help has-text-righ is-clickable`}
