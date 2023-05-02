@@ -36,77 +36,84 @@ const StakingMain = () => {
 
   return (
     <div>
-      <div className="level is-mobile">
-        <div className="level-left">
-          <div className="level-item">
-            <Space>
-              <Avatar src={CONFIGS[chain].icon} />
-              <h1 className="title is-5 is-marginless">Farm</h1>
-            </Space>
+      <div className="box is-shadowless mb-1">
+        <div className="level is-mobile mb-1">
+          <div className="level-left">
+            <div className="level-item">
+              <Space>
+                <Avatar src={CONFIGS[chain].icon} />
+                <h1 className="title is-5 is-marginless">Farm</h1>
+              </Space>
+            </div>
           </div>
-        </div>
-        <div className="level-right">
-          <div className="level-item">
-            <div className="buttons">
-              <Link
-                to={`${FARM_V2_STAKE_POSITIONS_PATH}`}
-                className="button is-light is-small is-rounded"
-              >
-                My staking
-              </Link>
+          <div className="level-right">
+            <div className="level-item">
+              <div className="buttons">
+                <Link
+                  to={`${FARM_V2_STAKE_POSITIONS_PATH}`}
+                  className="button is-light is-small is-rounded"
+                >
+                  My staking
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <hr />
-      <div>
-        {!data ? (
-          <div>Loading..</div>
-        ) : error ? (
-          <ErrorNotificationWithRefresh
-            error={error}
-            onRefresh={handleRefresh}
-          />
-        ) : (
-          <div className="table-container">
-            <table className="table is-fullwidth">
-              <TableHeader />
-              <tbody>
-                {data.map((pair: IFarmPair, i) => (
-                  <tr key={"pool-farm-" + i}>
-                    <td>
-                      <Space>
-                        <Avatar size="small" src={pair.iconA} />
-                        <Avatar size="small" src={pair.iconB} />
-                        <small>
-                          {pair.symbolA} / {pair.symbolB}
-                        </small>
-                      </Space>
-                    </td>
-                    <td>
-                      {`${pair.nepRewardsPerDay} NEP`}
-                      <br />
-                      {pair.hasBonusRewards && (
-                        <>{`${pair.bonusRewardsPerDay} ${pair.bonusTokenSymbol}`}</>
-                      )}
-                    </td>
-                    <td>
-                      <DisplayAPR chain={chain} network={network} pair={pair} />
-                    </td>
-                    <td className="has-text-right">
-                      <Link
-                        to={`${FARM_V2_STAKE_PATH}?tokenA=${pair.tokenA}&tokenB=${pair.tokenB}&tokenASymbol=${pair.symbolA}&tokenBSymbol=${pair.symbolB}`}
-                        className="button is-primary is-small"
-                      >
-                        Stake
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      <div className="box is-shadowless mb-1">
+        <div>
+          {!data ? (
+            <div>Loading..</div>
+          ) : error ? (
+            <ErrorNotificationWithRefresh
+              error={error}
+              onRefresh={handleRefresh}
+            />
+          ) : (
+            <div className="table-container">
+              <table className="table is-fullwidth">
+                <TableHeader />
+                <tbody>
+                  {data.map((pair: IFarmPair, i) => (
+                    <tr key={"pool-farm-" + i}>
+                      <td>
+                        <Space>
+                          <Avatar size="small" src={pair.iconA} />
+                          <Avatar size="small" src={pair.iconB} />
+                          <small>
+                            {pair.symbolA} / {pair.symbolB}
+                          </small>
+                        </Space>
+                      </td>
+                      <td>
+                        {`${pair.nepRewardsPerDay} NEP`}
+                        <br />
+                        {pair.hasBonusRewards && (
+                          <>{`${pair.bonusRewardsPerDay} ${pair.bonusTokenSymbol}`}</>
+                        )}
+                      </td>
+                      <td>
+                        <DisplayAPR
+                          chain={chain}
+                          network={network}
+                          pair={pair}
+                        />
+                      </td>
+                      <td className="has-text-right">
+                        <Link
+                          to={`${FARM_V2_STAKE_PATH}?tokenA=${pair.tokenA}&tokenB=${pair.tokenB}&tokenASymbol=${pair.symbolA}&tokenBSymbol=${pair.symbolB}`}
+                          className="button is-primary is-small"
+                        >
+                          Stake
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

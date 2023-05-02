@@ -17,7 +17,7 @@ const HeaderBetween = (props: IHeaderBetweenProps) => {
       }}
     >
       <div style={{ width: "50px" }}>
-        <Link className="button is-white is-small" to={props.path}>
+        <Link className="button is-rounded is-white is-small" to={props.path}>
           <span className="icon">
             <FaAngleLeft />
           </span>

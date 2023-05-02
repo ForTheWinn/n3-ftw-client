@@ -20,22 +20,12 @@ const Farm = () => {
           <div className="columns">
             <div className="column is-8">
               <CheckMarketStatus />
-              <div className="box is-shadowless">
-                <Route
-                  exact={true}
-                  path={FARM_V2_PATH}
-                  component={StakingMain}
-                />
-                <Route
-                  exact={true}
-                  path={FARM_V2_STAKE_PATH}
-                  component={Stake}
-                />
-                <Route
-                  path={FARM_V2_STAKE_POSITIONS_PATH}
-                  component={MyPositions}
-                />
-              </div>
+              <Route exact={true} path={FARM_V2_PATH} component={StakingMain} />
+              <Route exact={true} path={FARM_V2_STAKE_PATH} component={Stake} />
+              <Route
+                path={FARM_V2_STAKE_POSITIONS_PATH}
+                component={MyPositions}
+              />
             </div>
             <div className="column is-4">
               <ClaimRewards />

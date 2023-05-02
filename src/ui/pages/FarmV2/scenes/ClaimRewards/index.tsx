@@ -68,7 +68,7 @@ const ClaimRewards = () => {
   return (
     <>
       {chain === NEO_CHAIN && (
-        <div className="box is-shadowless">
+        <div className="box is-shadowless mb-1">
           {connectedWallet ? (
             <BoyzStaking
               boyz={boyz}
@@ -95,7 +95,7 @@ const ClaimRewards = () => {
         </div>
       )}
 
-      <div className="box is-shadowless">
+      <div className="box is-shadowless mb-1">
         <div className="level is-mobile">
           <div className="level-left">
             <div className="level-item">
@@ -131,7 +131,7 @@ const ClaimRewards = () => {
       {chain === NEO_CHAIN && (
         <div className="has-text-centered">
           <Link to={FARM_PATH} className="button is-white is-block is-small">
-            Legacy farm
+            Legacy Farm
           </Link>
         </div>
       )}

@@ -49,7 +49,7 @@ const LPTokenList = ({
     });
   }
   return (
-    <div>
+    <div className="box is-shadowless">
       {!isLoaded ? (
         <div>Loading your LP tokens</div>
       ) : error ? (

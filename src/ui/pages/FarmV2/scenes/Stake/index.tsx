@@ -28,7 +28,6 @@ const Stake = () => {
   return (
     <div>
       <HeaderBetween path={FARM_V2_PATH} title={`Stake LP tokens`} />
-      <hr />
       {isConnected ? (
         <LPTokenList
           chain={chain}

@@ -24,7 +24,7 @@ const PositionList = ({
   );
 
   return (
-    <div>
+    <div className="box is-shadowless">
       {!data ? (
         <></>
       ) : data.length > 0 ? (

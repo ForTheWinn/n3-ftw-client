@@ -26,7 +26,6 @@ const MyPositions = () => {
   return (
     <div>
       <HeaderBetween path={FARM_V2_PATH} title={`My staking`} />
-      <hr />
       {isConnected ? (
         <PositionList
           chain={chain}
