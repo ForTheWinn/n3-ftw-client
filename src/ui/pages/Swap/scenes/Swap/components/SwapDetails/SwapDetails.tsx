@@ -32,7 +32,6 @@ const SwapDetails = ({
   );
   const expected = numberTrim(parseFloat(amountB), tokenB.decimals);
 
-  console.log(priceImpact)
 
   return (
     <div className="mt-1">

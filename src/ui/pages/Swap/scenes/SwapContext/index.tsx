@@ -318,7 +318,6 @@ export const SwapContextProvider = (props: {
     }
   }
 
-  console.log(priceImpact);
 
   // if (tokenA && tokenB && reserves) {
   //   noLiquidity = reserves.shares === "0";

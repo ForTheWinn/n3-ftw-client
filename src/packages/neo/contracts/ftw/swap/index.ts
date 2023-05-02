@@ -22,6 +22,7 @@ import {
 } from "../../../consts/neo-contracts";
 import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
 import { WENT_WRONG } from "../../../../../consts/messages";
+import { ethers } from "ethers";
 
 export class SwapContract {
   network: INetworkType;
@@ -35,10 +36,8 @@ export class SwapContract {
   provide = async (
     connectedWallet: IConnectedWallet,
     tokenA: string,
-    tokenADecimals: number,
     amountA: string,
     tokenB: string,
-    tokenBDecimals: number,
     amountB: string,
     lockUntil: number,
     slippage: number
@@ -60,7 +59,7 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amountA, tokenADecimals).toString()
+          value: amountA
         },
         {
           type: "Hash160",
@@ -68,7 +67,7 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amountB, tokenBDecimals).toString()
+          value: amountB
         },
         {
           type: "Integer",
@@ -236,11 +235,9 @@ export class SwapContract {
   swap = async (
     connectedWallet: IConnectedWallet,
     tokenA: string,
-    tokenADecimals: number,
     amountA: string,
     tokenB: string,
-    tokenBDecimals: number,
-    amountB: string // Slippage
+    amountB: string // Min amount out
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
@@ -259,7 +256,7 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amountA, tokenADecimals).toString()
+          value: amountA
         },
         {
           type: "Hash160",
@@ -267,7 +264,7 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amountB, tokenBDecimals).toString()
+          value: amountB
         },
         {
           type: "Integer",
@@ -377,9 +374,7 @@ export class SwapContract {
   swapBtoA = async (
     connectedWallet: IConnectedWallet,
     tokenA: string,
-    tokenADecimals: number,
     tokenB: string,
-    tokenBDecimals: number,
     amountOut: string,
     maxTokenAAmount: string
   ): Promise<string> => {
@@ -404,14 +399,11 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amountOut, tokenBDecimals).toString()
+          value: amountOut
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(
-            maxTokenAAmount,
-            tokenADecimals
-          ).toString()
+          value: maxTokenAAmount
         },
         {
           type: "Integer",
@@ -593,7 +585,11 @@ export class SwapContract {
     }
   };
 
-  getSwapBEstimate = async (tokenA: string, tokenB: string, amountOut: string): Promise<string> => {
+  getSwapBEstimate = async (
+    tokenA: string,
+    tokenB: string,
+    amountOut: string
+  ): Promise<string> => {
     const script = {
       scriptHash: this.contractHash,
       operation: "getSwapBEstimate",
@@ -607,7 +603,6 @@ export class SwapContract {
       ]
     };
     const res = await Network.read(this.network, [script]);
-    console.log(res)
     if (res.state === "FAULT") {
       return "0";
     } else {
@@ -918,9 +913,7 @@ export class SwapContract {
     scripts.push(script2);
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {
-      throw new Error(
-        res.exception ? (res.exception as string) : WENT_WRONG
-      );
+      throw new Error(res.exception ? (res.exception as string) : WENT_WRONG);
     }
     return {
       amountA: res.stack[0].value as string,

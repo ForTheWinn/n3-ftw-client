@@ -37,7 +37,6 @@ const Airdrop = () => {
     try {
       const transferItems: IMassTransaferList[] = [];
       list.forEach((item: any) => {
-        console.log(item);
         const address = item[0].value;
         const amount = ethers.utils
           .parseUnits(item[1].value.toString(), item[4].value)

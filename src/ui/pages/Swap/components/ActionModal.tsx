@@ -15,10 +15,6 @@ import {
 } from "../../../../packages/polygon/contracts/swap";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
-import {
-  getAfterSlippage,
-  getMaxTokenAAmount
-} from "../../../../packages/neo/contracts/ftw/swap/helpers";
 import { SwapContract } from "../../../../packages/neo/contracts";
 import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
@@ -76,6 +72,20 @@ const ActionModal = ({
 
   useEffect(() => {
     async function startSwap() {
+      const parsedAmountA = ethers.utils.parseUnits(amountA, tokenA.decimals);
+      const parsedAmountB = ethers.utils.parseUnits(amountB, tokenB.decimals);
+
+      const slippageAmountA = parsedAmountA
+        .mul(ethers.BigNumber.from(Math.round(slippage * 100)))
+        .div(10000);
+      const slippageAmountB = parsedAmountB
+        .mul(ethers.BigNumber.from(Math.round(slippage * 100)))
+        .div(10000);
+
+      const maxAmountAIn = parsedAmountA.add(slippageAmountA).toString();
+
+      const minAmountBOut = parsedAmountB.sub(slippageAmountB).toString();
+
       if (chain === NEO_CHAIN) {
         if (!connectedWallet) return false;
 
@@ -89,32 +99,26 @@ const ActionModal = ({
               txid = await new SwapContract(network).swapBtoA(
                 connectedWallet,
                 tokenA.hash,
-                tokenA.decimals,
                 tokenB.hash,
-                tokenB.decimals,
-                amountB,
-                getMaxTokenAAmount(amountA, slippage)
+                parsedAmountB.toString(),
+                maxAmountAIn
               );
             } else {
               txid = await new SwapContract(network).swap(
                 connectedWallet,
                 tokenA.hash,
-                tokenA.decimals,
-                amountA,
+                parsedAmountA.toString(),
                 tokenB.hash,
-                tokenB.decimals,
-                getAfterSlippage(amountB, slippage)
+                minAmountBOut
               );
             }
           } else {
             txid = await new SwapContract(network).provide(
               connectedWallet,
               isReverse ? tokenB.hash : tokenA.hash,
-              isReverse ? tokenB.decimals : tokenA.decimals,
-              isReverse ? amountB : amountA,
+              isReverse ? parsedAmountB.toString() : parsedAmountA.toString(),
               isReverse ? tokenA.hash : tokenB.hash,
-              isReverse ? tokenA.decimals : tokenB.decimals,
-              isReverse ? amountA : amountB,
+              isReverse ? parsedAmountA.toString() : parsedAmountB.toString(),
               0, // Deprecated LP lock
               slippage * 100 // BPS
             );
@@ -189,33 +193,20 @@ const ActionModal = ({
         try {
           let config;
           if (method === "swap") {
-            const amountOutBN = ethers.utils.parseUnits(
-              amountB.toString(),
-              tokenB.decimals
-            );
-
             config = await swap(network, {
               tokenA: tokenA.hash,
               tokenB: tokenB.hash,
-              amountIn: ethers.utils
-                .parseUnits(amountA.toString(), tokenA.decimals)
-                .toString(),
+              amountIn: isReverse ? maxAmountAIn : parsedAmountA.toString(),
               // Add slippage
-              amountOut: amountOutBN
-                .sub(amountOutBN.mul(slippage).div(100))
-                .toString(),
+              amountOut: isReverse ? parsedAmountB.toString() : minAmountBOut,
               isReverse
             });
           } else if (method === "provide") {
             config = await provide(network, {
               tokenA: tokenA.hash,
               tokenB: tokenB.hash,
-              amountA: ethers.utils
-                .parseUnits(amountA.toString(), tokenA.decimals)
-                .toString(),
-              amountB: ethers.utils
-                .parseUnits(amountB.toString(), tokenB.decimals)
-                .toString(),
+              amountA: parsedAmountA.toString(),
+              amountB: parsedAmountB.toString(),
               slippage: slippage * 100 // BPS
             });
           } else {

@@ -45,7 +45,6 @@ export const massTransfers = async (
   list: IMassTransaferList[],
   connectedWallet?: IConnectedWallet
 ): Promise<string> => {
-  console.log(connectedWallet);
   switch (chain) {
     case NEO_CHAIN:
       if (connectedWallet) {
