@@ -1,9 +1,7 @@
 import { wallet as neonWallet } from "@cityofzion/neon-core";
 import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
-import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import { getNEP17TransferScript } from "../../../packages/neo/utils";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
-import { ethers } from "ethers";
 import { INetworkType } from "../../../packages/neo/network";
 import { wallet } from "../../../packages/neo";
 import { DEFAULT_WITNESS_SCOPE } from "../../../packages/neo/consts";
@@ -60,8 +58,10 @@ export const massTransfers = async (
           const script = getNEP17TransferScript(
             item.hash,
             senderHash,
-            neonWallet.getScriptHashFromAddress(item.address),
-            item.amount,
+            neonWallet.isAddress(item.address)
+              ? neonWallet.getScriptHashFromAddress(item.address)
+              : item.address,
+            item.amount
           );
           batch.push(script);
         });
