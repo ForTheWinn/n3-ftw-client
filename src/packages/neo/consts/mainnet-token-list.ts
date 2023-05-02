@@ -13,6 +13,7 @@ import {
   N3F_SCRIPT_HASH,
   NEP_SCRIPT_HASH,
   NUDES_SCRIPT_HASH,
+  PEPE_SCRIPT_HASH,
   TED_SCRIPT_HASH,
   TGAS_SCRIPT_HASH,
   TTM_SCRIPT_HASH,
@@ -186,6 +187,13 @@ export const MAINNET_TOKEN_LIST = {
     symbol: "7f",
     icon: "/symbols/7f.png",
     decimals: 8,
+    pairs: []
+  },
+  [PEPE_SCRIPT_HASH]: {
+    hash: PEPE_SCRIPT_HASH,
+    symbol: "pepe",
+    icon: "/symbols/pepe.png",
+    decimals: 18,
     pairs: []
   }
 };

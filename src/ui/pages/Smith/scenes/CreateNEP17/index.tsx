@@ -62,12 +62,12 @@ const NEP17FormModal = () => {
     }
 
     if (balances.nepBalance < SMITH_NEP_FEE[network]) {
-      toast.error("You don't have enough NEP for platform fee.");
+      toast.error("You don't have enough NEP.");
       return;
     }
 
     if (balances.gasBalance < 10_00000000) {
-      toast.error("You don't have enough GAS for deploy fee.");
+      toast.error("You don't have enough GAS.");
       return;
     }
 

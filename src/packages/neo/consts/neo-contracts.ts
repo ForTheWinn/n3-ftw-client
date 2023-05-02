@@ -54,4 +54,5 @@ export const HOOD_SCRIPT_HASH = "0xc8d56cac2dd82e2da605ccae6865a99da491b97e";
 export const B$_SCRIPT_HASH = "0x3782720ad22ecfdd26cc99135dbc6739a47a38c9";
 export const GLC_SCRIPT_HASH = "0x77dc8cadcaef3694ab0f23901d8d9d825b19e6a2";
 export const _7F_SCRIPT_HASH = "0x8d91c0b210dcd568d287711a4c1c54c7ae392814";
+export const PEPE_SCRIPT_HASH = "0x8a651ecad98582603323bdd20169b81b81c1da5c";
 

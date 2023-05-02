@@ -22,7 +22,6 @@ const Input = ({
   setValue,
   onClickAsset
 }: IInputProps) => {
-  
   return (
     <div>
       <div
@@ -63,24 +62,22 @@ const Input = ({
               }`}
             >
               {token ? (
-                <Space>
+                <>
                   <Avatar
-                    className="icon"
+                    className="icon is-small"
                     size="small"
                     src={token.icon ? token.icon : UNKNOWN_TOKEN_IMAGE}
                   />
-                  <>
-                    <span className="has-text-weight-semibold">
-                      {token.symbol}
-                    </span>
-                    <span className="icon is-small">
-                      <FaAngleDown />
-                    </span>
-                  </>
-                </Space>
+                  <span className="has-text-weight-semibold">
+                    {token.symbol}
+                  </span>
+                  <span className="icon is-small">
+                    <FaAngleDown />
+                  </span>
+                </>
               ) : (
                 <>
-                  <span>Select Token</span>
+                  <span className="has-text-weight-semibold">Select Token</span>
                   <span className="icon is-small">
                     <FaAngleDown />
                   </span>
