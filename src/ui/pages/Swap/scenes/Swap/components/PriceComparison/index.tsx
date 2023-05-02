@@ -1,5 +1,5 @@
 import React from "react";
-import { Collapse } from "antd";
+
 import { CaretRightOutlined } from "@ant-design/icons";
 import { ITokenState } from "../../interfaces";
 import { findTradePaths } from "../../../../../../../helpers";
@@ -7,6 +7,7 @@ import { TOKEN_LIST } from "../../../../../../../consts/tokens";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import DisplaySwapPath from "./DisplaySwapPath";
+import { Collapse } from "antd";
 const { Panel } = Collapse;
 
 interface IPriceComparisonProps {
@@ -32,7 +33,7 @@ const PriceComparison = ({
   if (!paths) return <></>;
   if (paths.length === 0) return <></>;
   return (
-    <div>
+    <div className="mt-1">
       <Collapse
         size="small"
         bordered={false}
@@ -40,6 +41,7 @@ const PriceComparison = ({
         expandIcon={({ isActive }) => (
           <CaretRightOutlined rotate={isActive ? 90 : 0} />
         )}
+        style={{ background: "white" }}
       >
         <Panel header={"Optimal swap routes"} key="1">
           <>

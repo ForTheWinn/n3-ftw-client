@@ -18,7 +18,7 @@ const SwapButton = ({
     <button
       disabled={!isActive}
       onClick={onClick}
-      className={`button is-fullwidth is-primary ${
+      className={`button is-fullwidth is-large is-primary mt-2 ${
         isLoading ? "is-loading" : ""
       }`}
     >

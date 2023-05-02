@@ -8,7 +8,7 @@ interface IProvideLPInfoProps {
 const ProvideLPInfo = ({ path }: IProvideLPInfoProps) => {
   return (
     <>
-      <div className="notification is-info is-light">
+      <div className="notification is-info is-light mb-1">
         <strong>No liquidity with this pair</strong>
         <br />
         Liquidity providers earn a {SWAP_FEE}% fee on all trades proportional to
@@ -24,7 +24,6 @@ const ProvideLPInfo = ({ path }: IProvideLPInfoProps) => {
           <></>
         )}
       </div>
-      <hr />
     </>
   );
 };

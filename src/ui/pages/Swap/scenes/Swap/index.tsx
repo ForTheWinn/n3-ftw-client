@@ -27,7 +27,8 @@ const SwapMain = () => {
     slippage,
     noLiquidity,
     priceImpact,
-    inputError,
+    hasEstimatedError,
+    hasReservesError,
     onAfterSwapCompleted,
     setAssetChangeModalActive,
     setSettingsModalActive,
@@ -68,8 +69,6 @@ const SwapMain = () => {
         onSettingClick={() => setSettingsModalActive(true)}
       />
 
-      <hr />
-
       {noLiquidity && tokenA && tokenB ? (
         <ProvideLPInfo
           path={{
@@ -85,6 +84,7 @@ const SwapMain = () => {
       )}
 
       <SwapInputs
+        reserves={reserves}
         tokenA={tokenA}
         tokenB={tokenB}
         amountA={amountA}
@@ -94,7 +94,9 @@ const SwapMain = () => {
         isAmountALoading={isAmountALoading}
         isAmountBLoading={isAmountBLoading}
         noLiquidity={noLiquidity}
-        inputError={inputError}
+        priceImpact={priceImpact}
+        hasEstimatedError={hasEstimatedError}
+        hasReservesError={hasReservesError}
         onSwitch={onInputSwitch}
         onAssetChange={setAssetChangeModalActive}
         setSwapInputChange={onSwapInputChange}
@@ -102,8 +104,6 @@ const SwapMain = () => {
 
       {tokenA && tokenB && reserves && amountA && amountB ? (
         <>
-          <hr />
-
           <SwapDetails
             tokenA={tokenA}
             tokenB={tokenB}
@@ -112,21 +112,18 @@ const SwapMain = () => {
             priceImpact={priceImpact}
             slippage={slippage}
           />
-          <div className="mt-2">
-            <PriceComparison
-              chain={chain}
-              network={network}
-              tokenA={tokenA}
-              tokenB={tokenB}
-              amountIn={amountA}
-            />
-          </div>
+
+          <PriceComparison
+            chain={chain}
+            network={network}
+            tokenA={tokenA}
+            tokenB={tokenB}
+            amountIn={amountA}
+          />
         </>
       ) : (
         <></>
       )}
-
-      <hr />
 
       <SwapButton
         label="Swap"

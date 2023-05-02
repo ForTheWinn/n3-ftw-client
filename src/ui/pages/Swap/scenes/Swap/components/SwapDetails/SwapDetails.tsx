@@ -25,7 +25,6 @@ const SwapDetails = ({
   slippage,
   priceImpact
 }: ISwapDetailsProps) => {
-  const [isActive, setActive] = useState(false);
 
   const tolerance = numberTrim(
     getAfterSlippage(amountB, slippage),
@@ -33,8 +32,10 @@ const SwapDetails = ({
   );
   const expected = numberTrim(amountB, tokenB.decimals);
 
+  console.log(priceImpact)
+
   return (
-    <>
+    <div className="mt-1">
       <Collapse
         size="small"
         bordered={false}
@@ -42,6 +43,7 @@ const SwapDetails = ({
         expandIcon={({ isActive }) => (
           <CaretRightOutlined rotate={isActive ? 90 : 0} />
         )}
+        style={{ background: "white" }}
       >
         <Panel
           header={
@@ -92,7 +94,7 @@ const SwapDetails = ({
           </div>
         </Panel>
       </Collapse>
-    </>
+    </div>
   );
 };
 

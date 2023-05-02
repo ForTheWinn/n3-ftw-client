@@ -40,8 +40,8 @@ interface ISwapContext {
   slippage: number;
   noLiquidity: boolean;
   priceImpact: number;
-  inputError?: string | undefined;
-  reservesError?: string | undefined;
+  hasEstimatedError: boolean;
+  hasReservesError: boolean;
   setTokenA: (token: ITokenState | undefined) => void;
   setTokenB: (token: ITokenState | undefined) => void;
   setAmountA: (amount: number | undefined) => void;
@@ -73,16 +73,8 @@ export const SwapContextProvider = (props: {
   const { connectedWallet } = useNeoWallets();
   const { address, isConnected } = useWalletRouter(chain);
 
-  const [tokenA, setTokenA] = useState<ITokenState | undefined>(
-    params.tokenA
-      ? getTokenByHash(chain, network, params.tokenA as string)
-      : undefined
-  );
-  const [tokenB, setTokenB] = useState<ITokenState | undefined>(
-    params.tokenB
-      ? getTokenByHash(chain, network, params.tokenB as string)
-      : undefined
-  );
+  const [tokenA, setTokenA] = useState<ITokenState | undefined>();
+  const [tokenB, setTokenB] = useState<ITokenState | undefined>();
 
   const [amountA, setAmountA] = useState<number | undefined>();
   const [amountB, setAmountB] = useState<number | undefined>();
@@ -102,8 +94,8 @@ export const SwapContextProvider = (props: {
     "A" | "B" | undefined
   >();
 
-  const [reservesError, setReservesError] = useState<string | undefined>();
-  const [inputError, setInputError] = useState<string | undefined>();
+  const [hasReservesError, setReservesError] = useState<boolean>(false);
+  const [hasEstimatedError, setEstimatedError] = useState<boolean>(false);
 
   const onSwapInputChange = (val: ISwapInputState) => {
     if (val.type === "A") {
@@ -148,7 +140,7 @@ export const SwapContextProvider = (props: {
 
   useEffect(() => {
     const load = async (_tokenA: ITokenState, _tokenB: ITokenState) => {
-      setReservesError(undefined);
+      setReservesError(false);
       try {
         const res = await swapRouter.getReserves(
           chain,
@@ -182,7 +174,7 @@ export const SwapContextProvider = (props: {
           `/#${location.pathname}?tokenA=${_tokenA.hash}&tokenB=${_tokenB.hash}`
         );
       } catch (e) {
-        setReservesError("Failed to fetch reserves.");
+        setReservesError(true);
         console.error(e);
       }
     };
@@ -194,7 +186,7 @@ export const SwapContextProvider = (props: {
   useEffect(() => {
     if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
       const delayDebounceFn = setTimeout(async () => {
-        setInputError(undefined);
+        setEstimatedError(false);
         if (swapInput.type === "A") {
           setAmountBLoading(true);
         } else {
@@ -250,7 +242,7 @@ export const SwapContextProvider = (props: {
           }
         } catch (e: any) {
           console.error(e);
-          setInputError("Failed to fetch estimate. Check your inputs.");
+          setEstimatedError(false);
           setAmountALoading(false);
           setAmountBLoading(false);
         }
@@ -280,13 +272,41 @@ export const SwapContextProvider = (props: {
     toast.success("Chain switced!");
   }, [chain]);
 
+  useEffect(() => {
+    const fetchTokens = async () => {
+      if (params.tokenA) {
+        const tokenA = await getTokenByHash(
+          chain,
+          network,
+          params.tokenA as string
+        );
+        setTokenA(tokenA);
+      }
+      if (params.tokenB) {
+        const tokenB = await getTokenByHash(
+          chain,
+          network,
+          params.tokenB as string
+        );
+        setTokenB(tokenB);
+      }
+    };
+
+    fetchTokens();
+  }, [chain, network]);
+
   let noLiquidity = false;
   let priceImpact = 0;
 
   if (tokenA && tokenB && reserves) {
     noLiquidity = reserves.shares === "0";
     if (amountA && amountB) {
-      priceImpact = (amountB / parseFloat(reserves.reserveB)) * 100;
+      priceImpact =
+        (amountB /
+          parseFloat(
+            ethers.utils.formatUnits(reserves.reserveB, tokenB.decimals)
+          )) *
+        100;
     }
   }
   const contextValue = {
@@ -304,8 +324,8 @@ export const SwapContextProvider = (props: {
     slippage,
     noLiquidity,
     priceImpact,
-    inputError,
-    reservesError,
+    hasEstimatedError,
+    hasReservesError,
     setTokenA,
     setTokenB,
     setAmountA,

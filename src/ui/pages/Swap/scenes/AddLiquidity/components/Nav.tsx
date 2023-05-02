@@ -10,10 +10,11 @@ interface INavProps {
 const Nav = ({ title, path, onSettingClick }: INavProps) => {
   return (
     <div
+      className="box is-shadowless mb-1"
       style={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <div style={{ width: "50px" }}>

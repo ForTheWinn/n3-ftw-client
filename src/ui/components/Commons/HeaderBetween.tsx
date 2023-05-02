@@ -9,10 +9,11 @@ interface IHeaderBetweenProps {
 const HeaderBetween = (props: IHeaderBetweenProps) => {
   return (
     <div
+      className="box is-shadowless mb-1"
       style={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <div style={{ width: "50px" }}>
@@ -24,7 +25,9 @@ const HeaderBetween = (props: IHeaderBetweenProps) => {
         </Link>
       </div>
 
-      <h1 className="title is-5 is-marginless has-text-centered">{props.title}</h1>
+      <h1 className="title is-5 is-marginless has-text-centered">
+        {props.title}
+      </h1>
 
       <div className="is-relative" style={{ width: "50px" }}>
         {props.isLoading && (

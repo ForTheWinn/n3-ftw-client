@@ -3,6 +3,7 @@ import Input from "../../components/Input";
 import { FaPlusSquare } from "react-icons/fa";
 import { ISwapInputState, ITokenState } from "../Swap/interfaces";
 import { IUserTokenBalances } from "../../../../../common/routers/swap/interfaces";
+import InputDivider from "../../components/InputDivider";
 
 interface ILPInputsProps {
   tokenA?: ITokenState;
@@ -58,51 +59,43 @@ const LPInputs = ({
     );
   return (
     <>
-      <div className="pb-2">
+      <div className="box is-shadowless mb-0">
         <Input
           token={tokenA}
+          val={amountA}
           isLoading={false}
-          isDisable={!tokenA}
-          heading="Pair A"
+          userBalance={balances ? balances.amountA : "0"}
           onClickAsset={() => {
             onAssetChange("A");
           }}
-          val={amountA}
           setValue={(value) => {
             setSwapInputChange({
               type: "A",
               value
             });
           }}
-          userBalance={balances ? parseFloat(balances.amountA) : undefined}
-          balanceOverflow={amountAOverflow}
         />
       </div>
 
-      <div className="pt-5 pb-5">
-        <button className="button is-white is-fullwidth">
-          <FaPlusSquare />
-        </button>
-      </div>
+      <InputDivider icon={<FaPlusSquare />} />
 
-      <Input
-        token={tokenB}
-        isLoading={false}
-        isDisable={!tokenB}
-        heading="Pair B"
-        onClickAsset={() => {
-          onAssetChange("B");
-        }}
-        val={amountB}
-        setValue={(value) => {
-          setSwapInputChange({
-            type: "B",
-            value
-          });
-        }}
-        userBalance={balances ? parseFloat(balances.amountB) : undefined}
-        balanceOverflow={amountBOverflow}
-      />
+      <div className="box is-shadowless mb-0">
+        <Input
+          token={tokenB}
+          val={amountB}
+          isLoading={false}
+          userBalance={balances ? balances.amountB : "0"}
+          onClickAsset={() => {
+            onAssetChange("B");
+          }}
+          setValue={(value) => {
+            setSwapInputChange({
+              type: "B",
+              value
+            });
+          }}
+        />
+      </div>
     </>
   );
 };

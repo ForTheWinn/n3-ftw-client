@@ -23,7 +23,7 @@ const Swap = () => {
         <div className="columns is-centered">
           <div className="column is-half">
             <div
-              className="box is-shadowless is-relative"
+              className=" is-shadowless is-relative"
               style={{ overflow: "hidden" }}
             >
               <Route

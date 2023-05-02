@@ -585,6 +585,7 @@ export class SwapContract {
       ]
     };
     const res = await Network.read(this.network, [script]);
+    console.log(res)
     if (res.state === "FAULT") {
       return "0";
     } else {
@@ -607,6 +608,7 @@ export class SwapContract {
       ]
     };
     const res = await Network.read(this.network, [script]);
+    console.log(res)
     if (res.state === "FAULT") {
       return "0";
     } else {

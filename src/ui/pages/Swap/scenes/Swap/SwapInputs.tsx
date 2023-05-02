@@ -1,10 +1,17 @@
 import React from "react";
 import Input from "../../components/Input";
-import { FaArrowDown, FaExchangeAlt } from "react-icons/fa";
+import { FaArrowDown } from "react-icons/fa";
 import { ISwapInputState, ITokenState } from "./interfaces";
-import { IUserTokenBalances } from "../../../../../common/routers/swap/interfaces";
+import {
+  ISwapReserves,
+  IUserTokenBalances
+} from "../../../../../common/routers/swap/interfaces";
+import { ethers } from "ethers";
+import SwapErrors from "./components/SwapErrors";
+import InputDivider from "../../components/InputDivider";
 
 interface ISwapInputsProps {
+  reserves?: ISwapReserves;
   tokenA?: ITokenState;
   tokenB?: ITokenState;
   amountA?: number;
@@ -14,13 +21,16 @@ interface ISwapInputsProps {
   isAmountALoading: boolean;
   isAmountBLoading: boolean;
   noLiquidity?: boolean;
-  inputError?: string;
+  hasEstimatedError: boolean;
+  hasReservesError: boolean;
+  priceImpact: number;
   onAssetChange: (type: "A" | "B") => void;
   onSwitch: () => void;
   setSwapInputChange: (val: ISwapInputState) => void;
 }
 
 const SwapInputs = ({
+  reserves,
   tokenA,
   tokenB,
   amountA,
@@ -29,76 +39,104 @@ const SwapInputs = ({
   swapInput,
   isAmountALoading,
   isAmountBLoading,
+  hasEstimatedError,
+  hasReservesError,
   noLiquidity,
-  inputError,
+  priceImpact,
   onSwitch,
   setSwapInputChange,
   onAssetChange
 }: ISwapInputsProps) => {
-  const amountAOverflow = !!(
-    swapInput &&
-    swapInput.type === "A" &&
-    amountA &&
-    balances &&
-    amountA > parseFloat(balances.amountA)
-  );
+  const errors: string[] = [];
 
-  const amountBOverflow = !!(
-    swapInput &&
-    swapInput.type === "B" &&
-    amountB &&
-    balances &&
-    amountB > parseFloat(balances.amountB)
-  );
+  // const amountAOverflow = !!(
+  //   swapInput &&
+  //   swapInput.type === "A" &&
+  //   amountA &&
+  //   balances &&
+  //   amountA > parseFloat(balances.amountA)
+  // );
 
+  // const amountBOverflow = !!(
+  //   swapInput &&
+  //   swapInput.type === "B" &&
+  //   amountB &&
+  //   balances &&
+  //   amountB > parseFloat(balances.amountB)
+  // );
+
+  // const isExcessReserveB =
+  //   swapInput &&
+  //   swapInput.type === "B" &&
+  //   amountB &&
+  //   reserves &&
+  //   tokenB &&
+  //   ethers.BigNumber.from(reserves.reserveB).gte(
+  //     ethers.utils.parseUnits(amountB.toString(), tokenB.decimals)
+  //   );
+
+  // if (amountAOverflow) {
+  //   inputAErrors.push("You entered more than your balances");
+  // }
+
+  // if (amountBOverflow) {
+  //   inputBErrors.push("You entered more than your balances");
+  // }
+  if (hasReservesError) {
+    errors.push("Failed to fetch reserves");
+  }
+
+  if (hasEstimatedError) {
+    errors.push("Failed to fetch estimated swap amount");
+  }
+
+  if (priceImpact > 30) {
+    errors.push("Check price impact");
+  }
+
+  // if (isExcessReserveB) {
+  //   errors.push("Excessed pool reserve amount");
+  // }
   return (
-    <div className="pb-2">
-      <Input
-        token={tokenA}
-        isDisable={!tokenA || !tokenB || noLiquidity}
-        heading="Sell"
-        onClickAsset={() => onAssetChange("A")}
-        val={amountA}
-        setValue={(value) => {
-          setSwapInputChange({
-            type: "A",
-            value
-          });
-        }}
-        userBalance={balances ? parseFloat(balances.amountA) : undefined}
-        isLoading={isAmountALoading}
-        balanceOverflow={amountAOverflow}
-        hasEstimateError={
-          inputError && swapInput && swapInput.type === "A" ? true : false
-        }
-      />
-      <div className="pt-5 pb-5">
-        <button onClick={onSwitch} className="button is-white is-fullwidth">
-          <FaArrowDown />
-        </button>
+    <>
+      <div className="box is-shadowless is-marginless">
+        <Input
+          token={tokenA}
+          val={amountA}
+          userBalance={balances ? balances.amountA : "0"}
+          isLoading={isAmountALoading}
+          onClickAsset={() => onAssetChange("A")}
+          setValue={(value) => {
+            setSwapInputChange({
+              type: "A",
+              value
+            });
+          }}
+        />
       </div>
-      <Input
-        token={tokenB}
-        isDisable={!tokenA || !tokenB || noLiquidity}
-        heading="Buy"
-        onClickAsset={() => {
-          onAssetChange("B");
-        }}
-        val={amountB}
-        setValue={(value) => {
-          setSwapInputChange({
-            type: "B",
-            value
-          });
-        }}
-        userBalance={balances ? parseFloat(balances.amountB) : undefined}
-        isLoading={isAmountBLoading}
-        balanceOverflow={amountBOverflow}
-        hasEstimateError={
-          inputError && swapInput && swapInput.type === "B" ? true : false
-        }
-      />
-    </div>
+
+      <InputDivider icon={<FaArrowDown />} onClick={onSwitch} />
+
+      <div className="box is-shadowless mb-0">
+        <Input
+          token={tokenB}
+          val={amountB}
+          userBalance={balances ? balances.amountB : "0"}
+          isLoading={isAmountBLoading}
+          onClickAsset={() => {
+            onAssetChange("B");
+          }}
+          setValue={(value) => {
+            setSwapInputChange({
+              type: "B",
+              value
+            });
+          }}
+        />
+      </div>
+
+      {errors && errors.length > 0 ? <SwapErrors errors={errors} /> : <></>}
+    </>
   );
 };
 

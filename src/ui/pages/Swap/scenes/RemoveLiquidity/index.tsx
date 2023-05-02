@@ -28,9 +28,8 @@ const RemoveLiquidity = () => {
   return (
     <>
       <HeaderBetween path={SWAP_PATH} title={"Withdraw liquidity"} />
-      <hr />
       {isConnected ? (
-        <>
+        <div className="box is-shadowless">
           {!isLoaded ? (
             <div>Loading..</div>
           ) : data.length > 0 ? (
@@ -54,9 +53,11 @@ const RemoveLiquidity = () => {
           ) : (
             <div>Your wallet doesn't have any LP tokens.</div>
           )}
-        </>
+        </div>
       ) : (
-        <ConnectWalletButton />
+        <div className="mt-1">
+          <ConnectWalletButton />
+        </div>
       )}
 
       {address && tokenIdForInvoke ? (

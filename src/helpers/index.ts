@@ -1,3 +1,4 @@
+import { globalRouter } from "../common/routers";
 import { CHAINS } from "../consts/chains";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../consts/chains";
 import { MAINNET } from "../consts/global";
@@ -33,15 +34,21 @@ export const getExploler = (chain: string, network: INetworkType): string => {
   }
 };
 
-export const getTokenByHash = (
+export const getTokenByHash = async (
   chain: CHAINS,
   network: INetworkType,
   hash: string
-): ITokenState | undefined => {
+): Promise<ITokenState | undefined> => {
   if (TOKEN_LIST[chain][network][hash]) {
     return TOKEN_LIST[chain][network][hash];
   } else {
-    return undefined;
+    try {
+      return await globalRouter.fetchTokenInfo(chain, network, hash);
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+
     // return await globalRouter.fetchTokenInfo(chain, network, hash);
   }
 };
@@ -73,9 +80,10 @@ export const findTradePaths = (
       paths.push(currentPath);
       return;
     }
-    const nextTokens = tokenList[currentToken.hash].pairs
-      ? tokenList[currentToken.hash].pairs
-      : [];
+    const nextTokens =
+      tokenList[currentToken.hash] && tokenList[currentToken.hash].pairs
+        ? tokenList[currentToken.hash].pairs
+        : [];
     for (const nextToken of nextTokens) {
       const _nextToken = tokenList[nextToken];
       if (!currentPath.includes(_nextToken)) {

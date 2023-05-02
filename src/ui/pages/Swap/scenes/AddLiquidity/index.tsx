@@ -65,25 +65,20 @@ const Liquidity = () => {
         title={title}
         onSettingClick={() => setSettingsModalActive(true)}
       />
-      <Divider />
 
       {noLiquidity && <ProvideLPInfo />}
 
       <div className="is-relative">
-        <div className="pb-2">
-          <LPInputs
-            tokenA={tokenA}
-            tokenB={tokenB}
-            amountA={amountA}
-            amountB={amountB}
-            swapInput={swapInput}
-            setSwapInputChange={onSwapInputChange}
-            onAssetChange={setAssetChangeModalActive}
-            balances={balances}
-          />
-        </div>
-
-        <Divider />
+        <LPInputs
+          tokenA={tokenA}
+          tokenB={tokenB}
+          amountA={amountA}
+          amountB={amountB}
+          swapInput={swapInput}
+          setSwapInputChange={onSwapInputChange}
+          onAssetChange={setAssetChangeModalActive}
+          balances={balances}
+        />
 
         <SwapButton
           label={"Add Liquidity"}
