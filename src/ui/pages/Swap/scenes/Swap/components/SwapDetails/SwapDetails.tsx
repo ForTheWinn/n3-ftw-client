@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { getAfterSlippage } from "../../../../../../../packages/neo/contracts/ftw/swap/helpers";
 import { numberTrim } from "../../../../../../../packages/neo/utils";
 import { priceImpactFormat } from "../../helpers";
-import { CaretRightOutlined } from "@ant-design/icons";
 
 import { ITokenState } from "../../interfaces";
 import PriceRatio from "./PriceRatio";
-import { Collapse } from "antd";
+import { Collapse, Divider } from "antd";
 const { Panel } = Collapse;
 
 interface ISwapDetailsProps {
@@ -25,23 +24,19 @@ const SwapDetails = ({
   slippage,
   priceImpact
 }: ISwapDetailsProps) => {
-
   const tolerance = numberTrim(
     parseFloat(getAfterSlippage(amountB, slippage)),
     tokenB.decimals
   );
   const expected = numberTrim(parseFloat(amountB), tokenB.decimals);
 
-
   return (
     <div className="mt-1">
       <Collapse
         size="small"
+        collapsible="icon"
         bordered={false}
         defaultActiveKey={[]}
-        expandIcon={({ isActive }) => (
-          <CaretRightOutlined rotate={isActive ? 90 : 0} />
-        )}
         style={{ background: "white" }}
       >
         <Panel
@@ -57,37 +52,40 @@ const SwapDetails = ({
           }
           key="1"
         >
-          <div className="level is-mobile">
-            <div className="level-left">
-              <div className="level-item">Expected output</div>
-            </div>
-            <div className="level-right">
-              <div className="level-item has-text-right">
-                <span className="has-text-weight-semibold">
-                  {expected} <br /> {tokenB.symbol}
-                </span>
+          <div className="box is-shadowless content is-small has-background-light">
+            <div className="level is-mobile mb-2">
+              <div className="level-left">
+                <div className="level-item">Expected output</div>
+              </div>
+              <div className="level-right">
+                <div className="level-item has-text-right">
+                  {expected} {tokenB.symbol}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="level  is-mobile">
-            <div className="level-left">
-              <div className="level-item">Price impact</div>
-            </div>
-            <div className="level-right">
-              <div className="level-item">{priceImpactFormat(priceImpact)}</div>
-            </div>
-          </div>
-          <div className="level  is-mobile">
-            <div className="level-left">
-              <div className="level-item">
-                Minimum received after slippage
-                <br /> ({slippage} %)
+            <div className="level is-mobile is-marginless">
+              <div className="level-left">
+                <div className="level-item">Price impact</div>
+              </div>
+              <div className="level-right">
+                <div className="level-item  has-text-right">
+                  {priceImpactFormat(priceImpact)}
+                </div>
               </div>
             </div>
-            <div className="level-right">
-              <div className="level-item has-text-right">
-                {tolerance}
-                <br /> {tokenB.symbol}
+            <Divider className="mt-2 mb-2" />
+            <div className="level is-mobile  is-marginless">
+              <div className="level-left">
+                <div className="level-item">
+                  Minimum received after slippage
+                  <br /> ({slippage} %)
+                </div>
+              </div>
+              <div className="level-right">
+                <div className="level-item has-text-right">
+                  {tolerance}
+                  <br /> {tokenB.symbol}
+                </div>
               </div>
             </div>
           </div>
