@@ -21,7 +21,7 @@ const Swap = () => {
     <div>
       <PageLayout>
         <div className="columns is-centered">
-          <div className="column is-half">
+          <div className="column is-5">
             <div
               className=" is-shadowless is-relative"
               style={{ overflow: "hidden" }}
