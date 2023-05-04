@@ -6,6 +6,7 @@ import { IPrices } from "../../../packages/neo/api/interfaces";
 import { RestAPI } from "../../../packages/neo/api";
 import { MAINNET } from "../../../consts/global";
 import { base64ToString } from "../../../packages/neo/utils";
+import { WENT_WRONG } from "../../../consts/messages";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -34,7 +35,6 @@ export const getPrices = async (
       return undefined;
   }
 };
-
 
 export const fetchTokenInfo = async (
   chain: CHAINS,
@@ -65,6 +65,9 @@ export const fetchTokenInfo = async (
       scripts.push(script1);
       scripts.push(script2);
       const res = await Network.read(network, scripts);
+      if (res.state === "FAULT") {
+        throw new Error(res.exception ? res.exception : WENT_WRONG);
+      }
       return {
         hash,
         symbol: base64ToString(res.stack[0].value as string),

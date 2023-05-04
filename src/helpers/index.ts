@@ -34,6 +34,25 @@ export const getExploler = (chain: string, network: INetworkType): string => {
   }
 };
 
+export const getExplolerForContract = (chain: string, network: INetworkType): string => {
+  switch (chain) {
+    case NEO_CHAIN:
+      if (network === MAINNET) {
+        return "https://explorer.onegate.space/contractinfo";
+      } else {
+        return "https://testmagnet.explorer.onegate.space/contractinfo";
+      }
+    case POLYGON_CHAIN:
+      if (network === MAINNET) {
+        return "https://polygonscan.com/token";
+      } else {
+        return "https://mumbai.polygonscan.com/token";
+      }
+    default:
+      return "";
+  }
+};
+
 export const getTokenByHash = async (
   chain: CHAINS,
   network: INetworkType,

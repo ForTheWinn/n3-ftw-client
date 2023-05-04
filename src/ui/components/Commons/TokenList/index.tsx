@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { FaPlus } from "react-icons/fa";
 
-import ContractSearchInput from "./ContractSearchInput";
-import SwapTokenCard from "../../../pages/Swap/components/TokenCard";
-import Modal from "../../Modal";
+// import Modal from "../../Modal";
+import { Input, Modal } from "antd";
+
+import { FaSearch } from "react-icons/fa";
 
 import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
-import { SWAP_TOKEN_LIST } from "../../../../consts/tokens";
+import { ethers } from "ethers";
+import DisplayTokenList from "./DisplayTokenList";
+import DisplayCustomToken from "./DisplayCustomToken";
 
 interface IAssetListModalProps {
   chain: CHAINS;
@@ -26,38 +28,72 @@ const TokenList = ({
   onAssetClick,
   onClose
 }: IAssetListModalProps) => {
-  const [isCustomInputMode, setCustomInputMode] = useState(false);
+  const [search, setSearch] = useState<string | undefined>();
+  const [customContract, setCustomContract] = useState<string | undefined>();
+
+  const searchContract = async (value: string) => {
+    if (value && ethers.utils.isAddress(value)) {
+      setCustomContract(value);
+    } else {
+      if (!value) {
+        setCustomContract(undefined);
+      }
+      setSearch(value);
+    }
+  };
+
+  const onReset = () => {
+    setCustomContract(undefined);
+    setSearch(undefined);
+  };
 
   return (
-    <Modal onClose={onClose}>
-      {isCustomInputMode ? (
-        <ContractSearchInput chain={chain} network={network} onAssetClick={onAssetClick} />
-      ) : (
-        <>
-          <div className="columns is-multiline is-mobile">
-            {SWAP_TOKEN_LIST[chain][network].map((token) => {
-              return (
-                <SwapTokenCard
-                  key={token.hash}
-                  onClick={onAssetClick}
-                  token={token}
-                />
-              );
-            })}
-          </div>
-
-          <button
-            onClick={() => setCustomInputMode(true)}
-            className="button is-fullwidth is-black"
+    <>
+      <Modal
+        style={{ padding: "0!important" }}
+        title="Select a token"
+        centered
+        open={true}
+        onCancel={onClose}
+        // footer={null}
+        bodyStyle={{ padding: "-10px" }}
+        footer={
+          <nav
+            className="panel is-shadowless"
+            style={{
+              border: "1px solid #eee",
+              height: "500px",
+              overflowY: "auto"
+            }}
           >
-            <span className="icon">
-              <FaPlus />
-            </span>
-            <span>Custom contract hash</span>
-          </button>
-        </>
-      )}
-    </Modal>
+            {customContract ? (
+              <DisplayCustomToken
+                chain={chain}
+                network={network}
+                token={customContract}
+                onClick={onAssetClick}
+                onCancel={onReset}
+              />
+            ) : (
+              <DisplayTokenList
+                keyword={search}
+                chain={chain}
+                network={network}
+                onClick={onAssetClick}
+              />
+            )}
+          </nav>
+        }
+      >
+        <Input
+          onChange={(e) => searchContract(e.target.value)}
+          placeholder="Search symbol or paste contract address"
+          prefix={<FaSearch />}
+        />
+
+        <hr />
+      </Modal>
+    </>
   );
 };
 

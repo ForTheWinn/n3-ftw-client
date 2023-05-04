@@ -9,12 +9,11 @@ interface ISwapTokenCardProps {
 const SwapTokenCard = ({ token, onClick }: ISwapTokenCardProps) => {
   return (
     <div
-      className="column is-2-desktop is-2-tablet is-3-mobile"
+      className="media"
       onClick={() => onClick(token)}
     >
-      <div className="box is-hoverable has-text-centered">
+      <div className="media-left">
         <Avatar src={token.icon} />
-
         <p className="is-size-7 has-text-weight-semibold">{token.symbol}</p>
       </div>
     </div>
