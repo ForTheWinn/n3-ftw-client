@@ -44,8 +44,7 @@ export const convertContractCallParam = (param: any) => {
 
 export const base64ToAddress = (str: string): string => {
   try {
-    const hash = base64ToHash160(str);
-    return wallet.getAddressFromScriptHash(hash);
+    return wallet.getAddressFromScriptHash(u.reverseHex(u.base642hex(str)));
   } catch (e) {
     return "";
   }

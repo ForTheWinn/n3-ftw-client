@@ -179,7 +179,7 @@ const NEP17InfoPage = () => {
                 </button>
               </div>
 
-              {process.env.NODE_ENV === "development" ? (
+              {/* {process.env.NODE_ENV === "development" ? (
                 <div className="block">
                   <button
                     onClick={() => {
@@ -193,7 +193,7 @@ const NEP17InfoPage = () => {
                 </div>
               ) : (
                 <></>
-              )}
+              )} */}
             </div>
           </div>
         </div>

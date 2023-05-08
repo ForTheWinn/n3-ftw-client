@@ -64,6 +64,8 @@ const NEP11InfoPage = () => {
   };
 
   const onClickMint = () => {
+    console.log(connectedWallet?.account);
+    console.log(data)
     if (connectedWallet) {
       if (connectedWallet.account.address === data.owner) {
         setMintModalActive(contractHash);
@@ -156,9 +158,9 @@ const NEP11InfoPage = () => {
                       <FaExternalLinkAlt />
                     </a>
                     <br />
-                    {/* <strong>Contract Owner</strong>
+                    <strong>Contract Owner</strong>
                     <br />
-                    {data.owner} */}
+                    {data.owner}
                     <br />
                     <strong>Website</strong>
                     <br />
@@ -215,7 +217,7 @@ const NEP11InfoPage = () => {
                   Update
                 </button>
               </div>
-              {process.env.NODE_ENV === "development" ? (
+              {/* {process.env.NODE_ENV === "development" ? (
                 <div className="block">
                   <button
                     onClick={() => {
@@ -229,7 +231,7 @@ const NEP11InfoPage = () => {
                 </div>
               ) : (
                 <></>
-              )}
+              )} */}
             </div>
           </div>
         </div>

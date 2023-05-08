@@ -436,7 +436,10 @@ export class SmithContract {
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
     }
-    return parseMapValue(res.stack[0] as any);
+    console.log(res)
+    const parsed =  parseMapValue(res.stack[0] as any);
+    console.log(parsed)
+    return parsed;
   };
 
   isNEP17SymbolTaken = async (symbol: string): Promise<boolean> => {

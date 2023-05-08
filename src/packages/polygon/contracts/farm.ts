@@ -30,7 +30,8 @@ export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
       args: [pairId]
     });
 
-    const tokenA = TOKEN_LIST[POLYGON_CHAIN][network][pool.tokenA.toLowerCase()];
+    const tokenA =
+      TOKEN_LIST[POLYGON_CHAIN][network][pool.tokenA.toLowerCase()];
     const tokenB =
       TOKEN_LIST[POLYGON_CHAIN][network][pool.tokenB.toLowerCase()];
     const bonusToken =
@@ -102,9 +103,12 @@ export const getClaimable = async (
   res.map((reward: any) => {
     const userShare = reward.shares.toString();
     if (userShare !== "0") {
-      const tokenA = TOKEN_LIST[POLYGON_CHAIN][network][reward.tokenA];
-      const tokenB = TOKEN_LIST[POLYGON_CHAIN][network][reward.tokenB];
-      const bonusToken = TOKEN_LIST[POLYGON_CHAIN][network][reward.bonusToken];
+      const tokenList = TOKEN_LIST[POLYGON_CHAIN][network];
+      const tokenAAddress = reward.tokenA.toLowerCase();
+      const tokenBAddress = reward.tokenB.toLowerCase();
+      const tokenA = tokenList[tokenAAddress];
+      const tokenB = tokenList[tokenBAddress];
+      const bonusToken = tokenList[reward.bonusToken];
       const obj = {
         pairId: reward.pairId,
         tokenA: reward.tokenA,
