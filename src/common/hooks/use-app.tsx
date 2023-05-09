@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import { CHAINS } from "../../consts/chains";
 import { LocalStorage } from "../../packages/neo/local-storage";
 import { INetworkType } from "../../packages/neo/network";
+import { MAINNET } from "../../consts/global";
 
 interface IAppContext {
   chain: CHAINS;
@@ -25,7 +26,9 @@ export const AppContext = createContext({} as IAppContext);
 export const AppContextProvider = (props: { children: any }) => {
   const [chain, setChain] = useState<CHAINS>(LocalStorage.getChain());
   const [network, setNetwork] = useState(
-    process.env.REACT_APP_NETWORK as INetworkType
+    (process.env.REACT_APP_NETWORK as INetworkType)
+      ? (process.env.REACT_APP_NETWORK as INetworkType)
+      : MAINNET
   );
   const [refreshCount, setRefreshCount] = useState(0);
   const [txid, setTxid] = useState<string | undefined>();
