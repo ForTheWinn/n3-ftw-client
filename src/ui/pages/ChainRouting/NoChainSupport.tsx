@@ -4,12 +4,14 @@ import PageLayout from "../../components/Commons/PageLayout";
 import { Avatar, Card } from "antd";
 import { HOME_PATH } from "../../../consts/neoRoutes";
 import { Link } from "react-router-dom";
+import { INetworkType } from "../../../packages/neo/network";
 
 interface IChainRoutingProps {
   chain: CHAINS;
+  network: INetworkType;
 }
-const NoChainSupport = ({ chain }: IChainRoutingProps) => {
-  const config = CONFIGS[chain];
+const NoChainSupport = ({ chain, network }: IChainRoutingProps) => {
+  const config = CONFIGS[network][chain];
   return (
     <PageLayout>
       <Card>

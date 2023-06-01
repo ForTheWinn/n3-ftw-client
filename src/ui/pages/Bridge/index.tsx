@@ -1,31 +1,35 @@
 import React, { useEffect } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
-import MarketStatus from "../Swap/components/CheckMarketStatus";
 import { Route } from "react-router-dom";
-import BridgeMain from "./scene/Main";
-import { NEO_ROUTES } from "../../../consts";
+import { BRIDGE_PATH, BRIDGE_TRANSFERS_PATH } from "../../../consts/neoRoutes";
+import BridgeSwap from "./scene/BridgeMain";
+import { SwapContextProvider } from "./scene/BridgeMain/context";
+import BridgeHistory from "./scene/BridgeHistory";
 
 const Bridge = () => {
   useEffect(() => {
     document.title = "FTW Bridge";
   }, []);
   return (
-    <div>
-      <PageLayout>
-        <div className="columns is-centered">
-          <div className="column is-half">
-            <MarketStatus />
-            <div className="box is-shadowless">
-              <Route
-                exact={true}
-                path={NEO_ROUTES.BRIDGE_PATH}
-                component={BridgeMain}
-              />
-            </div>
-          </div>
+    <PageLayout>
+      <div className="columns is-centered">
+        <div className="column is-half">
+          <Route
+            exact={true}
+            path={BRIDGE_PATH}
+            component={() => (
+              <SwapContextProvider>
+                <BridgeSwap />
+              </SwapContextProvider>
+            )}
+          />
+          <Route
+            path={BRIDGE_TRANSFERS_PATH + "/:chainId"}
+            component={BridgeHistory}
+          />
         </div>
-      </PageLayout>
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

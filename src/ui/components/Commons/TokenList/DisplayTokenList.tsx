@@ -17,7 +17,6 @@ const DisplayTokenList = ({
   network,
   onClick
 }: ITokenListProps) => {
-  console.log(keyword);
   let tokenList = SWAP_TOKEN_LIST[chain][network];
   if (keyword) {
     tokenList = tokenList.filter((item) =>

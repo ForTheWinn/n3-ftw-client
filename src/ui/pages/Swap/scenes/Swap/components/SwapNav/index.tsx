@@ -4,13 +4,16 @@ import AddLiquidityButton from "./AddLiquidityButton";
 import RemoveLiquidityButton from "./RemoveLiquidityButton";
 import { CHAINS, CONFIGS } from "../../../../../../../consts/chains";
 import { Avatar, Space } from "antd";
+import { network } from "../../../../../../../packages/neo";
+import { INetworkType } from "../../../../../../../packages/neo/network";
 
 interface ISwapNavProps {
   chain: CHAINS;
+  network: INetworkType;
   search?: string;
   onSettingClick?: () => void;
 }
-const SwapNav = ({ chain, search, onSettingClick }: ISwapNavProps) => {
+const SwapNav = ({ chain, search, network, onSettingClick }: ISwapNavProps) => {
   return (
     <div className="box is-shadowless mb-1">
       <div className="level is-mobile is-marginless">
@@ -18,7 +21,7 @@ const SwapNav = ({ chain, search, onSettingClick }: ISwapNavProps) => {
           <div className="level-item">
             <h1 className="title is-5 is-marginless ">
               <Space>
-                <Avatar src={CONFIGS[chain].icon} />
+                <Avatar src={CONFIGS[network][chain].icon} />
                 <h1 className="title is-5 is-marginless">Swap</h1>
               </Space>
             </h1>

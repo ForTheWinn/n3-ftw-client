@@ -7,6 +7,8 @@ import { RestAPI } from "../../../packages/neo/api";
 import { MAINNET } from "../../../consts/global";
 import { base64ToString } from "../../../packages/neo/utils";
 import { WENT_WRONG } from "../../../consts/messages";
+import { SwapContract } from "../../../packages/neo/contracts/ftw/swap";
+import { fetchBalance } from "@wagmi/core";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -74,5 +76,23 @@ export const fetchTokenInfo = async (
         decimals: res.stack[1].value as number,
         icon: ""
       };
+  }
+};
+
+export const fetchTokenBalance = async (
+  chain: CHAINS,
+  network: INetworkType,
+  address: string,
+  tokenHash: string
+): Promise<string> => {
+  switch (chain) {
+    case NEO_CHAIN:
+      return await new SwapContract(network).getUserBalance(address, tokenHash);
+    case POLYGON_CHAIN:
+      const res = await fetchBalance({
+        address,
+        token: tokenHash
+      } as any);
+      return res.formatted;
   }
 };

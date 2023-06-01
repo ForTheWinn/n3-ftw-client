@@ -1,4 +1,4 @@
-import { sc, u, wallet } from "@cityofzion/neon-core";
+import { rpc, sc, u, wallet } from "@cityofzion/neon-core";
 import { BigNumber } from "@ethersproject/bignumber";
 import moment from "moment";
 import { IBalance } from "../wallets/interfaces";
@@ -6,6 +6,7 @@ import {
   StackItemLike,
   StackItemMap
 } from "@cityofzion/neon-core/lib/sc/StackItem";
+import { InvokeResult } from "@cityofzion/neon-core/lib/rpc";
 
 export const truncateAddress = (address: string) => {
   return address
@@ -145,7 +146,7 @@ const stringList = [
   "2_tokenId",
   "3_tokenId"
 ];
-const addressList = ["owner", "account", "creator", "receiver"];
+const addressList = ["owner", "account", "creator", "receiver", "sender"];
 const hash160List = [
   "contractHash",
   "tokenA",
@@ -153,7 +154,10 @@ const hash160List = [
   "tokenIn",
   "tokenOut",
   "bonusToken",
-  "bonusTokenHash"
+  "bonusTokenHash",
+  "neoTokenAddress",
+  "evmTokenAddress",
+  "evmReceiver",
 ];
 const dateList = ["createdAt", "1_createdAt", "2_createdAt", "3_createdAt"];
 const intList = [
@@ -197,7 +201,8 @@ const intList = [
   "totalReward",
   "totalPosition",
   "claimableAmount",
-  "sharesPercentage"
+  "sharesPercentage",
+  "chainId",
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {
@@ -318,3 +323,20 @@ export const getNEP17TransferScript = (
     ]
   };
 };
+
+export const readNeoContract = async (
+  rpcUrl: string,
+  scripts: sc.ContractCallJson[]
+): Promise<InvokeResult> => {
+  const rpcClient = new rpc.RPCClient(rpcUrl);
+  const sb = new sc.ScriptBuilder();
+  scripts.forEach((script) => {
+    let params: unknown[] = [];
+    if (script.args) {
+      params = script.args.map((arg) => convertContractCallParam(arg));
+    }
+    sb.emitAppCall(script.scriptHash, script.operation, params);
+  });
+  return rpcClient.invokeScript(u.HexString.fromHex(sb.build()));
+};
+

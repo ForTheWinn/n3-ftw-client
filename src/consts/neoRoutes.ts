@@ -5,6 +5,7 @@ import Consensus2023 from "../ui/pages/Events/Consensus";
 import Farm from "../ui/pages/Farm";
 import FarmV2 from "../ui/pages/FarmV2";
 import Home from "../ui/pages/Home";
+import Bridge from "../ui/pages/Bridge";
 import Locker from "../ui/pages/Locker";
 import NFTCollections from "../ui/pages/NFTCollections";
 import Boyz from "../ui/pages/NFTCollections/Boyz";
@@ -19,6 +20,7 @@ import LPTokens from "../ui/pages/Tools/scenes/LPTokens";
 import ToolsMain from "../ui/pages/Tools/scenes/Main";
 import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
 import { MAINNET, TESTNET } from "./global";
+
 
 /* 
   Global
@@ -83,6 +85,7 @@ export const GASFI_MY_STAKING_PATH = "/gas-fi/staking";
   Bridge
 */
 export const BRIDGE_PATH = "/bridge";
+export const BRIDGE_TRANSFERS_PATH = "/bridge/history";
 /* 
   Analytics
 */
@@ -317,6 +320,21 @@ export const TOOLS_PAGE_ROUTE = {
 };
 
 /*
+  Bridge
+*/
+
+const BRIDGE_PAGE_ROUTE = {
+  label: "Bridge",
+  path: BRIDGE_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET],
+    [POLYGON_CHAIN]: [TESTNET]
+  },
+  category: [],
+  component: Bridge
+};
+
+/*
   Event routes
 */
 const EVENT_PAGE_ROUTE = {
@@ -390,6 +408,7 @@ export const ROUTES = [
   ANALYTICS_ROUTE,
   TOOLS_PAGE_ROUTE,
   NFT_ROUTE,
+  BRIDGE_PAGE_ROUTE,
   EVENT_PAGE_ROUTE,
   // Route only, No menu in display
   LP_FINDER_PAGE_ROUTE,
@@ -428,13 +447,6 @@ export const ROUTES = [
 //   },
 //   category: [{ ...ARENA_PAGE_ROUTE }, { ...MIGRATION_PAGE_ROUTE }]
 // };
-
-const BRIDGE_PAGE_ROUTE = {
-  label: "Bridge",
-  path: BRIDGE_PATH,
-  network: [],
-  category: []
-};
 
 const GASFI_PAGE_ROUTE = {
   label: "GAS-Fi",

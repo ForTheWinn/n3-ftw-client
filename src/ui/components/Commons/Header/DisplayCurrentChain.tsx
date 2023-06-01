@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useApp } from "../../../../common/hooks/use-app";
 import Modal from "../../Modal";
 import { CHAINS, CONFIGS, LIST } from "../../../../consts/chains";
+import { network } from "../../../../packages/neo";
 
 const DisplayCurrentChain = () => {
   const [isActive, setActive] = useState(false);
-  const { chain, switchChain } = useApp();
+  const { chain, network, switchChain } = useApp();
   const onActive = () => setActive(!isActive);
   const handleSwitch = async (v: CHAINS) => {
     switchChain(v);
@@ -21,8 +22,8 @@ const DisplayCurrentChain = () => {
         <img alt="Forthewin Logo" src={"/logo/FTW_512_512.svg"} width="30px" />
         <img
           width="30px"
-          src={CONFIGS[chain].icon}
-          alt={`${CONFIGS[chain].label} icon`}
+          src={CONFIGS[network][chain].icon}
+          alt={`${CONFIGS[network][chain].label} icon`}
         />
       </button>
       {isActive && (
@@ -37,10 +38,10 @@ const DisplayCurrentChain = () => {
                 return (
                   <div key={`chain${v}`} className="dropdown-item">
                     <button
-                      className={`button is-fullwidth is-small is-rounded is-${CONFIGS[v].color}`}
+                      className={`button is-fullwidth is-small is-rounded is-${CONFIGS[network][v].color}`}
                       onClick={() => handleSwitch(v as CHAINS)}
                     >
-                      Switch to {CONFIGS[v].label}
+                      Switch to {CONFIGS[network][v].label}
                     </button>
                   </div>
                 );

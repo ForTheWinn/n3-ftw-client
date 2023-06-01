@@ -41,7 +41,7 @@ const StakingMain = () => {
           <div className="level-left">
             <div className="level-item">
               <Space>
-                <Avatar src={CONFIGS[chain].icon} />
+                <Avatar src={CONFIGS[network][chain].icon} />
                 <h1 className="title is-5 is-marginless">Farm</h1>
               </Space>
             </div>

@@ -318,18 +318,6 @@ export const SwapContextProvider = (props: {
     }
   }
 
-
-  // if (tokenA && tokenB && reserves) {
-  //   noLiquidity = reserves.shares === "0";
-  //   if (amountA && amountB) {
-  //     priceImpact =
-  //       (parseFloat(amountB) /
-  //         parseFloat(
-  //           ethers.utils.formatUnits(reserves.reserveB, tokenB.decimals)
-  //         )) *
-  //       100;
-  //   }
-  // }
   const contextValue = {
     chain,
     network,

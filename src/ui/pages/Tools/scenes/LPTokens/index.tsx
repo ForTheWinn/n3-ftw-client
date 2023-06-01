@@ -47,7 +47,7 @@ const LPTokens = () => {
         <div className="column is-half">
           <div className="box is-shadowless">
             <Space>
-              <Avatar src={CONFIGS[chain].icon} />
+              <Avatar src={CONFIGS[network][chain].icon} />
               <div>
                 <h1 className="title is-5">LP Value Finder</h1>
                 <p className="subtitle is-7">

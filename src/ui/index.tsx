@@ -4,7 +4,7 @@ import { polygon, polygonMumbai } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { publicProvider } from "wagmi/providers/public";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { NeoWalletProvider } from "../common/hooks/use-neo-wallets";
 import { AppContextProvider } from "../common/hooks/use-app";

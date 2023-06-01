@@ -61,6 +61,7 @@ const SwapMain = () => {
     <>
       <SwapNav
         chain={chain}
+        network={network}
         search={
           tokenA && tokenB
             ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`

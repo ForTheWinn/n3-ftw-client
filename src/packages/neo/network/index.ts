@@ -25,7 +25,10 @@ export class Network {
     return new rpc.RPCClient(config.url);
   };
 
-  static getRawTx = async (txid: string, networkType: INetworkType) => {
+  static getRawTx = async (
+    txid: string,
+    networkType: INetworkType
+  ): Promise<ApplicationLogJson> => {
     let config;
     switch (networkType) {
       case TESTNET:

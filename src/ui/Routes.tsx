@@ -19,7 +19,7 @@ const Routes = () => {
               path={route.path}
               exact={route.exact}
               component={() => {
-                if (!_chain) return <NoChainSupport chain={chain} />;
+                if (!_chain) return <NoChainSupport chain={chain} network={network} />;
                 if (!_chain.includes(network))
                   return <NoNetworkSupport chain={chain} network={network} />;
                 return <route.component />;

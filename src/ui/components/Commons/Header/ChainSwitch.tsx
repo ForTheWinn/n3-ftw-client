@@ -6,7 +6,7 @@ import { CHAINS, CONFIGS, LIST } from "../../../../consts/chains";
 
 const ChainSwitch = () => {
   const [isActive, setActive] = useState(false);
-  const { chain, switchChain } = useApp();
+  const { chain, network, switchChain } = useApp();
   const onActive = () => setActive(!isActive);
   const handleSwitch = async (v: CHAINS) => {
     switchChain(v);
@@ -17,10 +17,10 @@ const ChainSwitch = () => {
       <div className="dropdown-trigger">
         <button
           onClick={onActive}
-          className={`button is-small is-rounded is-${CONFIGS[chain].color}`}
+          className={`button is-small is-rounded is-${CONFIGS[network][chain].color}`}
           aria-controls="dropdown-wallet"
         >
-          {CONFIGS[chain].label}
+          {CONFIGS[network][chain].label}
         </button>
       </div>
       <div className="dropdown-menu" id="dropdown-wallet" role="menu">
@@ -32,16 +32,16 @@ const ChainSwitch = () => {
             return (
               <div key={`chain${v}`} className="dropdown-item">
                 <button
-                  className={`button is-fullwidth is-small is-${CONFIGS[v].color}`}
+                  className={`button is-fullwidth is-small is-${CONFIGS[network][v].color}`}
                   onClick={() => handleSwitch(v as CHAINS)}
                 >
                   <Space>
                     <Avatar
                       style={{ background: "white" }}
                       size="small"
-                      src={CONFIGS[v].icon}
+                      src={CONFIGS[network][v].icon}
                     />
-                    <span>{CONFIGS[v].label}</span>
+                    <span>{CONFIGS[network][v].label}</span>
                   </Space>
                 </button>
               </div>

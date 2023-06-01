@@ -64,8 +64,6 @@ const NEP11InfoPage = () => {
   };
 
   const onClickMint = () => {
-    console.log(connectedWallet?.account);
-    console.log(data)
     if (connectedWallet) {
       if (connectedWallet.account.address === data.owner) {
         setMintModalActive(contractHash);

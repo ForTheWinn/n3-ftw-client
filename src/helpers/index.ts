@@ -34,6 +34,25 @@ export const getExploler = (chain: string, network: INetworkType): string => {
   }
 };
 
+export const getExplolerForWallet = (chain: string, network: INetworkType): string => {
+  switch (chain) {
+    case NEO_CHAIN:
+      if (network === MAINNET) {
+        return "https://explorer.onegate.space/accountprofile";
+      } else {
+        return "https://testmagnet.explorer.onegate.space/accountprofile";
+      }
+    case POLYGON_CHAIN:
+      if (network === MAINNET) {
+        return "https://polygonscan.com/address";
+      } else {
+        return "https://mumbai.polygonscan.com/address";
+      }
+    default:
+      return "";
+  }
+};
+
 export const getExplolerForContract = (chain: string, network: INetworkType): string => {
   switch (chain) {
     case NEO_CHAIN:

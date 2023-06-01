@@ -12,7 +12,7 @@ interface IChainRoutingProps {
   chain: CHAINS;
 }
 const NoNetworkSupport = ({ chain, network }: IChainRoutingProps) => {
-  const config = CONFIGS[chain];
+  const config = CONFIGS[network][chain];
   return (
     <PageLayout>
       <Card>

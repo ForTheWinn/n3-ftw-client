@@ -6,7 +6,6 @@ import {
   ISwapReserves,
   IUserTokenBalances
 } from "../../../../../common/routers/swap/interfaces";
-import { ethers } from "ethers";
 import SwapErrors from "./components/SwapErrors";
 import InputDivider from "../../components/InputDivider";
 
@@ -48,40 +47,6 @@ const SwapInputs = ({
   onAssetChange
 }: ISwapInputsProps) => {
   const errors: string[] = [];
-
-  // const amountAOverflow = !!(
-  //   swapInput &&
-  //   swapInput.type === "A" &&
-  //   amountA &&
-  //   balances &&
-  //   amountA > parseFloat(balances.amountA)
-  // );
-
-  // const amountBOverflow = !!(
-  //   swapInput &&
-  //   swapInput.type === "B" &&
-  //   amountB &&
-  //   balances &&
-  //   amountB > parseFloat(balances.amountB)
-  // );
-
-  // const isExcessReserveB =
-  //   swapInput &&
-  //   swapInput.type === "B" &&
-  //   amountB &&
-  //   reserves &&
-  //   tokenB &&
-  //   ethers.BigNumber.from(reserves.reserveB).gte(
-  //     ethers.utils.parseUnits(amountB.toString(), tokenB.decimals)
-  //   );
-
-  // if (amountAOverflow) {
-  //   inputAErrors.push("You entered more than your balances");
-  // }
-
-  // if (amountBOverflow) {
-  //   inputBErrors.push("You entered more than your balances");
-  // }
   if (hasReservesError) {
     errors.push("Failed to fetch reserves");
   }
@@ -94,9 +59,6 @@ const SwapInputs = ({
     errors.push("Check price impact");
   }
 
-  // if (isExcessReserveB) {
-  //   errors.push("Excessed pool reserve amount");
-  // }
   return (
     <>
       <div className="box is-shadowless is-marginless">
