@@ -27,15 +27,15 @@ export const waitTransactionUntilSubmmited = async (
   }
 };
 
-export const getPrices = async (
-  chain: CHAINS
-): Promise<IPrices | undefined> => {
-  switch (chain) {
-    case NEO_CHAIN:
-      return new RestAPI(MAINNET).getPrices();
-    case POLYGON_CHAIN:
-      return undefined;
-  }
+export const getPrices = async (chain: CHAINS): Promise<IPrices> => {
+  return new RestAPI(MAINNET).getPrices();
+
+  // switch (chain) {
+  //   case NEO_CHAIN:
+  //     return new RestAPI(MAINNET).getPrices();
+  //   // case POLYGON_CHAIN:
+  //   //   return undefined;
+  // }
 };
 
 export const fetchTokenInfo = async (

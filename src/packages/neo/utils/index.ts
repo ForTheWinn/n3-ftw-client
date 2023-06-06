@@ -158,6 +158,7 @@ const hash160List = [
   "neoTokenAddress",
   "evmTokenAddress",
   "evmReceiver",
+  "evmSender"
 ];
 const dateList = ["createdAt", "1_createdAt", "2_createdAt", "3_createdAt"];
 const intList = [

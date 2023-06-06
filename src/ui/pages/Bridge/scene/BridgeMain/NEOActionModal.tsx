@@ -13,15 +13,15 @@ import Modal from "../../../../components/Modal";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
-import { BRIDGE_CONTRACTS } from "../../../../../packages/neo/contracts/ftw/bridge/consts";
+// import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
 import { getExplolerForWallet } from "../../../../../helpers";
 import { getIsMinted } from "../../../../../packages/polygon/contracts/bridge";
+import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
 
 interface IActionModalProps {
   chain: CHAINS;
   destChain: IBridgeChain;
   network: INetworkType;
-  address: string;
   token: IBridgeSelectedtoken;
   amount: string;
   receiver: IBridgeReceiver;
@@ -33,7 +33,6 @@ interface IActionModalProps {
 const ActionModal = ({
   token,
   amount,
-  address,
   chain,
   destChain,
   receiver,
@@ -80,7 +79,7 @@ const ActionModal = ({
           connectedNeoWallet,
           originBridgeContractHash,
           network,
-          token.originHash,
+          token.hash,
           receiver.address,
           parsedAmount
         );

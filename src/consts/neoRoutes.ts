@@ -20,7 +20,7 @@ import LPTokens from "../ui/pages/Tools/scenes/LPTokens";
 import ToolsMain from "../ui/pages/Tools/scenes/Main";
 import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
 import { MAINNET, TESTNET } from "./global";
-
+import FNEO from "../ui/pages/FNEO";
 
 /* 
   Global
@@ -86,6 +86,10 @@ export const GASFI_MY_STAKING_PATH = "/gas-fi/staking";
 */
 export const BRIDGE_PATH = "/bridge";
 export const BRIDGE_TRANSFERS_PATH = "/bridge/history";
+/* 
+  FNEO
+*/
+export const FNEO_PATH = "/ftwNeo";
 /* 
   Analytics
 */
@@ -335,6 +339,21 @@ const BRIDGE_PAGE_ROUTE = {
 };
 
 /*
+  ftwNEO
+*/
+
+const FNEO_PAGE_ROUTE = {
+  label: "ftwNEO",
+  path: FNEO_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET],
+    [POLYGON_CHAIN]: [TESTNET]
+  },
+  category: [],
+  component: FNEO
+};
+
+/*
   Event routes
 */
 const EVENT_PAGE_ROUTE = {
@@ -409,6 +428,7 @@ export const ROUTES = [
   TOOLS_PAGE_ROUTE,
   NFT_ROUTE,
   BRIDGE_PAGE_ROUTE,
+  FNEO_PAGE_ROUTE,
   EVENT_PAGE_ROUTE,
   // Route only, No menu in display
   LP_FINDER_PAGE_ROUTE,

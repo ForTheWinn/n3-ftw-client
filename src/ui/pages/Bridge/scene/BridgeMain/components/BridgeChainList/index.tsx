@@ -3,7 +3,7 @@ import React from "react";
 import { Avatar, Modal, Space } from "antd";
 
 import { INetworkType } from "../../../../../../../packages/neo/network";
-import { BRIDGE_CHAIN_LIST } from "../../../../../../../packages/neo/contracts/ftw/bridge/consts";
+import { BRIDGE_CHAIN_LIST } from "../../../../../../../consts/bridge";
 import { IBridgeChain } from "../../../../../../../common/routers/bridge/interfaces";
 
 interface IAssetListModalProps {
@@ -20,7 +20,7 @@ const BridgeChainList = ({
   network
 }: IAssetListModalProps) => {
   const chainList = BRIDGE_CHAIN_LIST(network).filter((chain) => {
-    if (chain === selectedChain) return false;
+    if (chain.chainId === selectedChain?.chainId) return false;
     if (chain.chains.length === 0) return false;
     return true;
   });
@@ -32,7 +32,6 @@ const BridgeChainList = ({
         centered
         open={true}
         onCancel={onClose}
-        // footer={null}
         bodyStyle={{ padding: "-10px" }}
         footer={
           <nav

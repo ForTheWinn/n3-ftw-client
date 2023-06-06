@@ -24,28 +24,34 @@ import {
 
 import { MAINNET } from "../../../consts/global";
 
-const BNEO_TOKEN = {
+export const NEP_MAINNET_DETAIL = {
   hash: NEP_SCRIPT_HASH[MAINNET],
   symbol: "NEP",
   icon: "/symbols/nep.png",
-  decimals: 8,
-  pairs: [
-    BNEO_SCRIPT_HASH[MAINNET],
-    GAS_SCRIPT_HASH,
-    FWBTC_SCRIPT_HASH,
-    FWETH_SCRIPT_HASH,
-    USDT_SCRIPT_HASH,
-    TTM_SCRIPT_HASH
-  ]
+  decimals: 8
+};
+
+export const BNEO_MAINNET_DETAIL = {
+  hash: BNEO_SCRIPT_HASH[MAINNET],
+  symbol: "bNEO",
+  icon: "/symbols/bneo.jpeg",
+  decimals: 8
 };
 
 export const MAINNET_TOKEN_LIST = {
-  [NEP_SCRIPT_HASH[MAINNET]]: BNEO_TOKEN,
+  [NEP_SCRIPT_HASH[MAINNET]]: {
+    ...NEP_MAINNET_DETAIL,
+    pairs: [
+      BNEO_SCRIPT_HASH[MAINNET],
+      GAS_SCRIPT_HASH,
+      FWBTC_SCRIPT_HASH,
+      FWETH_SCRIPT_HASH,
+      USDT_SCRIPT_HASH,
+      TTM_SCRIPT_HASH
+    ]
+  },
   [BNEO_SCRIPT_HASH[MAINNET]]: {
-    hash: BNEO_SCRIPT_HASH[MAINNET],
-    symbol: "bNEO",
-    icon: "/symbols/bneo.jpeg",
-    decimals: 8,
+    ...BNEO_MAINNET_DETAIL,
     pairs: [
       GAS_SCRIPT_HASH,
       USDT_SCRIPT_HASH,

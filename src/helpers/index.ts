@@ -34,7 +34,10 @@ export const getExploler = (chain: string, network: INetworkType): string => {
   }
 };
 
-export const getExplolerForWallet = (chain: string, network: INetworkType): string => {
+export const getExplolerForWallet = (
+  chain: string,
+  network: INetworkType
+): string => {
   switch (chain) {
     case NEO_CHAIN:
       if (network === MAINNET) {
@@ -53,7 +56,10 @@ export const getExplolerForWallet = (chain: string, network: INetworkType): stri
   }
 };
 
-export const getExplolerForContract = (chain: string, network: INetworkType): string => {
+export const getExplolerForContract = (
+  chain: string,
+  network: INetworkType
+): string => {
   switch (chain) {
     case NEO_CHAIN:
       if (network === MAINNET) {
@@ -67,6 +73,40 @@ export const getExplolerForContract = (chain: string, network: INetworkType): st
       } else {
         return "https://mumbai.polygonscan.com/token";
       }
+    default:
+      return "";
+  }
+};
+
+export const getExplolerForContractByChainId = (
+  chainId: number,
+): string => {
+  switch (chainId) {
+    case 888:
+      return "https://explorer.onegate.space/contractinfo";
+    case 889:
+      return "https://testmagnet.explorer.onegate.space/contractinfo";
+    case 137:
+      return "https://polygonscan.com/token";
+    case 80001:
+      return "https://mumbai.polygonscan.com/token";
+
+    default:
+      return "";
+  }
+};
+
+export const getExplolerForTxByChainId = (chainId: number): string => {
+  switch (chainId) {
+    case 888:
+      return "https://explorer.onegate.space/transactionInfo";
+    case 889:
+      return "https://testmagnet.explorer.onegate.space/transactionInfo";
+    case 137:
+      return "https://polygonscan.com/tx";
+    case 80001:
+      return "https://mumbai.polygonscan.com/tx";
+
     default:
       return "";
   }

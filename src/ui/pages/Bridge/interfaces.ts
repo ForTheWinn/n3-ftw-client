@@ -1,9 +1,11 @@
+import { ITokenState } from "../Swap/scenes/Swap/interfaces";
+
 export interface IBridgeSelectedtoken {
-  originHash: string;
-  destHash: string;
+  hash: string;
   symbol: string;
   icon: string;
   decimals: number;
+  destToken: ITokenState;
 }
 
 export interface IBridgeReceiver {

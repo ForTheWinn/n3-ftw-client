@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useParams } from "react-router-dom";
-import { BRIDGE_CHAINS, BRIDGE_CONTRACTS } from "../../../../../packages/neo/contracts/ftw/bridge/consts";
+import { BRIDGE_CHAINS, BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
 import { TESTNET } from "../../../../../consts/global";
 import { Tabs } from "antd";
 import BridgeHistoryIn from "../BridgeHistoryIn";

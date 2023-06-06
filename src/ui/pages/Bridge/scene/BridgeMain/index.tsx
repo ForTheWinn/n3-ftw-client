@@ -10,6 +10,7 @@ import EVMActionModal from "./EVMActionModal";
 import Level from "../../../../components/Level";
 import { Link } from "react-router-dom";
 import WalletInput from "./WalletInput";
+import BridgeDetails from "./BridgeDetails";
 
 const BridgeSwap = () => {
   const {
@@ -84,6 +85,17 @@ const BridgeSwap = () => {
           />
         )}
 
+        {originChain &&
+          destChain &&
+          token &&(
+            <BridgeDetails
+              originChain={originChain}
+              destChain={destChain}
+              network={network}
+              token={token}
+            />
+          )}
+
         <SwapButton
           label={"Bridge"}
           isLoading={false}
@@ -110,7 +122,6 @@ const BridgeSwap = () => {
                 token={token}
                 amount={amount}
                 receiver={receiver}
-                address={connectedAddress}
                 connectedNeoWallet={connectedNeoWallet}
                 onSuccess={onAfterBridgeCompleted}
                 onCancel={() => setActionModalActive(false)}

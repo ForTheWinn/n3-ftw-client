@@ -5,7 +5,7 @@ import { Avatar, Modal, Space } from "antd";
 
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { CHAINS } from "../../../../../../../consts/chains";
-import { BRIDGE_SUPPORTED_TOKENS } from "../../../../../../../packages/neo/contracts/ftw/bridge/consts";
+import { BRIDGE_SUPPORTED_TOKEN_LIST } from "../../../../../../../consts/bridge";
 import { IBridgeSelectedtoken } from "../../../../interfaces";
 import { IBridgeChain } from "../../../../../../../common/routers/bridge/interfaces";
 
@@ -25,18 +25,20 @@ const TokenList = ({
   originChain,
   destChain
 }: IAssetListModalProps) => {
-  const tokenList: any[] = [];
-  BRIDGE_SUPPORTED_TOKENS[network].forEach((t) => {
-    if (t.addresses[originChain.chainId] && t.addresses[destChain.chainId]) {
+  const tokenList: IBridgeSelectedtoken[] = [];
+  BRIDGE_SUPPORTED_TOKEN_LIST[network][originChain.chainId].forEach((t) => {
+    if (t.pairs[destChain.chainId]) {
       tokenList.push({
         symbol: t.symbol,
         decimals: t.decimals,
         icon: t.icon,
-        originHash: t.addresses[originChain.chainId],
-        destHash: t.addresses[destChain.chainId]
+        hash: t.hash,
+        destToken: t.pairs[destChain.chainId]
       });
     }
   });
+
+  console.log(tokenList);
 
   return (
     <>

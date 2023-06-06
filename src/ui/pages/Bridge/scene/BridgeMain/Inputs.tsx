@@ -1,13 +1,14 @@
 import React from "react";
-import {  FaSyncAlt } from "react-icons/fa";
+import { FaSyncAlt } from "react-icons/fa";
 import InputDivider from "../../../Swap/components/InputDivider";
 import Input from "../../../Swap/components/Input";
 import {
   ISwapInputState,
-  ITokenState
 } from "../../../Swap/scenes/Swap/interfaces";
 import NumberFormat from "react-number-format";
 import { IBridgeSelectedtoken } from "../../interfaces";
+import { Avatar } from "antd";
+import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 
 interface ILPInputsProps {
   token?: IBridgeSelectedtoken;
@@ -74,31 +75,28 @@ const BridgeInputs = ({
               </div>
             </div>
 
-            {/* <div className="column is-narrow"> */}
-            <div>
-              {/* {token ? (
-                <button
-                  onClick={() => {
-                    onAssetChange("B");
-                  }}
-                  className={`button is-small is-rounded ${
-                    tokenB ? "is-light" : "is-light"
-                  }`}
-                >
-                  <Avatar
-                    className="icon is-small"
-                    size="small"
-                    src={tokenB.icon ? tokenB.icon : UNKNOWN_TOKEN_IMAGE}
-                  />
-                  <span className="has-text-weight-semibold">
-                    {tokenB.symbol}
-                  </span>
-                </button>
-              ) : (
-                <></>
-              )} */}
+            <div className="column is-narrow">
+              <div>
+                {token ? (
+                  <button className={`button is-small is-rounded is-static`}>
+                    <Avatar
+                      className="icon is-small"
+                      size="small"
+                      src={
+                        token.destToken.icon
+                          ? token.destToken.icon
+                          : UNKNOWN_TOKEN_IMAGE
+                      }
+                    />
+                    <span className="has-text-weight-semibold">
+                      {token.destToken.symbol}
+                    </span>
+                  </button>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
-            {/* </div> */}
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import {
   erc20ABI,
   prepareWriteContract,
   writeContract,
-  waitForTransaction,
+  waitForTransaction
 } from "@wagmi/core";
 import { Steps } from "antd";
 
@@ -16,13 +16,14 @@ import { IBridgeReceiver, IBridgeSelectedtoken } from "../../interfaces";
 import Modal from "../../../../components/Modal";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
-import { BRIDGE_CONTRACTS } from "../../../../../packages/neo/contracts/ftw/bridge/consts";
+import { BRIDGE_CONTRACTS, BRIDGE_NEP_FEE } from "../../../../../consts/bridge";
 import { getExplolerForWallet } from "../../../../../helpers";
 import {
   burn,
   getMintoNoFromLogs
 } from "../../../../../packages/polygon/contracts/bridge";
 import { wallet } from "@cityofzion/neon-core";
+import { NEP_SCRIPT_HASHES } from "../../../../../packages/polygon/consts";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -53,6 +54,10 @@ const ActionModal = ({
   const [isTokenApproving, setTokenApproving] = useState(false);
   const [hasTokenApproveError, setTokenApproveError] = useState(false);
 
+  const [isFeeTokenApproved, setFeeTokenApproved] = useState(false);
+  const [isFeeTokenApproving, setFeeTokenApproving] = useState(false);
+  const [hasFeeTokenApproveError, setFeeTokenApproveError] = useState(false);
+
   const [isLocking, setLocking] = useState(false);
   const [isLocked, setLocked] = useState(false);
   const [hasLockError, setLockError] = useState(false);
@@ -67,8 +72,11 @@ const ActionModal = ({
   if (isTokenApproved) {
     currentStep = 1;
   }
-  if (isLocked) {
+  if (isFeeTokenApproved) {
     currentStep = 2;
+  }
+  if (isLocked) {
+    currentStep = 3;
   }
 
   useEffect(() => {
@@ -83,13 +91,15 @@ const ActionModal = ({
       const neoBirdgeContractHash =
         BRIDGE_CONTRACTS[network][destChain.chainId][originChain.chainId];
 
-      setTokenApproving(true);
+      const nepTokenContractHash = NEP_SCRIPT_HASHES[network];
+
       try {
+        setTokenApproving(true);
         const approvedAmount: any = await readContract({
-          address: token.originHash as any,
+          address: token.hash as any,
           abi: erc20ABI,
           functionName: "allowance",
-          args: [address as any, evmBridgeContractHash],
+          args: [address as any, evmBridgeContractHash as any],
           chainId
         });
         if (approvedAmount.gte(parsedAmount)) {
@@ -97,10 +107,10 @@ const ActionModal = ({
           setTokenApproving(false);
         } else {
           const script = await prepareWriteContract({
-            address: token.originHash as any,
+            address: token.hash as any,
             abi: erc20ABI,
             functionName: "approve",
-            args: [evmBridgeContractHash, ethers.constants.MaxUint256]
+            args: [evmBridgeContractHash as any, ethers.constants.MaxUint256]
           });
 
           const res = await writeContract(script);
@@ -112,13 +122,45 @@ const ActionModal = ({
         setTokenApproveError(true);
       }
 
+      try {
+        setFeeTokenApproving(true);
+        const approvedAmount: any = await readContract({
+          address: nepTokenContractHash as any,
+          abi: erc20ABI,
+          functionName: "allowance",
+          args: [address as any, evmBridgeContractHash as any],
+          chainId
+        });
+        console.log(approvedAmount.toString());
+        if (approvedAmount.gte(BRIDGE_NEP_FEE[network])) {
+          setFeeTokenApproved(true);
+          setFeeTokenApproving(false);
+        } else {
+          const script = await prepareWriteContract({
+            address: nepTokenContractHash as any,
+            abi: erc20ABI,
+            functionName: "approve",
+            args: [evmBridgeContractHash as any, ethers.constants.MaxUint256]
+          });
+
+          const res = await writeContract(script);
+          await res.wait();
+          setFeeTokenApproved(true);
+          setFeeTokenApproving(false);
+        }
+      } catch (e) {
+        console.error(e);
+        setFeeTokenApproving(false);
+        setFeeTokenApproveError(true);
+      }
+
       let burnNo;
       try {
         setLocking(true);
         const burnScript = await burn(
           chainId,
           evmBridgeContractHash,
-          token.originHash,
+          token.hash,
           wallet.getScriptHashFromAddress(receiver.address),
           parsedAmount
         );
@@ -172,9 +214,31 @@ const ActionModal = ({
                 title: "Token approval",
                 description: (
                   <>
-                    {isTokenApproving ? <LoadingWithText title="Approving" /> : <></>}
+                    {isTokenApproving ? (
+                      <LoadingWithText title="Approving" />
+                    ) : (
+                      <></>
+                    )}
                     {isTokenApproved ? "Approved" : ""}
                     {hasTokenApproveError ? (
+                      <span className="has-text-danger">Error</span>
+                    ) : (
+                      ""
+                    )}
+                  </>
+                )
+              },
+              {
+                title: "Fee token approval",
+                description: (
+                  <>
+                    {isFeeTokenApproving ? (
+                      <LoadingWithText title="Approving" />
+                    ) : (
+                      <></>
+                    )}
+                    {isFeeTokenApproved ? "Approved" : ""}
+                    {hasFeeTokenApproveError ? (
                       <span className="has-text-danger">Error</span>
                     ) : (
                       ""
@@ -210,24 +274,6 @@ const ActionModal = ({
                   </>
                 )
               }
-              // {
-              //   title: "Action",
-              //   description: (
-              //     <>
-              //       {isSwapping ? (
-              //         <LoadingWithText title="Submitting" />
-              //       ) : (
-              //         <></>
-              //       )}
-              //       {isSwapDone ? "Finished" : ""}
-              //       {hasSwappingError ? (
-              //         <span className="has-text-danger">Error</span>
-              //       ) : (
-              //         ""
-              //       )}
-              //     </>
-              //   )
-              // }
             ]}
           />
         </div>

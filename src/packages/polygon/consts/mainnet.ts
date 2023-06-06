@@ -2,8 +2,10 @@
 // export const SWAP_CONTRACT_HASH = "0xce432034f30ed0012d54af92fb958ab7662d0c85";
 export const SWAP_CONTRACT_HASH = "0x67dee0d471d516221ef107c0d7ab6ce538cbc4ec";
 export const FARM_CONTRACT_HASH = "";
+export const BRIDGE_CONTRACT_HASH = "";
 
 // tokens
+export const FNEO_CONTRACT_HASH = "";
 export const NEP_CONTRACT_HASH = "0xf7102573e4ea1779cf4f006401bdd07c454bcca4";
 export const USDT_CONTRACT_HASH = "0xc2132d05d31c914a87c6611c10748aeb04b58e8f";
 export const WMATIC_CONTRACT_HASH =

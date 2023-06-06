@@ -9,7 +9,7 @@ import TokenList from "./components/TokenList";
 import { toast } from "react-hot-toast";
 import { IBridgeReceiver, IBridgeSelectedtoken } from "../../interfaces";
 import { globalRouter } from "../../../../../common/routers";
-import { BRIDGE_CHAINS } from "../../../../../packages/neo/contracts/ftw/bridge/consts";
+import { BRIDGE_CHAINS } from "../../../../../consts/bridge";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 
@@ -122,7 +122,7 @@ export const SwapContextProvider = (props: { children: any }) => {
       }
     };
     if (token && connectedAddress) {
-      loadBalance(token.originHash, connectedAddress);
+      loadBalance(token.hash, connectedAddress);
     }
   }, [token, connectedAddress, refreshCount]);
 

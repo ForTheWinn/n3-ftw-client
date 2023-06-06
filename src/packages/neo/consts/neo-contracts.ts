@@ -1,5 +1,5 @@
 import { CONST as NEON_CONST } from "@cityofzion/neon-core";
-import { FARM, MAINNET, SWAP, TESTNET } from "../../../consts/global";
+import { MAINNET, TESTNET } from "../../../consts/global";
 
 /* Contract hashes */
 export const GAS_SCRIPT_HASH = `0x${NEON_CONST.NATIVE_CONTRACT_HASH.GasToken}`;
