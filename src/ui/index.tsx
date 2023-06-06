@@ -19,12 +19,12 @@ import { TESTNET } from "../consts/global";
 const { chains, provider, webSocketProvider } = configureChains(
   [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygon],
   [
-    alchemyProvider({
-      apiKey: process.env.REACT_APP_ALCHEMY_API_KEY
-        ? process.env.REACT_APP_ALCHEMY_API_KEY
-        : "",
-      priority: 0
-    }),
+    // alchemyProvider({
+    //   apiKey: process.env.REACT_APP_ALCHEMY_API_KEY
+    //     ? process.env.REACT_APP_ALCHEMY_API_KEY
+    //     : "",
+    //   priority: 0
+    // }),
     publicProvider()
   ]
 );
