@@ -8,6 +8,7 @@ import {
   IBridgeMintPagenate
 } from "../../../../../common/routers/bridge/interfaces";
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc";
+import { NEP_SCRIPT_HASH } from "../../../consts/neo-contracts";
 
 export const bridgeMint = async (
   connectedWallet: IConnectedWallet,
@@ -45,7 +46,11 @@ export const bridgeMint = async (
       {
         account: senderHash,
         scopes: tx.WitnessScope.CustomContracts,
-        allowedContracts: [bridgeContractHash, neoTokenAddress]
+        allowedContracts: [
+          bridgeContractHash,
+          neoTokenAddress,
+          NEP_SCRIPT_HASH[network]
+        ]
       }
     ]
   };
