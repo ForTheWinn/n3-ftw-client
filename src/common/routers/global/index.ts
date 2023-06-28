@@ -1,10 +1,10 @@
 import { waitForTransaction, fetchToken } from "@wagmi/core";
-import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
+import { CHAINS } from "../../../consts/chains";
 import { INetworkType, Network } from "../../../packages/neo/network";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import { IPrices } from "../../../packages/neo/api/interfaces";
 import { RestAPI } from "../../../packages/neo/api";
-import { MAINNET } from "../../../consts/global";
+import { MAINNET, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 import { base64ToString } from "../../../packages/neo/utils";
 import { WENT_WRONG } from "../../../consts/messages";
 import { SwapContract } from "../../../packages/neo/contracts/ftw/swap";

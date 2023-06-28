@@ -14,7 +14,7 @@ import { wallet } from "@cityofzion/neon-core";
 import { SmithContract } from "../../../../packages/neo/contracts/ftw/smith";
 import { LOCKER_NEP_FEE } from "../../../../packages/neo/contracts/ftw/locker/consts";
 import { useApp } from "../../../../common/hooks/use-app";
-import { LOCKER_USER_PATH } from "../../../../consts/neoRoutes";
+import { LOCKER_USER_PATH } from "../../../../consts/routes";
 import { ITokenState } from "../../Swap/scenes/Swap/interfaces";
 
 const Create = () => {

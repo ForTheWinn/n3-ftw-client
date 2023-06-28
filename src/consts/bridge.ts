@@ -1,8 +1,5 @@
-import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
-import { BRIDGE, MAINNET, TESTNET } from "./global";
-import {
-  CONTRACT_LIST,
-} from "../packages/polygon/consts";
+import { BRIDGE, MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "./global";
+import { CONTRACT_LIST } from "../packages/polygon/consts";
 
 import * as polygonTestnetConsts from "../packages/polygon/consts/testnet";
 import * as neoTestnetConsts from "../packages/neo/consts/testnet-token-list";
@@ -14,7 +11,6 @@ import { MAINNET_CONFIG, TESTNET_CONFIG } from "../packages/neo/consts";
 // } from "../packages/neo/consts/neo-contracts";
 import { INetworkType } from "../packages/neo/network";
 import { BRIDGE_SCRIPT_HASH } from "../packages/neo/contracts/ftw/bridge/consts";
-
 
 export const BRIDGE_NEP_FEE = {
   [TESTNET]: 100,

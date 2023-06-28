@@ -5,7 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import LockerCard from "./LockerCard";
-import { NEO_ROUTES } from "../../../../consts";
+import { ROUTES } from "../../../../consts";
 import { useApp } from "../../../../common/hooks/use-app";
 import { SpinnerRoundFilled } from "spinners-react";
 import PageLayout from "../../../components/Commons/PageLayout";

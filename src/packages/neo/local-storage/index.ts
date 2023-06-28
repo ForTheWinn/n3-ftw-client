@@ -7,8 +7,8 @@ import {
   ETH_WALLET,
   NEO_WALLET
 } from "../../../ui/components/Commons/Wallets/consts";
-import { CHAINS, NEO_CHAIN } from "../../../consts/chains";
-import { MAINNET } from "../../../consts/global";
+import { CHAINS } from "../../../consts/chains";
+import { MAINNET, NEO_CHAIN } from "../../../consts/global";
 
 const CONNECTED_WALLET = "CONNECTED_WALLET";
 const TRANSACTIONS = "TRANSACTIONS";

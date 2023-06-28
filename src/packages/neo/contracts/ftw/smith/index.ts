@@ -298,7 +298,7 @@ export class SmithContract {
 
   getNEP17Records = async (
     page: number
-  ): Promise<ISmithNEP17RecordPaginate> => {
+  ) => {
     const records = {
       operation: "getNEP17List",
       scriptHash: this.contractHash,
@@ -317,12 +317,32 @@ export class SmithContract {
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
     }
-    return parseMapValue(res.stack[0] as any);
+    const parsedData = parseMapValue(res.stack[0] as any);
+
+    return {
+      ...parsedData,
+      items: parsedData.items.map((item) => {
+        let metadata;
+        if (item.manifest) {
+          metadata = JSON.parse(item.manifest);
+        }
+        return {
+          owner: item.owner,
+          contractHash: item.contractHash,
+          name: item.name,
+          symbol: item.symbol,
+          decimals: item.decimals,
+          totalSupply: item.totalSupply,
+          website: metadata?.website,
+          icon: metadata?.logo
+        };
+      })
+    };
   };
 
   getNEP11Records = async (
     page: number
-  ): Promise<ISmithNEP11RecordPaginate> => {
+  ) => {
     const records = {
       operation: "getNEP11List",
       scriptHash: this.contractHash,
@@ -342,7 +362,27 @@ export class SmithContract {
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
     }
-    return parseMapValue(res.stack[0] as any);
+    const parsedData = parseMapValue(res.stack[0] as any);
+
+    return {
+      ...parsedData,
+      items: parsedData.items.map((item) => {
+        let metadata;
+        if (item.manifest) {
+          metadata = JSON.parse(item.manifest);
+        }
+        return {
+          owner: item.owner,
+          contractHash: item.contractHash,
+          name: item.name,
+          symbol: item.symbol,
+          decimals: item.decimals,
+          totalSupply: item.totalSupply,
+          website: metadata?.website,
+          icon: metadata?.logo
+        };
+      })
+    };
   };
 
   getTokens = async (contract): Promise<string[]> => {
@@ -436,7 +476,7 @@ export class SmithContract {
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
     }
-    const parsed =  parseMapValue(res.stack[0] as any);
+    const parsed = parseMapValue(res.stack[0] as any);
     return parsed;
   };
 

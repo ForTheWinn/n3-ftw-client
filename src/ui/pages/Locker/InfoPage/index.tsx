@@ -6,7 +6,7 @@ import { FaKey, FaSearch } from "react-icons/fa";
 import {
   LOCKER_CREATE_PATH,
   LOCKER_USER_PATH
-} from "../../../../consts/neoRoutes";
+} from "../../../../consts/routes";
 const LockerInfoPage = ({ network }) => {
   return (
     <div>

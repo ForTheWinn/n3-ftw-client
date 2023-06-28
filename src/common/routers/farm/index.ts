@@ -1,4 +1,4 @@
-import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
+import { CHAINS } from "../../../consts/chains";
 import { writeContract } from "@wagmi/core";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 import { IClaimableRewards } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
@@ -19,7 +19,7 @@ import {
 import { IClaimable, IFarmPair } from "./interfaces";
 import { ISwapLPToken } from "../swap/interfaces";
 import { CONTRACT_LIST } from "../../../consts/contracts";
-import { FARM } from "../../../consts/global";
+import { FARM, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 
 export const getPoolList = (
   chain: CHAINS,

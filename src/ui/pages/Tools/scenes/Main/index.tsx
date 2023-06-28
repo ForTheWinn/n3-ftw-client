@@ -1,9 +1,9 @@
 import React from "react";
-import { TOOLS_PAGE_ROUTE } from "../../../../../consts/neoRoutes";
 import { Link } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import { Avatar } from "antd";
+import { TOOLS_PAGE_ROUTE } from "../../../../../consts/routes";
 
 const ToolsMain = () => {
   const { chain, network } = useApp();
@@ -25,7 +25,11 @@ const ToolsMain = () => {
                 <div className="media-left">
                   <Avatar
                     size={64}
-                    icon={typeof p.icon === "string" ? undefined : <p.icon color="black" background="white" />}
+                    icon={
+                      typeof p.icon === "string" ? undefined : (
+                        <p.icon color="black" background="white" />
+                      )
+                    }
                     src={typeof p.icon === "string" ? p.icon : undefined}
                   />
                 </div>

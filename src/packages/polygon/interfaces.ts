@@ -33,3 +33,12 @@ export interface AddLiquidityArgs {
   amountB: string;
   slippage: number;
 }
+
+export interface ISmithTokenInfo {
+  owner: string;
+  contractHash: string;
+  name: string;
+  symbol: string;
+  website?: string;
+  icon?: string;
+}

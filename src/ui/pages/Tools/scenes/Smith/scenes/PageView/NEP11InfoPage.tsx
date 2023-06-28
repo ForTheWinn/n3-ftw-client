@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
-import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
+import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
+import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import Tokens from "../NEP11/Tokens";
+import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
 import NEP11MintFormModal from "./NEP11MintFormModal";
 import { toast } from "react-hot-toast";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
-import Modal from "../../../../components/Modal";
-import PageLayout from "../../../../components/Commons/PageLayout";
-import NEP17UpdateFormModal from "./NEP17UpdateFormModal";
-import { handleError } from "../../../../../packages/neo/utils/errors";
-import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
-import { useApp } from "../../../../../common/hooks/use-app";
-import { SMITH_PATH_NEP11 } from "../../../../../consts/neoRoutes";
+import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
+import Modal from "../../../../../../components/Modal";
+import PageLayout from "../../../../../../components/Commons/PageLayout";
+import NEP17UpdateFormModal from "../../components/UpdateTokenMetadataModal";
+import { handleError } from "../../../../../../../packages/neo/utils/errors";
+import {
+  MAINNET,
+  UNKNOWN_TOKEN_IMAGE
+} from "../../../../../../../consts/global";
+import { useApp } from "../../../../../../../common/hooks/use-app";
+import { SMITH_PATH_NEP11 } from "../../../../../../../consts/routes";
 
 const NEP11InfoPage = () => {
   const params = useParams();
@@ -109,10 +111,7 @@ const NEP11InfoPage = () => {
       <PageLayout>
         <div className="columns ">
           <div className="column is-2">
-            <Link
-              to={SMITH_PATH_NEP11}
-              className="button mb-3 is-rounded"
-            >
+            <Link to={SMITH_PATH_NEP11} className="button mb-3 is-rounded">
               Back to Main
             </Link>
           </div>
@@ -194,7 +193,7 @@ const NEP11InfoPage = () => {
             </div>
             <div className="box is-shadowless">
               <h3 className="title is-5">Collection</h3>
-              <Tokens contractHash={contractHash} />
+              {/* <Tokens contractHash={contractHash} /> */}
             </div>
           </div>
           <div className="column is-2">
@@ -242,7 +241,7 @@ const NEP11InfoPage = () => {
         />
       )}
 
-      {isUpdateModalActive && (
+      {/* {isUpdateModalActive && (
         <NEP17UpdateFormModal
           manifest={manifest}
           onUpdate={onUpdate}
@@ -251,7 +250,7 @@ const NEP11InfoPage = () => {
             setUpdateModalActive(false);
           }}
         />
-      )}
+      )} */}
 
       {txid && (
         <Modal onClose={() => setTxid("")}>

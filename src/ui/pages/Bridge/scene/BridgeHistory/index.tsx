@@ -7,7 +7,7 @@ import { Tabs } from "antd";
 import BridgeHistoryIn from "../BridgeHistoryIn";
 import BridgeHistoryOut from "../BridgeHistoryOut";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
-import { BRIDGE_PATH } from "../../../../../consts/neoRoutes";
+import { BRIDGE_PATH } from "../../../../../consts/routes";
 
 const BridgeHistory = (props) => {
   const { network } = useApp();

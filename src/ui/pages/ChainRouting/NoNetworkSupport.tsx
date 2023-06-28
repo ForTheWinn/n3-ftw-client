@@ -4,7 +4,7 @@ import PageLayout from "../../components/Commons/PageLayout";
 import { CHAINS, CONFIGS } from "../../../consts/chains";
 import { Avatar, Card } from "antd";
 import { Link } from "react-router-dom";
-import { HOME_PATH } from "../../../consts/neoRoutes";
+import { HOME_PATH } from "../../../consts/routes";
 import { MAINNET } from "../../../consts/global";
 
 interface IChainRoutingProps {

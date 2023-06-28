@@ -8,8 +8,8 @@ import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { u } from "@cityofzion/neon-core";
-import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
+import { DAO_CHANNEL_PATH } from "../../../../../../consts/routes";
 
 const Edit = () => {
   const params = useParams();
@@ -48,7 +48,7 @@ const Edit = () => {
 
   const handleTxSuccess = () => {
     setTxid("");
-    history.push(`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`);
+    history.push(`${DAO_CHANNEL_PATH}/${contractHash}`);
   };
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const Edit = () => {
       <div className="columns  is-center">
         <div className="column is-half ">
           <Link
-            to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
+            to={`${DAO_CHANNEL_PATH}/${contractHash}`}
             className="button is-rounded is-small mb-3"
           >
             Back to list

@@ -9,7 +9,7 @@ import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { FARM_PATH } from "../../../../../consts/neoRoutes";
+import { FARM_PATH } from "../../../../../consts/routes";
 
 const MyPositions = ({ onRefresh }) => {
   const { network } = useApp();

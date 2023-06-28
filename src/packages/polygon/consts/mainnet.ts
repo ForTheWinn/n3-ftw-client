@@ -3,6 +3,7 @@
 export const SWAP_CONTRACT_HASH = "0x67dee0d471d516221ef107c0d7ab6ce538cbc4ec";
 export const FARM_CONTRACT_HASH = "";
 export const BRIDGE_CONTRACT_HASH = "";
+export const SMITH_CONTRACT_HASH = "";
 
 // tokens
 export const FNEO_CONTRACT_HASH = "";

@@ -6,7 +6,7 @@ import LPTokenList from "./LPTokenList";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { FARM_V2_PATH } from "../../../../../consts/neoRoutes";
+import { FARM_V2_PATH } from "../../../../../consts/routes";
 
 const Stake = () => {
   const { setTxid, chain, network } = useApp();
@@ -22,7 +22,7 @@ const Stake = () => {
       address,
       connectedWallet
     );
-    setTxid(txid);
+    setTxid(txid as string);
   };
 
   return (

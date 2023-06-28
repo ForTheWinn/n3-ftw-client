@@ -1,4 +1,7 @@
-import { FaAdjust, FaArrowUp } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa";
+
+import { MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "./global";
+
 import Analytics from "../ui/pages/Analytics";
 import BrandKit from "../ui/pages/BrandKit";
 import Consensus2023 from "../ui/pages/Events/Consensus";
@@ -12,14 +15,12 @@ import Boyz from "../ui/pages/NFTCollections/Boyz";
 import Fusion from "../ui/pages/NFTCollections/Fusion";
 import NFTCollectionMain from "../ui/pages/NFTCollections/Main";
 import Rune from "../ui/pages/NFTCollections/Rune";
-import Smith from "../ui/pages/Smith";
+import Smith from "../ui/pages/Tools/scenes/Smith";
 import Swap from "../ui/pages/Swap";
 import Tools from "../ui/pages/Tools";
 import Airdrop from "../ui/pages/Tools/scenes/Airdrop";
 import LPTokens from "../ui/pages/Tools/scenes/LPTokens";
 import ToolsMain from "../ui/pages/Tools/scenes/Main";
-import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
-import { MAINNET, TESTNET } from "./global";
 import FNEO from "../ui/pages/FNEO";
 
 /* 
@@ -31,11 +32,11 @@ export const BRAND_KIT_PATH = "/brand-kit";
   Smith
 */
 export const SMITH_PATH = "/smith";
-export const SMITH_CREATE_NEP17_PATH = "/smith/create/nep17";
-export const SMITH_CREATE_NEP11_PATH = "/smith/create/nep11";
-export const SMITH_CONTRACT_NEP17_PATH = "/smith/nep17/contract";
-export const SMITH_CONTRACT_NEP11_PATH = "/smith/nep11/contract";
-export const SMITH_PATH_NEP11 = "/smith/nep11";
+export const SMITH_PATH_NEP11 = "/smith/nft";
+export const SMITH_CREATE_NEP17_PATH = "/smith/create/token";
+export const SMITH_CREATE_NEP11_PATH = "/smith/create/nft";
+export const SMITH_CONTRACT_NEP17_PATH = "/smith/token/contract";
+export const SMITH_CONTRACT_NEP11_PATH = "/smith/nft/contract";
 /* 
   Swap
 */
@@ -213,7 +214,7 @@ export const RUNES_PAGE_ROUTE = {
 export const FUSION_PAGE_ROUTE = {
   label: "Fusion",
   icon: "/assets/fusion.png",
-  description: "NFT Game Collaboration between TOTHEMOON UNIVERSE and FTW.",
+  description: "NFT Game Collaboration between TOTHEMOON UNIVERSE and FTW",
   path: FUSION_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET]
@@ -273,7 +274,8 @@ const SMITH_PAGE_ROUTE = {
   description: "Launch your tokens without codes",
   path: SMITH_PATH,
   chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET]
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [POLYGON_CHAIN]: [TESTNET]
   },
   category: [],
   component: Smith
@@ -421,7 +423,7 @@ const BRAND_PAGE_ROUTE = {
   component: BrandKit
 };
 
-export const ROUTES = [
+export const ROUTE_LIST = [
   SWAP_PAGE_ROUTE,
   FARM_V2_PAGE_ROUTE,
   ANALYTICS_ROUTE,

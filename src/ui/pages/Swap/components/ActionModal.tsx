@@ -4,7 +4,7 @@ import Modal from "../../../components/Modal";
 import { Steps } from "antd";
 import { ITokenState } from "../scenes/Swap/interfaces";
 import LoadingWithText from "../../../components/Commons/LoadingWithText";
-import { CHAINS, NEO_CHAIN } from "../../../../consts/chains";
+import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
 import { getExploler } from "../../../../helpers";
 import {
@@ -19,6 +19,7 @@ import { SwapContract } from "../../../../packages/neo/contracts";
 import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import { WENT_WRONG } from "../../../../consts/messages";
+import { NEO_CHAIN } from "../../../../consts/global";
 
 interface IActionModalProps {
   chain: CHAINS;

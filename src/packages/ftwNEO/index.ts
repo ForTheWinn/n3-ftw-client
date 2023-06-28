@@ -5,9 +5,8 @@ import {
   writeContract
 } from "@wagmi/core";
 import { getPrices } from "../../common/routers/global";
-import { NEO_CHAIN } from "../../consts/chains";
 import { BNEO_SCRIPT_HASH, NEP_SCRIPT_HASH } from "../neo/consts/neo-contracts";
-import { MAINNET, TESTNET } from "../../consts/global";
+import { MAINNET, NEO_CHAIN, TESTNET } from "../../consts/global";
 import { NEP_PER_BLOCK } from "./consts";
 import { ethers } from "ethers";
 import { IfNEODetail } from "./interfaces";

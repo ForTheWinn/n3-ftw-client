@@ -9,7 +9,7 @@ import {
 import { FaPlus } from "react-icons/fa";
 import LockerCard from "./LockerCard";
 import { useApp } from "../../../../common/hooks/use-app";
-import { LOCKER_CREATE_PATH } from "../../../../consts/neoRoutes";
+import { LOCKER_CREATE_PATH } from "../../../../consts/routes";
 
 const LockersByContract = () => {
   const { network } = useApp();

@@ -1,3 +1,3 @@
-import { NEO_ROUTES } from "../../../consts";
+import { TOURNAMENT_PATH } from "../../../consts/routes";
 
-export const ARENA_PATH = NEO_ROUTES.TOURNAMENT_PATH + "/:arenaNo";
+export const ARENA_PATH = TOURNAMENT_PATH + "/:arenaNo";

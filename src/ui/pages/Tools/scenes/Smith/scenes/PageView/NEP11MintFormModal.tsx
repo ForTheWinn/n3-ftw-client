@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Modal from "../../../../components/Modal";
+import Modal from "../../../../../../components/Modal";
 
 interface IActionModal {
   contractHash: string;
@@ -12,23 +12,23 @@ const NEP11MintFormModal = ({ onClose, onMint }: IActionModal) => {
     name: "",
     description: "",
     image: "",
-    attributes: {},
+    attributes: {}
   });
   const [attValues, setAttValues] = useState({
     key: "",
-    value: "",
+    value: ""
   });
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val,
+      [key]: val
     });
   };
 
   const handleAttChange = (key: string, val: string) => {
     setAttValues({
       ...attValues,
-      [key]: val,
+      [key]: val
     });
   };
 
@@ -39,11 +39,11 @@ const NEP11MintFormModal = ({ onClose, onMint }: IActionModal) => {
       attributes[attValues.key] = attValues.value;
       setValues({
         ...values,
-        attributes,
+        attributes
       });
       setAttValues({
         key: "",
-        value: "",
+        value: ""
       });
     }
   };

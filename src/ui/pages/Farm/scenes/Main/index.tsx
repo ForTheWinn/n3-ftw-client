@@ -5,7 +5,7 @@ import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm"
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { FARM_STAKE_POSITIONS_PATH } from "../../../../../consts/neoRoutes";
+import { FARM_STAKE_POSITIONS_PATH } from "../../../../../consts/routes";
 
 const StakingMain = () => {
   const { network } = useApp();

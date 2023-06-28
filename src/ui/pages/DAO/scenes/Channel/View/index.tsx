@@ -14,8 +14,8 @@ import VoteModal from "./components/VoteModal";
 import UserVotes from "./components/UserVotes";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
-import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
+import { DAO_CHANNEL_PATH } from "../../../../../../consts/routes";
 
 const ProposalView = () => {
   const params = useParams();
@@ -104,7 +104,7 @@ const ProposalView = () => {
     <div className="columns">
       <div className="column is-8 is-offset-2">
         <Link
-          to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
+          to={`${DAO_CHANNEL_PATH}/${contractHash}`}
           className="button is-rounded is-small mb-3"
         >
           Back to list

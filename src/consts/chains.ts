@@ -1,7 +1,4 @@
-import { MAINNET, TESTNET } from "./global";
-
-export const NEO_CHAIN = "NEO_CHAIN";
-export const POLYGON_CHAIN = "POLYGON_CHAIN";
+import { MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "./global";
 
 export type CHAINS = typeof NEO_CHAIN | typeof POLYGON_CHAIN;
 

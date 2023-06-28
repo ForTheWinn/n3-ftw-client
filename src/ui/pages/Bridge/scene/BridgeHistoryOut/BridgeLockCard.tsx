@@ -1,10 +1,10 @@
 import React from "react";
 import { TOKEN_LIST } from "../../../../../consts/tokens";
-import { NEO_CHAIN } from "../../../../../consts/chains";
 import TruncatedAddress from "../../../../components/TruncatedAddress";
 import { IBridgeBurn } from "../../../../../common/routers/bridge/interfaces";
 import { ethers } from "ethers";
 import { INetworkType } from "../../../../../packages/neo/network";
+import { NEO_CHAIN } from "../../../../../consts/global";
 interface IBridgeBurnCardProps {
   data: IBridgeBurn;
   network: INetworkType;

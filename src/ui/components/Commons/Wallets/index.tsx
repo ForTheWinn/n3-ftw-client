@@ -4,7 +4,7 @@ import { ETH_WALLET, NEO_WALLET } from "./consts";
 import ETHWallets from "./ETHWallets";
 import { LocalStorage } from "../../../../packages/neo/local-storage";
 import { useApp } from "../../../../common/hooks/use-app";
-import { NEO_CHAIN } from "../../../../consts/chains";
+import { NEO_CHAIN } from "../../../../consts/global";
 
 const Wallet = ({ isActive }: { isActive: boolean }) => {
   const { chain } = useApp();
@@ -23,7 +23,7 @@ const Wallet = ({ isActive }: { isActive: boolean }) => {
       setWalletType(ETH_WALLET);
     }
   }, [isActive]);
-  
+
   return (
     <div className="is-relative">
       <section>

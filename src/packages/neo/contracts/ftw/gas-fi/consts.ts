@@ -1,5 +1,4 @@
-import { GLOBAL } from "../../../../../consts";
-const { TESTNET, MAINNET } = GLOBAL;
+import { MAINNET, TESTNET } from "../../../../../consts/global";
 
 export const GASFI_SCRIPT_HASH = {
   [TESTNET]: "0x14c394c55f955baa92875d26f01f96710829ab91",

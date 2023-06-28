@@ -1,7 +1,7 @@
 import * as testnet from "./testnet";
 import * as mainnet from "./mainnet";
 
-import { MAINNET, TESTNET, SWAP, FARM, BRIDGE } from "../../../consts/global";
+import { MAINNET, TESTNET, SWAP, FARM, BRIDGE, SMITH } from "../../../consts/global";
 
 export const TOKEN_LIST = {
   [MAINNET]: mainnet.TOKEN_LIST,
@@ -12,12 +12,14 @@ export const CONTRACT_LIST = {
   [MAINNET]: {
     [SWAP]: mainnet.SWAP_CONTRACT_HASH,
     [FARM]: mainnet.FARM_CONTRACT_HASH,
-    [BRIDGE]: mainnet.BRIDGE_CONTRACT_HASH
+    [BRIDGE]: mainnet.BRIDGE_CONTRACT_HASH,
+    [SMITH]: mainnet.SMITH_CONTRACT_HASH
   },
   [TESTNET]: {
     [SWAP]: testnet.SWAP_CONTRACT_HASH,
     [FARM]: testnet.FARM_CONTRACT_HASH,
-    [BRIDGE]: testnet.BRIDGE_CONTRACT_HASH
+    [BRIDGE]: testnet.BRIDGE_CONTRACT_HASH,
+    [SMITH]: testnet.SMITH_CONTRACT_HASH
   }
 };
 

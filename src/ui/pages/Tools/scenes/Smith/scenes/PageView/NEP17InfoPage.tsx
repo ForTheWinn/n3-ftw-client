@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
-import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
+import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
+import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
 import { toast } from "react-hot-toast";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
-import NEP17UpdateFormModal from "./NEP17UpdateFormModal";
-import PageLayout from "../../../../components/Commons/PageLayout";
-import { handleError } from "../../../../../packages/neo/utils/errors";
-import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
-import { useApp } from "../../../../../common/hooks/use-app";
-import { SMITH_PATH } from "../../../../../consts/neoRoutes";
+import Modal from "../../../../../../components/Modal";
+import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
+import NEP17UpdateFormModal from "../../components/UpdateTokenMetadataModal";
+import PageLayout from "../../../../../../components/Commons/PageLayout";
+import { handleError } from "../../../../../../../packages/neo/utils/errors";
+import {
+  MAINNET,
+  UNKNOWN_TOKEN_IMAGE
+} from "../../../../../../../consts/global";
+import { useApp } from "../../../../../../../common/hooks/use-app";
+import { SMITH_PATH } from "../../../../../../../consts/routes";
 
 const NEP17InfoPage = () => {
   const params = useParams();
@@ -199,13 +202,13 @@ const NEP17InfoPage = () => {
         </div>
       </PageLayout>
 
-      {isUpdateModalActive && (
+      {/* {isUpdateModalActive && (
         <NEP17UpdateFormModal
           manifest={manifest}
           onUpdate={onUpdate}
           onClose={() => setUpdateModalActive(false)}
         />
-      )}
+      )} */}
 
       {txid && (
         <Modal onClose={() => setTxid("")}>

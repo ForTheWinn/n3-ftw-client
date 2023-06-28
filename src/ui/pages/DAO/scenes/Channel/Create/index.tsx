@@ -11,8 +11,8 @@ import moment from "moment";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { withDecimal } from "../../../../../../packages/neo/utils";
 import ChannelCard from "../../../components/ChannelCard";
-import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
+import { DAO_CHANNEL_PATH } from "../../../../../../consts/routes";
 
 const Create = () => {
   const params = useParams();
@@ -63,7 +63,7 @@ const Create = () => {
   };
 
   const onSuccess = () => {
-    history.push(`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`);
+    history.push(`${DAO_CHANNEL_PATH}/${contractHash}`);
   };
 
   const { data } = useOnChainData(() => {
@@ -83,7 +83,7 @@ const Create = () => {
     <div className="columns">
       <div className="column is-8 is-offset-2">
         <Link
-          to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
+          to={`${DAO_CHANNEL_PATH}/${contractHash}`}
           className="button is-rounded is-small mb-3"
         >
           Back to list

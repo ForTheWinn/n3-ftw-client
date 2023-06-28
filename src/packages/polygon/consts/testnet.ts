@@ -3,6 +3,7 @@ export const SWAP_CONTRACT_HASH = "0x7d421f7e8a635e0ccfc68e47de4df8571056ce21";
 export const FARM_CONTRACT_HASH = "0x3a63d435d20bc370a1e3e8f1da03fa2b85576b99";
 export const BRIDGE_CONTRACT_HASH =
   "0xE6Eea8610955eCD31edcdbB2DDCB2A937BDe419A";
+export const SMITH_CONTRACT_HASH = "0x322EA86f3A79bEc0Ee758d994b5d9150e96d5F1d";
 
 // tokens
 export const FNEO_CONTRACT_HASH = "0x55b93eC91127e227b9a62393aBE009CA0eaffCeB";
@@ -44,7 +45,7 @@ export const TOKEN_LIST = {
   },
   [NEP_CONTRACT_HASH]: {
     ...NEP_TESTNET_DETAIL
-  },
+  }
   // [DERC_CONTRACT_HASH]: {
   //   ...TEST_TOKEN
   // },
@@ -55,7 +56,7 @@ export const TOKEN_LIST = {
 
 export const SWAP_TOKEN_LIST = [
   FNEO_TESTNET_DETAIL,
-  NEP_TESTNET_DETAIL,
+  NEP_TESTNET_DETAIL
   // TEST_TOKEN,
   // LINK_TOKEN
 ];

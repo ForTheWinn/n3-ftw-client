@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
-import NEP17Smith from "./scenes/NEP17";
-import NEP11Smith from "./scenes/NEP11";
+import TokenMain from "./scenes/TokenMain";
+import NFTMain from "./scenes/NFTMain";
 import NEP17InfoPage from "./scenes/PageView/NEP17InfoPage";
 import NEP11InfoPage from "./scenes/PageView/NEP11InfoPage";
-import CreateNEP17 from "./scenes/CreateNEP17";
-import CreateNEP11 from "./scenes/CreateNEP11";
+import CreateNeoToken from "./scenes/CreateToken/Neo";
+import CreateEVMToken from "./scenes/CreateToken/EVM";
+import CreateNEP11 from "./scenes/CreateNFT";
 import {
   SMITH_CONTRACT_NEP11_PATH,
   SMITH_CONTRACT_NEP17_PATH,
@@ -13,9 +14,12 @@ import {
   SMITH_CREATE_NEP17_PATH,
   SMITH_PATH,
   SMITH_PATH_NEP11
-} from "../../../consts/neoRoutes";
+} from "../../../../../consts/routes";
+import { useApp } from "../../../../../common/hooks/use-app";
+import { NEO_CHAIN } from "../../../../../consts/global";
 
 const Smith = () => {
+  const { chain } = useApp();
   useEffect(() => {
     document.title = "FTW | Smith";
   }, []);
@@ -23,12 +27,14 @@ const Smith = () => {
   // return <Maintenance />;
   return (
     <>
-      <Route exact path={SMITH_PATH} component={() => <NEP17Smith />} />
-      <Route exact path={SMITH_PATH_NEP11} component={() => <NEP11Smith />} />
+      <Route exact path={SMITH_PATH} component={() => <TokenMain />} />
+      <Route exact path={SMITH_PATH_NEP11} component={() => <NFTMain />} />
       <Route
         exact
         path={SMITH_CREATE_NEP17_PATH}
-        component={() => <CreateNEP17 />}
+        component={() =>
+          chain === NEO_CHAIN ? <CreateNeoToken /> : <CreateEVMToken />
+        }
       />
       <Route
         exact

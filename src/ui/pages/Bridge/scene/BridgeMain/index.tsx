@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import BridgeInputs from "./Inputs";
-import { BRIDGE_TRANSFERS_PATH } from "../../../../../consts/neoRoutes";
+import { BRIDGE_TRANSFERS_PATH } from "../../../../../consts/routes";
 import SwapButton from "../../../Swap/components/SwapButton";
 import { useBridgeSwap } from "./context";
 import ChainSelector from "./ChainSelector";
@@ -85,16 +85,14 @@ const BridgeSwap = () => {
           />
         )}
 
-        {originChain &&
-          destChain &&
-          token &&(
-            <BridgeDetails
-              originChain={originChain}
-              destChain={destChain}
-              network={network}
-              token={token}
-            />
-          )}
+        {originChain && destChain && token && (
+          <BridgeDetails
+            originChain={originChain}
+            destChain={destChain}
+            network={network}
+            token={token}
+          />
+        )}
 
         <SwapButton
           label={"Bridge"}

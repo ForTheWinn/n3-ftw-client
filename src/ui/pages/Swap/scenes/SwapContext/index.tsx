@@ -15,7 +15,7 @@ import {
   IUserTokenBalances
 } from "../../../../../common/routers/swap/interfaces";
 import { swapRouter } from "../../../../../common/routers";
-import { CHAINS, NEO_CHAIN } from "../../../../../consts/chains";
+import { CHAINS } from "../../../../../consts/chains";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { ethers } from "ethers";
 import TokenList from "../../../../components/Commons/TokenList";
@@ -25,6 +25,7 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import toast from "react-hot-toast";
 import { getTokenByHash } from "../../../../../helpers";
+import { NEO_CHAIN } from "../../../../../consts/global";
 
 interface ISwapContext {
   chain: CHAINS;

@@ -1,7 +1,7 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../../consts/neoRoutes";
+import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../../consts/routes";
 
 interface IAddLiquidityButtonProps {
   search?: string;

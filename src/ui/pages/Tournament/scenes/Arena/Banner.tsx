@@ -5,8 +5,8 @@ import PlayButton from "../../components/PlayButton";
 import Modal from "../../../../components/Modal";
 import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { ADMIN_FOR_PLAY } from "../../../../../packages/neo/contracts/ftw/arena/consts";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { TOURNAMENT_PATH } from "../../../../../consts/routes";
 
 interface IBanner {
   arenaNo: string;
@@ -64,22 +64,19 @@ const Banner = ({ arenaNo, status, pathname }: IBanner) => {
         <ul>
           <li
             className={
-              pathname === NEO_ROUTES.TOURNAMENT_PATH + "/" + arenaNo
-                ? "is-active"
-                : ""
+              pathname === TOURNAMENT_PATH + "/" + arenaNo ? "is-active" : ""
             }
           >
-            <Link to={NEO_ROUTES.TOURNAMENT_PATH + "/" + arenaNo}>Players</Link>
+            <Link to={TOURNAMENT_PATH + "/" + arenaNo}>Players</Link>
           </li>
           <li
             className={
-              pathname ===
-              NEO_ROUTES.TOURNAMENT_PATH + "/" + arenaNo + "/history"
+              pathname === TOURNAMENT_PATH + "/" + arenaNo + "/history"
                 ? "is-active"
                 : ""
             }
           >
-            <Link to={NEO_ROUTES.TOURNAMENT_PATH + "/" + arenaNo + "/history"}>
+            <Link to={TOURNAMENT_PATH + "/" + arenaNo + "/history"}>
               History
             </Link>
           </li>

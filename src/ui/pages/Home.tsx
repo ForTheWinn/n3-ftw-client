@@ -3,7 +3,6 @@ import Wave from "react-wavify";
 import { Link } from "react-router-dom";
 import SocialLinkGroup from "../components/Commons/SocialLinkGroup";
 import { useApp } from "../../common/hooks/use-app";
-import { NEO_CHAIN } from "../../consts/chains";
 import {
   BOYZ_PATH,
   BRAND_KIT_PATH,
@@ -11,7 +10,8 @@ import {
   RUNE_PATH,
   SMITH_PATH,
   SWAP_PATH
-} from "../../consts/neoRoutes";
+} from "../../consts/routes";
+import { NEO_CHAIN } from "../../consts/global";
 
 const Home = () => {
   useEffect(() => {

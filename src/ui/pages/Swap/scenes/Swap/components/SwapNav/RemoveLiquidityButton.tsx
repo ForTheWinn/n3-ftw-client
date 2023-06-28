@@ -1,7 +1,7 @@
 import React from "react";
 import { FaMinus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { SWAP_PATH_LIQUIDITY_REMOVE } from "../../../../../../../consts/neoRoutes";
+import { SWAP_PATH_LIQUIDITY_REMOVE } from "../../../../../../../consts/routes";
 
 const RemoveLiquidityButton = () => {
   return (

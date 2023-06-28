@@ -3,7 +3,7 @@ import Modal from "../../../../components/Modal";
 import { Steps } from "antd";
 import { writeContract } from "@wagmi/core";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
-import { CHAINS, NEO_CHAIN } from "../../../../../consts/chains";
+import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { swapRouter } from "../../../../../common/routers";
 import { getExploler } from "../../../../../helpers";
@@ -11,7 +11,7 @@ import {
   isApprovedForAll,
   setApprovalForAll
 } from "../../../../../packages/polygon/contracts/swap";
-import { SWAP } from "../../../../../consts/global";
+import { NEO_CHAIN, SWAP } from "../../../../../consts/global";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { CONTRACT_LIST } from "../../../../../consts/contracts";

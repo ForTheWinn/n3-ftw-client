@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import Modal from "../../../../components/Modal";
-import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
+import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
-import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
-import { detectEmojiInString } from "../../helpers";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
-import PageLayout from "../../../../components/Commons/PageLayout";
-import { handleError } from "../../../../../packages/neo/utils/errors";
-import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
-import { useApp } from "../../../../../common/hooks/use-app";
-import { SMITH_PATH_NEP11 } from "../../../../../consts/neoRoutes";
+import { useApp } from "../../../../../../../common/hooks/use-app";
+
+import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
+import { detectEmojiInString } from "../../helpers";
+
+import { handleError } from "../../../../../../../packages/neo/utils/errors";
+import { SMITH_PATH_NEP11 } from "../../../../../../../consts/routes";
+
+import Modal from "../../../../../../components/Modal";
+import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
+import PageLayout from "../../../../../../components/Commons/PageLayout";
+import { SMITH_FEE } from "../../../../../../../consts/smith";
+import { NEO_CHAIN } from "../../../../../../../consts/global";
 
 const NEP11FormModal = () => {
   const history = useHistory();
@@ -60,7 +64,7 @@ const NEP11FormModal = () => {
       return;
     }
 
-    if (balances.nepBalance < SMITH_NEP_FEE[network]) {
+    if (balances.nepBalance < SMITH_FEE[NEO_CHAIN][network]) {
       toast.error("You don't have enough NEP for platform fee.");
       return;
     }

@@ -1,7 +1,6 @@
 import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
 import { IClaimable, IFarmPair } from "../../../common/routers/farm/interfaces";
 import { TOKEN_LIST } from "../../../consts/tokens";
-import { POLYGON_CHAIN } from "../../../consts/chains";
 import { CONTRACT_LIST } from "../consts";
 import { IClaimableRewards } from "../../neo/contracts/ftw/farm-v2/interfaces";
 import { withDecimal } from "../../neo/utils";
@@ -10,7 +9,7 @@ import { getTokenURI } from "./swap";
 import { Buffer } from "buffer";
 import { INetworkType } from "../../neo/network";
 import { ISwapLPToken } from "../../../common/routers/swap/interfaces";
-import { FARM } from "../../../consts/global";
+import { FARM, POLYGON_CHAIN } from "../../../consts/global";
 
 export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
   const res: any = await readContract({

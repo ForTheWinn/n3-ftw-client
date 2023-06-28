@@ -1,6 +1,7 @@
 import { useAccount } from "wagmi";
-import { CHAINS, NEO_CHAIN } from "../../consts/chains";
+import { CHAINS } from "../../consts/chains";
 import { useNeoWallets } from "./use-neo-wallets";
+import { NEO_CHAIN } from "../../consts/global";
 
 interface IWalletRouter {
   isConnected: boolean;

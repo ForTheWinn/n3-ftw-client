@@ -7,8 +7,9 @@ import moment from "moment";
 import TextTruncate from "react-text-truncate";
 import ChannelCard from "../../../components/ChannelCard";
 import removeMd from "remove-markdown";
-import { NEO_ROUTES } from "../../../../../../consts";
 import { useApp } from "../../../../../../common/hooks/use-app";
+import { DAO_CHANNEL_PATH } from "../../../../../../consts/routes";
+
 const ProposalList = () => {
   const params = useParams();
   const { contractHash } = params as any;
@@ -40,7 +41,7 @@ const ProposalList = () => {
                         const desc = removeMd(item.description);
                         return (
                           <Link
-                            to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}/proposal/${item.no}`}
+                            to={`${DAO_CHANNEL_PATH}/${contractHash}/proposal/${item.no}`}
                             className="panel-block is-block"
                             key={`proposal-${i}`}
                           >
@@ -93,7 +94,7 @@ const ProposalList = () => {
                     <NavLink
                       exact={true}
                       activeClassName={"is-active"}
-                      to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}`}
+                      to={`${DAO_CHANNEL_PATH}/${contractHash}`}
                     >
                       Proposals
                     </NavLink>
@@ -101,7 +102,7 @@ const ProposalList = () => {
                   <li>
                     <NavLink
                       activeClassName={"is-active"}
-                      to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}/create`}
+                      to={`${DAO_CHANNEL_PATH}/${contractHash}/create`}
                     >
                       New proposal
                     </NavLink>
@@ -112,7 +113,7 @@ const ProposalList = () => {
                     <li>
                       <NavLink
                         activeClassName={"is-active"}
-                        to={`${NEO_ROUTES.DAO_CHANNEL_PATH}/${contractHash}/edit`}
+                        to={`${DAO_CHANNEL_PATH}/${contractHash}/edit`}
                       >
                         Edit channel
                       </NavLink>

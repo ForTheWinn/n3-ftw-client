@@ -9,7 +9,7 @@ import {
   GAS_SCRIPT_HASH
 } from "../../../../../packages/neo/consts/neo-contracts";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { FARM_STAKE_PATH } from "../../../../../consts/neoRoutes";
+import { FARM_STAKE_PATH } from "../../../../../consts/routes";
 
 const StakingPairCard = (props: IStakingPairs) => {
   const history = useHistory();

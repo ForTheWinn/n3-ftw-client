@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { CHAINS, CONFIGS, NEO_CHAIN } from "../../../../../consts/chains";
+import { CHAINS, CONFIGS } from "../../../../../consts/chains";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
@@ -12,6 +12,7 @@ import { globalRouter } from "../../../../../common/routers";
 import { BRIDGE_CHAINS } from "../../../../../consts/bridge";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
+import { NEO_CHAIN } from "../../../../../consts/global";
 
 interface IBridgeContext {
   chain: CHAINS;

@@ -5,8 +5,8 @@ import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import List from "./List";
 import { Link } from "react-router-dom";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { DAO_CHANNEL_CREATE_PATH } from "../../../../../consts/routes";
 
 const DAOChannelList = () => {
   const { network } = useApp();
@@ -29,7 +29,10 @@ const DAOChannelList = () => {
 
             <div className="level-right">
               <div className="level-item">
-                <Link to={NEO_ROUTES.DAO_CHANNEL_CREATE_PATH} className="button is-white">
+                <Link
+                  to={DAO_CHANNEL_CREATE_PATH}
+                  className="button is-white"
+                >
                   <FaPlus />
                 </Link>
               </div>

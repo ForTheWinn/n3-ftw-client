@@ -8,7 +8,7 @@ import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data"
 import {
   ANALYTICS_PAIRS_PATH,
   ANALYTICS_PATH
-} from "../../../../../../consts/neoRoutes";
+} from "../../../../../../consts/routes";
 
 const Pairs = () => {
   const { network } = useApp();

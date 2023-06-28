@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { detectEmojiInString } from "../../../Smith/helpers";
+import { detectEmojiInString } from "../../../Tools/scenes/Smith/helpers";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
@@ -9,8 +9,8 @@ import { Link, useHistory } from "react-router-dom";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import VerifyContract from "./VerifyContract";
 import ChannelForm from "../../components/ChannelForm";
-import { NEO_ROUTES } from "../../../../../consts";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { DAO_PATH } from "../../../../../consts/routes";
 
 interface IAddChannelProps {
   onAdd: (values) => void;
@@ -70,17 +70,14 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
 
   const handleTxSuccess = () => {
     setTxid("");
-    history.push(NEO_ROUTES.DAO_PATH);
+    history.push(DAO_PATH);
   };
 
   return (
     <PageLayout>
       <div className="columns">
         <div className="column is-8 is-offset-2">
-          <Link
-            to={NEO_ROUTES.DAO_PATH}
-            className="button is-rounded is-small mb-3"
-          >
+          <Link to={DAO_PATH} className="button is-rounded is-small mb-3">
             Back to list
           </Link>
 

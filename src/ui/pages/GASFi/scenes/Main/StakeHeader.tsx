@@ -9,7 +9,10 @@ import About from "./About";
 import moment from "moment";
 import Countdown from "react-countdown";
 import DrawBtn from "./DrawBtn";
-import { NEO_ROUTES } from "../../../../../consts";
+import {
+  GASFI_MY_STAKING_PATH,
+  GASFI_STAKE_PATH
+} from "../../../../../consts/routes";
 
 interface IStakeHeaderProps {
   isLoading: boolean;
@@ -88,8 +91,8 @@ const StakeHeader = ({
               <Link
                 to={
                   data && data.staking
-                    ? NEO_ROUTES.GASFI_MY_STAKING_PATH
-                    : NEO_ROUTES.GASFI_STAKE_PATH
+                    ? GASFI_MY_STAKING_PATH
+                    : GASFI_STAKE_PATH
                 }
                 className={`button ${
                   isLoading ? "is-loading is-white" : "is-primary"

@@ -8,8 +8,9 @@ import SwapNav from "./components/SwapNav";
 import ActionModal from "../../components/ActionModal";
 import { useSwap } from "../SwapContext";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/neoRoutes";
+import { ROUTES } from "../../../../../consts";
 import PriceComparison from "./components/PriceComparison";
+import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/routes";
 
 const SwapMain = () => {
   const {

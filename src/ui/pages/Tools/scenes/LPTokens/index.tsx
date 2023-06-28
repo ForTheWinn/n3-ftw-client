@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import { SpinnerRoundFilled } from "spinners-react";
 import queryString from "query-string";
@@ -27,7 +27,7 @@ const LPTokens = () => {
     try {
       setSearching(true);
       setError("");
-      const token: ISwapLPToken = await swapRouter.getLPToken(
+      const token: ISwapLPToken | undefined = await swapRouter.getLPToken(
         chain,
         network,
         tokenId

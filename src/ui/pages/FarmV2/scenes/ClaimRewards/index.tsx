@@ -5,13 +5,12 @@ import { useApp } from "../../../../../common/hooks/use-app";
 import ClaimList from "./ClaimList";
 import BoyzStaking from "../../components/BoyzStaking";
 import { Link } from "react-router-dom";
-import { FARM_PATH } from "../../../../../consts/neoRoutes";
-import { NEO_CHAIN } from "../../../../../consts/chains";
+import { FARM_PATH } from "../../../../../consts/routes";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import toast from "react-hot-toast";
-import { NEP_LOGO } from "../../../../../consts/global";
+import { NEO_CHAIN, NEP_LOGO } from "../../../../../consts/global";
 import { Avatar } from "antd";
 import { WENT_WRONG } from "../../../../../consts/messages";
 

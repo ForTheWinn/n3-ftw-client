@@ -4,14 +4,14 @@ import { useApp } from "../common/hooks/use-app";
 
 import NoChainSupport from "./pages/ChainRouting/NoChainSupport";
 import NoNetworkSupport from "./pages/ChainRouting/NoNetworkSupport";
-import { HEADER_ROUTES } from "../consts";
+import { ROUTE_LIST } from "../consts/routes";
 
 const Routes = () => {
   const { chain, network } = useApp();
   const memoizedRoutes = useMemo(() => {
     return (
       <>
-        {HEADER_ROUTES.map((route: any) => {
+        {ROUTE_LIST.map((route: any) => {
           const _chain: any = route.chain[chain];
           return (
             <Route
@@ -19,7 +19,8 @@ const Routes = () => {
               path={route.path}
               exact={route.exact}
               component={() => {
-                if (!_chain) return <NoChainSupport chain={chain} network={network} />;
+                if (!_chain)
+                  return <NoChainSupport chain={chain} network={network} />;
                 if (!_chain.includes(network))
                   return <NoNetworkSupport chain={chain} network={network} />;
                 return <route.component />;

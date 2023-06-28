@@ -8,7 +8,11 @@ import SearchLockerModal from "./SearchLockerModal";
 import ModalCard from "../../../components/Modal";
 import LockerInfoPage from "../InfoPage";
 import { useApp } from "../../../../common/hooks/use-app";
-import { LOCKER_CREATE_PATH, LOCKER_SEARCH_PATH, LOCKER_USER_PATH } from "../../../../consts/neoRoutes";
+import {
+  LOCKER_CREATE_PATH,
+  LOCKER_SEARCH_PATH,
+  LOCKER_USER_PATH
+} from "../../../../consts/routes";
 
 const LockerMain = () => {
   const { chain, network } = useApp();
@@ -34,22 +38,13 @@ const LockerMain = () => {
               <div className="level-right">
                 <div className="level-item">
                   <div className="buttons">
-                    <Link
-                      to={LOCKER_CREATE_PATH}
-                      className="button is-white"
-                    >
+                    <Link to={LOCKER_CREATE_PATH} className="button is-white">
                       <FaPlus />
                     </Link>
-                    <Link
-                      to={LOCKER_SEARCH_PATH}
-                      className="button is-white"
-                    >
+                    <Link to={LOCKER_SEARCH_PATH} className="button is-white">
                       <FaSearch />
                     </Link>
-                    <Link
-                      to={LOCKER_USER_PATH}
-                      className="button is-white"
-                    >
+                    <Link to={LOCKER_USER_PATH} className="button is-white">
                       <FaKey />
                     </Link>
                     <button
@@ -71,7 +66,11 @@ const LockerMain = () => {
                 data.items.reverse().map((item) => {
                   return (
                     <div key={item.contractHash} className="column is-3">
-                      <LockerTokenCard {...item} chain={chain} network={network} />
+                      <LockerTokenCard
+                        {...item}
+                        chain={chain}
+                        network={network}
+                      />
                     </div>
                   );
                 })}

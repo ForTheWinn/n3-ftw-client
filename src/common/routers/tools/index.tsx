@@ -1,11 +1,12 @@
 import { wallet as neonWallet } from "@cityofzion/neon-core";
-import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
+import { CHAINS } from "../../../consts/chains";
 import { getNEP17TransferScript } from "../../../packages/neo/utils";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
 import { wallet } from "../../../packages/neo";
 import { DEFAULT_WITNESS_SCOPE } from "../../../packages/neo/consts";
 import { IMassTransaferList } from "./interfaces";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 
 export interface IExcelData {
   type: any;

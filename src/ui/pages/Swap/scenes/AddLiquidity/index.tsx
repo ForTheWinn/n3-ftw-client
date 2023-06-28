@@ -8,8 +8,7 @@ import ProvideLPInfo from "../../components/ProvideLPInfo";
 import ActionModal from "../../components/ActionModal";
 
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
-import { Divider } from "antd";
-import { SWAP_PATH } from "../../../../../consts/neoRoutes";
+import { SWAP_PATH } from "../../../../../consts/routes";
 
 const Liquidity = () => {
   const {

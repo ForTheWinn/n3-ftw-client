@@ -7,7 +7,7 @@ import { useApp } from "../../../../../common/hooks/use-app";
 import { swapRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
-import { SWAP_PATH } from "../../../../../consts/neoRoutes";
+import { SWAP_PATH } from "../../../../../consts/routes";
 
 const RemoveLiquidity = () => {
   const { network, chain, refreshCount, increaseRefreshCount } = useApp();

@@ -10,12 +10,12 @@ import { parseMapValue, withDecimal } from "../../../utils";
 import { ILPToken } from "../swap/interfaces";
 import { BOYZ_SCRIPT_HASH } from "../boyz/consts";
 import { TOKEN_LIST } from "../../../../../consts/tokens";
-import { NEO_CHAIN } from "../../../../../consts/chains";
 import {
   IClaimable,
   IFarmPair
 } from "../../../../../common/routers/farm/interfaces";
 import { WENT_WRONG } from "../../../../../consts/messages";
+import { NEO_CHAIN } from "../../../../../consts/global";
 
 export class FarmV2Contract {
   network: INetworkType;

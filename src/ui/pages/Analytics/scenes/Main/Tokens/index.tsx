@@ -5,18 +5,17 @@ import ModalCard from "../../../../../components/Modal";
 import TokenDetail from "../../TokenDetail";
 import { useApp } from "../../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
-import { ANALYTICS_PATH, ANALYTICS_TOKENS_PATH } from "../../../../../../consts/neoRoutes";
+import {
+  ANALYTICS_PATH,
+  ANALYTICS_TOKENS_PATH
+} from "../../../../../../consts/routes";
 
 const TokensAnalytics = () => {
   const { chain, network } = useApp();
   const [isModalActive, setModalActive] = useState("");
   const handleTokenClick = (id: string) => {
     setModalActive(id);
-    window.history.replaceState(
-      null,
-      "",
-      `#${ANALYTICS_TOKENS_PATH}/${id}`
-    );
+    window.history.replaceState(null, "", `#${ANALYTICS_TOKENS_PATH}/${id}`);
   };
 
   const handleModalClose = () => {
@@ -43,16 +42,17 @@ const TokensAnalytics = () => {
             </tr>
           </thead>
           <tbody>
-            {data && data.map((token) => (
-              <TokenItem
-                chain={chain}
-                onClick={handleTokenClick}
-                key={token.id}
-                id={token.id}
-                network={network}
-                symbol={token.symbol}
-              />
-            ))}
+            {data &&
+              data.map((token) => (
+                <TokenItem
+                  chain={chain}
+                  onClick={handleTokenClick}
+                  key={token.id}
+                  id={token.id}
+                  network={network}
+                  symbol={token.symbol}
+                />
+              ))}
           </tbody>
         </table>
       </div>

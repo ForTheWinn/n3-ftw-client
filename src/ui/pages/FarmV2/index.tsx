@@ -10,7 +10,7 @@ import {
   FARM_V2_PATH,
   FARM_V2_STAKE_PATH,
   FARM_V2_STAKE_POSITIONS_PATH
-} from "../../../consts/neoRoutes";
+} from "../../../consts/routes";
 
 const Farm = () => {
   return (

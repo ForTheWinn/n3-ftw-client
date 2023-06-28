@@ -1,6 +1,6 @@
 import React from "react";
 import PageLayout from "../../../components/Commons/PageLayout";
-import { NFT_ROUTE } from "../../../../consts/neoRoutes";
+import { NFT_ROUTE } from "../../../../consts/routes";
 import { useApp } from "../../../../common/hooks/use-app";
 import { Avatar } from "antd";
 import { Link } from "react-router-dom";

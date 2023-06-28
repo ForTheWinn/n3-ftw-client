@@ -1,6 +1,4 @@
-import { GLOBAL } from "../../../../../consts";
-
-const { TESTNET, MAINNET } = GLOBAL;
+import { MAINNET, TESTNET } from "../../../../../consts/global";
 
 export const TOURNAMENT_SCRIPT_HASH = {
   [TESTNET]: "0x1666b9485e2faf13ccea24c9563dfa5cbd92a1ad",

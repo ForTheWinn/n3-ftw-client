@@ -6,7 +6,11 @@ import Stake from "./scenes/Stake";
 import MyPositions from "./scenes/MyPositions";
 import ClaimRewards from "./scenes/ClaimRewards";
 import CheckMarketStatus from "./components/CheckMarketStatus";
-import { FARM_PATH, FARM_STAKE_PATH, FARM_STAKE_POSITIONS_PATH } from "../../../consts/neoRoutes";
+import {
+  FARM_PATH,
+  FARM_STAKE_PATH,
+  FARM_STAKE_POSITIONS_PATH
+} from "../../../consts/routes";
 
 const Farm = () => {
   const [refresh, setRefresh] = useState(0);
@@ -21,11 +25,7 @@ const Farm = () => {
             <div className="column is-8">
               <CheckMarketStatus />
               <div className="box is-shadowless">
-                <Route
-                  exact={true}
-                  path={FARM_PATH}
-                  component={StakingMain}
-                />
+                <Route exact={true} path={FARM_PATH} component={StakingMain} />
                 <Route
                   exact={true}
                   path={FARM_STAKE_PATH}

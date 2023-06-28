@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PageLayout from "../../components/Commons/PageLayout";
 import { Route } from "react-router-dom";
-import { BRIDGE_PATH, BRIDGE_TRANSFERS_PATH } from "../../../consts/neoRoutes";
+import { BRIDGE_PATH, BRIDGE_TRANSFERS_PATH } from "../../../consts/routes";
 import BridgeSwap from "./scene/BridgeMain";
 import { SwapContextProvider } from "./scene/BridgeMain/context";
 import BridgeHistory from "./scene/BridgeHistory";

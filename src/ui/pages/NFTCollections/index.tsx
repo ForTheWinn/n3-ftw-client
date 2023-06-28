@@ -1,5 +1,5 @@
 import React from "react";
-import { NFT_ROUTE } from "../../../consts/neoRoutes";
+import { NFT_ROUTE } from "../../../consts/routes";
 import { Route } from "react-router-dom";
 
 const NFTCollections = () => {

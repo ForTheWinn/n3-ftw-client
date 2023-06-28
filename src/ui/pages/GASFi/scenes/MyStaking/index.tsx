@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
 import moment from "moment";
 import { DRAWING_FREQUENCY } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
-import { NEO_ROUTES } from "../../../../../consts";
+import { GASFI_PATH } from "../../../../../consts/routes";
 
 const MyStaking = () => {
   const history = useHistory();
@@ -38,7 +38,7 @@ const MyStaking = () => {
 
   const handleSuccess = () => {
     setTxid("");
-    history.push(NEO_ROUTES.GASFI_PATH);
+    history.push(GASFI_PATH);
   };
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const MyStaking = () => {
       <div className="columns is-centered">
         <div className="column is-half">
           <div className="box is-shadowless">
-            <HeaderBetween path={NEO_ROUTES.GASFI_PATH} title={"My staking"} />
+            <HeaderBetween path={GASFI_PATH} title={"My staking"} />
           </div>
           {!connectedWallet ? (
             <button

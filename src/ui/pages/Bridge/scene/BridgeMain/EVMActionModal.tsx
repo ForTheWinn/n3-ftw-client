@@ -285,7 +285,7 @@ const ActionModal = ({
               <a
                 className="button is-primary"
                 target="_blank"
-                href={`${getExplolerForWallet(destChain.type, network)}/${
+                href={`${getExplolerForWallet(destChain.type as CHAINS, network)}/${
                   receiver.address
                 }`}
                 rel="noreferrer"

@@ -1,6 +1,8 @@
-import { NEO_CHAIN, POLYGON_CHAIN } from "./chains";
-import { CONSTS as POLYGON_CONSTS } from "../packages/polygon";
-import { MAINNET, TESTNET } from "./global";
+import {
+  TOKEN_LIST as POLYGON_TOKEN_LIST,
+  SWAP_TOKEN_LIST as POLYGON_SWAP_TOKEN_LIST
+} from "../packages/polygon/consts";
+import { MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "./global";
 import { MAINNET_TOKEN_LIST } from "../packages/neo/consts/mainnet-token-list";
 import { TESTNET_TOKEN_LIST } from "../packages/neo/consts/testnet-token-list";
 
@@ -9,7 +11,7 @@ export const TOKEN_LIST = {
     [MAINNET]: MAINNET_TOKEN_LIST,
     [TESTNET]: TESTNET_TOKEN_LIST
   },
-  [POLYGON_CHAIN]: POLYGON_CONSTS.TOKEN_LIST
+  [POLYGON_CHAIN]: POLYGON_TOKEN_LIST
 };
 
 export const SWAP_TOKEN_LIST = {
@@ -21,5 +23,5 @@ export const SWAP_TOKEN_LIST = {
       return TESTNET_TOKEN_LIST[key];
     })
   },
-  [POLYGON_CHAIN]: POLYGON_CONSTS.SWAP_TOKEN_LIST
+  [POLYGON_CHAIN]: POLYGON_SWAP_TOKEN_LIST
 };

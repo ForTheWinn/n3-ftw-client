@@ -1,5 +1,5 @@
 import { fetchBalance, writeContract } from "@wagmi/core";
-import { CHAINS, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/chains";
+import { CHAINS } from "../../../consts/chains";
 import { INetworkType } from "../../../packages/neo/network";
 import {
   getTokenURI as getPolygonLPToken,
@@ -18,6 +18,7 @@ import {
 import { SwapContract } from "../../../packages/neo/contracts";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
 import { ethers } from "ethers";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 
 export const getReserves = async (
   chain: CHAINS,
@@ -74,7 +75,7 @@ export const getBalances = async (
 export const getEstimate = async (
   chain: CHAINS,
   network: INetworkType,
-  args: ISwapEstimateArgs,
+  args: ISwapEstimateArgs
 ): Promise<string> => {
   switch (chain) {
     case NEO_CHAIN:
@@ -153,7 +154,7 @@ export const getLPToken = async (
   chain: CHAINS,
   network: INetworkType,
   tokenId: string
-): Promise<ISwapLPToken> => {
+): Promise<ISwapLPToken | undefined> => {
   switch (chain) {
     case NEO_CHAIN:
       const res = await new SwapContract(network).getProperties(tokenId);

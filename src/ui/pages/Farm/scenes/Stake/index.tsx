@@ -10,7 +10,7 @@ import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenList from "./LPTokenList";
 import { handleError } from "../../../../../packages/neo/utils/errors";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { FARM_PATH } from "../../../../../consts/neoRoutes";
+import { FARM_PATH } from "../../../../../consts/routes";
 
 const Stake = ({ onRefresh }) => {
   const { network } = useApp();

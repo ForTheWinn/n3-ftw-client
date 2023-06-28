@@ -1,7 +1,6 @@
 import { globalRouter } from "../common/routers";
 import { CHAINS } from "../consts/chains";
-import { NEO_CHAIN, POLYGON_CHAIN } from "../consts/chains";
-import { MAINNET } from "../consts/global";
+import { MAINNET, NEO_CHAIN, POLYGON_CHAIN } from "../consts/global";
 import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
 import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
@@ -35,7 +34,7 @@ export const getExploler = (chain: string, network: INetworkType): string => {
 };
 
 export const getExplolerForWallet = (
-  chain: string,
+  chain: CHAINS,
   network: INetworkType
 ): string => {
   switch (chain) {
@@ -78,9 +77,7 @@ export const getExplolerForContract = (
   }
 };
 
-export const getExplolerForContractByChainId = (
-  chainId: number,
-): string => {
+export const getExplolerForContractByChainId = (chainId: number): string => {
   switch (chainId) {
     case 888:
       return "https://explorer.onegate.space/contractinfo";

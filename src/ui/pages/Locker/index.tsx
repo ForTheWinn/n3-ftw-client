@@ -12,7 +12,7 @@ import {
   LOCKER_PATH,
   LOCKER_SEARCH_PATH,
   LOCKER_USER_PATH
-} from "../../../consts/neoRoutes";
+} from "../../../consts/routes";
 
 const Locker = () => {
   useEffect(() => {

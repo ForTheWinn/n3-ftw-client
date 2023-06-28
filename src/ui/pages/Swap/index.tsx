@@ -10,7 +10,7 @@ import {
   SWAP_PATH,
   SWAP_PATH_LIQUIDITY_ADD,
   SWAP_PATH_LIQUIDITY_REMOVE
-} from "../../../consts/neoRoutes";
+} from "../../../consts/routes";
 
 const Swap = () => {
   useEffect(() => {

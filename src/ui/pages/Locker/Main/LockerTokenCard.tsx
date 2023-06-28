@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../consts/global";
 import { TOKEN_LIST } from "../../../../consts/tokens";
 import { CHAINS } from "../../../../consts/chains";
-import { LOCKER_PATH } from "../../../../consts/neoRoutes";
+import { LOCKER_PATH } from "../../../../consts/routes";
 interface ILockerTokenCardProps {
   chain: CHAINS;
   lockedAmount: number;

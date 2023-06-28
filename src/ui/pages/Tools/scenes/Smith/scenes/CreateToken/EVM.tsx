@@ -1,48 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
 import NumberFormat from "react-number-format";
-import { SmithContract } from "../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
-import Modal from "../../../../components/Modal";
-import PageLayout from "../../../../components/Commons/PageLayout";
-import ConnectWalletButton from "../../../../components/ConnectWalletButton";
-import { handleError } from "../../../../../packages/neo/utils/errors";
-import { SMITH_NEP_FEE } from "../../../../../packages/neo/contracts/ftw/smith/consts";
-import { useApp } from "../../../../../common/hooks/use-app";
-import { SMITH_PATH } from "../../../../../consts/neoRoutes";
+import { useApp } from "../../../../../../../common/hooks/use-app";
+import { SMITH_PATH } from "../../../../../../../consts/routes";
 
-const NEP17FormModal = () => {
-  const { network } = useApp();
-  const { connectedWallet } = useNeoWallets();
+import PageLayout from "../../../../../../components/Commons/PageLayout";
+import ConnectWalletButton from "../../../../../../components/ConnectWalletButton";
+import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
+import EVMActionModal from "./EVMActionModal";
+import { SMITH_FEE_FORMATTED } from "../../../../../../../consts/smith";
+
+export interface ITokenMetadata {
+  name: string;
+  symbol: string;
+  decimals: string;
+  totalSupply: string;
+  website: string;
+  icon: string;
+}
+
+const CreateToken = () => {
   const history = useHistory();
-  const [txid, setTxid] = useState<string>();
-  const [isBalanceLoading, setBalanceLoading] = useState(false);
-  const [balances, setBalances] = useState<{
-    gasBalance: number;
-    nepBalance: number;
-  }>({
-    gasBalance: 0,
-    nepBalance: 0
-  });
-  const [values, setValues] = useState({
+  const { network, chain } = useApp();
+  const { address, isConnected } = useWalletRouter(chain);
+
+  const [isActionModalActive, setActionModalActive] = useState(false);
+  const [userAgreement, setUserAgreement] = useState(false);
+
+  const [values, setValues] = useState<ITokenMetadata>({
     name: "",
     symbol: "",
-    decimals: "8",
+    decimals: "18",
     totalSupply: "",
-    author: "",
-    description: "",
-    email: ""
+    website: "",
+    icon: ""
   });
+
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
       [key]: val
     });
   };
+
   const hasEmoji = detectEmojiInString(values) !== 0;
+
   const onMint = async () => {
     if (hasEmoji) {
       toast.error(
@@ -51,74 +55,41 @@ const NEP17FormModal = () => {
       return;
     }
 
-    if (!connectedWallet) {
+    if (!isConnected) {
       toast.error("Please connect wallet.");
       return;
     }
 
-    if (isBalanceLoading) {
-      toast.error("Balance check hasn't been done. Please try again.");
-      return;
-    }
-
-    if (balances.nepBalance < SMITH_NEP_FEE[network]) {
-      toast.error("You don't have enough NEP.");
-      return;
-    }
-
-    if (balances.gasBalance < 10_00000000) {
-      toast.error("You don't have enough GAS.");
-      return;
-    }
-
-    try {
-      const res = await new SmithContract(network).isNEP17SymbolTaken(
-        values.symbol
-      );
-      if (res) {
-        toast.error("Token symbol is already taken. Try other symbol.");
-      } else {
-        const res = await new SmithContract(network).createNEP17V3(
-          connectedWallet,
-          values.totalSupply,
-          values.decimals,
-          values.symbol,
-          values.name,
-          values.author,
-          values.description,
-          values.email
-        );
-        setTxid(res);
-      }
-    } catch (e: any) {
-      toast.error(handleError(e));
-    }
+    setActionModalActive(true);
   };
 
   const onSuccess = () => {
-    setTxid("");
+    setActionModalActive(false);
     history.push(SMITH_PATH);
   };
 
-  // const firstInput = useRef(null);
+  const onReset = () => {
+    setActionModalActive(false);
+  };
 
-  useEffect(() => {
-    // firstInput.current.focus();
-    async function balanceCheck(w) {
-      setBalanceLoading(true);
-      try {
-        const res = await new SmithContract(network).balanceCheck(w);
-        setBalances(res);
-        setBalanceLoading(false);
-      } catch (e: any) {
-        setBalanceLoading(false);
-        console.error(e);
-      }
-    }
-    if (connectedWallet) {
-      balanceCheck(connectedWallet);
-    }
-  }, [connectedWallet, network]);
+  console.log(values);
+
+  // useEffect(() => {
+  //   // firstInput.current.focus();
+  //   async function balanceCheck(w) {
+  //     setBalanceLoading(true);
+  //     try {
+  //       const res = await new SmithContract(network).balanceCheck(w);
+  //       setBalanceLoading(false);
+  //     } catch (e: any) {
+  //       setBalanceLoading(false);
+  //       console.error(e);
+  //     }
+  //   }
+  //   if (connectedWallet) {
+  //     balanceCheck(connectedWallet);
+  //   }
+  // }, [connectedWallet, network]);
 
   return (
     <PageLayout>
@@ -143,7 +114,7 @@ const NEP17FormModal = () => {
                       onChange={(e) =>
                         handleValueChange("name", e.target.value)
                       }
-                      className="input"
+                      className="input is-shadowless"
                       type="text"
                     />
                   </div>
@@ -160,7 +131,7 @@ const NEP17FormModal = () => {
                           onChange={(e) =>
                             handleValueChange("symbol", e.target.value)
                           }
-                          className="input"
+                          className="input is-shadowless"
                           type="text"
                         />
                       </div>
@@ -174,7 +145,7 @@ const NEP17FormModal = () => {
                         <NumberFormat
                           decimalScale={0}
                           inputMode="decimal"
-                          className="input"
+                          className="input is-shadowless"
                           value={values.decimals}
                           onValueChange={(value) => {
                             handleValueChange("decimals", value.value);
@@ -197,7 +168,7 @@ const NEP17FormModal = () => {
                       allowNegative={false}
                       decimalScale={0}
                       inputMode="decimal"
-                      className="input"
+                      className="input is-shadowless"
                       value={values.totalSupply}
                       onValueChange={(value) => {
                         handleValueChange("totalSupply", value.value);
@@ -207,55 +178,60 @@ const NEP17FormModal = () => {
                   </div>
                 </div>
 
-                <div className="columns">
-                  <div className="column">
-                    <div className="field">
-                      <label className="label">Author</label>
-                      <div className="control">
-                        <input
-                          placeholder="Author"
-                          value={values.author}
-                          onChange={(e) =>
-                            handleValueChange("author", e.target.value)
-                          }
-                          className="input"
-                          type="text"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                <div className="field">
+                  <label className="label">
+                    Website{" "}
+                    <span className="is-size-7 has-text-weight-light">
+                      (Optional)
+                    </span>
+                  </label>
 
-                  <div className="column">
-                    <div className="field">
-                      <label className="label">Email</label>
-                      <div className="control">
-                        <input
-                          placeholder="Email"
-                          value={values.email}
-                          onChange={(e) =>
-                            handleValueChange("email", e.target.value)
-                          }
-                          className="input"
-                          type="text"
-                        />
-                      </div>
-                    </div>
+                  <div className="control">
+                    <input
+                      placeholder="https://"
+                      value={values.website}
+                      onChange={(e) =>
+                        handleValueChange("website", e.target.value)
+                      }
+                      className="input is-shadowless"
+                      type="text"
+                    />
                   </div>
                 </div>
 
                 <div className="field">
-                  <label className="label">Description</label>
+                  <label className="label">
+                    Icon{" "}
+                    <span className="is-size-7 has-text-weight-light">
+                      (Optional)
+                    </span>
+                  </label>
+
                   <div className="control">
                     <input
-                      placeholder="Tell us about your token.."
-                      value={values.description}
+                      placeholder="https://"
+                      value={values.icon}
                       onChange={(e) =>
-                        handleValueChange("description", e.target.value)
+                        handleValueChange("icon", e.target.value)
                       }
-                      className="input"
+                      className="input is-shadowless"
                       type="text"
                     />
                   </div>
+                </div>
+                <div className="field">
+                  <label className="checkbox has-text-weight-light">
+                    <input
+                      onClick={() => setUserAgreement(!userAgreement)}
+                      className="pr-3"
+                      type="checkbox"
+                      checked={userAgreement}
+                    />{" "}
+                    I understand and agree that I am fully responsible for the
+                    management of my tokens created through Smith. FTW is not
+                    liable for any actions or consequences related to these
+                    tokens.
+                  </label>
                 </div>
 
                 <hr />
@@ -266,17 +242,17 @@ const NEP17FormModal = () => {
                   </div>
                 )}
 
-                {connectedWallet ? (
+                {isConnected ? (
                   <button
                     onClick={onMint}
                     disabled={
                       !values.name ||
                       !values.symbol ||
                       !values.decimals ||
-                      parseFloat(values.decimals) > 18 ||
+                      !values.decimals ||
+                      !values.totalSupply ||
                       parseFloat(values.totalSupply) < 1 ||
-                      // !values.author ||
-                      // !values.description ||
+                      !userAgreement ||
                       hasEmoji
                     }
                     className="button is-primary"
@@ -290,7 +266,7 @@ const NEP17FormModal = () => {
             </div>
 
             <div className="column is-4">
-              <div className="box">
+              <div className="box is-shadowless">
                 <div className="content is-small">
                   <li>
                     We recommend to mint on <strong>Testnet</strong> first
@@ -300,25 +276,21 @@ const NEP17FormModal = () => {
                     Do not use <strong>EMOJI</strong> or{" "}
                     <strong>Unicode</strong>.
                   </li>
-                  <li>FTWSwap cannot support tokens with 0 decimals.</li>
-                  <li>
-                    Deploy fee (Blockchain fee) is{" "}
-                    <strong className="has-text-primary">10 GAS</strong>.
-                  </li>
                   <li>
                     Service fee is{" "}
-                    <strong className="has-text-primary">1000 NEP</strong>.
+                    <strong className="has-text-primary">{`${SMITH_FEE_FORMATTED[chain][network]} NEP`}</strong>
+                    .
                   </li>
                   <li>
-                    Your contract will <strong>not</strong> have a{" "}
-                    <strong>update method</strong>.
+                    Smith uses ERC20Upgradeable but your contract will not be
+                    upgradable.
                   </li>
                   <li>
                     Check contract source code at{" "}
                     <a
                       target="_blank"
                       href={
-                        "https://github.com/ForTheWinn/public-contracts/blob/main/FTWSmithNep17-v3/FTWSmithNep17-v3.cs"
+                        "https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/token/ERC20/ERC20Upgradeable.sol"
                       }
                       rel="noreferrer"
                     >
@@ -332,18 +304,23 @@ const NEP17FormModal = () => {
         </div>
       </div>
 
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            network={network}
-            txid={txid}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
+      {isActionModalActive && (
+        <EVMActionModal
+          address={address}
+          name={values.name}
+          symbol={values.symbol}
+          decimals={values.decimals}
+          totalSupply={values.totalSupply}
+          website={values.website}
+          icon={values.icon}
+          chain={chain}
+          network={network}
+          onSuccess={onSuccess}
+          onCancel={onReset}
+        />
       )}
     </PageLayout>
   );
 };
 
-export default NEP17FormModal;
+export default CreateToken;

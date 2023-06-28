@@ -1,6 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import { TOOLS_PAGE_ROUTE } from "../../../consts/neoRoutes";
+import { TOOLS_PAGE_ROUTE } from "../../../consts/routes";
 
 const Tools = () => {
   return (

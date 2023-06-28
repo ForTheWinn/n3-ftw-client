@@ -5,10 +5,10 @@ import ProposalList from "./ProposalList";
 import Create from "./Create";
 import ProposalView from "./View";
 import Edit from "./Edit";
-import { NEO_ROUTES } from "../../../../../consts";
+import { DAO_CHANNEL_PATH } from "../../../../../consts/routes";
 
 const DAOChannel = (props) => {
-  const path = NEO_ROUTES.DAO_CHANNEL_PATH + "/:contractHash";
+  const path = DAO_CHANNEL_PATH + "/:contractHash";
 
   return (
     <PageLayout>

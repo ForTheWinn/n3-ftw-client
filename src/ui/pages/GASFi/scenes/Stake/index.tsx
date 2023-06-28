@@ -10,7 +10,7 @@ import { useApp } from "../../../../../common/hooks/use-app";
 import { useHistory } from "react-router-dom";
 import { IMainData } from "../Main";
 import About from "../Main/About";
-import { NEO_ROUTES } from "../../../../../consts";
+import { GASFI_PATH } from "../../../../../consts/routes";
 
 const Stake = () => {
   const history = useHistory();
@@ -48,7 +48,7 @@ const Stake = () => {
 
   const handleSuccess = () => {
     setTxid("");
-    history.push(NEO_ROUTES.GASFI_PATH);
+    history.push(GASFI_PATH);
   };
 
   const handleClickBalance = () => {
