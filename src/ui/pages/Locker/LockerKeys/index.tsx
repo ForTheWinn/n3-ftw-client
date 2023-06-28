@@ -5,19 +5,15 @@ import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import LockerKeyCard from "./LockerKeyCard";
 import ConnectWalletButton from "../../../components/ConnectWalletButton";
 import toast from "react-hot-toast";
-import Modal from "../../../components/Modal";
-import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useApp } from "../../../../common/hooks/use-app";
 
 const LockerKeys = () => {
-  const { network } = useApp();
+  const { network, setTxid, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [data, setData] = useState<{
     items: ILockerKeyToken[];
   }>();
 
-  const [txid, setTxid] = useState("");
-  const [refresh, setRefresh] = useState(0);
   const handleUnLock = async (lockerNo: string | number) => {
     if (connectedWallet) {
       try {
@@ -32,10 +28,6 @@ const LockerKeys = () => {
     } else {
       toast.error("Connect your wallet");
     }
-  };
-  const handleAfterTx = () => {
-    setRefresh(refresh + 1);
-    setTxid("");
   };
 
   useEffect(() => {
@@ -52,7 +44,7 @@ const LockerKeys = () => {
     if (connectedWallet) {
       fetch(connectedWallet.account.address);
     }
-  }, [network, connectedWallet, refresh]);
+  }, [network, connectedWallet, refreshCount]);
 
   return (
     <div>
@@ -105,16 +97,6 @@ const LockerKeys = () => {
           </div>
         </div>
       </div>
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={handleAfterTx}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </div>
   );
 };

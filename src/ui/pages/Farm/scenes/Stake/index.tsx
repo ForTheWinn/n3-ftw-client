@@ -4,8 +4,6 @@ import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenList from "./LPTokenList";
 import { handleError } from "../../../../../packages/neo/utils/errors";
@@ -13,9 +11,8 @@ import { useApp } from "../../../../../common/hooks/use-app";
 import { FARM_PATH } from "../../../../../consts/routes";
 
 const Stake = ({ onRefresh }) => {
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
-  const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
 
   const location = useLocation();
@@ -45,11 +42,6 @@ const Stake = ({ onRefresh }) => {
     }
   };
 
-  const onSuccess = () => {
-    onRefresh();
-    setRefresh(refresh + 1);
-    setTxid("");
-  };
   return (
     <div>
       <HeaderBetween path={FARM_PATH} title={`Stake LP tokens`} />
@@ -66,17 +58,6 @@ const Stake = ({ onRefresh }) => {
         />
       ) : (
         <ConnectWalletButton />
-      )}
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
       )}
     </div>
   );

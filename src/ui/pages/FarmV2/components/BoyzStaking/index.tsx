@@ -4,7 +4,6 @@ import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import DisplayBoy from "../MyBoyz/DisplayBoy";
 import StakingModal from "./StakingModal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import toast from "react-hot-toast";
 import { IBoyStaked } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { useApp } from "../../../../../common/hooks/use-app";
@@ -16,8 +15,7 @@ interface IBoyzStakingProps {
 const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
   const [isModalActive, setModalActive] = useState(false);
   const [lot, setLot] = useState<IBoyStaked>();
-  const [txid, setTxid] = useState("");
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const handleStake = async (tokenId: string, lotNo: string) => {
     if (connectedWallet) {
@@ -42,11 +40,6 @@ const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
     } else {
       toast.error("Connect your wallet");
     }
-  };
-  const onSuccess = () => {
-    increaseRefreshCnt();
-    setModalActive(false);
-    setTxid("");
   };
 
   return (
@@ -96,17 +89,6 @@ const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
         </Modal>
       ) : (
         <></>
-      )}
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
       )}
     </>
   );

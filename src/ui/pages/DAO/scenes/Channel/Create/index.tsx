@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import MDEditor from "@uiw/react-md-editor";
-import Modal from "../../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
@@ -18,14 +16,13 @@ const Create = () => {
   const params = useParams();
   const history = useHistory();
   const { contractHash } = params as any;
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [title, setTile] = useState("");
   const [description, setDescription] = useState("");
   const [options, setOptions] = useState(["Yes", "No"]);
   const [start, setStart] = useState(new Date());
   const [end, setEnd] = useState(new Date(Date.now() + 3600 * 1000 * 24));
-  const [txid, setTxid] = useState("");
 
   const handleOptionChange = (val, i) => {
     const array = [...options];
@@ -219,17 +216,6 @@ const Create = () => {
                 >
                   Create a proposal
                 </button>
-
-                {txid && (
-                  <Modal onClose={() => setTxid("")}>
-                    <AfterTransactionSubmitted
-                      txid={txid}
-                      network={network}
-                      onSuccess={onSuccess}
-                      onError={() => setTxid("")}
-                    />
-                  </Modal>
-                )}
               </div>
             </div>
           </div>

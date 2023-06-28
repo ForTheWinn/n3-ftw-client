@@ -8,7 +8,7 @@ import { getExploler } from "../../../../helpers";
 const TxHandler = () => {
   const { chain, network, txid, resetTxid } = useApp();
   const [isDone, setDone] = useState(false);
-  const [hasError, setError] = useState("");
+  const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
     async function checkTxid(_txid: string) {
@@ -24,6 +24,13 @@ const TxHandler = () => {
     if (txid) {
       checkTxid(txid);
     }
+
+    return () => {
+      if (!txid) {
+        setDone(false);
+        setError(undefined);
+      }
+    };
   }, [txid]);
 
   if (!txid) return <></>;
@@ -32,7 +39,7 @@ const TxHandler = () => {
       <TxReceipt
         txid={txid}
         isSuccess={isDone}
-        error={hasError}
+        error={error}
         onSuccess={resetTxid}
         onError={resetTxid}
         explorer={getExploler(chain, network)}

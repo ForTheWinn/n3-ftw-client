@@ -4,9 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
-import Modal from "../../../../../components/Modal";
 import toast from "react-hot-toast";
-import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import VoteList from "./VoteList";
 import VotingPeriod from "./components/VotingPeriod";
 import VotingProgress from "./components/VotingProgress";
@@ -19,11 +17,10 @@ import { DAO_CHANNEL_PATH } from "../../../../../../consts/routes";
 
 const ProposalView = () => {
   const params = useParams();
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { contractHash, proposalNo } = params as any;
   const { connectedWallet } = useNeoWallets();
   const [isVoteModalActive, setVoteModalActive] = useState(false);
-  const [txid, setTxid] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [vote, setVote] = useState({
     vote: "",
@@ -224,17 +221,6 @@ const ProposalView = () => {
           onVoteSubmit={handleVote}
           onClose={() => setVoteModalActive(false)}
         />
-      )}
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
       )}
     </div>
   );

@@ -9,8 +9,6 @@ import {
 } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { toast } from "react-hot-toast";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import History from "../History";
 import { useApp } from "../../../../../common/hooks/use-app";
 
@@ -22,13 +20,11 @@ export interface IMainData {
 }
 
 const Main = (props) => {
-  const { network } = useApp();
+  const { network, setTxid, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IMainData | undefined>(undefined);
   const [error, setError] = useState();
-  const [txid, setTxid] = useState("");
-  const [refresh, setRefresh] = useState(0);
   const onClaimAll = async () => {
     if (connectedWallet) {
       try {
@@ -41,12 +37,6 @@ const Main = (props) => {
       // toggleWalletSidebar();
     }
   };
-
-  const handleSuccess = () => {
-    setRefresh(refresh + 1);
-    setTxid("");
-  };
-
   useEffect(() => {
     async function fetch() {
       try {
@@ -61,7 +51,7 @@ const Main = (props) => {
       }
     }
     fetch();
-  }, [connectedWallet, network, refresh]);
+  }, [connectedWallet, network, refreshCount]);
   return (
     <div>
       <div className="columns is-centered">
@@ -177,16 +167,6 @@ const Main = (props) => {
           </div>
         </div>
       </div>
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={handleSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </div>
   );
 };

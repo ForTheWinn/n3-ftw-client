@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { toast } from "react-hot-toast";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useApp } from "../../../../../common/hooks/use-app";
 
 const DrawBtn = () => {
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
-  const [txid, setTxid] = useState("");
 
   const onDraw = async () => {
     if (connectedWallet) {
@@ -20,7 +17,6 @@ const DrawBtn = () => {
         toast.error(e.message);
       }
     } else {
-      // toggleWalletSidebar();
     }
   };
   return (
@@ -28,17 +24,6 @@ const DrawBtn = () => {
       <button onClick={onDraw} className="button">
         Draw
       </button>
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={() => setTxid("")}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </div>
   );
 };

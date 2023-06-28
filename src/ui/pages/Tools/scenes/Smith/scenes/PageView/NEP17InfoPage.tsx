@@ -5,9 +5,6 @@ import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/s
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
 import { toast } from "react-hot-toast";
-import Modal from "../../../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import NEP17UpdateFormModal from "../../components/UpdateTokenMetadataModal";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import { handleError } from "../../../../../../../packages/neo/utils/errors";
 import {
@@ -20,11 +17,10 @@ import { SMITH_PATH } from "../../../../../../../consts/routes";
 const NEP17InfoPage = () => {
   const params = useParams();
   const { contractHash } = params as any;
-  const { network } = useApp();
+  const { network, setTxid, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isUpdateModalActive, setUpdateModalActive] = useState(false);
   const [refresh, setRefresh] = useState(0);
-  const [txid, setTxid] = useState<string>();
   const [isAdmin, setAdmin] = useState(false);
 
   const { isLoaded, error, data } = useOnChainData(() => {
@@ -209,17 +205,6 @@ const NEP17InfoPage = () => {
           onClose={() => setUpdateModalActive(false)}
         />
       )} */}
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            network={network}
-            txid={txid}
-            onSuccess={onSubmitSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </>
   );
 };

@@ -9,21 +9,18 @@ import { handleError } from "../../../../../../../packages/neo/utils/errors";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { SMITH_PATH } from "../../../../../../../consts/routes";
 
-import Modal from "../../../../../../components/Modal";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import ConnectWalletButton from "../../../../../../components/ConnectWalletButton";
-import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import {
-  SMITH_FEE,
-  SMITH_FEE_FORMATTED
-} from "../../../../../../../consts/smith";
+import { SMITH_FEE_FORMATTED } from "../../../../../../../consts/smith";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
+import NEOSmithActionModal from "./NEOActionModal";
+import { Modal } from "antd";
 
 const CreateToken = () => {
   const { network } = useApp();
   const { connectedWallet } = useNeoWallets();
   const history = useHistory();
-  const [txid, setTxid] = useState<string>();
+  const [txid, setTxid] = useState<string | undefined>();
   const [isBalanceLoading, setBalanceLoading] = useState(false);
   const [balances, setBalances] = useState<{
     gasBalance: number;
@@ -66,15 +63,15 @@ const CreateToken = () => {
       return;
     }
 
-    if (balances.nepBalance < SMITH_FEE[NEO_CHAIN][network]) {
-      toast.error("You don't have enough NEP.");
-      return;
-    }
+    // if (balances.nepBalance < SMITH_FEE[NEO_CHAIN][network]) {
+    //   toast.error("You don't have enough NEP.");
+    //   return;
+    // }
 
-    if (balances.gasBalance < 10_00000000) {
-      toast.error("You don't have enough GAS.");
-      return;
-    }
+    // if (balances.gasBalance < 10_00000000) {
+    //   toast.error("You don't have enough GAS.");
+    //   return;
+    // }
 
     try {
       const res = await new SmithContract(network).isNEP17SymbolTaken(
@@ -101,14 +98,11 @@ const CreateToken = () => {
   };
 
   const onSuccess = () => {
-    setTxid("");
+    setTxid(undefined);
     history.push(SMITH_PATH);
   };
 
-  // const firstInput = useRef(null);
-
   useEffect(() => {
-    // firstInput.current.focus();
     async function balanceCheck(w) {
       setBalanceLoading(true);
       try {
@@ -123,7 +117,7 @@ const CreateToken = () => {
     if (connectedWallet) {
       balanceCheck(connectedWallet);
     }
-  }, [connectedWallet, network]);
+  }, [network]);
 
   return (
     <PageLayout>
@@ -215,7 +209,12 @@ const CreateToken = () => {
                 <div className="columns">
                   <div className="column">
                     <div className="field">
-                      <label className="label">Author</label>
+                      <label className="label">
+                        Author{" "}
+                        <span className="is-size-7 has-text-weight-light">
+                          (Optional)
+                        </span>
+                      </label>
                       <div className="control">
                         <input
                           placeholder="Author"
@@ -232,7 +231,12 @@ const CreateToken = () => {
 
                   <div className="column">
                     <div className="field">
-                      <label className="label">Email</label>
+                      <label className="label">
+                        Email{" "}
+                        <span className="is-size-7 has-text-weight-light">
+                          (Optional)
+                        </span>
+                      </label>
                       <div className="control">
                         <input
                           placeholder="Email"
@@ -249,7 +253,12 @@ const CreateToken = () => {
                 </div>
 
                 <div className="field">
-                  <label className="label">Description</label>
+                  <label className="label">
+                    Description{" "}
+                    <span className="is-size-7 has-text-weight-light">
+                      (Optional)
+                    </span>
+                  </label>
                   <div className="control">
                     <input
                       placeholder="Tell us about your token.."
@@ -339,12 +348,17 @@ const CreateToken = () => {
       </div>
 
       {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
+        <Modal
+          closable={false}
+          onCancel={() => setTxid(undefined)}
+          open={true}
+          footer={null}
+        >
+          <NEOSmithActionModal
             network={network}
             txid={txid}
             onSuccess={onSuccess}
-            onError={() => setTxid("")}
+            onError={() => setTxid(undefined)}
           />
         </Modal>
       )}

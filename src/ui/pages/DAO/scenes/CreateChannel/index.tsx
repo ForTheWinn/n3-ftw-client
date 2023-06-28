@@ -3,8 +3,6 @@ import { detectEmojiInString } from "../../../Tools/scenes/Smith/helpers";
 import { DaoContract } from "../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { Link, useHistory } from "react-router-dom";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import VerifyContract from "./VerifyContract";
@@ -17,9 +15,8 @@ interface IAddChannelProps {
 }
 const CreateChannel = ({ onAdd }: IAddChannelProps) => {
   const history = useHistory();
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
-  const [txid, setTxid] = useState<string>();
   const [values, setValues] = useState({
     symbol: "",
     contractHash: "",
@@ -107,17 +104,6 @@ const CreateChannel = ({ onAdd }: IAddChannelProps) => {
                     network={network}
                     connectedWallet={connectedWallet}
                   />
-                )}
-
-                {txid && (
-                  <Modal onClose={() => setTxid("")}>
-                    <AfterTransactionSubmitted
-                      network={network}
-                      txid={txid}
-                      onSuccess={handleTxSuccess}
-                      onError={() => setTxid("")}
-                    />
-                  </Modal>
                 )}
               </div>
             </div>

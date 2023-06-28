@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import toast from "react-hot-toast";
-import Modal from "../../../components/Modal";
-import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
 import DatePicker from "react-datepicker";
 import SelectTokenContract from "./SelectTokenContract";
 import NumberFormat from "react-number-format";
@@ -21,7 +19,7 @@ const Create = () => {
   const location = useLocation();
   const history = useHistory();
   const params = queryString.parse(location.search);
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [contract, setContractHash] = useState<ITokenState | undefined>(
     undefined
@@ -38,7 +36,6 @@ const Create = () => {
     new Date(Date.now() + 3600 * 1000 * 24)
     // new Date(Date.now())
   );
-  const [txid, setTxid] = useState("");
   const [balances, setBalances] = useState<{
     gasBalance: number;
     nepBalance: number;
@@ -275,17 +272,6 @@ const Create = () => {
           </div>
         </div>
       </div>
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </div>
   );
 };

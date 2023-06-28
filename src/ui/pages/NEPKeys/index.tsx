@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 import { useApp } from "../../../common/hooks/use-app";
 import { useOnChainData } from "../../../common/hooks/use-onchain-data";
 import { RestAPI } from "../../../packages/neo/api";
 import { GMContract } from "../../../packages/neo/contracts/gm";
 import Level from "../../components/Level";
-import Modal from "../../components/Modal";
 import KeyCard from "./components/KeyCard";
 import PageLayout from "../../components/Commons/PageLayout";
-import AfterTransactionSubmitted from "../../components/NeoComponents/AfterTransactionSubmitted";
 import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
 
 const KeysLoading = () => {
@@ -40,12 +38,11 @@ const KeysSoldout = () => {
 
 const NEPKeys = () => {
   const { connectedWallet } = useNeoWallets();
-  const { network, toggleWalletSidebar } = useApp();
-  const [txid, setTxid] = useState("");
+  const { network, toggleWalletSidebar, setTxid } = useApp();
   const { data, isLoaded } = useOnChainData(
     () =>
       new RestAPI(network).getGMAssets({
-        "Owners[]": "NYqGJqeAKCdzqZBjhSTtsLwnsRTrhDsHsC",
+        "Owners[]": "NYqGJqeAKCdzqZBjhSTtsLwnsRTrhDsHsC"
       }),
     []
   );
@@ -54,7 +51,7 @@ const NEPKeys = () => {
     if (connectedWallet) {
       try {
         const res = await new RestAPI(network).getGMOrders({
-          tokenId: tokenId,
+          tokenId: tokenId
         });
         if (
           res &&
@@ -115,8 +112,8 @@ const NEPKeys = () => {
                       <KeysLoading />
                     ) : data && data.assets ? (
                       data.assets.map((evt) => {
-                        if (!evt){
-                          return <></>
+                        if (!evt) {
+                          return <></>;
                         }
                         return (
                           <KeyCard
@@ -140,16 +137,6 @@ const NEPKeys = () => {
           </div>
         </div>
       </PageLayout>
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={() => setTxid("")}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </>
   );
 };

@@ -7,19 +7,16 @@ import { NFTContract } from "../../../../packages/neo/contracts";
 import Banner from "./Banner";
 import { RestAPI } from "../../../../packages/neo/api";
 import { RUNE_PHASE_FILTER } from "../../../../packages/neo/contracts/ftw/rune/consts";
-import AfterTransactionSubmitted from "../../../components/NeoComponents/AfterTransactionSubmitted";
-import Modal from "../../../components/Modal";
 import { handleError } from "../../../../packages/neo/utils/errors";
 import { useApp } from "../../../../common/hooks/use-app";
 
 const Gallery = () => {
-  const [txid, setTxid] = useState("");
   const [filter, setFilter] = useState<string>(RUNE_PHASE_FILTER[0]);
   const [tokens, setTokens] = useState<any>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [propertiesModalActive, setPropertiesModalActive] = useState<string>();
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const onPropertiesModalActive = (tokenId: string) => {
     setPropertiesModalActive(tokenId);
@@ -104,16 +101,6 @@ const Gallery = () => {
           tokenId={propertiesModalActive}
           onClose={() => setPropertiesModalActive(undefined)}
         />
-      )}
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={() => setTxid("")}
-            onError={() => setTxid("")}
-          />
-        </Modal>
       )}
     </section>
   );

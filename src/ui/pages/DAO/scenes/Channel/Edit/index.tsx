@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import PageLayout from "../../../../../components/Commons/PageLayout";
 import { Link, useHistory, useParams } from "react-router-dom";
 import ChannelForm from "../../../components/ChannelForm";
-import Modal from "../../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useNeoWallets } from "../../../../../../common/hooks/use-neo-wallets";
 import { DaoContract } from "../../../../../../packages/neo/contracts/ftw/dao";
 import toast from "react-hot-toast";
@@ -15,9 +13,8 @@ const Edit = () => {
   const params = useParams();
   const history = useHistory();
   const { contractHash } = params as any;
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
-  const [txid, setTxid] = useState<string>();
   // const [refresh, setRefresh] = useState<string>();
   const [values, setValues] = useState<any>();
 
@@ -99,17 +96,6 @@ const Edit = () => {
                 </button>
               </div>
             </div>
-
-            {txid && (
-              <Modal onClose={() => setTxid("")}>
-                <AfterTransactionSubmitted
-                  network={network}
-                  txid={txid}
-                  onSuccess={handleTxSuccess}
-                  onError={() => setTxid("")}
-                />
-              </Modal>
-            )}
           </div>
         </div>
       </div>

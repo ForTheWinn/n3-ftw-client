@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Route } from "react-router-dom";
 import TokenMain from "./scenes/TokenMain";
 import NFTMain from "./scenes/NFTMain";
@@ -20,39 +20,39 @@ import { NEO_CHAIN } from "../../../../../consts/global";
 
 const Smith = () => {
   const { chain } = useApp();
-  useEffect(() => {
-    document.title = "FTW | Smith";
-  }, []);
 
-  // return <Maintenance />;
-  return (
-    <>
-      <Route exact path={SMITH_PATH} component={() => <TokenMain />} />
-      <Route exact path={SMITH_PATH_NEP11} component={() => <NFTMain />} />
-      <Route
-        exact
-        path={SMITH_CREATE_NEP17_PATH}
-        component={() =>
-          chain === NEO_CHAIN ? <CreateNeoToken /> : <CreateEVMToken />
-        }
-      />
-      <Route
-        exact
-        path={SMITH_CREATE_NEP11_PATH}
-        component={() => <CreateNEP11 />}
-      />
-      <Route
-        exact
-        path={`${SMITH_CONTRACT_NEP17_PATH}/:contractHash`}
-        component={() => <NEP17InfoPage />}
-      />
-      <Route
-        exact
-        path={`${SMITH_CONTRACT_NEP11_PATH}/:contractHash`}
-        component={() => <NEP11InfoPage />}
-      />
-    </>
-  );
+  const memoizedRoutes = useMemo(() => {
+    return (
+      <>
+        <Route exact path={SMITH_PATH} component={() => <TokenMain />} />
+        <Route exact path={SMITH_PATH_NEP11} component={() => <NFTMain />} />
+        <Route
+          exact
+          path={SMITH_CREATE_NEP17_PATH}
+          component={() =>
+            chain === NEO_CHAIN ? <CreateNeoToken /> : <CreateEVMToken />
+          }
+        />
+        <Route
+          exact
+          path={SMITH_CREATE_NEP11_PATH}
+          component={() => <CreateNEP11 />}
+        />
+        <Route
+          exact
+          path={`${SMITH_CONTRACT_NEP17_PATH}/:contractHash`}
+          component={() => <NEP17InfoPage />}
+        />
+        <Route
+          exact
+          path={`${SMITH_CONTRACT_NEP11_PATH}/:contractHash`}
+          component={() => <NEP11InfoPage />}
+        />
+      </>
+    );
+  }, [chain]);
+
+  return memoizedRoutes;
 };
 
 export default Smith;

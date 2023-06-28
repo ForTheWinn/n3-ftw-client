@@ -6,10 +6,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
 import NEP11MintFormModal from "./NEP11MintFormModal";
 import { toast } from "react-hot-toast";
-import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
-import Modal from "../../../../../../components/Modal";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
-import NEP17UpdateFormModal from "../../components/UpdateTokenMetadataModal";
 import { handleError } from "../../../../../../../packages/neo/utils/errors";
 import {
   MAINNET,
@@ -21,11 +18,10 @@ import { SMITH_PATH_NEP11 } from "../../../../../../../consts/routes";
 const NEP11InfoPage = () => {
   const params = useParams();
   const { contractHash } = params as any;
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isMintModalActive, setMintModalActive] = useState("");
   const [refresh, setRefresh] = useState(0);
-  const [txid, setTxid] = useState<string>();
   const [isUpdateModalActive, setUpdateModalActive] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
 
@@ -251,17 +247,6 @@ const NEP11InfoPage = () => {
           }}
         />
       )} */}
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            network={network}
-            txid={txid}
-            onSuccess={onSubmitSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </>
   );
 };

@@ -9,7 +9,7 @@ $highlight-color: $black !important;
 $submenu-bg-color-collapsed: $light !important;
 $submenu-bg-color: $light !important;
 $sidebar-width: 230px !important;
-$navbar-dropdown-border-top: 1px solid #ddd!important;
+$navbar-dropdown-border-top: 1px solid #ddd !important;
 @import "../../node_modules/react-pro-sidebar/dist/scss/styles";
 @import "../../node_modules/react-datepicker/dist/react-datepicker.css";
 @import "../../node_modules/slick-carousel/slick/slick.css";
@@ -141,25 +141,6 @@ For fixed top height
   }
 }
 
-.path {
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 0;
-  &.circle {
-    -webkit-animation: dash 0.9s ease-in-out;
-    animation: dash 0.9s ease-in-out;
-  }
-  &.line {
-    stroke-dashoffset: 1000;
-    -webkit-animation: dash 0.9s 0.35s ease-in-out forwards;
-    animation: dash 0.9s 0.35s ease-in-out forwards;
-  }
-  &.check {
-    stroke-dashoffset: -100;
-    -webkit-animation: dash-check 0.9s 0.35s ease-in-out forwards;
-    animation: dash-check 0.9s 0.35s ease-in-out forwards;
-  }
-}
-
 table {
   tr.is-flex {
     align-items: center;
@@ -181,190 +162,26 @@ table {
   }
 }
 
-@-webkit-keyframes dash {
-  0% {
-    stroke-dashoffset: 1000;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 1000;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@-webkit-keyframes dash-check {
-  0% {
-    stroke-dashoffset: -100;
-  }
-  100% {
-    stroke-dashoffset: 900;
-  }
-}
-
-@keyframes dash-check {
-  0% {
-    stroke-dashoffset: -100;
-  }
-  100% {
-    stroke-dashoffset: 900;
-  }
-}
-
-.box.is-hoverable {
-  @extend .is-clickable;
-
-  &:not(:hover) {
-    // Hover styling
-    @extend .is-shadowless;
-  }
-}
-
-.spoiler-blurred {
-  user-select: none;
-  -webkit-user-select: none;
-  filter: blur(0.5em);
-}
-
-//#halo {
-//  width: 100%;
-//  height: 100vh;
-//  background-color:red; /*Cover use when the animation doesn't work. ex:mobile*/
-//  position:fixed;
-//  top:0;
-//}
-
-$background: #222;
-$leftFace: #75ff24;
-$rightFace: #2970ff;
-$topFace: #b23bff;
-$scale: 1;
-$duration: 3s;
-$timingFunction: ease;
-
-.container1 {
-  position: relative;
-  height: 100px;
-  width: 86px;
-  transform: scale(#{$scale * 0.5});
-}
-
-.cube {
-  position: absolute;
-  width: 86px;
-  height: 100px;
-}
-
-.right {
-  background: $rightFace;
-  transform: rotate(-30deg) skewX(-30deg) translate(49px, 65px) scaleY(0.86);
-}
-
-.left {
-  background: $leftFace;
-  transform: rotate(90deg) skewX(-30deg) scaleY(0.86) translate(25px, -50px);
-}
-
-.top {
-  background: $topFace;
-  transform: rotate(210deg) skew(-30deg) translate(-75px, -22px) scaleY(0.86);
-  z-index: 2;
-}
-
-.face {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  transform-origin: 0 0;
-}
-
-@mixin slice($h, $w, $l) {
-  .h#{$h}.w#{$w}.l#{$l} {
-    z-index: (-#{$h});
-    animation-name: h#{$h}w#{$w}l#{$l};
-    animation-timing-function: $timingFunction;
-    animation-duration: $duration;
-    animation-iteration-count: infinite;
-  }
-  @keyframes h#{$h}w#{$w}l#{$l} {
-    0% {
-      transform: translate(
-        ($w * -50% - 50%) + ($l * 50% + 50%),
-        ($h * 50 - 200%) + ($w * 25% - 25%) + ($l * 25 + 25%)
-      );
-    }
-    14% {
-      transform: translate(
-        ($w * -50% - 50%) + ($l * 100% - 50%),
-        ($h * 50 - 200%) + ($w * 25% - 25%) + ($l * 50 - 25%)
-      );
-    }
-    28% {
-      transform: translate(
-        ($w * -100% + 50%) + ($l * 100% - 50%),
-        ($h * 50 - 200%) + ($w * 50% - 75%) + ($l * 50 - 25%)
-      );
-    }
-    43% {
-      transform: translate(
-        ($w * -100% - 100%) + ($l * 100% + 100%),
-        ($h * 100 - 400%) + ($w * 50% - 50%) + ($l * 50 + 50%)
-      );
-    }
-    57% {
-      transform: translate(
-        ($w * -100% - 100%) + ($l * 50% + 200%),
-        ($h * 100 - 400%) + ($w * 50% - 50%) + ($l * 25 + 100%)
-      );
-    }
-    71% {
-      transform: translate(
-        ($w * -50% - 200%) + ($l * 50% + 200%),
-        ($h * 100 - 375%) + ($w * 25% - 25%) + ($l * 25 + 100%)
-      );
-    }
-    85% {
-      transform: translate(
-        ($w * -50% - 50%) + ($l * 50% + 50%),
-        ($h * 50 - 200%) + ($w * 25% - 25%) + ($l * 25 + 25%)
-      );
-    }
-    100% {
-      transform: translate(
-        ($w * -50% - 50%) + ($l * 50% + 50%),
-        ($h * 50 - 200%) + ($w * 25% - 25%) + ($l * 25 + 25%)
-      );
-    }
-  }
-}
-
-@mixin generateSlice() {
-  @for $i from 1 to 4 {
-    @for $j from 1 to 4 {
-      @for $k from 1 to 4 {
-        @include slice($i, $j, $k);
-      }
-    }
-  }
-}
-
 .has-scroll-hide::-webkit-scrollbar {
   width: 0; /* Remove scrollbar space */
   background: transparent; /* Optional: just make scrollbar invisible */
 }
 
-//.scroll-container {
-//  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-//  scrollbar-width: none;  /* Firefox */
-//}
-//.scroll-container::-webkit-scrollbar {
-//  display: none;  /* Safari and Chrome */
-//}
-
-@include generateSlice();
+// .path {
+//   stroke-dasharray: 1000;
+//   stroke-dashoffset: 0;
+//   &.circle {
+//     -webkit-animation: dash 0.9s ease-in-out;
+//     animation: dash 0.9s ease-in-out;
+//   }
+//   &.line {
+//     stroke-dashoffset: 1000;
+//     -webkit-animation: dash 0.9s 0.35s ease-in-out forwards;
+//     animation: dash 0.9s 0.35s ease-in-out forwards;
+//   }
+//   &.check {
+//     stroke-dashoffset: -100;
+//     -webkit-animation: dash-check 0.9s 0.35s ease-in-out forwards;
+//     animation: dash-check 0.9s 0.35s ease-in-out forwards;
+//   }
+// }

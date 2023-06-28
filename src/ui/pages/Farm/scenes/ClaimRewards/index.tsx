@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ClaimModal from "./ClaimModal";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
@@ -16,16 +14,9 @@ interface IClaimRewardsProps {
   pRefresh: number;
 }
 const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
-  const { toggleWalletSidebar, network } = useApp();
+  const { toggleWalletSidebar, network, setTxid, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
-  const [txid, setTxid] = useState("");
-  const [refresh, setRefresh] = useState(0);
   const [isClaimModalOpen, setClaimModalOpen] = useState(false);
-
-  const handleRefresh = () => {
-    setRefresh(refresh + 1);
-    setTxid("");
-  };
 
   const onClaim = async (selectedItems) => {
     if (connectedWallet) {
@@ -46,7 +37,7 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
 
   const { isLoaded, error, data } = useOnChainData(() => {
     return new StakingContract(network).getClaimable(connectedWallet);
-  }, [connectedWallet, network, refresh, pRefresh]);
+  }, [connectedWallet, network, refreshCount, pRefresh]);
 
   return (
     <div>
@@ -68,7 +59,7 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
           selectedItems={[]}
           network={network}
           connectedWallet={connectedWallet}
-          refresh={refresh}
+          refresh={refreshCount}
           pRefresh={pRefresh}
         />
       </div>
@@ -90,23 +81,12 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
         <ClaimModal
           network={network}
           connectedWallet={connectedWallet}
-          refresh={refresh}
+          refresh={refreshCount}
           pRefresh={pRefresh}
           items={data}
           onClose={() => setClaimModalOpen(false)}
           onClaim={onClaim}
         />
-      )}
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={handleRefresh}
-            onError={() => setTxid("")}
-          />
-        </Modal>
       )}
     </div>
   );

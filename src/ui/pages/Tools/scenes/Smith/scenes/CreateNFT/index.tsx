@@ -10,17 +10,14 @@ import { detectEmojiInString } from "../../helpers";
 import { handleError } from "../../../../../../../packages/neo/utils/errors";
 import { SMITH_PATH_NEP11 } from "../../../../../../../consts/routes";
 
-import Modal from "../../../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../../../components/NeoComponents/AfterTransactionSubmitted";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import { SMITH_FEE } from "../../../../../../../consts/smith";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 
 const NEP11FormModal = () => {
   const history = useHistory();
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
-  const [txid, setTxid] = useState<string>();
   const [values, setValues] = useState({
     name: "",
     symbol: "",
@@ -275,16 +272,6 @@ const NEP11FormModal = () => {
           </div>
         </div>
       </PageLayout>
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            network={network}
-            txid={txid}
-            onSuccess={onSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </>
   );
 };

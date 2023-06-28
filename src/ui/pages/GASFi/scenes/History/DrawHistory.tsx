@@ -7,9 +7,8 @@ import { withDecimal } from "../../../../../packages/neo/utils";
 import moment from "moment";
 import { IMainData } from "../Main";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { WENT_WRONG } from "../../../../../consts/messages";
+import { useApp } from "../../../../../common/hooks/use-app";
 
 export interface IDrawHistoryProps {
   network: INetworkType;
@@ -17,17 +16,13 @@ export interface IDrawHistoryProps {
   connectedWallet?: IConnectedWallet;
 }
 const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
+  const { setTxid } = useApp();
   const [isLoading, setLoading] = useState(true);
   const [drawHistory, setDrawHistory] = useState<IDrawsResult | undefined>(
     undefined
   );
   const [error, setError] = useState();
   const [page, setPage] = useState(1);
-  const [txid, setTxid] = useState("");
-
-  const handleSuccess = () => {
-    setTxid("");
-  };
 
   useEffect(() => {
     async function fetch() {
@@ -108,17 +103,6 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
           )}
         </table>
       </div>
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={handleSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </div>
   );
 };

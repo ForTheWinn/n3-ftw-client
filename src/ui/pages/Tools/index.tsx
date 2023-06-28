@@ -4,7 +4,6 @@ import { TOOLS_PAGE_ROUTE } from "../../../consts/routes";
 
 const Tools = () => {
   return (
-    <>
       <>
         {TOOLS_PAGE_ROUTE.category.map((route: any) => {
           return (
@@ -17,7 +16,6 @@ const Tools = () => {
           );
         })}
       </>
-    </>
   );
 };
 

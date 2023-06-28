@@ -3,8 +3,6 @@ import NumberFormat from "react-number-format";
 import { POSITION_RANGE } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useHistory } from "react-router-dom";
@@ -17,12 +15,11 @@ const Stake = () => {
   const { toggleWalletSidebar } = useApp();
   const [position, setPosition] = useState<number | undefined>();
   const [amount, setAmount] = useState<number | undefined>();
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IMainData | undefined>(undefined);
   const [error, setError] = useState();
-  const [txid, setTxid] = useState("");
 
   const onSubmit = async () => {
     if (connectedWallet && amount && position) {
@@ -163,17 +160,6 @@ const Stake = () => {
           </div>
         </div>
       </div>
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={handleSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </div>
   );
 };

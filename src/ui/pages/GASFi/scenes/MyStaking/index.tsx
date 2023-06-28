@@ -5,8 +5,6 @@ import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/i
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { withDecimal } from "../../../../../packages/neo/utils";
 import { toast } from "react-hot-toast";
-import Modal from "../../../../components/Modal";
-import AfterTransactionSubmitted from "../../../../components/NeoComponents/AfterTransactionSubmitted";
 import { useHistory } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
 import moment from "moment";
@@ -16,12 +14,11 @@ import { GASFI_PATH } from "../../../../../consts/routes";
 const MyStaking = () => {
   const history = useHistory();
   const { toggleWalletSidebar } = useApp();
-  const { network } = useApp();
+  const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<IStakeResult | undefined>(undefined);
   const [error, setError] = useState();
-  const [txid, setTxid] = useState("");
 
   const onSubmit = async () => {
     if (connectedWallet) {
@@ -131,17 +128,6 @@ const MyStaking = () => {
 
         {/*<div className="box is-shadowless">History</div>*/}
       </div>
-
-      {txid && (
-        <Modal onClose={() => setTxid("")}>
-          <AfterTransactionSubmitted
-            txid={txid}
-            network={network}
-            onSuccess={handleSuccess}
-            onError={() => setTxid("")}
-          />
-        </Modal>
-      )}
     </div>
   );
 };
