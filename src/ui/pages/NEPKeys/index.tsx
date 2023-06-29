@@ -2,12 +2,12 @@ import React from "react";
 import toast from "react-hot-toast";
 import { useApp } from "../../../common/hooks/use-app";
 import { useOnChainData } from "../../../common/hooks/use-onchain-data";
-import { RestAPI } from "../../../packages/neo/api";
 import { GMContract } from "../../../packages/neo/contracts/gm";
 import Level from "../../components/Level";
 import KeyCard from "./components/KeyCard";
 import PageLayout from "../../components/Commons/PageLayout";
 import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
+import { RestAPI } from "../../../packages/neo/api";
 
 const KeysLoading = () => {
   return (

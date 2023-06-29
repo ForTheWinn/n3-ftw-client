@@ -5,7 +5,6 @@ import NumberFormat from "react-number-format";
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
 import { useHistory } from "react-router-dom";
-import { handleError } from "../../../../../../../packages/neo/utils/errors";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { SMITH_PATH } from "../../../../../../../consts/routes";
 
@@ -15,6 +14,7 @@ import { SMITH_FEE_FORMATTED } from "../../../../../../../consts/smith";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 import NEOSmithActionModal from "./NEOActionModal";
 import { Modal } from "antd";
+import { WENT_WRONG } from "../../../../../../../consts/messages";
 
 const CreateToken = () => {
   const { network } = useApp();
@@ -29,6 +29,7 @@ const CreateToken = () => {
     gasBalance: 0,
     nepBalance: 0
   });
+
   const [values, setValues] = useState({
     name: "",
     symbol: "",
@@ -38,13 +39,16 @@ const CreateToken = () => {
     description: "",
     email: ""
   });
+
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
       [key]: val
     });
   };
+
   const hasEmoji = detectEmojiInString(values) !== 0;
+
   const onMint = async () => {
     if (hasEmoji) {
       toast.error(
@@ -93,7 +97,7 @@ const CreateToken = () => {
         setTxid(res);
       }
     } catch (e: any) {
-      toast.error(handleError(e));
+      toast.error(e.message ? e.message : WENT_WRONG);
     }
   };
 

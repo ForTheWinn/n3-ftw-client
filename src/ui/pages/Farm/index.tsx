@@ -13,7 +13,6 @@ import {
 } from "../../../consts/routes";
 
 const Farm = () => {
-  const [refresh, setRefresh] = useState(0);
   useEffect(() => {
     document.title = "FTW Farm";
   }, []);
@@ -29,21 +28,17 @@ const Farm = () => {
                 <Route
                   exact={true}
                   path={FARM_STAKE_PATH}
-                  component={() => (
-                    <Stake onRefresh={() => setRefresh(refresh + 1)} />
-                  )}
+                  component={() => <Stake />}
                 />
                 <Route
                   path={FARM_STAKE_POSITIONS_PATH}
-                  component={() => (
-                    <MyPositions onRefresh={() => setRefresh(refresh + 1)} />
-                  )}
+                  component={() => <MyPositions />}
                 />
               </div>
             </div>
             <div className="column is-4">
               <div className="box">
-                <ClaimRewards pRefresh={refresh} />
+                <ClaimRewards />
               </div>
             </div>
           </div>

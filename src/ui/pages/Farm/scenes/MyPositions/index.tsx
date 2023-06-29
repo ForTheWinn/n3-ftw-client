@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { toast } from "react-hot-toast";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import PositionList from "./PositionList";
-import { handleError } from "../../../../../packages/neo/utils/errors";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { FARM_PATH } from "../../../../../consts/routes";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
-const MyPositions = ({ onRefresh }) => {
-  const { network, setTxid } = useApp();
+const MyPositions = () => {
+  const { network, setTxid, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
-  const [refresh, setRefresh] = useState(0);
 
   const onUnStake = async (tokenId) => {
     if (connectedWallet) {
@@ -23,18 +22,13 @@ const MyPositions = ({ onRefresh }) => {
         );
         setTxid(res);
       } catch (e: any) {
-        toast.error(handleError(e));
+        toast.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
       toast.error("Please connect wallet");
     }
   };
 
-  const onSuccess = () => {
-    onRefresh();
-    setRefresh(refresh + 1);
-    setTxid("");
-  };
 
   return (
     <div>
@@ -44,7 +38,7 @@ const MyPositions = ({ onRefresh }) => {
         <PositionList
           network={network}
           connectedWallet={connectedWallet}
-          refresh={refresh}
+          refresh={refreshCount}
           // onRefresh={() => setRefresh(refresh + 1)}
           onUnStake={onUnStake}
         />

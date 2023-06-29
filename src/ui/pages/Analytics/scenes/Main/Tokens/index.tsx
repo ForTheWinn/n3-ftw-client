@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { RestAPI } from "../../../../../../packages/neo/api";
 import TokenItem from "./TokenItem";
 import ModalCard from "../../../../../components/Modal";
 import TokenDetail from "../../TokenDetail";
@@ -9,6 +8,7 @@ import {
   ANALYTICS_PATH,
   ANALYTICS_TOKENS_PATH
 } from "../../../../../../consts/routes";
+import { RestAPI } from "../../../../../../packages/neo/api";
 
 const TokensAnalytics = () => {
   const { chain, network } = useApp();

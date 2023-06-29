@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 import { toast } from "react-hot-toast";
-import { useHistory } from "react-router-dom";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
 
-import { handleError } from "../../../../../../../packages/neo/utils/errors";
-import { SMITH_PATH_NEP11 } from "../../../../../../../consts/routes";
 
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import { SMITH_FEE } from "../../../../../../../consts/smith";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
+import { WENT_WRONG } from "../../../../../../../consts/messages";
 
 const NEP11FormModal = () => {
-  const history = useHistory();
   const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [values, setValues] = useState({
@@ -89,13 +86,8 @@ const NEP11FormModal = () => {
         setTxid(res);
       }
     } catch (e: any) {
-      toast.error(handleError(e));
+      toast.error(e.message ? e.message : WENT_WRONG);
     }
-  };
-
-  const onSuccess = () => {
-    setTxid("");
-    history.push(SMITH_PATH_NEP11);
   };
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { RestAPI } from "../../../../../../packages/neo/api";
 import PairItem from "./PairItem";
 import ModalCard from "../../../../../components/Modal";
 import PairDetail from "../../PairDetail";
@@ -9,6 +8,7 @@ import {
   ANALYTICS_PAIRS_PATH,
   ANALYTICS_PATH
 } from "../../../../../../consts/routes";
+import { RestAPI } from "../../../../../../packages/neo/api";
 
 const Pairs = () => {
   const { network } = useApp();

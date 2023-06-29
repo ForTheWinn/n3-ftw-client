@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { INetworkType } from "../../../../../../packages/neo/network";
-import { RestAPI } from "../../../../../../packages/neo/api";
 import { withDecimal } from "../../../../../../packages/neo/utils";
 import TruncatedAddress from "../../../../../components/TruncatedAddress";
 import moment from "moment";
 import { Pagination } from "antd";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
+import { RestAPI } from "../../../../../../packages/neo/api";
 
 interface ISwapHistoryProps {
   tokenA: string;

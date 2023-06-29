@@ -11,10 +11,10 @@ import {
   Legend
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { RestAPI } from "../../../../../packages/neo/api";
 import { numberTrim } from "../../../../../packages/neo/utils";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { RestAPI } from "../../../../../packages/neo/api";
 
 ChartJS.register(
   CategoryScale,

@@ -6,11 +6,11 @@ import { useLocation } from "react-router-dom";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenList from "./LPTokenList";
-import { handleError } from "../../../../../packages/neo/utils/errors";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { FARM_PATH } from "../../../../../consts/routes";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
-const Stake = ({ onRefresh }) => {
+const Stake = () => {
   const { network, setTxid } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [refresh, setRefresh] = useState(0);
@@ -35,7 +35,7 @@ const Stake = ({ onRefresh }) => {
         );
         setTxid(res);
       } catch (e: any) {
-        toast.error(handleError(e));
+        toast.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
       toast.error("Please connect wallet");

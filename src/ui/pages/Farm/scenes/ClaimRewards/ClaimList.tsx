@@ -8,7 +8,6 @@ interface IClaimListProps {
   network: INetworkType;
   connectedWallet?: IConnectedWallet;
   refresh: number;
-  pRefresh: number;
   isClaimNode: boolean;
   handleToggle: (item: any) => void;
   selectedItems: any[];
@@ -17,14 +16,13 @@ const ClaimList = ({
   network,
   connectedWallet,
   refresh,
-  pRefresh,
   isClaimNode,
   handleToggle,
   selectedItems
 }: IClaimListProps) => {
   const { isLoaded, data } = useOnChainData(() => {
     return new StakingContract(network).getClaimable(connectedWallet);
-  }, [connectedWallet, network, refresh, pRefresh]);
+  }, [connectedWallet, network, refresh]);
   if (!isLoaded) <div></div>;
   return (
     <div>

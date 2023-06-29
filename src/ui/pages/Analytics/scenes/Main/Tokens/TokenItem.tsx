@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { RestAPI } from "../../../../../../packages/neo/api";
+import React from "react";
 import { INetworkType } from "../../../../../../packages/neo/network";
 import { decimalCuts, numberTrim } from "../../../../../../packages/neo/utils";
 import { FaChartLine } from "react-icons/fa";
@@ -8,6 +7,7 @@ import { TOKEN_LIST } from "../../../../../../consts/tokens";
 import { CHAINS } from "../../../../../../consts/chains";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../../../consts/global";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
+import { RestAPI } from "../../../../../../packages/neo/api";
 
 interface ITokenItem {
   chain: CHAINS;

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Route } from "react-router-dom";
 import TokenMain from "./scenes/TokenMain";
 import NFTMain from "./scenes/NFTMain";

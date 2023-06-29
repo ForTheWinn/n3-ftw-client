@@ -5,15 +5,12 @@ import ClaimModal from "./ClaimModal";
 import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { handleError } from "../../../../../packages/neo/utils/errors";
 import ClaimList from "./ClaimList";
 import { NEP_LOGO } from "../../../../../consts/global";
 import { Avatar } from "antd";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
-interface IClaimRewardsProps {
-  pRefresh: number;
-}
-const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
+const ClaimRewards = () => {
   const { toggleWalletSidebar, network, setTxid, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isClaimModalOpen, setClaimModalOpen] = useState(false);
@@ -28,7 +25,7 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
         setClaimModalOpen(false);
         setTxid(res);
       } catch (e: any) {
-        toast.error(handleError(e));
+        toast.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
       toast.error("Please connect wallet");
@@ -37,7 +34,7 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
 
   const { isLoaded, error, data } = useOnChainData(() => {
     return new StakingContract(network).getClaimable(connectedWallet);
-  }, [connectedWallet, network, refreshCount, pRefresh]);
+  }, [connectedWallet, network, refreshCount]);
 
   return (
     <div>
@@ -60,7 +57,6 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
           network={network}
           connectedWallet={connectedWallet}
           refresh={refreshCount}
-          pRefresh={pRefresh}
         />
       </div>
       <button
@@ -82,7 +78,6 @@ const ClaimRewards = ({ pRefresh }: IClaimRewardsProps) => {
           network={network}
           connectedWallet={connectedWallet}
           refresh={refreshCount}
-          pRefresh={pRefresh}
           items={data}
           onClose={() => setClaimModalOpen(false)}
           onClaim={onClaim}

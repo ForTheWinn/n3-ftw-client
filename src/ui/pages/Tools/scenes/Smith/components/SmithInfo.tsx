@@ -5,10 +5,7 @@ const SmithInfo = (props) => {
     <div>
       <h5 className="title is-5">FTW Smith</h5>
       <div className="content">
-        <p>
-          Deploy your NEP-17 (Fungible) smart contract and NEP-11 (Non fungible)
-          smart contract on N3 in a few clicks.
-        </p>
+        <p>Deploy your token smart contract in a few clicks.</p>
       </div>
 
       <div className="content">

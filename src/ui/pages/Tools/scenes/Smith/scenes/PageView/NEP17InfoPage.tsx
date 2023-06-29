@@ -6,13 +6,13 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
 import { toast } from "react-hot-toast";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
-import { handleError } from "../../../../../../../packages/neo/utils/errors";
 import {
   MAINNET,
   UNKNOWN_TOKEN_IMAGE
 } from "../../../../../../../consts/global";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { SMITH_PATH } from "../../../../../../../consts/routes";
+import { WENT_WRONG } from "../../../../../../../consts/messages";
 
 const NEP17InfoPage = () => {
   const params = useParams();
@@ -20,17 +20,11 @@ const NEP17InfoPage = () => {
   const { network, setTxid, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isUpdateModalActive, setUpdateModalActive] = useState(false);
-  const [refresh, setRefresh] = useState(0);
   const [isAdmin, setAdmin] = useState(false);
 
   const { isLoaded, error, data } = useOnChainData(() => {
     return new SmithContract(network).getNep17ContractInfo(contractHash);
-  }, [connectedWallet, network, refresh]);
-
-  const onSubmitSuccess = () => {
-    setRefresh(refresh + 1);
-    setTxid("");
-  };
+  }, [connectedWallet, network, refreshCount]);
 
   const onUpdate = async (values) => {
     if (connectedWallet) {
@@ -58,7 +52,7 @@ const NEP17InfoPage = () => {
           setTxid(res);
         }
       } catch (e: any) {
-        toast.error(handleError(e));
+        toast.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
       toast.error("Please connect wallet.");

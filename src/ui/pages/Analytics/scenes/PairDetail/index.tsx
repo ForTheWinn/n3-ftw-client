@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SwapHistory from "./SwapHistory";
-import { RestAPI } from "../../../../../packages/neo/api";
 import LiquidityChart from "../Main/LiquidityChart";
-import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { TOKEN_LIST } from "../../../../../consts/tokens";
-import { Avatar, Space } from "antd";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { RestAPI } from "../../../../../packages/neo/api";
 
 interface IPairDetailProps {
   id: string;

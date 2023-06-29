@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { RestAPI } from "../../../../../packages/neo/api";
 import TokenPriceChart from "../../components/PriceChart";
 import LiquidityChart from "../Main/LiquidityChart";
 import SwapHistory from "./SwapHistory";
-import { MAINNET, UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
-import { TOKEN_LIST } from "../../../../../consts/tokens";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
+import { RestAPI } from "../../../../../packages/neo/api";
 
 interface ITokenDetailProps {
   tokenId: string;

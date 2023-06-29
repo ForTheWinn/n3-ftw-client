@@ -7,27 +7,26 @@ import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-da
 import NEP11MintFormModal from "./NEP11MintFormModal";
 import { toast } from "react-hot-toast";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
-import { handleError } from "../../../../../../../packages/neo/utils/errors";
 import {
   MAINNET,
   UNKNOWN_TOKEN_IMAGE
 } from "../../../../../../../consts/global";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { SMITH_PATH_NEP11 } from "../../../../../../../consts/routes";
+import { WENT_WRONG } from "../../../../../../../consts/messages";
 
 const NEP11InfoPage = () => {
   const params = useParams();
   const { contractHash } = params as any;
-  const { network, setTxid } = useApp();
+  const { network, setTxid, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isMintModalActive, setMintModalActive] = useState("");
-  const [refresh, setRefresh] = useState(0);
   const [isUpdateModalActive, setUpdateModalActive] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
 
   const { isLoaded, error, data } = useOnChainData(() => {
     return new SmithContract(network).getNep11ContractInfo(contractHash);
-  }, [connectedWallet, network, refresh]);
+  }, [connectedWallet, network, refreshCount]);
   const onUpdate = async (values) => {
     if (connectedWallet) {
       const manifest = JSON.stringify({
@@ -54,7 +53,7 @@ const NEP11InfoPage = () => {
           setTxid(res);
         }
       } catch (e: any) {
-        toast.error(handleError(e));
+        toast.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
       toast.error("Please connect wallet.");
@@ -86,16 +85,11 @@ const NEP11InfoPage = () => {
         setMintModalActive("");
         setTxid(res);
       } catch (e: any) {
-        toast.error(handleError(e));
+        toast.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
       toast.error("Please connect wallet.");
     }
-  };
-
-  const onSubmitSuccess = () => {
-    setRefresh(refresh + 1);
-    setTxid("");
   };
 
   if (!isLoaded) return <div></div>;

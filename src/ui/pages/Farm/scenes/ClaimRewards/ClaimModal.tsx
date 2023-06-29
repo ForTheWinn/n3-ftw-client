@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/farm/interfaces";
 import ModalCard from "../../../../components/Modal";
-import { toDecimal } from "../../../../../packages/neo/utils";
 import ClaimList from "./ClaimList";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
@@ -10,7 +9,6 @@ const ClaimModal = (props: {
   network: INetworkType;
   connectedWallet?: IConnectedWallet;
   refresh: number;
-  pRefresh: number;
   items: IClaimableRewards[];
   onClaim: (v: IClaimableRewards[]) => void;
   onClose: () => void;
@@ -43,13 +41,12 @@ const ClaimModal = (props: {
           <h1 className="title is-5">Claim rewards</h1>
           <div className="box">
             <ClaimList
+              refresh={props.refresh}
               handleToggle={handleToggle}
               isClaimNode={true}
               selectedItems={selectedItems}
               network={props.network}
               connectedWallet={props.connectedWallet}
-              refresh={props.pRefresh}
-              pRefresh={props.pRefresh}
             />
           </div>
           <button

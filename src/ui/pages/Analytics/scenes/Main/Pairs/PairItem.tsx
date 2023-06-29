@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { RestAPI } from "../../../../../../packages/neo/api";
 import { INetworkType } from "../../../../../../packages/neo/network";
 import PairIcons from "../../../../../components/PairIcons";
 import { numberTrim } from "../../../../../../packages/neo/utils";
 import { FaChartLine } from "react-icons/fa";
 import { useApp } from "../../../../../../common/hooks/use-app";
-import { Space, Typography } from "antd";
-const { Text, Link } = Typography;
+import { Space } from "antd";
+import { RestAPI } from "../../../../../../packages/neo/api";
 interface IPairItem {
   network: INetworkType;
   tokenA: string;
