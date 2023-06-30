@@ -3,14 +3,14 @@ import { Alchemy, Network } from "alchemy-sdk";
 
 import FTWSmith from "./abi/FTWSmith.json";
 import { CONTRACT_LIST } from "../../../consts/contracts";
-import { CHAINS } from "../../../consts";
 import { INetworkType } from "../../neo/network";
 import { ALCHEMY_KEY, SMITH } from "../../../consts/global";
 import { ethers } from "ethers";
 import { ISmithTokenInfo } from "../interfaces";
+import { CHAINS } from "../../../consts/chains";
 
 export const createTokenContract = (
-  chain: CHAINS.CHAINS,
+  chain: CHAINS,
   network: INetworkType,
   name: string,
   symbol: string,
@@ -28,7 +28,7 @@ export const createTokenContract = (
 };
 
 export const setTokenData = (
-  chain: CHAINS.CHAINS,
+  chain: CHAINS,
   network: INetworkType,
   contractHash: string,
   icon: string,
@@ -58,7 +58,7 @@ export const getContractHashFromLogs = (logs: any) => {
 };
 
 export const getTokenList = async (
-  chain: CHAINS.CHAINS,
+  chain: CHAINS,
   network: INetworkType
 ) => {
   const res: any = await readContract({
@@ -84,7 +84,7 @@ export const getTokenList = async (
 };
 
 const getTokenMetadata = async (
-  chain: CHAINS.CHAINS,
+  chain: CHAINS,
   network: INetworkType,
   contractHash: string
 ) => {

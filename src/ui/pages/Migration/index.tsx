@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 // tslint:disable-next-line:no-submodule-imports
-import DOTS from "vanta/dist/vanta.halo.min";
 import PageLayout from "../../components/Commons/PageLayout";
 // import * as THREE from "three";
 // <!--        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>-->

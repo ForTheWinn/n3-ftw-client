@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PageLayout from "../../../../components/Commons/PageLayout";
-import { SpinnerRoundFilled } from "spinners-react";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
@@ -46,15 +45,10 @@ const LPTokens = () => {
       <div className="columns is-centered">
         <div className="column is-half">
           <div className="box is-shadowless">
-            <Space>
-              <Avatar src={CONFIGS[network][chain].icon} />
-              <div>
-                <h1 className="title is-5">LP Value Finder</h1>
-                <p className="subtitle is-7">
-                  Enter LP token ID to find the token value.
-                </p>
-              </div>
-            </Space>
+            <h1 className="title is-5">LP Value Finder</h1>
+            <p className="subtitle is-7">
+              Enter LP token ID to find the token value.
+            </p>
             <Divider />
             <div className="field has-addons">
               <div className="control is-expanded">
@@ -85,9 +79,6 @@ const LPTokens = () => {
             <div className="box is-shadowless">
               <div className="level is-mobile">
                 <div className="level-left">
-                  <div className="level-item">
-                    <SpinnerRoundFilled size={15} color="#ccc" />
-                  </div>
                   <div className="level-item">Searching..</div>
                 </div>
               </div>

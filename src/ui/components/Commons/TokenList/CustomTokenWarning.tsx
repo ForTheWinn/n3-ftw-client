@@ -1,8 +1,8 @@
 import React from "react";
 import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
-import { getExplolerForContract } from "../../../../helpers";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
+import { getExplorer } from "../../../../helpers/helpers";
 
 interface ICustomTokenWarningProps {
   chain: CHAINS;
@@ -18,9 +18,7 @@ const CustomTokenWarning = ({
   onOk,
   onCancel
 }: ICustomTokenWarningProps) => {
-  const explorerLink = `${getExplolerForContract(chain, network)}/${
-    token.hash
-  }`;
+  const explorerLink = `${getExplorer(chain, network, "tx")}/${token.hash}`;
   return (
     <div className="has-text-centered p-5">
       <div className="notification is-warning is-light is-small">

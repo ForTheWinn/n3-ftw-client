@@ -31,7 +31,7 @@ const Wallet = ({ isActive }: { isActive: boolean }) => {
           style={{
             height: "200px",
             width: "50px",
-            position: "fixed",
+            position: "absolute",
             top: 0,
             left: 0
           }}

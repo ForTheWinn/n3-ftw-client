@@ -24,7 +24,7 @@ import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import toast from "react-hot-toast";
-import { getTokenByHash } from "../../../../../helpers";
+import { getTokenByHash } from "../../../../../helpers/helpers";
 import { NEO_CHAIN } from "../../../../../consts/global";
 
 interface ISwapContext {

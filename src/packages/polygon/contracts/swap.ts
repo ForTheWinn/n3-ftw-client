@@ -134,7 +134,7 @@ export const approve = (network: INetworkType, token) => {
     address: token,
     abi: erc20ABI,
     functionName: "approve",
-    args: [CONTRACT_LIST[network][SWAP] as any, ethers.constants.MaxUint256]
+    args: [CONTRACT_LIST[network][SWAP] as any, ethers.constants.MaxUint256 as any]
   });
 };
 

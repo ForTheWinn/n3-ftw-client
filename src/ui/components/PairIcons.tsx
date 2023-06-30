@@ -1,15 +1,15 @@
 import React from "react";
 import { INetworkType } from "../../packages/neo/network";
 import { UNKNOWN_TOKEN_IMAGE } from "../../consts/global";
-import { CHAINS } from "../../consts";
 import { TOKEN_LIST } from "../../consts/tokens";
 import { Avatar, Space } from "antd";
+import { CHAINS } from "../../consts/chains";
 
 interface IPairIconsProps {
   network: INetworkType;
   tokenA: string;
   tokenB: string;
-  chain: CHAINS.CHAINS;
+  chain: CHAINS;
 }
 const PairIcons = ({ network, tokenA, tokenB, chain }: IPairIconsProps) => {
   let token1 = TOKEN_LIST[chain][network][tokenA]

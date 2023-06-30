@@ -2,7 +2,7 @@ import React from "react";
 
 import { CaretRightOutlined } from "@ant-design/icons";
 import { ITokenState } from "../../interfaces";
-import { findTradePaths } from "../../../../../../../helpers";
+import { findTradePaths } from "../../../../../../../helpers/helpers";
 import { TOKEN_LIST } from "../../../../../../../consts/tokens";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";

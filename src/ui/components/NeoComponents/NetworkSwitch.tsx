@@ -7,7 +7,6 @@ const NetworkSwitch = () => {
   const { network } = useApp();
   const onActive = () => setActive(!isActive);
   const handleNetworkChange = (val: string) => {
-    // eslint-disable-next-line no-restricted-globals
     if (confirm("Are you sure to switch network?")) {
       setActive(false);
     }

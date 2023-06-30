@@ -15,13 +15,14 @@ import { NEO_CHAIN } from "../../../../../../../consts/global";
 import NEOSmithActionModal from "./NEOActionModal";
 import { Modal } from "antd";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
+import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 
 const CreateToken = () => {
-  const { network } = useApp();
-  const { connectedWallet } = useNeoWallets();
+  const { chain, network } = useApp();
   const history = useHistory();
   const [txid, setTxid] = useState<string | undefined>();
   const [isBalanceLoading, setBalanceLoading] = useState(false);
+  const { client } = useWalletRouter(chain);
   const [balances, setBalances] = useState<{
     gasBalance: number;
     nepBalance: number;
@@ -57,11 +58,6 @@ const CreateToken = () => {
       return;
     }
 
-    if (!connectedWallet) {
-      toast.error("Please connect wallet.");
-      return;
-    }
-
     if (isBalanceLoading) {
       toast.error("Balance check hasn't been done. Please try again.");
       return;
@@ -85,7 +81,7 @@ const CreateToken = () => {
         toast.error("Token symbol is already taken. Try other symbol.");
       } else {
         const res = await new SmithContract(network).createNEP17V3(
-          connectedWallet,
+          client,
           values.totalSupply,
           values.decimals,
           values.symbol,
@@ -118,8 +114,8 @@ const CreateToken = () => {
         console.error(e);
       }
     }
-    if (connectedWallet) {
-      balanceCheck(connectedWallet);
+    if (client) {
+      balanceCheck(client);
     }
   }, [network]);
 
@@ -141,7 +137,6 @@ const CreateToken = () => {
                   <div className="control">
                     <input
                       placeholder="My awesome token"
-                      // ref={firstInput}
                       value={values.name}
                       onChange={(e) =>
                         handleValueChange("name", e.target.value)
@@ -284,7 +279,7 @@ const CreateToken = () => {
                   </div>
                 )}
 
-                {connectedWallet ? (
+                {client ? (
                   <button
                     onClick={onMint}
                     disabled={
@@ -293,8 +288,6 @@ const CreateToken = () => {
                       !values.decimals ||
                       parseFloat(values.decimals) > 18 ||
                       parseFloat(values.totalSupply) < 1 ||
-                      // !values.author ||
-                      // !values.description ||
                       hasEmoji
                     }
                     className="button is-primary"

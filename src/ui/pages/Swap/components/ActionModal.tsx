@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { writeContract } from "@wagmi/core";
+import { waitForTransaction, writeContract } from "@wagmi/core";
 import Modal from "../../../components/Modal";
 import { Steps } from "antd";
 import { ITokenState } from "../scenes/Swap/interfaces";
 import LoadingWithText from "../../../components/Commons/LoadingWithText";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
-import { getExploler } from "../../../../helpers";
 import {
   approve,
   getAllowances,
@@ -20,6 +19,7 @@ import { waitTransactionUntilSubmmited } from "../../../../common/routers/global
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import { WENT_WRONG } from "../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../consts/global";
+import { getExplorer } from "../../../../helpers/helpers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -161,8 +161,8 @@ const ActionModal = ({
           setTokenAApproving(true);
           try {
             const config = await approve(network, tokenA.hash);
-            const res = await writeContract(config);
-            await res.wait();
+            const { hash } = await writeContract(config);
+            await waitForTransaction({ hash });
             setTokenAApproved(true);
           } catch (e) {
             console.error(e);
@@ -178,8 +178,8 @@ const ActionModal = ({
           setTokenBApproving(true);
           try {
             const config = await approve(network, tokenB.hash);
-            const res = await writeContract(config);
-            await res.wait();
+            const { hash } = await writeContract(config);
+            await waitForTransaction({ hash });
             setTokenBApproved(true);
           } catch (e) {
             console.error(e);
@@ -317,7 +317,7 @@ const ActionModal = ({
               <a
                 className="button is-primary"
                 target="_blank"
-                href={`${getExploler(chain, network)}/${txid}`}
+                href={`${getExplorer(chain, network, "tx")}/${txid}`}
                 rel="noreferrer"
               >
                 View txid on explorer

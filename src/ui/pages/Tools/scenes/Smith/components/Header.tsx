@@ -15,14 +15,11 @@ const Header = () => {
     <div className="box is-shadowless">
       <Level
         left={
-          <Space>
-            <Avatar src={CONFIGS[network][chain].icon} />
-            <div className="is-block">
-              <h1 className="title is-5">Smith</h1>
-              <p>Launch your tokens without codes.</p>
-              <a onClick={() => setInfoModalActive(true)}>Learn more</a>
-            </div>
-          </Space>
+          <div>
+            <h1 className="title is-5 is-spaced">Smith</h1>
+            <p className="subtitle is-7">Launch your tokens without codes.</p>
+            <a onClick={() => setInfoModalActive(true)}>Learn more</a>
+          </div>
         }
         right={
           <Link

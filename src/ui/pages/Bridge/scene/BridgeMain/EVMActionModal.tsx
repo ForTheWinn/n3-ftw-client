@@ -17,13 +17,13 @@ import Modal from "../../../../components/Modal";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { BRIDGE_CONTRACTS, BRIDGE_NEP_FEE } from "../../../../../consts/bridge";
-import { getExplolerForWallet } from "../../../../../helpers";
 import {
   burn,
   getMintoNoFromLogs
 } from "../../../../../packages/polygon/contracts/bridge";
 import { wallet } from "@cityofzion/neon-core";
 import { NEP_SCRIPT_HASHES } from "../../../../../packages/polygon/consts";
+import { getExplorer } from "../../../../../helpers/helpers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -110,11 +110,11 @@ const ActionModal = ({
             address: token.hash as any,
             abi: erc20ABI,
             functionName: "approve",
-            args: [evmBridgeContractHash as any, ethers.constants.MaxUint256]
+            args: [evmBridgeContractHash as any, ethers.constants.MaxUint256 as any]
           });
 
-          const res = await writeContract(script);
-          await res.wait();
+          const { hash } = await writeContract(script);
+          await waitForTransaction({ hash });
         }
       } catch (e) {
         console.error(e);
@@ -140,11 +140,14 @@ const ActionModal = ({
             address: nepTokenContractHash as any,
             abi: erc20ABI,
             functionName: "approve",
-            args: [evmBridgeContractHash as any, ethers.constants.MaxUint256]
+            args: [
+              evmBridgeContractHash as any,
+              ethers.constants.MaxUint256 as any
+            ]
           });
 
-          const res = await writeContract(script);
-          await res.wait();
+          const { hash } = await writeContract(script);
+          await waitForTransaction({ hash });
           setFeeTokenApproved(true);
           setFeeTokenApproving(false);
         }
@@ -285,9 +288,11 @@ const ActionModal = ({
               <a
                 className="button is-primary"
                 target="_blank"
-                href={`${getExplolerForWallet(destChain.type as CHAINS, network)}/${
-                  receiver.address
-                }`}
+                href={`${getExplorer(
+                  destChain.type as CHAINS,
+                  network,
+                  "account"
+                )}/${receiver.address}`}
                 rel="noreferrer"
               >
                 Check balance

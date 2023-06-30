@@ -21,8 +21,8 @@ const getWcNeonWalletInstance = async (
         name: "FTW", // your application name to be displayed on the wallet
         description: "All-in-one solution for crypto projects", // description to be shown on the wallet
         url: "https://www.forthewin.network", // url to be linked on the wallet
-        icons: ["https://www.forthewin.network/logo/FTW_512_512.svg"] // icon to be shown on the wallet
-      }
+        icons: ["https://www.forthewin.network/logo/FTW_512_512.svg"], // icon to be shown on the wallet
+      },
     })
   );
 
@@ -39,10 +39,8 @@ const getWcNeonWalletInstance = async (
   if (!instance.isConnected()) {
     const connectingNetwork =
       network === MAINNET ? "neo3:mainnet" : "neo3:testnet";
-    await instance.connect(
-      connectingNetwork // the blockchains your dapp accepts to connect
-    );
-  } 
+    await instance.connect(connectingNetwork, []);
+  }
   return instance;
 };
 
@@ -51,7 +49,7 @@ export const initNeon = async (network: INetworkType) => {
   if (instance.isConnected() && instance.session) {
     const account = {
       address: instance.getAccountAddress(),
-      label: "Neon" // Neon not provide this info
+      label: "Neon", // Neon not provide this info
     };
     return { account, instance };
   }

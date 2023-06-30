@@ -6,17 +6,15 @@ import { useApp } from "../../../../../../../common/hooks/use-app";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 import {
   getTokenList,
-  setTokenData
+  setTokenData,
 } from "../../../../../../../packages/polygon/contracts/smith";
 
-import ListTabs from "../../components/ListTabs";
 import TokenCard from "./TokenCard";
 import Pagination from "bulma-pagination-react";
 import Banner from "../../components/Header";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import TokenMetaUpdateModal from "../../components/UpdateTokenMetadataModal";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
-import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 
 const TokenMainPage = () => {
   const { chain, network, setTxid, refreshCount } = useApp();
@@ -28,23 +26,20 @@ const TokenMainPage = () => {
   const [updateModalObj, setUpdateModalObj] = useState<
     { contractHash: string; website: string; icon: string } | undefined
   >();
-  const { address } = useWalletRouter(chain);
-  const { connectedWallet } = useNeoWallets();
+  const { address, client } = useWalletRouter(chain);
 
   const onUpdate = async (values) => {
     try {
       let res;
       if (chain === NEO_CHAIN) {
-        if (connectedWallet) {
-          res = await new SmithContract(network).updateManifest(
-            connectedWallet,
-            values.contractHash,
-            JSON.stringify({
-              logo: values.icon,
-              website: values.website
-            })
-          );
-        }
+        res = await new SmithContract(network).updateManifest(
+          client,
+          values.contractHash,
+          JSON.stringify({
+            logo: values.icon,
+            website: values.website,
+          })
+        );
       } else {
         const script = await setTokenData(
           chain,
@@ -111,7 +106,7 @@ const TokenMainPage = () => {
                         setUpdateModalObj({
                           contractHash: item.contractHash,
                           website: item.website,
-                          icon: item.icon
+                          icon: item.icon,
                         });
                       }}
                     />

@@ -2,7 +2,7 @@ $primary: hsl(153, 53%, 53%);
 $info: #8247e5;
 $link: $primary;
 $hr-height: 1px;
-@import "../../node_modules/bulma/bulma";
+@import "../node_modules/bulma/bulma";
 $sidebar-bg-color: $white !important;
 $icon-bg-color: $white !important;
 $highlight-color: $black !important;
@@ -10,20 +10,17 @@ $submenu-bg-color-collapsed: $light !important;
 $submenu-bg-color: $light !important;
 $sidebar-width: 230px !important;
 $navbar-dropdown-border-top: 1px solid #ddd !important;
-@import "../../node_modules/react-pro-sidebar/dist/scss/styles";
-@import "../../node_modules/react-datepicker/dist/react-datepicker.css";
-@import "../../node_modules/slick-carousel/slick/slick.css";
-@import "../../node_modules/slick-carousel/slick/slick-theme.css";
+@import "../node_modules/react-datepicker/dist/react-datepicker.css";
 
 @font-face {
   font-family: "VCR";
   src: local("VCR"),
-    url("../fonts/VCR/VCR_OSD_MONO_1.001 2.ttf") format("truetype");
+    url("./fonts/VCR/VCR_OSD_MONO_1.001 2.ttf") format("truetype");
 }
 @font-face {
   font-family: "Inter";
   src: local("Inter"),
-    url("../fonts/Inter/Inter-VariableFont_slnt,wght.ttf") format("truetype");
+    url("./fonts/Inter/Inter-VariableFont_slnt,wght.ttf") format("truetype");
 }
 
 /* html */

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
 import TxReceipt from "../../components/Commons/TxHandler/TxReceipt";
 import { waitForTransaction } from "@wagmi/core";
-import { getExplolerForTxByChainId } from "../../../helpers";
+import { getExplorer, getExplorerByChainId } from "../../../helpers/helpers";
 
 interface ITxidModalProps {
   txid: string;
@@ -40,7 +40,7 @@ const TxidModal = ({ txid, chainId, resetTxid }: ITxidModalProps) => {
           error={hasError}
           onSuccess={resetTxid}
           onError={resetTxid}
-          explorer={getExplolerForTxByChainId(chainId)}
+          explorer={getExplorerByChainId(chainId, "tx")}
         />
       </Modal>
     </div>

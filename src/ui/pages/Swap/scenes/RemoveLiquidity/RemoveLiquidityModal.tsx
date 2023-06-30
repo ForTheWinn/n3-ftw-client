@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
 import { Steps } from "antd";
-import { writeContract } from "@wagmi/core";
+import { waitForTransaction, writeContract } from "@wagmi/core";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { swapRouter } from "../../../../../common/routers";
-import { getExploler } from "../../../../../helpers";
 import {
   isApprovedForAll,
   setApprovalForAll
@@ -15,6 +14,7 @@ import { NEO_CHAIN, SWAP } from "../../../../../consts/global";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { CONTRACT_LIST } from "../../../../../consts/contracts";
+import { getExplorer } from "../../../../../helpers/helpers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -58,8 +58,8 @@ const RemoveLiquidityModal = ({
           } else {
             setApproving(true);
             const config = await setApprovalForAll(network, contractAddress);
-            const res = await writeContract(config);
-            await res.wait();
+            const { hash } = await writeContract(config);
+            await waitForTransaction({ hash });
             setApproved(true);
             setApproving(false);
           }
@@ -156,7 +156,7 @@ const RemoveLiquidityModal = ({
                 <a
                   className="button is-primary"
                   target="_blank"
-                  href={`${getExploler(chain, network)}/${txid}`}
+                  href={`${getExplorer(chain, network, "tx")}/${txid}`}
                   rel="noreferrer"
                 >
                   View txid on explorer

@@ -1,18 +1,25 @@
 import React from "react";
-import SideNav from "react-simple-sidenav";
 import { useApp } from "../../../../common/hooks/use-app";
 import Wallet from "../Wallets";
+import { Drawer } from "antd";
 
 const WalletSidebar = () => {
   const { walletSidebarStatus, toggleWalletSidebar } = useApp();
   return (
-    <SideNav
-      openFromRight={true}
-      style={{ top: "52px" }}
-      showNav={walletSidebarStatus}
-      onHideNav={toggleWalletSidebar}
-      children={<Wallet isActive={walletSidebarStatus} />}
-    />
+    <>
+      <Drawer
+        headerStyle={{ display: "none" }}
+        rootStyle={{ top: "53px" }}
+        bodyStyle={{ padding: "0" }}
+        title="Basic Drawer"
+        placement={"right"}
+        closable={false}
+        onClose={toggleWalletSidebar}
+        open={walletSidebarStatus}
+      >
+        <Wallet isActive={walletSidebarStatus} />
+      </Drawer>
+    </>
   );
 };
 

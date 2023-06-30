@@ -18,13 +18,13 @@ const Routes = () => {
               key={route.path}
               path={route.path}
               exact={route.exact}
-              component={() => {
-                if (!_chain)
-                  return <NoChainSupport chain={chain} network={network} />;
-                if (!_chain.includes(network))
-                  return <NoNetworkSupport chain={chain} network={network} />;
-                return <route.component />;
-              }}
+              component={
+                _chain
+                  ? _chain.includes(network)
+                    ? route.component
+                    : () => <NoNetworkSupport chain={chain} network={network} />
+                  : () => <NoChainSupport chain={chain} network={network} />
+              }
             />
           );
         })}

@@ -1,5 +1,5 @@
 import { CHAINS } from "../../../consts/chains";
-import { writeContract } from "@wagmi/core";
+import { waitForTransaction, writeContract } from "@wagmi/core";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 import { IClaimableRewards } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
@@ -101,8 +101,8 @@ export const stakeLPToken = async (
           network,
           CONTRACT_LIST[chain][network][FARM]
         );
-        const res = await writeContract(config);
-        await res.wait();
+        const { hash } = await writeContract(config);
+        await waitForTransaction({ hash });
       }
       return stake(network, tokenId);
   }

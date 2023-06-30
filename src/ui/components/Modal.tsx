@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import $ from "jquery";
 
 interface IProps {
   onClose: () => void;
@@ -13,14 +12,8 @@ const ModalCard = ({
   children,
   isLoading,
   error,
-  isLarge,
+  isLarge
 }: IProps) => {
-  React.useEffect(() => {
-    $("html").addClass("is-clipped");
-    return () => {
-      $("html").removeClass("is-clipped");
-    };
-  }, []);
   return (
     <div
       className={`modal is-active ${isLarge ? "is-large" : ""}`}

@@ -1,8 +1,8 @@
 import React from "react";
 import { Avatar, List, Space } from "antd";
-import { getExplolerForContract } from "../../../../../../../helpers";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
+import { getExplorer } from "../../../../../../../helpers/helpers";
 
 interface ITokenCardProps {
   chain: CHAINS;
@@ -58,7 +58,7 @@ const TokenCard = ({
       />
       <a
         target="_blank"
-        href={`${getExplolerForContract(chain, network)}/${contractHash}`}
+        href={`${getExplorer(chain, network, "contract")}/${contractHash}`}
         rel="noreferrer"
       >
         View details

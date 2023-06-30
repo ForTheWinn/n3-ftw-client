@@ -13,10 +13,9 @@ import Modal from "../../../../components/Modal";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
-// import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
-import { getExplolerForWallet } from "../../../../../helpers";
 import { getIsMinted } from "../../../../../packages/polygon/contracts/bridge";
 import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
+import { getExplorer } from "../../../../../helpers/helpers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -164,9 +163,10 @@ const ActionModal = ({
               <a
                 className="button is-primary"
                 target="_blank"
-                href={`${getExplolerForWallet(
+                href={`${getExplorer(
                   destChain.type as CHAINS,
-                  network
+                  network,
+                  "account"
                 )}/${receiver.address}`}
                 rel="noreferrer"
               >

@@ -6,9 +6,10 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IBridgeSelectedtoken } from "../../interfaces";
 import {
-  getExplolerForContract,
-  getExplolerForContractByChainId
-} from "../../../../../helpers";
+  getExplorer,
+  getExplorerByChainId
+} from "../../../../../helpers/helpers";
+
 const { Panel } = Collapse;
 
 interface IBridgeDetailsProps {
@@ -49,9 +50,9 @@ const BridgeDetails = ({
                 <div className="level-item has-text-right">
                   <a
                     target="_blank"
-                    href={`${getExplolerForContractByChainId(
-                      originChain.chainId
-                    )}/${token.hash}`}
+                    href={`${getExplorerByChainId(originChain.chainId, "tx")}/${
+                      token.hash
+                    }`}
                     rel="noreferrer"
                   >
                     Open
@@ -67,9 +68,9 @@ const BridgeDetails = ({
                 <div className="level-item has-text-right">
                   <a
                     target="_blank"
-                    href={`${getExplolerForContractByChainId(
-                      destChain.chainId
-                    )}/${token.destToken.hash}`}
+                    href={`${getExplorerByChainId(destChain.chainId, "tx")}/${
+                      token.destToken.hash
+                    }`}
                     rel="noreferrer"
                   >
                     Open

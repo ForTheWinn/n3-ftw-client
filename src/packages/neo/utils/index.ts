@@ -286,7 +286,6 @@ export function numberToByteString(num: string) {
   }
 
   return btoa(
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     hex
       .match(/.{1,2}/g)!
       .reverse()

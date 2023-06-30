@@ -239,12 +239,12 @@ export class SmithContract {
   };
 
   updateManifest = async (
-    connectedWallet: IConnectedWallet,
+    walletClient: IConnectedWallet,
     contractHash: string,
     manifest: string
   ) => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
-      connectedWallet.account.address
+      walletClient.account.address
     );
 
     const invokeScript = {
@@ -266,7 +266,7 @@ export class SmithContract {
       ],
       signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return wallet.WalletAPI.invoke(walletClient, this.network, invokeScript);
   };
 
   adminUpdate = async (

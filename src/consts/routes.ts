@@ -1,5 +1,3 @@
-import { FaArrowUp } from "react-icons/fa";
-
 import { MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "./global";
 
 import Analytics from "../ui/pages/Analytics";
@@ -186,18 +184,18 @@ export const NEO_BOYZ_PAGE_ROUTE = {
   component: Boyz
 };
 
-// export const MATIC_BOYZ_PAGE_ROUTE = {
-//   label: "Matic Boyz",
-//   icon: "/boyz/sample-matic-boy.png",
-//   description: "Coming soon",
-//   path: BOYZ_PATH,
-//   chain: {
-//     [NEO_CHAIN]: [MAINNET],
-//     [POLYGON_CHAIN]: [MAINNET]
-//   },
-//   category: [],
-//   component: M
-// };
+export const MATIC_BOYZ_PAGE_ROUTE = {
+  label: "Matic Boyz",
+  icon: "/boyz/sample-matic-boy.png",
+  description: "Coming soon",
+  path: MATIC_BOYZ_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET],
+    [POLYGON_CHAIN]: [MAINNET]
+  },
+  category: []
+  // component: M
+};
 
 export const RUNES_PAGE_ROUTE = {
   label: "Runes",
@@ -234,7 +232,8 @@ export const NFT_ROUTE = {
     NFT_MAIN_PAGE_ROUTE,
     NEO_BOYZ_PAGE_ROUTE,
     RUNES_PAGE_ROUTE,
-    FUSION_PAGE_ROUTE
+    FUSION_PAGE_ROUTE,
+    MATIC_BOYZ_PAGE_ROUTE
   ],
   component: NFTCollections
 };
@@ -259,7 +258,8 @@ export const TOOLS_MAIN_PAGE_ROUTE = {
 const LOCKER_PAGE_ROUTE = {
   label: "Locker",
   icon: "/logo/FTW_KEY.png",
-  description: "Send your tokens with a timelock",
+  description:
+    "With Locker, set a timelock on your tokens, making them accessible only when the pre-set time has elapsed. This feature allows for a controlled distribution of tokens based on your desired timeline.",
   path: LOCKER_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET]
@@ -271,11 +271,12 @@ const LOCKER_PAGE_ROUTE = {
 const SMITH_PAGE_ROUTE = {
   label: "Smith",
   icon: "/520/smith.png",
-  description: "Launch your tokens without codes",
+  description:
+    "Effortlessly generate and launch your own tokens with Smith, eliminating the need for complex coding.",
   path: SMITH_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
   category: [],
   component: Smith
@@ -283,9 +284,9 @@ const SMITH_PAGE_ROUTE = {
 
 const AIRDROP_PAGE_ROUTE = {
   label: "Batch Transfer",
-  // @ts-ignore
-  icon: FaArrowUp,
-  description: "It helps to transfer multi transfers",
+  icon: "/icons/transfer.png",
+  description:
+    "Facilitate the process of executing multiple transfers simultaneously with our Batch Transfer tool, making bulk token distribution more efficient.",
   path: TOOLS_AIRDROP_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET]
@@ -298,7 +299,8 @@ const AIRDROP_PAGE_ROUTE = {
 export const TOOLS_LP_FINDER_PAGE_ROUTE = {
   label: "LP Token Value Finder",
   icon: "/logo/FTW_LP.png",
-  description: "Find FTW Swap LP token value by token id",
+  description:
+    "Utilize the LP Token Value Finder to effortlessly ascertain the value of your FTW Swap Liquidity Provider (LP) tokens using token ID.",
   path: TOOLS_LP_TOKENS_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],

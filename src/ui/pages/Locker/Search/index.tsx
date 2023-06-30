@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ILocker } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
-import { FaSearch } from "react-icons/fa";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import LockerCard from "./LockerCard";
-import { ROUTES } from "../../../../consts";
 import { useApp } from "../../../../common/hooks/use-app";
-import { SpinnerRoundFilled } from "spinners-react";
 import PageLayout from "../../../components/Commons/PageLayout";
 
 const LockerSearch = () => {
@@ -95,9 +92,6 @@ const LockerSearch = () => {
             <div className="box is-shadowless">
               <div className="level is-mobile">
                 <div className="level-left">
-                  <div className="level-item">
-                    <SpinnerRoundFilled size={15} color="#ccc" />
-                  </div>
                   <div className="level-item">Searching..</div>
                 </div>
               </div>

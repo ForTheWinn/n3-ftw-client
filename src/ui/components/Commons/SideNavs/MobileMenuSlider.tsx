@@ -1,18 +1,25 @@
 import React from "react";
-import SideNav from "react-simple-sidenav";
 import { useApp } from "../../../../common/hooks/use-app";
 import SidebarNav from "./SidebarNav";
+import { Drawer } from "antd";
 
-const MobileMenuSlider = (props) => {
+const MobileMenuSlider = () => {
   const { sidebarStatus, toggleSidebar } = useApp();
   return (
-    <SideNav
-      style={{ top: "52px" }}
-      // navStyle={{ width: "80%" }}
-      showNav={sidebarStatus}
-      onHideNav={toggleSidebar}
-      children={<SidebarNav />}
-    />
+    <>
+      <Drawer
+        title="Basic Drawer"
+        headerStyle={{ display: "none" }}
+        rootStyle={{ top: "53px" }}
+        bodyStyle={{ padding: "0" }}
+        placement={"left"}
+        closable={false}
+        onClose={toggleSidebar}
+        open={sidebarStatus}
+      >
+        <SidebarNav />
+      </Drawer>
+    </>
   );
 };
 

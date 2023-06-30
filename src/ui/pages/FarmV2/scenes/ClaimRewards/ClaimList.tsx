@@ -10,11 +10,11 @@ import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/far
 import { Radio, Divider } from "antd";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { globalRouter } from "../../../../../common/routers";
-import { CHAINS } from "../../../../../consts";
+import { CHAINS } from "../../../../../consts/chains";
 
 interface IClaimListProps {
   bonus: number;
-  chain: CHAINS.CHAINS;
+  chain: CHAINS;
   network: INetworkType;
   isClaimNode: boolean;
   handleToggle: (item: any) => void;

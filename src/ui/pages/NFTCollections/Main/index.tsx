@@ -2,7 +2,7 @@ import React from "react";
 import PageLayout from "../../../components/Commons/PageLayout";
 import { NFT_ROUTE } from "../../../../consts/routes";
 import { useApp } from "../../../../common/hooks/use-app";
-import { Avatar } from "antd";
+import { Avatar, List } from "antd";
 import { Link } from "react-router-dom";
 
 const NFTCollectionMain = () => {
@@ -13,36 +13,33 @@ const NFTCollectionMain = () => {
         <div className="column is-half">
           <div className="box is-shadowless">
             <h1 className="title is-5">NFT Collections</h1>
-          </div>
-
-          {NFT_ROUTE.category.map((p: any) => {
-            const _chain: any = p.chain[chain];
-            if (!_chain) return <></>;
-            if (!_chain.includes(network)) return <></>;
-            if (p.noShow) return false;
-            return (
-              <div className="media box is-shadowless" key={p.path}>
-                <div className="media-left">
-                  <Avatar size={64} src={p.icon} />
-                </div>
-                <div className="media-content">
-                  <Link to={p.path} className="has-text-dark">
-                    <strong>{p.label}</strong>
-                    <p>{p.description}</p>
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
-
-          <div className="media box is-shadowless">
-            <div className="media-left">
-              <Avatar size={80} src={"/boyz/sample-matic-boy.png"} />
-            </div>
-            <div className="media-content">
-              <strong>Matic Boyz</strong>
-              <p>Coming soon on Polygon</p>
-            </div>
+            <List
+              itemLayout="horizontal"
+              dataSource={NFT_ROUTE.category}
+              renderItem={(item: any, index) => {
+                const _chain: any = item.chain[chain];
+                if (!_chain) return <></>;
+                if (!_chain.includes(network)) return <></>;
+                if (item.noShow) return false;
+                return (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={
+                        <Link to={item.path}>
+                          <Avatar size="large" src={item.icon} />
+                        </Link>
+                      }
+                      title={
+                        <Link to={item.path}>
+                          <strong>{item.label}</strong>
+                        </Link>
+                      }
+                      description={item.description}
+                    />
+                  </List.Item>
+                );
+              }}
+            />
           </div>
         </div>
       </div>

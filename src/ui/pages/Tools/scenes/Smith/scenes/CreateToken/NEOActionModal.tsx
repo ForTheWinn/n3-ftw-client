@@ -8,7 +8,7 @@ import CubeLoading from "../../../../../../components/CubeLoading";
 import { getTokenContractHashNotifications } from "../../../../../../../packages/neo/contracts/ftw/smith/helpers";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
-import { getExplolerForContract } from "../../../../../../../helpers";
+import { getExplorer } from "../../../../../../../helpers/helpers";
 
 interface IAfterTransactionSubmittedProps {
   txid: string;
@@ -41,7 +41,7 @@ const NEOSmithActionModal = ({
     }
     checkTxid();
   }, [txid]);
-  
+
   if (isLoading) {
     return <CubeLoading />;
   }
@@ -65,9 +65,10 @@ const NEOSmithActionModal = ({
         extra={[
           <Button
             target="_blank"
-            href={`${getExplolerForContract(
+            href={`${getExplorer(
               NEO_CHAIN,
-              network
+              network,
+              "contract"
             )}/${contractHash}`}
             type="primary"
             key="console"

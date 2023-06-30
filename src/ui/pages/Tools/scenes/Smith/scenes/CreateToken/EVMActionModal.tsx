@@ -12,7 +12,6 @@ import { CHAINS } from "../../../../../../../consts/chains";
 import { ITokenMetadata } from "./EVM";
 import Modal from "../../../../../../components/Modal";
 import LoadingWithText from "../../../../../../components/Commons/LoadingWithText";
-import { getExplolerForContract } from "../../../../../../../helpers";
 import {
   CONTRACT_LIST,
   NEP_CONTRACT_HASH
@@ -24,6 +23,7 @@ import {
   createTokenContract,
   getContractHashFromLogs
 } from "../../../../../../../packages/polygon/contracts/smith";
+import { getExplorer } from "../../../../../../../helpers/helpers";
 
 interface IActionModalProps extends ITokenMetadata {
   chain: CHAINS;
@@ -85,11 +85,14 @@ const ActionModal = ({
             address: feeTokenContractHash as any,
             abi: erc20ABI,
             functionName: "approve",
-            args: [smithTokenContractHash as any, ethers.constants.MaxUint256]
+            args: [
+              smithTokenContractHash as any,
+              ethers.constants.MaxUint256 as any
+            ]
           });
 
-          const res = await writeContract(script);
-          await res.wait();
+          const { hash } = await writeContract(script);
+          await waitForTransaction({ hash });
           setFeeTokenApproved(true);
           setFeeTokenApproving(false);
         }
@@ -139,9 +142,10 @@ const ActionModal = ({
             extra={[
               <Button
                 target="_blank"
-                href={`${getExplolerForContract(
+                href={`${getExplorer(
                   chain,
-                  network
+                  network,
+                  "contract"
                 )}/${contractHash}`}
                 type="primary"
                 key="console"
@@ -155,9 +159,7 @@ const ActionModal = ({
           />
         ) : (
           <div>
-            <h3 className="title is-5 has-text-centered">
-              New token contract{" "}
-            </h3>
+            <h3 className="title is-5 has-text-centered">New token contract</h3>
             <Steps
               progressDot={true}
               current={currentStep}

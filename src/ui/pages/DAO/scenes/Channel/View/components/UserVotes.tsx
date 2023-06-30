@@ -46,7 +46,6 @@ const UserVotes = ({
   if (data) {
     data.items.forEach((i) => {
       if (!i.hasWithdrew) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         hasVoteToWithdraw = true;
       }
     });
