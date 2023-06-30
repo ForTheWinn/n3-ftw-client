@@ -1,4 +1,4 @@
-import { globalRouter } from "../common/routers";
+import { globalRouter } from "./routers";
 import { CHAINS } from "../consts/chains";
 import { MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "../consts/global";
 import { TOKEN_LIST } from "../consts/tokens";

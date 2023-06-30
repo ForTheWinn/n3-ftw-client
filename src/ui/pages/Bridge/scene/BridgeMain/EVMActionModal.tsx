@@ -4,7 +4,7 @@ import {
   erc20ABI,
   prepareWriteContract,
   writeContract,
-  waitForTransaction
+  waitForTransaction,
 } from "@wagmi/core";
 import { Steps } from "antd";
 
@@ -19,11 +19,11 @@ import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { BRIDGE_CONTRACTS, BRIDGE_NEP_FEE } from "../../../../../consts/bridge";
 import {
   burn,
-  getMintoNoFromLogs
+  getMintoNoFromLogs,
 } from "../../../../../packages/polygon/contracts/bridge";
 import { wallet } from "@cityofzion/neon-core";
 import { NEP_SCRIPT_HASHES } from "../../../../../packages/polygon/consts";
-import { getExplorer } from "../../../../../helpers/helpers";
+import { getExplorer } from "../../../../../common/helpers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -48,7 +48,7 @@ const ActionModal = ({
   receiver,
   network,
   onSuccess,
-  onCancel
+  onCancel,
 }: IActionModalProps) => {
   const [isTokenApproved, setTokenApproved] = useState(false);
   const [isTokenApproving, setTokenApproving] = useState(false);
@@ -100,7 +100,7 @@ const ActionModal = ({
           abi: erc20ABI,
           functionName: "allowance",
           args: [address as any, evmBridgeContractHash as any],
-          chainId
+          chainId,
         });
         if (approvedAmount.gte(parsedAmount)) {
           setTokenApproved(true);
@@ -110,7 +110,10 @@ const ActionModal = ({
             address: token.hash as any,
             abi: erc20ABI,
             functionName: "approve",
-            args: [evmBridgeContractHash as any, ethers.constants.MaxUint256 as any]
+            args: [
+              evmBridgeContractHash as any,
+              ethers.constants.MaxUint256 as any,
+            ],
           });
 
           const { hash } = await writeContract(script);
@@ -129,7 +132,7 @@ const ActionModal = ({
           abi: erc20ABI,
           functionName: "allowance",
           args: [address as any, evmBridgeContractHash as any],
-          chainId
+          chainId,
         });
         console.log(approvedAmount.toString());
         if (approvedAmount.gte(BRIDGE_NEP_FEE[network])) {
@@ -142,8 +145,8 @@ const ActionModal = ({
             functionName: "approve",
             args: [
               evmBridgeContractHash as any,
-              ethers.constants.MaxUint256 as any
-            ]
+              ethers.constants.MaxUint256 as any,
+            ],
           });
 
           const { hash } = await writeContract(script);
@@ -229,7 +232,7 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
+                ),
               },
               {
                 title: "Fee token approval",
@@ -247,7 +250,7 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
+                ),
               },
               {
                 title: "Lock",
@@ -261,7 +264,7 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
+                ),
               },
               {
                 title: "Mint",
@@ -275,8 +278,8 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
-              }
+                ),
+              },
             ]}
           />
         </div>

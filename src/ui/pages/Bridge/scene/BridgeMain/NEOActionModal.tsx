@@ -6,7 +6,7 @@ import { INetworkType, Network } from "../../../../../packages/neo/network";
 import { CHAINS, CONFIGS } from "../../../../../consts/chains";
 import {
   bridgeMint,
-  getMintNoFromNotifications
+  getMintNoFromNotifications,
 } from "../../../../../packages/neo/contracts/ftw/bridge";
 import { IBridgeReceiver, IBridgeSelectedtoken } from "../../interfaces";
 import Modal from "../../../../components/Modal";
@@ -15,7 +15,7 @@ import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { getIsMinted } from "../../../../../packages/polygon/contracts/bridge";
 import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
-import { getExplorer } from "../../../../../helpers/helpers";
+import { getExplorer } from "../../../../../common/helpers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -38,7 +38,7 @@ const ActionModal = ({
   network,
   connectedNeoWallet,
   onSuccess,
-  onCancel
+  onCancel,
 }: IActionModalProps) => {
   const [isLocking, setLocking] = useState(false);
   const [isLocked, setLocked] = useState(false);
@@ -136,7 +136,7 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
+                ),
               },
               {
                 title: "Mint",
@@ -150,8 +150,8 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
-              }
+                ),
+              },
             ]}
           />
         </div>

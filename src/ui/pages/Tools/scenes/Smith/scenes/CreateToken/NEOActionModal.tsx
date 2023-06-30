@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   INetworkType,
-  Network
+  Network,
 } from "../../../../../../../packages/neo/network";
 import { Button, Result } from "antd";
 import CubeLoading from "../../../../../../components/CubeLoading";
 import { getTokenContractHashNotifications } from "../../../../../../../packages/neo/contracts/ftw/smith/helpers";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
-import { getExplorer } from "../../../../../../../helpers/helpers";
+import { getExplorer } from "../../../../../../../common/helpers";
 
 interface IAfterTransactionSubmittedProps {
   txid: string;
@@ -20,7 +20,7 @@ const NEOSmithActionModal = ({
   txid,
   network,
   onSuccess,
-  onError
+  onError,
 }: IAfterTransactionSubmittedProps) => {
   const [isLoading, setLoading] = useState(true);
   const [contractHash, setContractHash] = useState<string | undefined>();
@@ -52,7 +52,7 @@ const NEOSmithActionModal = ({
       extra={[
         <Button onClick={onError} key="close">
           Close
-        </Button>
+        </Button>,
       ]}
     ></Result>;
   }
@@ -77,7 +77,7 @@ const NEOSmithActionModal = ({
           </Button>,
           <Button onClick={onSuccess} key="close">
             Close
-          </Button>
+          </Button>,
         ]}
       ></Result>
     </div>

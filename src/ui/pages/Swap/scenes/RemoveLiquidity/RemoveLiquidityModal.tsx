@@ -8,13 +8,13 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { swapRouter } from "../../../../../common/routers";
 import {
   isApprovedForAll,
-  setApprovalForAll
+  setApprovalForAll,
 } from "../../../../../packages/polygon/contracts/swap";
 import { NEO_CHAIN, SWAP } from "../../../../../consts/global";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { CONTRACT_LIST } from "../../../../../consts/contracts";
-import { getExplorer } from "../../../../../helpers/helpers";
+import { getExplorer } from "../../../../../common/helpers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -31,7 +31,7 @@ const RemoveLiquidityModal = ({
   address,
   tokenId,
   onSuccess,
-  onCancel
+  onCancel,
 }: IActionModalProps) => {
   const { connectedWallet } = useNeoWallets();
   const [isApproved, setApproved] = useState(false);
@@ -124,7 +124,7 @@ const RemoveLiquidityModal = ({
                       ""
                     )}
                   </>
-                )
+                ),
               },
               {
                 title: "Action",
@@ -142,8 +142,8 @@ const RemoveLiquidityModal = ({
                       ""
                     )}
                   </>
-                )
-              }
+                ),
+              },
             ]}
           />
         </div>

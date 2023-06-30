@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
 import TxReceipt from "../../components/Commons/TxHandler/TxReceipt";
 import { waitForTransaction } from "@wagmi/core";
-import { getExplorer, getExplorerByChainId } from "../../../helpers/helpers";
+import { getExplorer, getExplorerByChainId } from "../../../common/helpers";
 
 interface ITxidModalProps {
   txid: string;
@@ -18,7 +18,7 @@ const TxidModal = ({ txid, chainId, resetTxid }: ITxidModalProps) => {
       try {
         await waitForTransaction({
           hash: txid as `0x${string}`,
-          chainId
+          chainId,
         });
         setDone(true);
       } catch (e: any) {

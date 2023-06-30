@@ -2,7 +2,7 @@ import React from "react";
 
 import { CaretRightOutlined } from "@ant-design/icons";
 import { ITokenState } from "../../interfaces";
-import { findTradePaths } from "../../../../../../../helpers/helpers";
+import { findTradePaths } from "../../../../../../../common/helpers";
 import { TOKEN_LIST } from "../../../../../../../consts/tokens";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
@@ -23,7 +23,7 @@ const PriceComparison = ({
   network,
   tokenA,
   tokenB,
-  amountIn
+  amountIn,
 }: IPriceComparisonProps) => {
   const paths: ITokenState[][] = findTradePaths(
     TOKEN_LIST[chain][network],

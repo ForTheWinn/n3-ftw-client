@@ -7,8 +7,8 @@ import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IBridgeSelectedtoken } from "../../interfaces";
 import {
   getExplorer,
-  getExplorerByChainId
-} from "../../../../../helpers/helpers";
+  getExplorerByChainId,
+} from "../../../../../common/helpers";
 
 const { Panel } = Collapse;
 
@@ -22,7 +22,7 @@ const BridgeDetails = ({
   network,
   originChain,
   destChain,
-  token
+  token,
 }: IBridgeDetailsProps) => {
   console.log(originChain);
   console.log(destChain);

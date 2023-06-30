@@ -4,7 +4,7 @@ import {
   erc20ABI,
   prepareWriteContract,
   writeContract,
-  waitForTransaction
+  waitForTransaction,
 } from "@wagmi/core";
 import { Button, Result, Steps } from "antd";
 import { ethers } from "ethers";
@@ -14,16 +14,16 @@ import Modal from "../../../../../../components/Modal";
 import LoadingWithText from "../../../../../../components/Commons/LoadingWithText";
 import {
   CONTRACT_LIST,
-  NEP_CONTRACT_HASH
+  NEP_CONTRACT_HASH,
 } from "../../../../../../../consts/contracts";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { SMITH } from "../../../../../../../consts/global";
 import { SMITH_FEE } from "../../../../../../../consts/smith";
 import {
   createTokenContract,
-  getContractHashFromLogs
+  getContractHashFromLogs,
 } from "../../../../../../../packages/polygon/contracts/smith";
-import { getExplorer } from "../../../../../../../helpers/helpers";
+import { getExplorer } from "../../../../../../../common/helpers";
 
 interface IActionModalProps extends ITokenMetadata {
   chain: CHAINS;
@@ -44,7 +44,7 @@ const ActionModal = ({
   website,
   icon,
   onSuccess,
-  onCancel
+  onCancel,
 }: IActionModalProps) => {
   const feeTokenContractHash = NEP_CONTRACT_HASH[chain][network];
   const smithTokenContractHash = CONTRACT_LIST[chain][network][SMITH];
@@ -74,7 +74,7 @@ const ActionModal = ({
           address: feeTokenContractHash as any,
           abi: erc20ABI,
           functionName: "allowance",
-          args: [address as any, smithTokenContractHash as any]
+          args: [address as any, smithTokenContractHash as any],
         });
 
         if (approvedAmount.gte(SMITH_FEE[chain][network])) {
@@ -87,8 +87,8 @@ const ActionModal = ({
             functionName: "approve",
             args: [
               smithTokenContractHash as any,
-              ethers.constants.MaxUint256 as any
-            ]
+              ethers.constants.MaxUint256 as any,
+            ],
           });
 
           const { hash } = await writeContract(script);
@@ -154,7 +154,7 @@ const ActionModal = ({
               </Button>,
               <Button onClick={onSuccess} key="close">
                 Close
-              </Button>
+              </Button>,
             ]}
           />
         ) : (
@@ -180,7 +180,7 @@ const ActionModal = ({
                         ""
                       )}
                     </>
-                  )
+                  ),
                 },
                 {
                   title: "Deploy",
@@ -198,8 +198,8 @@ const ActionModal = ({
                         ""
                       )}
                     </>
-                  )
-                }
+                  ),
+                },
               ]}
             />
           </div>

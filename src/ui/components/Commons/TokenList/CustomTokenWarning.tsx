@@ -2,7 +2,7 @@ import React from "react";
 import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
-import { getExplorer } from "../../../../helpers/helpers";
+import { getExplorer } from "../../../../common/helpers";
 
 interface ICustomTokenWarningProps {
   chain: CHAINS;
@@ -16,7 +16,7 @@ const CustomTokenWarning = ({
   chain,
   network,
   onOk,
-  onCancel
+  onCancel,
 }: ICustomTokenWarningProps) => {
   const explorerLink = `${getExplorer(chain, network, "tx")}/${token.hash}`;
   return (

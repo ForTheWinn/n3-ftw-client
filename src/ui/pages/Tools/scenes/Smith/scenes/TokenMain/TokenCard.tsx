@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, List, Space } from "antd";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
-import { getExplorer } from "../../../../../../../helpers/helpers";
+import { getExplorer } from "../../../../../../../common/helpers";
 
 interface ITokenCardProps {
   chain: CHAINS;
@@ -25,7 +25,7 @@ const TokenCard = ({
   contractHash,
   website,
   icon,
-  onUpdate
+  onUpdate,
 }: ITokenCardProps) => {
   return (
     <List.Item
@@ -34,7 +34,7 @@ const TokenCard = ({
           ? [
               <a onClick={onUpdate} key="list-edit">
                 Edit
-              </a>
+              </a>,
             ]
           : []
       }

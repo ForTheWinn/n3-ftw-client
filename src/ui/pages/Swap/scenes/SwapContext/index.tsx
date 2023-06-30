@@ -3,7 +3,7 @@ import React, {
   useContext,
   useEffect,
   useState,
-  useRef
+  useRef,
 } from "react";
 import Decimal from "decimal.js";
 import { ISwapInputState, ITokenState } from "../Swap/interfaces";
@@ -12,7 +12,7 @@ import queryString from "query-string";
 import { useApp } from "../../../../../common/hooks/use-app";
 import {
   ISwapReserves,
-  IUserTokenBalances
+  IUserTokenBalances,
 } from "../../../../../common/routers/swap/interfaces";
 import { swapRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
@@ -24,7 +24,7 @@ import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import toast from "react-hot-toast";
-import { getTokenByHash } from "../../../../../helpers/helpers";
+import { getTokenByHash } from "../../../../../common/helpers";
 import { NEO_CHAIN } from "../../../../../consts/global";
 
 interface ISwapContext {
@@ -70,7 +70,7 @@ export const SwapContextProvider = (props: {
     network,
     refreshCount,
     increaseRefreshCount,
-    toggleWalletSidebar
+    toggleWalletSidebar,
   } = useApp();
   const { connectedWallet } = useNeoWallets();
   const { address, isConnected } = useWalletRouter(chain);
@@ -166,7 +166,7 @@ export const SwapContextProvider = (props: {
           );
           setBalances({
             amountA,
-            amountB
+            amountB,
           });
         }
 
@@ -208,7 +208,7 @@ export const SwapContextProvider = (props: {
                     swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
                   )
                   .toString(),
-                isReverse: swapInput.type === "B"
+                isReverse: swapInput.type === "B",
               };
               estimated = await swapRouter.getEstimate(chain, network, args);
             } else if (props.type === "liquidity") {
@@ -346,7 +346,7 @@ export const SwapContextProvider = (props: {
     onSwapInputChange,
     onInputSwitch,
     onAfterSwapCompleted,
-    toggleWalletSidebar
+    toggleWalletSidebar,
   };
 
   return (

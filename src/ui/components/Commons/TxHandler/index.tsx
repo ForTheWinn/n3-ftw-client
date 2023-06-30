@@ -3,7 +3,7 @@ import TxReceipt from "./TxReceipt";
 import { useApp } from "../../../../common/hooks/use-app";
 import Modal from "../../Modal";
 import { waitTransactionUntilSubmmited } from "../../../../common/routers/global";
-import { getExplorer } from "../../../../helpers/helpers";
+import { getExplorer } from "../../../../common/helpers";
 
 const TxHandler = () => {
   const { chain, network, txid, resetTxid } = useApp();

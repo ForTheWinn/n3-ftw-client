@@ -10,7 +10,7 @@ import {
   approve,
   getAllowances,
   provide,
-  swap
+  swap,
 } from "../../../../packages/polygon/contracts/swap";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
@@ -19,7 +19,7 @@ import { waitTransactionUntilSubmmited } from "../../../../common/routers/global
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import { WENT_WRONG } from "../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../consts/global";
-import { getExplorer } from "../../../../helpers/helpers";
+import { getExplorer } from "../../../../common/helpers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -48,7 +48,7 @@ const ActionModal = ({
   onCancel,
   chain,
   isReverse,
-  network
+  network,
 }: IActionModalProps) => {
   const { connectedWallet } = useNeoWallets();
   const [isTokenAApproved, setTokenAApproved] = useState(false);
@@ -200,7 +200,7 @@ const ActionModal = ({
               amountIn: isReverse ? maxAmountAIn : parsedAmountA.toString(),
               // Add slippage
               amountOut: isReverse ? parsedAmountB.toString() : minAmountBOut,
-              isReverse
+              isReverse,
             });
           } else if (method === "provide") {
             config = await provide(network, {
@@ -208,7 +208,7 @@ const ActionModal = ({
               tokenB: tokenB.hash,
               amountA: parsedAmountA.toString(),
               amountB: parsedAmountB.toString(),
-              slippage: slippage * 100 // BPS
+              slippage: slippage * 100, // BPS
             });
           } else {
             toast.error("The method is not supported.");
@@ -268,7 +268,7 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
+                ),
               },
               {
                 title: tokenB.symbol,
@@ -286,7 +286,7 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
+                ),
               },
               {
                 title: "Action",
@@ -304,8 +304,8 @@ const ActionModal = ({
                       ""
                     )}
                   </>
-                )
-              }
+                ),
+              },
             ]}
           />
         </div>
