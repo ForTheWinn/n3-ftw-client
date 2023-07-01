@@ -3,7 +3,7 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { publicProvider } from "@wagmi/core/providers/public";
+// import { publicProvider } from "@wagmi/core/providers/public";
 
 import { HashRouter as Router } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -26,9 +26,8 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
         process.env.REACT_APP_NETWORK === TESTNET
           ? (process.env.REACT_APP_ALCHEMY_POLYGON_TESTNET_API_KEY as string)
           : (process.env.REACT_APP_ALCHEMY_POLYGON_MAINNET_API_KEY as string),
-      // priority: 0
     }),
-    publicProvider()
+    // publicProvider()
   ]
 );
 
