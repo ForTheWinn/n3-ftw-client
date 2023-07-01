@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import NumberFormat from "react-number-format";
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
@@ -16,20 +15,17 @@ import NEOSmithActionModal from "./NEOActionModal";
 import { Modal } from "antd";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
+import { useBalances } from "../../../../../../../packages/neo/hooks/use-balances";
+import {
+  GAS_SCRIPT_HASH,
+  NEP_SCRIPT_HASH,
+} from "../../../../../../../packages/neo/consts/neo-contracts";
 
 const CreateToken = () => {
   const { chain, network } = useApp();
   const history = useHistory();
   const [txid, setTxid] = useState<string | undefined>();
-  const [isBalanceLoading, setBalanceLoading] = useState(false);
-  const { client } = useWalletRouter(chain);
-  const [balances, setBalances] = useState<{
-    gasBalance: number;
-    nepBalance: number;
-  }>({
-    gasBalance: 0,
-    nepBalance: 0
-  });
+  const { client, address } = useWalletRouter(chain);
 
   const [values, setValues] = useState({
     name: "",
@@ -38,60 +34,53 @@ const CreateToken = () => {
     totalSupply: "",
     author: "",
     description: "",
-    email: ""
+    email: "",
   });
 
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val
+      [key]: val,
     });
   };
 
   const hasEmoji = detectEmojiInString(values) !== 0;
 
   const onMint = async () => {
-    if (hasEmoji) {
-      toast.error(
-        "Emoji is not supported yet. Please remove emojis and try again."
-      );
-      return;
-    }
-
-    if (isBalanceLoading) {
-      toast.error("Balance check hasn't been done. Please try again.");
-      return;
-    }
-
-    // if (balances.nepBalance < SMITH_FEE[NEO_CHAIN][network]) {
-    //   toast.error("You don't have enough NEP.");
-    //   return;
-    // }
-
-    // if (balances.gasBalance < 10_00000000) {
-    //   toast.error("You don't have enough GAS.");
-    //   return;
-    // }
-
     try {
-      const res = await new SmithContract(network).isNEP17SymbolTaken(
-        values.symbol
-      );
-      if (res) {
-        toast.error("Token symbol is already taken. Try other symbol.");
-      } else {
-        const res = await new SmithContract(network).createNEP17V3(
-          client,
-          values.totalSupply,
-          values.decimals,
-          values.symbol,
-          values.name,
-          values.author,
-          values.description,
-          values.email
+      if (hasEmoji) {
+        toast.error(
+          "Emoji is not supported yet. Please remove emojis and try again."
         );
-        setTxid(res);
+        return;
       }
+
+      const balances = await useBalances(network, address, [
+        GAS_SCRIPT_HASH,
+        NEP_SCRIPT_HASH[network],
+      ]);
+
+      if (balances[1] < SMITH_FEE_FORMATTED[chain][network]) {
+        toast.error("You don't have enough NEP.");
+        return;
+      }
+
+      if (balances[0] < 10) {
+        toast.error("You don't have enough GAS.");
+        return;
+      }
+
+      const res = await new SmithContract(network).createNEP17V3(
+        client,
+        values.totalSupply,
+        values.decimals,
+        values.symbol,
+        values.name,
+        values.author,
+        values.description,
+        values.email
+      );
+      setTxid(res);
     } catch (e: any) {
       toast.error(e.message ? e.message : WENT_WRONG);
     }
@@ -101,23 +90,6 @@ const CreateToken = () => {
     setTxid(undefined);
     history.push(SMITH_PATH);
   };
-
-  useEffect(() => {
-    async function balanceCheck(w) {
-      setBalanceLoading(true);
-      try {
-        const res = await new SmithContract(network).balanceCheck(w);
-        setBalances(res);
-        setBalanceLoading(false);
-      } catch (e: any) {
-        setBalanceLoading(false);
-        console.error(e);
-      }
-    }
-    if (client) {
-      balanceCheck(client);
-    }
-  }, [network]);
 
   return (
     <PageLayout>

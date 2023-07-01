@@ -30,9 +30,12 @@ const LockerMain = () => {
             <Level
               left={
                 <div>
-                  <h1 className="title is-5 is-spaced">Lockers</h1>
+                  <h1 className="title is-5">Lockers</h1>
                   <p className="subtitle is-7">
-                    Send your tokens with a timelock
+                    With Locker, set a timelock on your tokens, making them
+                    accessible only when the pre-set time has elapsed. This
+                    feature allows for a controlled distribution of tokens based
+                    on your desired timeline.
                   </p>
                 </div>
               }

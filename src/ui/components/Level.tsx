@@ -6,14 +6,12 @@ interface ILevelProps {
 }
 const Level = ({ isMobile, left, right }: ILevelProps) => {
   return (
-    <div className={`level ${isMobile ? "is-mobile" : ""}`}>
-      <div className="level-left">
-        <div className="level-item">{left}</div>
+    <>
+      <div className="columns is-centered">
+        <div className="column">{left}</div>
+        <div className="column is-narrow">{right}</div>
       </div>
-      <div className="level-right">
-        <div className="level-item">{right}</div>
-      </div>
-    </div>
+    </>
   );
 };
 

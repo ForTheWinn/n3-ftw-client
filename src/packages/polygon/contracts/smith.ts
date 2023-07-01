@@ -23,7 +23,7 @@ export const createTokenContract = (
     address: CONTRACT_LIST[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "createToken",
-    args: [name, symbol, totalSupply, decimals, icon, website]
+    args: [name, symbol, totalSupply, decimals, icon, website],
   });
 };
 
@@ -38,7 +38,7 @@ export const setTokenData = (
     address: CONTRACT_LIST[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "setTokenData",
-    args: [contractHash, icon, website]
+    args: [contractHash, icon, website],
   });
 };
 
@@ -57,30 +57,28 @@ export const getContractHashFromLogs = (logs: any) => {
   return contractHash;
 };
 
-export const getTokenList = async (
-  chain: CHAINS,
-  network: INetworkType
-) => {
+export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
   const res: any = await readContract({
     address: CONTRACT_LIST[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "getTokens",
-    args: [30, 1]
+    args: [30, 1],
   });
-  return {
-    totalItems: res[0].toNumber(),
-    totalPages: res[1].toNumber(),
-    items: res[2].map((item: any) => {
-      return {
-        contractHash: item[0],
-        owner: item[1],
-        name: item[2],
-        symbol: item[3],
-        icon: item[4],
-        website: item[5]
-      };
-    })
-  };
+  return res;
+  // return {
+  //   totalItems: res.tokenItems,
+  //   totalPages: res.totalPages,
+  //   items: res.items.map((item: any) => {
+  //     return {
+  //       contractHash: item[0],
+  //       owner: item[1],
+  //       name: item[2],
+  //       symbol: item[3],
+  //       icon: item[4],
+  //       website: item[5],
+  //     };
+  //   }),
+  // };
 };
 
 const getTokenMetadata = async (
@@ -92,11 +90,11 @@ const getTokenMetadata = async (
     address: CONTRACT_LIST[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "getTokenData",
-    args: [contractHash]
+    args: [contractHash],
   });
   return {
     icon: res[1],
-    website: res[2]
+    website: res[2],
   };
 };
 
@@ -108,14 +106,14 @@ export const getTokenListFromProvider = async (
   let iface = new ethers.utils.Interface(FTWSmith);
   const settings = {
     apiKey,
-    network: Network.MATIC_MUMBAI
+    network: Network.MATIC_MUMBAI,
   };
 
   const alchemy = new Alchemy(settings);
   const res = await alchemy.core.getLogs({
     fromBlock: "earliest",
     toBlock: "latest",
-    address: CONTRACT_LIST[chain][network][SMITH]
+    address: CONTRACT_LIST[chain][network][SMITH],
   });
 
   // Array to store promises for all the metadata fetch operations
@@ -141,7 +139,7 @@ export const getTokenListFromProvider = async (
     contractHash: parsedLogs[index].args[0],
     name: parsedLogs[index].args[2],
     symbol: parsedLogs[index].args[3],
-    ...meta
+    ...meta,
   }));
 
   return tokenLogs;

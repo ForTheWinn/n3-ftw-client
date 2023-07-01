@@ -272,7 +272,7 @@ const SMITH_PAGE_ROUTE = {
   label: "Smith",
   icon: "/520/smith.png",
   description:
-    "Effortlessly generate and launch your own tokens with Smith, eliminating the need for complex coding.",
+    "Effortlessly generate and launch your own token with Smith, eliminating the need for complex coding.",
   path: SMITH_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],

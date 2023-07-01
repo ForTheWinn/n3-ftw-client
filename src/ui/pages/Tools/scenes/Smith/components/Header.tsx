@@ -9,16 +9,19 @@ import { CONFIGS } from "../../../../../../consts/chains";
 import { useApp } from "../../../../../../common/hooks/use-app";
 
 const Header = () => {
-  const { network, chain } = useApp();
   const [isInfoModalActive, setInfoModalActive] = useState(false);
   return (
     <div className="box is-shadowless">
       <Level
         left={
           <div>
-            <h1 className="title is-5 is-spaced">Smith</h1>
-            <p className="subtitle is-7">Launch your tokens without codes.</p>
-            <a onClick={() => setInfoModalActive(true)}>Learn more</a>
+            <h1 className="title is-5">Smith</h1>
+            <p className="subtitle is-7">
+              Effortlessly generate and launch your own token with Smith,
+              eliminating the need for complex coding.
+              <br />
+              <a onClick={() => setInfoModalActive(true)}>Learn more</a>
+            </p>
           </div>
         }
         right={

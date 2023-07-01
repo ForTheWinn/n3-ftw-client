@@ -72,25 +72,6 @@ const CreateToken = () => {
     setActionModalActive(false);
   };
 
-  console.log(values);
-
-  // useEffect(() => {
-  //   // firstInput.current.focus();
-  //   async function balanceCheck(w) {
-  //     setBalanceLoading(true);
-  //     try {
-  //       const res = await new SmithContract(network).balanceCheck(w);
-  //       setBalanceLoading(false);
-  //     } catch (e: any) {
-  //       setBalanceLoading(false);
-  //       console.error(e);
-  //     }
-  //   }
-  //   if (connectedWallet) {
-  //     balanceCheck(connectedWallet);
-  //   }
-  // }, [connectedWallet, network]);
-
   return (
     <PageLayout>
       <div className="columns">

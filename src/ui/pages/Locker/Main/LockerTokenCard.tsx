@@ -33,7 +33,7 @@ const LockerTokenCard = ({
       onClick={() => {
         history.push(`${LOCKER_PATH}/contracts/${contractHash}`);
       }}
-      className="box has-text-centered is-hoverable"
+      className="box is-shadowless has-text-centered is-hoverable"
     >
       <img style={{ width: "64px" }} src={logo} />
       <br />
