@@ -4,7 +4,7 @@ import moment from "moment";
 import { IBalance } from "../wallets/interfaces";
 import {
   StackItemLike,
-  StackItemMap
+  StackItemMap,
 } from "@cityofzion/neon-core/lib/sc/StackItem";
 import { InvokeResult } from "@cityofzion/neon-core/lib/rpc";
 
@@ -144,7 +144,7 @@ const stringList = [
   "image",
   "1_tokenId",
   "2_tokenId",
-  "3_tokenId"
+  "3_tokenId",
 ];
 const addressList = ["owner", "account", "creator", "receiver", "sender"];
 const hash160List = [
@@ -158,7 +158,7 @@ const hash160List = [
   "neoTokenAddress",
   "evmTokenAddress",
   "evmReceiver",
-  "evmSender"
+  "evmSender",
 ];
 const dateList = ["createdAt", "1_createdAt", "2_createdAt", "3_createdAt"];
 const intList = [
@@ -306,21 +306,21 @@ export const getNEP17TransferScript = (
     args: [
       {
         type: "Hash160",
-        value: from
+        value: from,
       },
       {
         type: "Hash160",
-        value: to
+        value: to,
       },
       {
         type: "Integer",
-        value: amount
+        value: amount,
       },
       {
         type: "Any",
-        value: null
-      }
-    ]
+        value: null,
+      },
+    ],
   };
 };
 
@@ -340,3 +340,12 @@ export const readNeoContract = async (
   return rpcClient.invokeScript(u.HexString.fromHex(sb.build()));
 };
 
+export const getScriptHashFromAddressWithPrefix = (address) =>  {
+  let hash = wallet.getScriptHashFromAddress(address);
+
+  if (!hash.startsWith("0x")) {
+    hash = "0x" + hash;
+  }
+
+  return hash;
+}

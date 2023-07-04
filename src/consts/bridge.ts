@@ -13,8 +13,13 @@ import { INetworkType } from "../packages/neo/network";
 import { BRIDGE_SCRIPT_HASH } from "../packages/neo/contracts/ftw/bridge/consts";
 
 export const BRIDGE_NEP_FEE = {
+  [TESTNET]: 100_00000000,
+  [MAINNET]: 100_00000000,
+};
+
+export const BRIDGE_NEP_FEE_FORMATTED = {
   [TESTNET]: 100,
-  [MAINNET]: 100
+  [MAINNET]: 100,
 };
 
 export const BRIDGE_CHAINS = {
@@ -25,7 +30,7 @@ export const BRIDGE_CHAINS = {
       chainId: 888,
       chains: [137],
       icon: "/symbols/neo.svg",
-      rpc: MAINNET_CONFIG.url
+      rpc: MAINNET_CONFIG.url,
     },
     137: {
       type: POLYGON_CHAIN,
@@ -33,8 +38,8 @@ export const BRIDGE_CHAINS = {
       chainId: 137,
       chains: [888],
       icon: "/symbols/matic.png",
-      rpc: ""
-    }
+      rpc: "",
+    },
   },
   [TESTNET]: {
     889: {
@@ -43,7 +48,7 @@ export const BRIDGE_CHAINS = {
       chainId: 889,
       chains: [80001],
       icon: "/symbols/neo.svg",
-      rpc: TESTNET_CONFIG.url
+      rpc: TESTNET_CONFIG.url,
     },
     80001: {
       type: POLYGON_CHAIN,
@@ -51,9 +56,9 @@ export const BRIDGE_CHAINS = {
       chainId: 80001,
       chains: [889],
       icon: "/symbols/matic.png",
-      rpc: ""
-    }
-  }
+      rpc: "",
+    },
+  },
 };
 
 export const BRIDGE_CHAIN_LIST = (network: INetworkType) =>
@@ -92,41 +97,41 @@ export const BRIDGE_SUPPORTED_TOKEN_LIST = {
       {
         ...neoTestnetConsts.BNEO_TESTNET_DETAIL,
         pairs: {
-          80001: polygonTestnetConsts.FNEO_TESTNET_DETAIL
-        }
+          80001: polygonTestnetConsts.FNEO_TESTNET_DETAIL,
+        },
       },
       {
         ...neoTestnetConsts.NEP_TESTNET_DETAIL,
         pairs: {
-          80001: polygonTestnetConsts.NEP_TESTNET_DETAIL
-        }
-      }
+          80001: polygonTestnetConsts.NEP_TESTNET_DETAIL,
+        },
+      },
     ],
     80001: [
       {
         ...polygonTestnetConsts.FNEO_TESTNET_DETAIL,
         pairs: {
-          889: neoTestnetConsts.BNEO_TESTNET_DETAIL
-        }
+          889: neoTestnetConsts.BNEO_TESTNET_DETAIL,
+        },
       },
       {
         ...polygonTestnetConsts.NEP_TESTNET_DETAIL,
         pairs: {
-          889: neoTestnetConsts.NEP_TESTNET_DETAIL
-        }
-      }
-    ]
-  }
+          889: neoTestnetConsts.NEP_TESTNET_DETAIL,
+        },
+      },
+    ],
+  },
 };
 
 export const BRIDGE_CONTRACTS = {
   [MAINNET]: {},
   [TESTNET]: {
     889: {
-      80001: BRIDGE_SCRIPT_HASH[TESTNET]
+      80001: BRIDGE_SCRIPT_HASH[TESTNET],
     },
     80001: {
-      889: CONTRACT_LIST[TESTNET][BRIDGE]
-    }
-  }
+      889: CONTRACT_LIST[TESTNET][BRIDGE],
+    },
+  },
 };

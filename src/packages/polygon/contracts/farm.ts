@@ -10,13 +10,14 @@ import { Buffer } from "buffer";
 import { INetworkType } from "../../neo/network";
 import { ISwapLPToken } from "../../../common/routers/swap/interfaces";
 import { FARM, POLYGON_CHAIN } from "../../../consts/global";
+import { ethers } from "ethers";
 
 export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
   const res: any = await readContract({
     address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "getAllPoolIds",
-    args: []
+    args: [],
   });
 
   const pools: IFarmPair[] = [];
@@ -26,7 +27,7 @@ export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
       address: CONTRACT_LIST[network][FARM] as any,
       abi: FTWFarmABI,
       functionName: "getPool",
-      args: [pairId]
+      args: [pairId],
     });
 
     const tokenA =
@@ -50,19 +51,18 @@ export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
       bonusTokenSymbol: bonusToken ? bonusToken.symbol : "Unknown",
       bonusTokenDecimals: bonusToken ? bonusToken.decimals : "Unknown",
       bonusTokensPerSecond: pool.bonusTokensPerSecond.toString(),
-      nepRewardsPerDay: withDecimal(
-        pool.nepTokensPerSecond.toNumber() * 86400,
-        8,
-        true
+      nepRewardsPerDay: ethers.utils.formatUnits(
+        Number(pool.nepTokensPerSecond) * 86400,
+        8
       ),
       bonusRewardsPerDay: hasBonusRewards
-        ? withDecimal(
-            pool.bonusTokensPerSecond.toNumber() * 86400,
+        ? ethers.utils.formatUnits(
+            Number(pool.bonusTokensPerSecond),
             bonusToken ? bonusToken.decimals : 0
           )
         : "0",
       hasBonusRewards: hasBonusRewards,
-      lastRewardedAt: pool.lastRewardedAt.toString()
+      lastRewardedAt: pool.lastRewardedAt.toString(),
     });
   }
   return pools;
@@ -76,7 +76,7 @@ export const getStakedTokens = async (
     address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "getStakedTokens",
-    args: [address]
+    args: [address],
   });
   const tokens: ISwapLPToken[] = [];
 
@@ -96,7 +96,7 @@ export const getClaimable = async (
     address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "getClaimable",
-    args: [address]
+    args: [address],
   });
   const rewards: IClaimableRewards[] = [];
   res.map((reward: any) => {
@@ -121,7 +121,7 @@ export const getClaimable = async (
         share: reward.shares.toString(),
         tokensStaked: reward.tokensStaked.toString(),
         nepTokensPerSecond: reward.nepTokensPerSecond.toString(),
-        bonusTokensPerSecond: reward.bonusTokensPerSecond.toString()
+        bonusTokensPerSecond: reward.bonusTokensPerSecond.toString(),
       };
       rewards.push(obj);
     }
@@ -130,7 +130,7 @@ export const getClaimable = async (
   return {
     rewards: rewards,
     boyz: [],
-    bonus: 0
+    bonus: 0,
   };
 };
 
@@ -142,7 +142,7 @@ export const stake = async (
     address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "stake",
-    args: [tokenId]
+    args: [tokenId],
   });
   const { hash } = await writeContract(config);
   return hash as string;
@@ -156,7 +156,7 @@ export const unStake = async (
     address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "unStake",
-    args: [tokenId]
+    args: [tokenId],
   });
   const { hash } = await writeContract(config);
   return hash as string;
@@ -177,7 +177,7 @@ export const claim = async (
     address: CONTRACT_LIST[network][FARM] as any,
     abi: FTWFarmABI,
     functionName: "claimMany",
-    args: [pairIds]
+    args: [pairIds],
   });
   const { hash } = await writeContract(config);
   return hash as string;

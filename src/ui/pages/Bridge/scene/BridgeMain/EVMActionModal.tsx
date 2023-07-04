@@ -21,9 +21,9 @@ import {
   burn,
   getMintoNoFromLogs,
 } from "../../../../../packages/polygon/contracts/bridge";
-import { wallet } from "@cityofzion/neon-core";
 import { NEP_SCRIPT_HASHES } from "../../../../../packages/polygon/consts";
 import { getExplorer } from "../../../../../common/helpers";
+import { getScriptHashFromAddressWithPrefix } from "../../../../../packages/neo/utils";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -81,9 +81,8 @@ const ActionModal = ({
 
   useEffect(() => {
     async function startBridging() {
-      const parsedAmount = ethers.utils
-        .parseUnits(amount, token.decimals)
-        .toString();
+      const requiredAmount = ethers.utils.parseUnits(amount, token.decimals);
+
       const chainId = CONFIGS[network][chain].chainId;
       const evmBridgeContractHash =
         BRIDGE_CONTRACTS[network][chainId][destChain.chainId];
@@ -102,7 +101,8 @@ const ActionModal = ({
           args: [address as any, evmBridgeContractHash as any],
           chainId,
         });
-        if (approvedAmount.gte(parsedAmount)) {
+
+        if (requiredAmount.lt(approvedAmount)) {
           setTokenApproved(true);
           setTokenApproving(false);
         } else {
@@ -127,15 +127,19 @@ const ActionModal = ({
 
       try {
         setFeeTokenApproving(true);
-        const approvedAmount: any = await readContract({
+
+        const requiredFeeAmount = ethers.utils.parseUnits(
+          BRIDGE_NEP_FEE[network].toString(),
+          8
+        );
+        const approvedAmount = await readContract({
           address: nepTokenContractHash as any,
           abi: erc20ABI,
           functionName: "allowance",
           args: [address as any, evmBridgeContractHash as any],
           chainId,
         });
-        console.log(approvedAmount.toString());
-        if (approvedAmount.gte(BRIDGE_NEP_FEE[network])) {
+        if (requiredFeeAmount.lt(approvedAmount)) {
           setFeeTokenApproved(true);
           setFeeTokenApproving(false);
         } else {
@@ -167,8 +171,8 @@ const ActionModal = ({
           chainId,
           evmBridgeContractHash,
           token.hash,
-          wallet.getScriptHashFromAddress(receiver.address),
-          parsedAmount
+          getScriptHashFromAddressWithPrefix(receiver.address),
+          requiredAmount.toString()
         );
 
         const txid = await writeContract(burnScript);

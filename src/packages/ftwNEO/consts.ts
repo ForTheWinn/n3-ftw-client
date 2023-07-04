@@ -6,21 +6,21 @@ const polygonFNEO = {
   address: FNEO_SCRIPT_HASHES,
   chainId: {
     [MAINNET]: 137,
-    [TESTNET]: 80001
+    [TESTNET]: 80001,
   },
   perBlock: {
     [MAINNET]: 1,
-    [TESTNET]: 1
-  }
+    [TESTNET]: 1,
+  },
 };
 
 export const NEP_PER_BLOCK = {
   [MAINNET]: {
-    80001: 5
+    80001: 5,
   },
   [TESTNET]: {
-    80001: 5
-  }
+    80001: 5,
+  },
 };
 
 export const FNEO_CHAINS = [polygonFNEO];

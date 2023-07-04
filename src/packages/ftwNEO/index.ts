@@ -14,13 +14,12 @@ import FNEOABI from "./fNEO.json";
 
 export const claim = async (
   contractHash: string,
-  address: string
 ): Promise<string> => {
+  console.log(contractHash)
   const config = await prepareWriteContract({
     address: contractHash as any,
     abi: FNEOABI,
     functionName: "claim"
-    // args: [address]
   });
   const { hash } = await writeContract(config);
   return hash as string;

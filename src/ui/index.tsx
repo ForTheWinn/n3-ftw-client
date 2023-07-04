@@ -27,7 +27,6 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
           ? (process.env.REACT_APP_ALCHEMY_POLYGON_TESTNET_API_KEY as string)
           : (process.env.REACT_APP_ALCHEMY_POLYGON_MAINNET_API_KEY as string),
     }),
-    // publicProvider()
   ]
 );
 

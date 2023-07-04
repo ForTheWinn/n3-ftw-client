@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Collapse } from "antd";
-import { BRIDGE_NEP_FEE } from "../../../../../consts/bridge";
+import { BRIDGE_NEP_FEE_FORMATTED } from "../../../../../consts/bridge";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IBridgeSelectedtoken } from "../../interfaces";
@@ -37,7 +37,9 @@ const BridgeDetails = ({
         style={{ background: "white" }}
       >
         <Panel
-          header={<div>Bridge fee: {BRIDGE_NEP_FEE[network]} NEP</div>}
+          header={
+            <div>Bridge fee: {BRIDGE_NEP_FEE_FORMATTED[network]} NEP</div>
+          }
           key="1"
         >
           <div className="box is-shadowless content is-small has-background-light">

@@ -64,6 +64,7 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
     functionName: "getTokens",
     args: [30, 1],
   });
+  console.log(res)
   return res;
   // return {
   //   totalItems: res.tokenItems,

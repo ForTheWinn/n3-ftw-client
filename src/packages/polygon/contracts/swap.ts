@@ -31,20 +31,20 @@ export const getReserves = async (
   return {
     reserveA:
       res.tokenA.toLowerCase() === tokenA
-        ? res.amountA.toString()
-        : res.amountB.toString(),
+        ? res.amountA
+        : res.amountB,
     reserveB:
       res.tokenB.toLowerCase() === tokenB
-        ? res.amountB.toString()
-        : res.amountA.toString(),
-    shares: res.shares.toString()
+        ? res.amountB
+        : res.amountA,
+    shares: res.shares
   };
 };
 
 export const getEstimated = async (
   network: INetworkType,
   args: SwapEstimateArgs
-): Promise<string> => {
+): Promise<any> => {
   const { tokenA, tokenB, amount, isReverse } = args;
   const res = await readContract({
     address: CONTRACT_LIST[network][SWAP] as any,
@@ -52,7 +52,7 @@ export const getEstimated = async (
     functionName: "getSwapEstimated",
     args: [tokenA, tokenB, amount, isReverse]
   });
-  return res as string;
+  return res;
 };
 
 export const getLPTokens = async (

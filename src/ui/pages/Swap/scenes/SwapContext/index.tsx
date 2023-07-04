@@ -6,6 +6,9 @@ import React, {
   useRef,
 } from "react";
 import Decimal from "decimal.js";
+import toast from "react-hot-toast";
+import { ethers } from "ethers";
+
 import { ISwapInputState, ITokenState } from "../Swap/interfaces";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
@@ -17,15 +20,14 @@ import {
 import { swapRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
-import { ethers } from "ethers";
-import TokenList from "../../../../components/Commons/TokenList";
-import SwapSettings from "../../components/Settings";
 import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
-import toast from "react-hot-toast";
 import { getTokenByHash } from "../../../../../common/helpers";
 import { NEO_CHAIN } from "../../../../../consts/global";
+
+import TokenList from "../../../../components/Commons/TokenList";
+import SwapSettings from "../../components/Settings";
 
 interface ISwapContext {
   chain: CHAINS;
@@ -72,8 +74,8 @@ export const SwapContextProvider = (props: {
     increaseRefreshCount,
     toggleWalletSidebar,
   } = useApp();
-  const { connectedWallet } = useNeoWallets();
-  const { address, isConnected } = useWalletRouter(chain);
+  
+  const { address, isConnected, client } = useWalletRouter(chain);
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>();
   const [tokenB, setTokenB] = useState<ITokenState | undefined>();
@@ -153,14 +155,11 @@ export const SwapContextProvider = (props: {
 
         setReserve(res);
 
-        let _address =
-          chain === NEO_CHAIN ? connectedWallet?.account.address : address;
-
-        if (_address) {
+        if (address) {
           const { amountA, amountB } = await swapRouter.getBalances(
             chain,
             network,
-            _address,
+            address,
             _tokenA,
             _tokenB
           );
@@ -183,7 +182,7 @@ export const SwapContextProvider = (props: {
     if (tokenA && tokenB) {
       load(tokenA, tokenB);
     }
-  }, [address, tokenA, tokenB, refreshCount, connectedWallet]);
+  }, [address, tokenA, tokenB, refreshCount]);
 
   useEffect(() => {
     if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {

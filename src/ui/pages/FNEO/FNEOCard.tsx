@@ -20,22 +20,18 @@ const FNEOCard = ({ name, hash, chainId, perBlock }: IFNEOCardProps) => {
   const [data, setData] = useState<IfNEODetail>({
     totalSupply: "0",
     apr: "0",
-    claimable: "0"
+    claimable: "0",
   });
 
   const onClaim = async () => {
-    if (isConnected && address) {
-      try {
-        const _txid = await claim(hash, address);
-        if (_txid) {
-          setTxid(_txid);
-        }
-      } catch (e: any) {
-        console.error(e);
-        toast.error(e && e.messages ? e.messages : WENT_WRONG);
+    try {
+      const _txid = await claim(hash);
+      if (_txid) {
+        setTxid(_txid);
       }
-    } else {
-      toast.error(CONNECT_WALLET);
+    } catch (e: any) {
+      console.error(e);
+      toast.error(e && e.messages ? e.messages : WENT_WRONG);
     }
   };
 

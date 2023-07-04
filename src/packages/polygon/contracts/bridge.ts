@@ -11,7 +11,9 @@ export const burn = (
   receiver: string,
   amount: string
 ) => {
+  console.log(bridgeAddress);
   console.log(tokenAddress)
+  console.log(receiver);
   return prepareWriteContract({
     address: bridgeAddress,
     abi: FTWBridge,

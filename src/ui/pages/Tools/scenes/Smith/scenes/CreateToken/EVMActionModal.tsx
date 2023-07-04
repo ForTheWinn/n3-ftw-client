@@ -76,8 +76,7 @@ const ActionModal = ({
           functionName: "allowance",
           args: [address as any, smithTokenContractHash as any],
         });
-
-        if (approvedAmount.gte(SMITH_FEE[chain][network])) {
+        if (approvedAmount >= SMITH_FEE[chain][network]) {
           setFeeTokenApproved(true);
           setFeeTokenApproving(false);
         } else {
