@@ -19,12 +19,10 @@ import {
 } from "../../../../../common/routers/swap/interfaces";
 import { swapRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
-import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { getTokenByHash } from "../../../../../common/helpers";
-import { NEO_CHAIN } from "../../../../../consts/global";
 
 import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
@@ -46,11 +44,6 @@ interface ISwapContext {
   priceImpact: number;
   hasEstimatedError: boolean;
   hasReservesError: boolean;
-  setTokenA: (token: ITokenState | undefined) => void;
-  setTokenB: (token: ITokenState | undefined) => void;
-  setAmountA: (amount: string | undefined) => void;
-  setAmountB: (amount: string | undefined) => void;
-  setSwapInput: (v: ISwapInputState | undefined) => void;
   setAssetChangeModalActive: (v: "A" | "B" | undefined) => void;
   setSettingsModalActive: (v: boolean) => void;
   onSwapInputChange: (v: ISwapInputState) => void;
@@ -74,7 +67,7 @@ export const SwapContextProvider = (props: {
     increaseRefreshCount,
     toggleWalletSidebar,
   } = useApp();
-  
+
   const { address, isConnected, client } = useWalletRouter(chain);
 
   const [tokenA, setTokenA] = useState<ITokenState | undefined>();
@@ -130,8 +123,6 @@ export const SwapContextProvider = (props: {
       }
       setTokenB(token);
     }
-    setAmountB(undefined);
-    setAmountA(undefined);
     setAssetChangeModalActive(undefined);
   };
 
@@ -194,64 +185,60 @@ export const SwapContextProvider = (props: {
           setAmountALoading(true);
         }
 
-        try {
-          if (swapInput.value) {
-            let estimated;
-            if (props.type === "swap") {
-              const args = {
-                tokenA: tokenA.hash,
-                tokenB: tokenB.hash,
-                amount: ethers.utils
-                  .parseUnits(
-                    swapInput.value,
-                    swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
-                  )
-                  .toString(),
-                isReverse: swapInput.type === "B",
-              };
-              estimated = await swapRouter.getEstimate(chain, network, args);
-            } else if (props.type === "liquidity") {
-              if (reserves) {
-                const val = ethers.utils.parseUnits(
-                  swapInput.value.toString(),
+        if (swapInput.value) {
+          let estimated;
+          if (props.type === "swap") {
+            const args = {
+              tokenA: tokenA.hash,
+              tokenB: tokenB.hash,
+              amount: ethers.utils
+                .parseUnits(
+                  swapInput.value,
                   swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
-                );
-                estimated = val
-                  .mul(
-                    swapInput.type === "A"
-                      ? reserves.reserveB
-                      : reserves.reserveA
-                  )
-                  .div(
-                    swapInput.type === "A"
-                      ? reserves.reserveA
-                      : reserves.reserveB
-                  )
-                  .toString();
-              }
-            }
-
-            if (swapInput.type === "A") {
-              estimated = ethers.utils.formatUnits(estimated, tokenB.decimals);
-              setAmountBLoading(false);
-              setAmountB(estimated);
-            } else {
-              estimated = ethers.utils.formatUnits(estimated, tokenA.decimals);
+                )
+                .toString(),
+              isReverse: swapInput.type === "B",
+            };
+            try {
+              estimated = await swapRouter.getEstimate(chain, network, args);
+            } catch (e: any) {
+              console.error(e);
+              setEstimatedError(false);
               setAmountALoading(false);
-              setAmountA(estimated);
+              setAmountBLoading(false);
+            }
+          } else if (props.type === "liquidity") {
+            if (reserves) {
+              const val = ethers.utils.parseUnits(
+                swapInput.value.toString(),
+                swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
+              );
+              estimated = val
+                .mul(
+                  swapInput.type === "A" ? reserves.reserveB : reserves.reserveA
+                )
+                .div(
+                  swapInput.type === "A" ? reserves.reserveA : reserves.reserveB
+                )
+                .toString();
             }
           }
-        } catch (e: any) {
-          console.error(e);
-          setEstimatedError(false);
-          setAmountALoading(false);
-          setAmountBLoading(false);
+
+          if (swapInput.type === "A") {
+            estimated = ethers.utils.formatUnits(estimated, tokenB.decimals);
+            setAmountBLoading(false);
+            setAmountB(estimated);
+          } else {
+            estimated = ethers.utils.formatUnits(estimated, tokenA.decimals);
+            setAmountALoading(false);
+            setAmountA(estimated);
+          }
         }
       }, 800);
 
       return () => clearTimeout(delayDebounceFn);
     }
-  }, [swapInput]);
+  }, [swapInput, tokenA, tokenB]);
 
   const isFirstRender = useRef(true);
 
@@ -335,11 +322,6 @@ export const SwapContextProvider = (props: {
     priceImpact,
     hasEstimatedError,
     hasReservesError,
-    setTokenA,
-    setTokenB,
-    setAmountA,
-    setAmountB,
-    setSwapInput,
     setAssetChangeModalActive,
     setSettingsModalActive,
     onSwapInputChange,
