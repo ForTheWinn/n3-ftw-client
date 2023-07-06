@@ -131,7 +131,7 @@
       },
       {
         "internalType": "string",
-        "name": "logo",
+        "name": "icon",
         "type": "string"
       },
       {
@@ -264,7 +264,7 @@
               },
               {
                 "internalType": "string",
-                "name": "logo",
+                "name": "icon",
                 "type": "string"
               },
               {
@@ -287,18 +287,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_feeToken",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_feeAmount",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -385,7 +374,7 @@
       },
       {
         "internalType": "string",
-        "name": "logo",
+        "name": "icon",
         "type": "string"
       },
       {
@@ -416,7 +405,7 @@
       },
       {
         "internalType": "string",
-        "name": "logo",
+        "name": "icon",
         "type": "string"
       },
       {

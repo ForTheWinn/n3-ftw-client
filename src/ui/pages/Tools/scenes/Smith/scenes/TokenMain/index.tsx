@@ -71,7 +71,7 @@ const TokenMainPage = () => {
         setData(res.items);
         setTotalPages(res.totalPages);
       } catch (e) {
-        console.error(e)
+        console.error(e);
         setError(true);
       }
       setLoading(false);
@@ -93,27 +93,29 @@ const TokenMainPage = () => {
                   itemLayout="horizontal"
                   dataSource={data}
                   loading={loading}
-                  renderItem={(item: any, index) => (
-                    <TokenCard
-                      key={index}
-                      chain={chain}
-                      network={network}
-                      owner={item.owner}
-                      contractHash={item.contractHash}
-                      name={item.name}
-                      symbol={item.symbol}
-                      website={item.website}
-                      icon={item.icon}
-                      isContractOwner={address === item.owner}
-                      onUpdate={() => {
-                        setUpdateModalObj({
-                          contractHash: item.contractHash,
-                          website: item.website,
-                          icon: item.icon,
-                        });
-                      }}
-                    />
-                  )}
+                  renderItem={(item: any, index) => {
+                    return (
+                      <TokenCard
+                        key={index}
+                        chain={chain}
+                        network={network}
+                        owner={item.owner}
+                        tokenAddress={item.tokenAddress}
+                        name={item.name}
+                        symbol={item.symbol}
+                        website={item.website}
+                        icon={item.icon}
+                        isContractOwner={address === item.owner}
+                        onUpdate={() => {
+                          setUpdateModalObj({
+                            contractHash: item.tokenAddress,
+                            website: item.website,
+                            icon: item.icon,
+                          });
+                        }}
+                      />
+                    );
+                  }}
                 />
 
                 {totalPages > 1 && (

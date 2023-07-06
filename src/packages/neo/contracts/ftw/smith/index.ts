@@ -328,7 +328,7 @@ export class SmithContract {
         }
         return {
           owner: item.owner,
-          contractHash: item.contractHash,
+          tokenAddress: item.contractHash,
           name: item.name,
           symbol: item.symbol,
           decimals: item.decimals,

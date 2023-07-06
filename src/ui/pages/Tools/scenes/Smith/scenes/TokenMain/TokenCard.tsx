@@ -8,7 +8,7 @@ interface ITokenCardProps {
   chain: CHAINS;
   network: INetworkType;
   owner: string;
-  contractHash: string;
+  tokenAddress: string;
   name: string;
   symbol: string;
   website?: string;
@@ -22,7 +22,7 @@ const TokenCard = ({
   network,
   name,
   symbol,
-  contractHash,
+  tokenAddress,
   website,
   icon,
   onUpdate,
@@ -58,7 +58,7 @@ const TokenCard = ({
       />
       <a
         target="_blank"
-        href={`${getExplorer(chain, network, "contract")}/${contractHash}`}
+        href={`${getExplorer(chain, network, "contract")}/${tokenAddress}`}
         rel="noreferrer"
       >
         View details
