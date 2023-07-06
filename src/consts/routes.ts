@@ -194,7 +194,6 @@ export const MATIC_BOYZ_PAGE_ROUTE = {
     [POLYGON_CHAIN]: [MAINNET]
   },
   category: []
-  // component: M
 };
 
 export const RUNES_PAGE_ROUTE = {
@@ -429,6 +428,7 @@ export const ROUTE_LIST = [
   SWAP_PAGE_ROUTE,
   FARM_V2_PAGE_ROUTE,
   ANALYTICS_ROUTE,
+  SMITH_PAGE_ROUTE,
   TOOLS_PAGE_ROUTE,
   NFT_ROUTE,
   BRIDGE_PAGE_ROUTE,
@@ -439,7 +439,7 @@ export const ROUTE_LIST = [
   FARM_PAGE_ROUTE,
   BRAND_PAGE_ROUTE,
   HOME_PAGE_ROUTE,
-  { ...SMITH_PAGE_ROUTE, noShow: true },
+  // { SMITH_PAGE_ROUTE, noShow: true },
   { ...LOCKER_PAGE_ROUTE, noShow: true }
 ];
 
