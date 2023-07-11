@@ -1,8 +1,8 @@
 import React from "react";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 
 const MarketStatus = () => {
   const { connectedWallet } = useNeoWallets();

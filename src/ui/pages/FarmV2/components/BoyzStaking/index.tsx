@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Modal from "../../../../components/Modal";
-import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
+
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import DisplayBoy from "../MyBoyz/DisplayBoy";
 import StakingModal from "./StakingModal";
 import toast from "react-hot-toast";
 import { IBoyStaked } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
 
 interface IBoyzStakingProps {
   boyz: IBoyStaked[];

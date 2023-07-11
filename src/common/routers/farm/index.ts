@@ -1,8 +1,7 @@
-import { CHAINS } from "../../../consts/chains";
 import { waitForTransaction, writeContract } from "@wagmi/core";
-import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 import { IClaimableRewards } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
+import { CHAINS } from "../../../consts/chains";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
 import {
   getPools,
@@ -10,16 +9,17 @@ import {
   stake,
   unStake,
   getClaimable as polygonGetClaimable,
-  claim as polygonClaim
+  claim as polygonClaim,
 } from "../../../packages/polygon/contracts/farm";
 import {
   isApprovedForAll,
-  setApprovalForAll
+  setApprovalForAll,
 } from "../../../packages/polygon/contracts/swap";
 import { IClaimable, IFarmPair } from "./interfaces";
 import { ISwapLPToken } from "../swap/interfaces";
 import { CONTRACT_LIST } from "../../../consts/contracts";
 import { FARM, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
+import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 
 export const getPoolList = (
   chain: CHAINS,
@@ -53,7 +53,7 @@ export const getStakedLPTokens = async (
           amountB: token.amountB,
           decimalsA: token.decimalsA,
           decimalsB: token.decimalsB,
-          sharesPercentage: token.sharesPercentage.toString()
+          sharesPercentage: token.sharesPercentage.toString(),
         });
       }
       return tokens;

@@ -1,10 +1,10 @@
 import { globalRouter } from "./routers";
-import { CHAINS } from "../consts/chains";
 import { MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "../consts/global";
 import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
 import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
 import { explorerUrls } from "../consts/urls";
+import { CHAINS } from "../consts/chains";
 
 export const getExplorer = (
   chain: string,
@@ -99,3 +99,4 @@ export const findTradePaths = (
   dfs(sourceToken, [sourceToken], 1);
   return paths;
 };
+

@@ -3,7 +3,6 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
-// import { publicProvider } from "@wagmi/core/providers/public";
 
 import { HashRouter as Router } from "react-router-dom";
 import { Toaster } from "react-hot-toast";

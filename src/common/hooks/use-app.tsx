@@ -2,7 +2,30 @@ import React, { createContext, useContext, useState } from "react";
 import { CHAINS } from "../../consts/chains";
 import { LocalStorage } from "../../packages/neo/local-storage";
 import { INetworkType } from "../../packages/neo/network";
-import { MAINNET } from "../../consts/global";
+import { MAINNET, NEO_CHAIN, POLYGON_CHAIN } from "../../consts/global";
+
+const initChain = (): CHAINS => {
+  const hostname = window.location.hostname;
+  const parts = hostname.split(".");
+
+  // Ensure the hostname follows the format: subdomain.forthewin.network
+  if (
+    parts.length === 3 &&
+    parts[1] === "forthewin" &&
+    parts[2] === "network"
+  ) {
+    const subdomain = parts[0];
+    if (subdomain.includes("polygon")) {
+      return POLYGON_CHAIN;
+    } else if (subdomain.includes("neo")) {
+      return NEO_CHAIN;
+    } else {
+      return LocalStorage.getChain();
+    }
+  } else {
+    return LocalStorage.getChain();
+  }
+};
 
 interface IAppContext {
   chain: CHAINS;
@@ -24,8 +47,9 @@ interface IAppContext {
 export const AppContext = createContext({} as IAppContext);
 
 export const AppContextProvider = (props: { children: any }) => {
-  const [chain, setChain] = useState<CHAINS>(LocalStorage.getChain());
-  const [network, setNetwork] = useState(
+  // const [chain, setChain] = useState<CHAINS>(LocalStorage.getChain());
+  const [chain, setChain] = useState<CHAINS>(initChain());
+  const [network] = useState(
     (process.env.REACT_APP_NETWORK as INetworkType)
       ? (process.env.REACT_APP_NETWORK as INetworkType)
       : MAINNET
@@ -72,7 +96,7 @@ export const AppContextProvider = (props: { children: any }) => {
     toggleWalletSidebar,
     setTxid,
     resetTxid,
-    increaseRefreshCount
+    increaseRefreshCount,
   };
   return (
     <AppContext.Provider value={contextValue}>
