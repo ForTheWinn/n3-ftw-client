@@ -3,12 +3,12 @@ import {
   INetworkType,
   Network,
 } from "../../../../../../../packages/neo/network";
-import { Button, Result } from "antd";
-import CubeLoading from "../../../../../../components/CubeLoading";
+import { Button, Result, Spin } from "antd";
 import { getTokenContractHashNotifications } from "../../../../../../../packages/neo/contracts/ftw/smith/helpers";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 import { getExplorer } from "../../../../../../../common/helpers";
+import NFTAds from "../../../../../../components/Ad";
 
 interface IAfterTransactionSubmittedProps {
   txid: string;
@@ -43,7 +43,17 @@ const NEOSmithActionModal = ({
   }, [txid]);
 
   if (isLoading) {
-    return <CubeLoading />;
+    return (
+      <>
+        <NFTAds />
+        <div className="has-text-centered">
+          <Spin />
+          <p className="subtitle is-6">
+            Please hold while your transaction is being confirmed
+          </p>
+        </div>
+      </>
+    );
   }
   if (error) {
     <Result

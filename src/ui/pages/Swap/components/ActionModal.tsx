@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { waitForTransaction, writeContract } from "@wagmi/core";
 import Modal from "../../../components/Modal";
-import { Steps } from "antd";
+import { Spin, Steps } from "antd";
 import { ITokenState } from "../scenes/Swap/interfaces";
 import LoadingWithText from "../../../components/Commons/LoadingWithText";
 import { CHAINS } from "../../../../consts/chains";
@@ -20,6 +20,7 @@ import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import { WENT_WRONG } from "../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../consts/global";
 import { getExplorer } from "../../../../common/helpers";
+import NFTAds from "../../../components/Ad";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -241,73 +242,87 @@ const ActionModal = ({
   return (
     <Modal onClose={onCancel}>
       <>
-        <div className="block">
+        {/* <div className="block">
           <h3 className="title is-5 has-text-centered">
             {method === "swap" ? "Swap" : "Add Liquidity"}
           </h3>
-        </div>
+        </div> */}
 
         <div className="block">
-          <Steps
-            progressDot={true}
-            current={currentStep}
-            items={[
-              {
-                title: tokenA.symbol,
-                description: (
-                  <>
-                    {isTokenAApproving ? (
-                      <LoadingWithText title="Approving" />
-                    ) : (
-                      <></>
-                    )}
-                    {isTokenAApproved ? "Approved" : ""}
-                    {hasTokenAApproveError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
-                    )}
-                  </>
-                ),
-              },
-              {
-                title: tokenB.symbol,
-                description: (
-                  <>
-                    {isTokenBApproving ? (
-                      <LoadingWithText title="Approving" />
-                    ) : (
-                      <></>
-                    )}
-                    {isTokenBApproved ? "Approved" : ""}
-                    {hasTokenBApproveError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
-                    )}
-                  </>
-                ),
-              },
-              {
-                title: "Action",
-                description: (
-                  <>
-                    {isSwapping ? (
-                      <LoadingWithText title="Submitting" />
-                    ) : (
-                      <></>
-                    )}
-                    {isSwapDone ? "Finished" : ""}
-                    {hasSwappingError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
-                    )}
-                  </>
-                ),
-              },
-            ]}
-          />
+          {isSwapping ? (
+            <div>
+              <>
+                <NFTAds />
+                <div className="has-text-centered">
+                  <Spin />
+                  <p className="subtitle is-6">
+                    Please hold while your transaction is being confirmed
+                  </p>
+                </div>
+              </>
+            </div>
+          ) : (
+            <Steps
+              progressDot={true}
+              current={currentStep}
+              items={[
+                {
+                  title: tokenA.symbol,
+                  description: (
+                    <>
+                      {isTokenAApproving ? (
+                        <LoadingWithText title="Approving" />
+                      ) : (
+                        <></>
+                      )}
+                      {isTokenAApproved ? "Approved" : ""}
+                      {hasTokenAApproveError ? (
+                        <span className="has-text-danger">Error</span>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  title: tokenB.symbol,
+                  description: (
+                    <>
+                      {isTokenBApproving ? (
+                        <LoadingWithText title="Approving" />
+                      ) : (
+                        <></>
+                      )}
+                      {isTokenBApproved ? "Approved" : ""}
+                      {hasTokenBApproveError ? (
+                        <span className="has-text-danger">Error</span>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  title: "Action",
+                  description: (
+                    <>
+                      {isSwapping ? (
+                        <LoadingWithText title="Submitting" />
+                      ) : (
+                        <></>
+                      )}
+                      {isSwapDone ? "Finished" : ""}
+                      {hasSwappingError ? (
+                        <span className="has-text-danger">Error</span>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ),
+                },
+              ]}
+            />
+          )}
         </div>
 
         {txid && isSwapDone ? (

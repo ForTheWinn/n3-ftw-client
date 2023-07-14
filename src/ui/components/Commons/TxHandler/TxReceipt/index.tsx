@@ -1,8 +1,10 @@
 import React from "react";
-import CubeLoading from "../../../CubeLoading";
 import { Button, Result } from "antd";
 import { WENT_WRONG } from "../../../../../consts/messages";
-
+import NFTAds from "../../../Ad";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 interface ITxReceiptProps {
   error?: string;
   txid: string;
@@ -18,9 +20,20 @@ const TxReceipt = ({
   txid,
   onError,
   onSuccess,
-  explorer
+  explorer,
 }: ITxReceiptProps) => {
-  if (!isSuccess && !error) return <CubeLoading />;
+  if (!isSuccess && !error)
+    return (
+      <>
+        <NFTAds />
+        <div className="has-text-centered">
+          <Spin />
+          <p className="subtitle is-6">
+            Please hold while your transaction is being confirmed
+          </p>
+        </div>
+      </>
+    );
   if (error) {
     return (
       <Result
@@ -29,7 +42,7 @@ const TxReceipt = ({
         extra={[
           <Button onClick={onError} key="close">
             Close
-          </Button>
+          </Button>,
         ]}
       ></Result>
     );
@@ -50,7 +63,7 @@ const TxReceipt = ({
         </Button>,
         <Button onClick={onSuccess} key="close">
           Close
-        </Button>
+        </Button>,
       ]}
     ></Result>
   );

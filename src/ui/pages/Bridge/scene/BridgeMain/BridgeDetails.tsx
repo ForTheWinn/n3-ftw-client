@@ -6,7 +6,6 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IBridgeSelectedtoken } from "../../interfaces";
 import {
-  getExplorer,
   getExplorerByChainId,
 } from "../../../../../common/helpers";
 
@@ -24,9 +23,6 @@ const BridgeDetails = ({
   destChain,
   token,
 }: IBridgeDetailsProps) => {
-  console.log(originChain);
-  console.log(destChain);
-  console.log(token);
   return (
     <div className="mt-1">
       <Collapse
