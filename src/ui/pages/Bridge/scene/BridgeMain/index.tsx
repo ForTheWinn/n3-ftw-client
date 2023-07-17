@@ -80,6 +80,7 @@ const BridgeSwap = () => {
         {destChain && (
           <WalletInput
             chain={destChain}
+            network={network}
             value={receiver}
             onChange={setReceiver}
           />

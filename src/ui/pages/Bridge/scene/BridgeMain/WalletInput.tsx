@@ -3,14 +3,22 @@ import { wallet } from "@cityofzion/neon-core";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IBridgeReceiver } from "../../interfaces";
 import { ethers } from "ethers";
+import { INetworkType, Network } from "../../../../../packages/neo/network";
 
 interface IWalletInputProps {
   chain: IBridgeChain;
+  network: INetworkType;
   value: IBridgeReceiver;
   onChange: (v: IBridgeReceiver) => void;
 }
-const WalletInput = ({ chain, value, onChange }: IWalletInputProps) => {
-  const [hasError, setError] = useState(false);
+const WalletInput = ({
+  chain,
+  network,
+  value,
+  onChange,
+}: IWalletInputProps) => {
+  const [error, setError] = useState<string | undefined>();
+  const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState(value.address);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -18,45 +26,60 @@ const WalletInput = ({ chain, value, onChange }: IWalletInputProps) => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-    debounceTimerRef.current = setTimeout(() => {
+    debounceTimerRef.current = setTimeout(async () => {
       let isValid;
-      setError(false);
+      setError(undefined);
       if (inputValue.trim() === "") {
-        // if input is empty
         isValid = false;
       } else if (chain.chainId === 888 || chain.chainId === 889) {
         isValid = wallet.isAddress(inputValue);
+        if (isValid) {
+          try {
+            const res = await Network.getContactState(
+              network,
+              wallet.getScriptHashFromAddress(inputValue)
+            );
+            if (res) {
+              isValid = false;
+              setError("Receiver cannot be a smart contract address");
+            }
+          } catch (e) {
+            isValid = true;
+          }
+        } else {
+          setError("Wallet address is invalid");
+        }
       } else {
         isValid = ethers.utils.isAddress(inputValue);
-      }
-      if (!inputValue) {
-        setError(false);
-      } else {
         if (!isValid) {
-          setError(true);
+          setError("Wallet address is invalid");
         }
       }
-
+      setLoading(false);
       onChange({
         address: inputValue,
-        isValid
+        isValid,
       });
     }, 1000);
   }, [inputValue]);
 
   const handleChange = (_value: string) => {
+    setLoading(true);
     setInputValue(_value);
   };
 
   return (
     <div className="box is-shadowless mb-0">
-      <input
-        style={!hasError ? { border: 0 } : {}}
-        value={inputValue}
-        onChange={(e) => handleChange(e.target.value)}
-        placeholder={`${chain.name} wallet address`}
-        className={`input is-shadowless ${hasError ? "is-danger" : ""}`}
-      />
+      <div className={`control ${isLoading ? "is-loading" : ""}`}>
+        <input
+          style={error ? {} : { border: 0 }}
+          value={inputValue}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder={`${chain.name} wallet address`}
+          className={`input is-shadowless ${error ? "is-danger" : ""}`}
+        />
+        {error && <p className="help is-danger">{error}</p>}
+      </div>
     </div>
   );
 };
