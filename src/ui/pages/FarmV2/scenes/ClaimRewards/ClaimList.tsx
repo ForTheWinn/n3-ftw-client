@@ -4,7 +4,7 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { DISPLAY_OPTIONS, REALTIME } from "./consts";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import RewardsInRange from "./RewardsInRange";
-import { NEP_SCRIPT_HASH } from "../../../../../packages/neo/consts/neo-contracts";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/neo-contracts";
 import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 
 import { Radio, Divider } from "antd";
@@ -28,7 +28,7 @@ const ClaimList = ({
   isClaimNode,
   handleToggle,
   selectedItems,
-  rewards
+  rewards,
 }: IClaimListProps) => {
   const [rewardDisplayType, setRewardDisplayType] = useState<string>(REALTIME);
   const { data, error } = useOnChainData(() => {
@@ -77,7 +77,9 @@ const ClaimList = ({
                           tokensStaked={item.tokensStaked}
                           share={item.share}
                           pricePerToken={
-                            prices ? prices[NEP_SCRIPT_HASH[network]] : 0
+                            prices
+                              ? prices[NEO_NEP_CONTRACT_ADDRESS[network]]
+                              : 0
                           }
                         />
                       ) : (
@@ -90,7 +92,9 @@ const ClaimList = ({
                           tokensStaked={item.tokensStaked}
                           share={item.share}
                           pricePerToken={
-                            prices ? prices[NEP_SCRIPT_HASH[network]] : 0
+                            prices
+                              ? prices[NEO_NEP_CONTRACT_ADDRESS[network]]
+                              : 0
                           }
                         />
                       )}

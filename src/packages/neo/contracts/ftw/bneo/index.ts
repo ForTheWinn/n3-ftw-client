@@ -1,8 +1,8 @@
 import { INetworkType } from "../../../network";
 import {
-  BNEO_SCRIPT_HASH,
-  GAS_SCRIPT_HASH,
-  NEO_SCRIPT_HASH
+  NEO_BNEO_CONTRACT_ADDRESS,
+  NEO_GAS_CONTRACT_ADDRESS,
+  NEO_NEO_CONTRACT_ADDRESS,
 } from "../../../consts/neo-contracts";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
@@ -15,7 +15,7 @@ export class BNEOContract {
 
   constructor(networkType: INetworkType) {
     this.network = networkType;
-    this.contractHash = BNEO_SCRIPT_HASH[networkType];
+    this.contractHash = NEO_BNEO_CONTRACT_ADDRESS[networkType];
   }
 
   mint = async (
@@ -27,26 +27,26 @@ export class BNEOContract {
     );
     const invokeScript = {
       operation: "transfer",
-      scriptHash: NEO_SCRIPT_HASH,
+      scriptHash: NEO_NEO_CONTRACT_ADDRESS,
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: this.contractHash
+          value: this.contractHash,
         },
         {
           type: "Integer",
-          value: amount
+          value: amount,
         },
         {
           type: "Any",
-          value: null
-        }
+          value: null,
+        },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -60,26 +60,26 @@ export class BNEOContract {
     );
     const invokeScript = {
       operation: "transfer",
-      scriptHash: GAS_SCRIPT_HASH,
+      scriptHash: NEO_GAS_CONTRACT_ADDRESS,
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: this.contractHash
+          value: this.contractHash,
         },
         {
           type: "Integer",
-          value: amount * 100000
+          value: amount * 100000,
         },
         {
           type: "Any",
-          value: null
-        }
+          value: null,
+        },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };

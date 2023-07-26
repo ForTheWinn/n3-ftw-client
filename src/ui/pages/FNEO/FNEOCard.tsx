@@ -3,9 +3,10 @@ import { claim, getfNEODetail } from "../../../packages/ftwNEO";
 import { IfNEODetail } from "../../../packages/ftwNEO/interfaces";
 import { useAccount } from "wagmi";
 import toast from "react-hot-toast";
-import { CONNECT_WALLET, WENT_WRONG } from "../../../consts/messages";
+import { WENT_WRONG } from "../../../consts/messages";
 import { useApp } from "../../../common/hooks/use-app";
 import TxidModal from "./TxidModal";
+import { Spin } from "antd";
 
 interface IFNEOCardProps {
   name: string;
@@ -17,6 +18,7 @@ const FNEOCard = ({ name, hash, chainId, perBlock }: IFNEOCardProps) => {
   const { isConnected, address } = useAccount();
   const { refreshCount, increaseRefreshCount } = useApp();
   const [txid, setTxid] = useState<string | undefined>();
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState<IfNEODetail>({
     totalSupply: "0",
     apr: "0",
@@ -41,13 +43,14 @@ const FNEOCard = ({ name, hash, chainId, perBlock }: IFNEOCardProps) => {
   };
   useEffect(() => {
     const fetchToken = async () => {
+      setLoading(true);
       try {
         const res = await getfNEODetail(chainId, hash, address);
         setData(res);
-        console.log(res);
       } catch (e) {
         console.error(e);
       }
+      setLoading(false);
     };
     fetchToken();
   }, [refreshCount]);
@@ -56,58 +59,73 @@ const FNEOCard = ({ name, hash, chainId, perBlock }: IFNEOCardProps) => {
     <>
       <div className="box is-shadowless">
         <h5 className="title is-6">{name}</h5>
-        <table className="table is-fullwidth">
-          <tbody>
-            <tr>
-              <td style={{ border: 0 }}>
-                <div style={{ float: "left", width: "50%", textAlign: "left" }}>
-                  Total supply
-                </div>
-                <div
-                  style={{ float: "left", width: "50%", textAlign: "right" }}
-                >
-                  {data.totalSupply}
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: 0 }}>
-                <div style={{ float: "left", width: "50%", textAlign: "left" }}>
-                  APR
-                </div>
-                <div
-                  style={{ float: "left", width: "50%", textAlign: "right" }}
-                >
-                  {data.apr}
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: 0 }}>
-                <div style={{ float: "left", width: "50%", textAlign: "left" }}>
-                  Claimable
-                </div>
-                <div
-                  style={{ float: "left", width: "50%", textAlign: "right" }}
-                >
-                  {data.claimable}
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: 0 }}>
-                <div style={{ float: "left", width: "50%", textAlign: "left" }}>
-                  NEP per block
-                </div>
-                <div
-                  style={{ float: "left", width: "50%", textAlign: "right" }}
-                >
-                  {perBlock} NEP
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        {loading ? (
+          <div className="is-center box is-shadowless">
+            <Spin />
+          </div>
+        ) : (
+          <table className="table is-fullwidth">
+            <tbody>
+              <tr>
+                <td style={{ border: 0 }}>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "left" }}
+                  >
+                    Total supply
+                  </div>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "right" }}
+                  >
+                    {data.totalSupply}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: 0 }}>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "left" }}
+                  >
+                    APR
+                  </div>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "right" }}
+                  >
+                    {data.apr}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: 0 }}>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "left" }}
+                  >
+                    Claimable
+                  </div>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "right" }}
+                  >
+                    {data.claimable}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: 0 }}>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "left" }}
+                  >
+                    NEP per block
+                  </div>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "right" }}
+                  >
+                    {perBlock} NEP
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+
         <button
           onClick={onClaim}
           disabled={data.claimable === "0" || !isConnected}

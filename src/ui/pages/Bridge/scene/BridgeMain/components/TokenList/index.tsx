@@ -1,6 +1,5 @@
 import React from "react";
 
-// import Modal from "../../Modal";
 import { Avatar, Modal, Space } from "antd";
 
 import { INetworkType } from "../../../../../../../packages/neo/network";

@@ -1,5 +1,5 @@
 import { globalRouter } from "./routers";
-import { MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "../consts/global";
+import { MAINNET, NEO_CHAIN, NEO_MAINNET_CHAIN_ID, NEO_TESTNET_CHAIN_ID, POLYGON_CHAIN, POLYGON_MAINNET_CHAIN_ID, POLYGON_TESTNET_CHAIN_ID, TESTNET } from "../consts/global";
 import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
 import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
@@ -27,11 +27,11 @@ export const getExplorerByChainId = (
 // Helper functions to map chainId to chain and network
 const getChainByChainId = (chainId: number): string => {
   switch (chainId) {
-    case 888:
-    case 889:
+    case NEO_MAINNET_CHAIN_ID:
+    case NEO_TESTNET_CHAIN_ID:
       return NEO_CHAIN;
-    case 137:
-    case 80001:
+    case POLYGON_MAINNET_CHAIN_ID:
+    case POLYGON_TESTNET_CHAIN_ID:
       return POLYGON_CHAIN;
     default:
       return "";
@@ -40,11 +40,11 @@ const getChainByChainId = (chainId: number): string => {
 
 const getNetworkByChainId = (chainId: number): INetworkType => {
   switch (chainId) {
-    case 888:
-    case 137:
+    case NEO_MAINNET_CHAIN_ID:
+    case POLYGON_MAINNET_CHAIN_ID:
       return MAINNET;
-    case 889:
-    case 80001:
+    case NEO_TESTNET_CHAIN_ID:
+    case POLYGON_TESTNET_CHAIN_ID:
       return TESTNET;
     default:
       return MAINNET;

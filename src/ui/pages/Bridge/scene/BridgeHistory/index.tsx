@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useParams } from "react-router-dom";
 import { BRIDGE_CHAINS, BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
-import { TESTNET } from "../../../../../consts/global";
+import { NEO_MAINNET_CHAIN_ID, NEO_TESTNET_CHAIN_ID, TESTNET } from "../../../../../consts/global";
 import { Tabs } from "antd";
 import BridgeHistoryIn from "../BridgeHistoryIn";
 import BridgeHistoryOut from "../BridgeHistoryOut";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { BRIDGE_PATH } from "../../../../../consts/routes";
 
-const BridgeHistory = (props) => {
+const BridgeHistory = () => {
   const { network } = useApp();
   const params = useParams();
   const { chainId } = params as any;
   const contractHash =
-    BRIDGE_CONTRACTS[network][network === TESTNET ? 889 : 888][chainId];
+    BRIDGE_CONTRACTS[network][network === TESTNET ? NEO_TESTNET_CHAIN_ID : NEO_MAINNET_CHAIN_ID][chainId];
   const evmChain = BRIDGE_CHAINS[network][chainId];
   return (
     <>

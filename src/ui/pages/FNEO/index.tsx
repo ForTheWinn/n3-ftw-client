@@ -15,21 +15,21 @@ const FNEO = () => {
             <div className="box is-shadowless">
               <Level
                 left={
-                  <div className="is-block">
+                  <>
                     <h5 className="title is-5">ftwNEO</h5>
-                    <p className="">
+                    <p className="subtitle is-7">
                       Parallelize NEO on EVM chains. Acquire your ftwNEO and
                       claim your NEP rewards.
                     </p>
-                  </div>
+                  </>
                 }
-                // right={<button className="button is-light">Learn more</button>}
+                right={<button className="button is-light">Learn more</button>}
               />
             </div>
             <div className="columns">
               {FNEO_CHAINS.map((chain) => {
                 return (
-                  <div className="column is-4">
+                  <div className="column is-6">
                     <FNEOCard
                       name={chain.name}
                       hash={chain.address[network]}

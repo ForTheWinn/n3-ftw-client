@@ -1,14 +1,14 @@
 import { INetworkType, Network } from "../../../network";
 import { IConnectedWallet } from "../../../wallets/interfaces";
-import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
+import { tx, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { parseMapValue, readNeoContract } from "../../../utils";
 import {
   IBridgeBurnPagenate,
-  IBridgeMintPagenate
+  IBridgeMintPagenate,
 } from "../../../../../common/routers/bridge/interfaces";
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc";
-import { NEP_SCRIPT_HASH } from "../../../consts/neo-contracts";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/neo-contracts";
 
 export const bridgeMint = async (
   connectedWallet: IConnectedWallet,
@@ -27,20 +27,20 @@ export const bridgeMint = async (
     args: [
       {
         type: "Hash160",
-        value: neoTokenAddress
+        value: neoTokenAddress,
       },
       {
         type: "Hash160",
-        value: senderHash
+        value: senderHash,
       },
       {
         type: "Hash160",
-        value: receiver
+        value: receiver,
       },
       {
         type: "Integer",
-        value: amount
-      }
+        value: amount,
+      },
     ],
     signers: [
       {
@@ -49,10 +49,10 @@ export const bridgeMint = async (
         allowedContracts: [
           bridgeContractHash,
           neoTokenAddress,
-          NEP_SCRIPT_HASH[network]
-        ]
-      }
-    ]
+          NEO_NEP_CONTRACT_ADDRESS[network],
+        ],
+      },
+    ],
   };
   return wallet.WalletAPI.invoke(connectedWallet, network, invokeScript);
 };
@@ -68,13 +68,13 @@ export const getMints = async (
     args: [
       {
         type: "Integer",
-        value: "30"
+        value: "30",
       },
       {
         type: "Integer",
-        value: page
-      }
-    ]
+        value: page,
+      },
+    ],
   };
   const res = await Network.read(network, [script]);
   if (res.state === "FAULT") {
@@ -94,13 +94,13 @@ export const getBurns = async (
     args: [
       {
         type: "Integer",
-        value: "30"
+        value: "30",
       },
       {
         type: "Integer",
-        value: page
-      }
-    ]
+        value: page,
+      },
+    ],
   };
   const res = await Network.read(network, [script]);
   if (res.state === "FAULT") {
@@ -116,7 +116,7 @@ export const getMintNo = async (
   const script = {
     scriptHash: address,
     operation: "getMintNo",
-    args: []
+    args: [],
   };
   const res = await Network.read(network, [script]);
   if (res.state === "FAULT") {
@@ -132,7 +132,7 @@ export const getIsMinted = async (
   const script = {
     scriptHash: address,
     operation: "getMintNo",
-    args: []
+    args: [],
   };
   const res = await Network.read(network, [script]);
   if (res.state === "FAULT") {
@@ -152,9 +152,9 @@ export const isBurned = async (
     args: [
       {
         type: "Integer",
-        value: no
-      }
-    ]
+        value: no,
+      },
+    ],
   };
   let isBurned = false;
   do {

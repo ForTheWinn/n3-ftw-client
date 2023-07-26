@@ -5,8 +5,8 @@ import PairIcons from "../../../../components/PairIcons";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import {
-  BNEO_SCRIPT_HASH,
-  GAS_SCRIPT_HASH
+  NEO_BNEO_CONTRACT_ADDRESS,
+  NEO_GAS_CONTRACT_ADDRESS,
 } from "../../../../../packages/neo/consts/neo-contracts";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { FARM_STAKE_PATH } from "../../../../../consts/routes";
@@ -15,8 +15,8 @@ const StakingPairCard = (props: IStakingPairs) => {
   const history = useHistory();
   const { network, chain } = useApp();
   const isBNEOAndGAS =
-    props.tokenA === BNEO_SCRIPT_HASH[network] &&
-    props.tokenB === GAS_SCRIPT_HASH;
+    props.tokenA === NEO_BNEO_CONTRACT_ADDRESS[network] &&
+    props.tokenB === NEO_GAS_CONTRACT_ADDRESS;
 
   const { isLoaded, error, data } = useOnChainData(() => {
     return new StakingContract(network).getTVL(props.tokenA, props.tokenB);

@@ -4,6 +4,7 @@ import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IBridgeReceiver } from "../../interfaces";
 import { ethers } from "ethers";
 import { INetworkType, Network } from "../../../../../packages/neo/network";
+import { NEO_MAINNET_CHAIN_ID, NEO_TESTNET_CHAIN_ID } from "../../../../../consts/global";
 
 interface IWalletInputProps {
   chain: IBridgeChain;
@@ -31,7 +32,7 @@ const WalletInput = ({
       setError(undefined);
       if (inputValue.trim() === "") {
         isValid = false;
-      } else if (chain.chainId === 888 || chain.chainId === 889) {
+      } else if (chain.chainId === NEO_MAINNET_CHAIN_ID || chain.chainId === NEO_TESTNET_CHAIN_ID) {
         isValid = wallet.isAddress(inputValue);
         if (isValid) {
           try {

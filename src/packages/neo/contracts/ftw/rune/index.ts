@@ -6,7 +6,7 @@ import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet } from "../../../index";
 import { IRuneMeta } from "./interfaces";
 import { parseProperties } from "./helpers";
-import { GAS_SCRIPT_HASH } from "../../../consts/neo-contracts";
+import { NEO_GAS_CONTRACT_ADDRESS } from "../../../consts/neo-contracts";
 
 export class NFTContract {
   network: INetworkType;
@@ -23,29 +23,29 @@ export class NFTContract {
     );
     const invokeScript = {
       operation: "transfer",
-      scriptHash: GAS_SCRIPT_HASH,
+      scriptHash: NEO_GAS_CONTRACT_ADDRESS,
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: this.contractHash
+          value: this.contractHash,
         },
         {
           type: "Integer",
           value: u.BigInteger.fromDecimal(
             RUNE_PRICE[this.network],
             8
-          ).toString()
+          ).toString(),
         },
         {
           type: "String",
-          value: "1"
-        }
+          value: "1",
+        },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
     };
     return wallet.WalletAPI.invoke(
       connectedWallet,
@@ -63,7 +63,7 @@ export class NFTContract {
       operation: "withdrawFund",
       scriptHash: this.contractHash,
       args: [],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -75,9 +75,9 @@ export class NFTContract {
       args: [
         {
           type: "String",
-          value: tokenId
-        }
-      ]
+          value: tokenId,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -108,9 +108,9 @@ export class NFTContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash
-        }
-      ]
+          value: senderHash,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -133,7 +133,7 @@ export class NFTContract {
     const script = {
       scriptHash: this.contractHash,
       operation: "tokens",
-      args: []
+      args: [],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {

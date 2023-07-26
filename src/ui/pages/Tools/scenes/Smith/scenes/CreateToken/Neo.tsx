@@ -17,8 +17,8 @@ import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 import { useBalances } from "../../../../../../../packages/neo/hooks/use-balances";
 import {
-  GAS_SCRIPT_HASH,
-  NEP_SCRIPT_HASH,
+  NEO_GAS_CONTRACT_ADDRESS,
+  NEO_NEP_CONTRACT_ADDRESS,
 } from "../../../../../../../packages/neo/consts/neo-contracts";
 
 const CreateToken = () => {
@@ -56,8 +56,8 @@ const CreateToken = () => {
       }
 
       const balances = await useBalances(network, address, [
-        GAS_SCRIPT_HASH,
-        NEP_SCRIPT_HASH[network],
+        NEO_GAS_CONTRACT_ADDRESS,
+        NEO_NEP_CONTRACT_ADDRESS[network],
       ]);
 
       if (balances[1] < SMITH_FEE_FORMATTED[chain][network]) {

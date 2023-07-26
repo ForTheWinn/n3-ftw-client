@@ -14,7 +14,7 @@ import Modal from "../../../../../../components/Modal";
 import LoadingWithText from "../../../../../../components/Commons/LoadingWithText";
 import {
   CONTRACT_LIST,
-  NEP_CONTRACT_HASH,
+  GLOBAL_NEP_CONTRACT_ADDRESS,
 } from "../../../../../../../consts/contracts";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { SMITH } from "../../../../../../../consts/global";
@@ -46,7 +46,7 @@ const ActionModal = ({
   onSuccess,
   onCancel,
 }: IActionModalProps) => {
-  const feeTokenContractHash = NEP_CONTRACT_HASH[chain][network];
+  const feeTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
   const smithTokenContractHash = CONTRACT_LIST[chain][network][SMITH];
   const [isFeeTokenApproved, setFeeTokenApproved] = useState(false);
   const [isFeeTokenApproving, setFeeTokenApproving] = useState(false);

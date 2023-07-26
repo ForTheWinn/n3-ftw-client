@@ -1,12 +1,17 @@
-import { MAINNET, TESTNET } from "../../consts/global";
-import { FNEO_SCRIPT_HASHES } from "../polygon/consts";
+import {
+  MAINNET,
+  POLYGON_MAINNET_CHAIN_ID,
+  POLYGON_TESTNET_CHAIN_ID,
+  TESTNET,
+} from "../../consts/global";
+import { POLYGON_MAINNET_FNEO_CONTRACT_ADDRESSES } from "../polygon/consts";
 
 const polygonFNEO = {
   name: "Polygon ftwNEO",
-  address: FNEO_SCRIPT_HASHES,
+  address: POLYGON_MAINNET_FNEO_CONTRACT_ADDRESSES,
   chainId: {
-    [MAINNET]: 137,
-    [TESTNET]: 80001,
+    [MAINNET]: POLYGON_MAINNET_CHAIN_ID,
+    [TESTNET]: POLYGON_TESTNET_CHAIN_ID,
   },
   perBlock: {
     [MAINNET]: 1,
@@ -16,10 +21,10 @@ const polygonFNEO = {
 
 export const NEP_PER_BLOCK = {
   [MAINNET]: {
-    80001: 5,
+    [POLYGON_MAINNET_CHAIN_ID]: 5,
   },
   [TESTNET]: {
-    80001: 5,
+    [POLYGON_TESTNET_CHAIN_ID]: 5,
   },
 };
 

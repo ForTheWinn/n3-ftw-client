@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  BNEO_SCRIPT_HASH,
-  NEO_SCRIPT_HASH
+  NEO_BNEO_CONTRACT_ADDRESS,
+  NEO_NEO_CONTRACT_ADDRESS,
 } from "../../../../../../../packages/neo/consts/neo-contracts";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { toDecimal } from "../../../../../../../packages/neo/utils";
@@ -16,9 +16,9 @@ const BNEOInfo = ({ tokenA, tokenB, network, amountB }: IBNEOInfoProps) => {
   return (
     <>
       {tokenA &&
-        tokenA.hash === NEO_SCRIPT_HASH &&
+        tokenA.hash === NEO_NEO_CONTRACT_ADDRESS &&
         tokenB &&
-        tokenB.hash === BNEO_SCRIPT_HASH[network] && (
+        tokenB.hash === NEO_BNEO_CONTRACT_ADDRESS[network] && (
           <>
             <hr />
             <div className="notification is-success is-light">
@@ -37,7 +37,7 @@ const BNEOInfo = ({ tokenA, tokenB, network, amountB }: IBNEOInfoProps) => {
           </>
         )}
 
-      {tokenB && tokenB.hash === NEO_SCRIPT_HASH && (
+      {tokenB && tokenB.hash === NEO_NEO_CONTRACT_ADDRESS && (
         <>
           <hr />
           <div className="notification is-success is-light">

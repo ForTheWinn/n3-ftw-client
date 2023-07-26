@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useApp } from "../../../../../common/hooks/use-app";
-// import { Pagination } from "antd";
 import Pagination from "bulma-pagination-react";
 import BridgeLockCard from "./BridgeLockCard";
 import { IBridgeMintPagenate } from "../../../../../common/routers/bridge/interfaces";

@@ -3,14 +3,14 @@ import { IConnectedWallet } from "../../../wallets/interfaces";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../../../index";
 import { LOCKER_SCRIPT_HASH } from "./consts";
-import { NEP_SCRIPT_HASH } from "../../../consts/neo-contracts";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/neo-contracts";
 import { parseMapValue } from "../../../utils";
 import {
   ILocker,
   ILockerContract,
   ILockerContracts,
   ILockerKeyToken,
-  ILockersByToken
+  ILockersByToken,
 } from "./interface";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 import { ITokenState } from "../../../../../ui/pages/Swap/scenes/Swap/interfaces";
@@ -45,10 +45,10 @@ export class LockerContract {
         scopes: tx.WitnessScope.CustomContracts,
         allowedContracts: [
           contract.hash,
-          NEP_SCRIPT_HASH[this.network],
-          this.contractHash
-        ]
-      }
+          NEO_NEP_CONTRACT_ADDRESS[this.network],
+          this.contractHash,
+        ],
+      },
     ];
 
     const invokeScript: any = {
@@ -57,32 +57,32 @@ export class LockerContract {
       args: [
         {
           type: "Hash160",
-          value: contract.hash
+          value: contract.hash,
         },
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: receiver
+          value: receiver,
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amount, contract.decimals).toString()
+          value: u.BigInteger.fromDecimal(amount, contract.decimals).toString(),
         },
         {
           type: "Integer",
-          value: releaseAt
+          value: releaseAt,
         },
         {
           type: "String",
-          value: title
+          value: title,
         },
         {
           type: "String",
-          value: description
-        }
+          value: description,
+        },
       ],
 
       signers: [
@@ -91,11 +91,11 @@ export class LockerContract {
           scopes: tx.WitnessScope.CustomContracts,
           allowedContracts: [
             contract.hash,
-            NEP_SCRIPT_HASH[this.network],
-            this.contractHash
-          ]
-        }
-      ]
+            NEO_NEP_CONTRACT_ADDRESS[this.network],
+            this.contractHash,
+          ],
+        },
+      ],
     };
 
     if (invokeCount === 1) {
@@ -129,18 +129,18 @@ export class LockerContract {
       args: [
         {
           type: "Hash160",
-          value: this.contractHash
+          value: this.contractHash,
         },
         {
           type: "String",
-          value: lockerNo
+          value: lockerNo,
         },
         {
           type: "Any",
-          value: null
-        }
+          value: null,
+        },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -152,9 +152,9 @@ export class LockerContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash
-        }
-      ]
+          value: contractHash,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -170,13 +170,13 @@ export class LockerContract {
       args: [
         {
           type: "Integer",
-          value: "30"
+          value: "30",
         },
         {
           type: "Integer",
-          value: "1"
-        }
-      ]
+          value: "1",
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -192,9 +192,9 @@ export class LockerContract {
       args: [
         {
           type: "Integer",
-          value: no
-        }
-      ]
+          value: no,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -213,17 +213,17 @@ export class LockerContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash
+          value: contractHash,
         },
         {
           type: "Integer",
-          value: "30"
+          value: "30",
         },
         {
           type: "Integer",
-          value: page
-        }
-      ]
+          value: page,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -239,9 +239,9 @@ export class LockerContract {
       args: [
         {
           type: "Hash160",
-          value: NeonWallet.getScriptHashFromAddress(address)
-        }
-      ]
+          value: NeonWallet.getScriptHashFromAddress(address),
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {

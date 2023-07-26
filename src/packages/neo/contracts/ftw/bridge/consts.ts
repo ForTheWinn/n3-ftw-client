@@ -1,6 +1,6 @@
 import { MAINNET, TESTNET } from "../../../../../consts/global";
 
 export const BRIDGE_SCRIPT_HASH = {
-  [TESTNET]: "0xf1865f752da8c67854b8643b396dd55ea785cc8f",
-  [MAINNET]: "0x7ff30b362efb2c9b96432988cec9e443299aece7"
+  [TESTNET]: "0x994cb116be32059b7f2dfc0e439801672fc09ca9",
+  [MAINNET]: "0xefb83544ca01b8e169998d5348d9b9ec81529a52",
 };

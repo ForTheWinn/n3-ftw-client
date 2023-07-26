@@ -11,6 +11,7 @@ import Level from "../../../../components/Level";
 import { Link } from "react-router-dom";
 import WalletInput from "./WalletInput";
 import BridgeDetails from "./BridgeDetails";
+import { NEO_MAINNET_CHAIN_ID, NEO_TESTNET_CHAIN_ID } from "../../../../../consts/global";
 
 const BridgeSwap = () => {
   const {
@@ -40,12 +41,12 @@ const BridgeSwap = () => {
   let evmChainId;
   if (
     originChain &&
-    originChain.chainId !== 888 &&
-    originChain.chainId !== 889
+    originChain.chainId !== NEO_MAINNET_CHAIN_ID &&
+    originChain.chainId !== NEO_TESTNET_CHAIN_ID
   ) {
     evmChainId = originChain.chainId;
   }
-  if (destChain && destChain.chainId !== 888 && destChain.chainId !== 889) {
+  if (destChain && destChain.chainId !== NEO_MAINNET_CHAIN_ID && destChain.chainId !== NEO_TESTNET_CHAIN_ID) {
     evmChainId = destChain.chainId;
   }
   return (
@@ -112,7 +113,7 @@ const BridgeSwap = () => {
         connectedAddress &&
         destChain && (
           <>
-            {(originChain.chainId === 888 || originChain.chainId === 889) &&
+            {(originChain.chainId === NEO_MAINNET_CHAIN_ID || originChain.chainId === NEO_TESTNET_CHAIN_ID) &&
             connectedNeoWallet ? (
               <NEOActionModal
                 chain={chain}

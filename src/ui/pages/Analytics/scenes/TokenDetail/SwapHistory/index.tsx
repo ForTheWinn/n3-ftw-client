@@ -4,7 +4,7 @@ import { withDecimal } from "../../../../../../packages/neo/utils";
 import TruncatedAddress from "../../../../../components/TruncatedAddress";
 import { Pagination } from "antd";
 import moment from "moment";
-import { MAINNET_TOKEN_LIST } from "../../../../../../packages/neo/consts/mainnet-token-list";
+import { NEO_MAINNET_TOKENS_METADATA_MAP } from "../../../../../../packages/neo/consts/mainnet";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { RestAPI } from "../../../../../../packages/neo/api";
 
@@ -35,8 +35,9 @@ const SwapHistory = ({ network, id }: ISwapHistoryProps) => {
             {data ? (
               data.items.length > 0 ? (
                 data.items.map((swap, i) => {
-                  const tokenIn = MAINNET_TOKEN_LIST[swap.base_id];
-                  const tokenOut = MAINNET_TOKEN_LIST[swap.quote_id];
+                  const tokenIn = NEO_MAINNET_TOKENS_METADATA_MAP[swap.base_id];
+                  const tokenOut =
+                    NEO_MAINNET_TOKENS_METADATA_MAP[swap.quote_id];
                   return (
                     <tr key={`single-swap-${i}`}>
                       <td>

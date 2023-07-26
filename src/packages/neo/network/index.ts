@@ -1,5 +1,5 @@
 import { rpc, sc, u } from "@cityofzion/neon-core";
-import { MAINNET_CONFIG, TESTNET_CONFIG, TESTNET_CONFIG_2 } from "../consts";
+import { MAINNET_CONFIG, TESTNET_CONFIG } from "../consts";
 import { InvokeResult, Query } from "@cityofzion/neon-core/lib/rpc";
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc/Query";
 import { convertContractCallParam } from "../utils";
@@ -32,7 +32,7 @@ export class Network {
     let config;
     switch (networkType) {
       case TESTNET:
-        config = TESTNET_CONFIG_2;
+        config = TESTNET_CONFIG;
         break;
       case MAINNET:
         config = MAINNET_CONFIG;

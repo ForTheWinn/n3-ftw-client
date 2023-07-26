@@ -334,11 +334,11 @@ const BRIDGE_PAGE_ROUTE = {
   label: "Bridge",
   path: BRIDGE_PATH,
   chain: {
-    [NEO_CHAIN]: [TESTNET],
-    [POLYGON_CHAIN]: [TESTNET]
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
-  component: Bridge
+  component: Bridge,
 };
 
 /*

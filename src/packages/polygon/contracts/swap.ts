@@ -2,7 +2,7 @@ import {
   readContract,
   prepareWriteContract,
   erc20ABI,
-  multicall
+  multicall,
 } from "@wagmi/core";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
@@ -11,9 +11,9 @@ import { INetworkType } from "../../neo/network";
 import { AddLiquidityArgs, SwapArgs, SwapEstimateArgs } from "../interfaces";
 import {
   ISwapLPToken,
-  ISwapReserves
+  ISwapReserves,
 } from "../../../common/routers/swap/interfaces";
-import { CONTRACT_LIST } from "../consts";
+import { POLYGON_CONTRACT_MAP } from "../consts";
 import { SWAP } from "../../../consts/global";
 
 export const getReserves = async (
@@ -22,22 +22,16 @@ export const getReserves = async (
   tokenB: string
 ): Promise<ISwapReserves> => {
   const res: any = await readContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getReserves",
-    args: [tokenA, tokenB]
+    args: [tokenA, tokenB],
   });
   // EVM swap doesn't change token order in the contract so we need to check its order by token hash
   return {
-    reserveA:
-      res.tokenA.toLowerCase() === tokenA
-        ? res.amountA
-        : res.amountB,
-    reserveB:
-      res.tokenB.toLowerCase() === tokenB
-        ? res.amountB
-        : res.amountA,
-    shares: res.shares
+    reserveA: res.tokenA.toLowerCase() === tokenA ? res.amountA : res.amountB,
+    reserveB: res.tokenB.toLowerCase() === tokenB ? res.amountB : res.amountA,
+    shares: res.shares,
   };
 };
 
@@ -47,10 +41,10 @@ export const getEstimated = async (
 ): Promise<any> => {
   const { tokenA, tokenB, amount, isReverse } = args;
   const res = await readContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getSwapEstimated",
-    args: [tokenA, tokenB, amount, isReverse]
+    args: [tokenA, tokenB, amount, isReverse],
   });
   return res;
 };
@@ -60,10 +54,10 @@ export const getLPTokens = async (
   owner: string
 ): Promise<ISwapLPToken[]> => {
   const res: any = await readContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "getTokensOf",
-    args: [owner]
+    args: [owner],
   });
   const tokens: ISwapLPToken[] = [];
 
@@ -79,10 +73,10 @@ export const getTokenURI = async (
   tokenId: string
 ): Promise<ISwapLPToken> => {
   const res = (await readContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "tokenURI",
-    args: [tokenId]
+    args: [tokenId],
   })) as string;
   const json = Buffer.from(res.substring(29), "base64").toString();
   const jsonObject = JSON.parse(json);
@@ -96,36 +90,36 @@ export const getTokenURI = async (
     decimalsB: jsonObject.decimalsB,
     amountA: jsonObject.amountA,
     amountB: jsonObject.amountB,
-    sharesPercentage: jsonObject.sharesPercentage
+    sharesPercentage: jsonObject.sharesPercentage,
   };
 };
 
 export const swap = (network: INetworkType, args: SwapArgs) => {
   const { tokenA, tokenB, amountIn, amountOut, isReverse } = args;
   return prepareWriteContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "swap",
-    args: [tokenA, tokenB, amountIn, amountOut, isReverse]
+    args: [tokenA, tokenB, amountIn, amountOut, isReverse],
   });
 };
 
 export const provide = (network: INetworkType, args: AddLiquidityArgs) => {
   const { tokenA, tokenB, amountA, amountB, slippage } = args;
   return prepareWriteContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "addLiquidity",
-    args: [tokenA, amountA, tokenB, amountB, slippage]
+    args: [tokenA, amountA, tokenB, amountB, slippage],
   });
 };
 
 export const removeLiquidity = (network: INetworkType, tokenId: string) => {
   return prepareWriteContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "removeLiquidity",
-    args: [tokenId]
+    args: [tokenId],
   });
 };
 
@@ -134,7 +128,10 @@ export const approve = (network: INetworkType, token) => {
     address: token,
     abi: erc20ABI,
     functionName: "approve",
-    args: [CONTRACT_LIST[network][SWAP] as any, ethers.constants.MaxUint256 as any]
+    args: [
+      POLYGON_CONTRACT_MAP[network][SWAP] as any,
+      ethers.constants.MaxUint256 as any,
+    ],
   });
 };
 
@@ -152,8 +149,8 @@ export const getAllowances = (
         functionName: "allowance",
         args: [
           address as `0x${string}`,
-          CONTRACT_LIST[network][SWAP] as `0x${string}`
-        ]
+          POLYGON_CONTRACT_MAP[network][SWAP] as `0x${string}`,
+        ],
       },
       {
         address: tokenB as `0x${string}`,
@@ -161,10 +158,10 @@ export const getAllowances = (
         functionName: "allowance",
         args: [
           address as `0x${string}`,
-          CONTRACT_LIST[network][SWAP] as `0x${string}`
-        ]
-      }
-    ]
+          POLYGON_CONTRACT_MAP[network][SWAP] as `0x${string}`,
+        ],
+      },
+    ],
   });
 };
 
@@ -174,10 +171,10 @@ export const isApprovedForAll = (
   contractHash: string
 ) => {
   return readContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "isApprovedForAll",
-    args: [owner, contractHash]
+    args: [owner, contractHash],
   });
 };
 
@@ -186,9 +183,9 @@ export const setApprovalForAll = (
   contractHash: string
 ) => {
   return prepareWriteContract({
-    address: CONTRACT_LIST[network][SWAP] as any,
+    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "setApprovalForAll",
-    args: [contractHash, true]
+    args: [contractHash, true],
   });
 };

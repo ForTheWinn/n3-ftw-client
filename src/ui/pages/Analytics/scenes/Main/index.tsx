@@ -5,7 +5,7 @@ import Pools from "./Pairs";
 import Tokens from "./Tokens";
 import PriceChart from "../../components/PriceChart";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { NEP_CONTRACT_HASH } from "../../../../../consts/contracts";
+import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
 
 const AnalyticsMain = () => {
   const { chain, network } = useApp();
@@ -27,7 +27,7 @@ const AnalyticsMain = () => {
           <div className="box is-shadowless">
             <h1 className="title is-6">NEP</h1>
             <PriceChart
-              tokenId={NEP_CONTRACT_HASH[chain][network]}
+              tokenId={GLOBAL_NEP_CONTRACT_ADDRESS[chain][network]}
               days={"10"}
             />
           </div>
@@ -38,7 +38,7 @@ const AnalyticsMain = () => {
             style={{
               height: "600px",
               width: "100%",
-              overflowY: "scroll"
+              overflowY: "scroll",
             }}
           >
             <h1 className="title is-6">Tokens</h1>
@@ -51,7 +51,7 @@ const AnalyticsMain = () => {
             style={{
               height: "600px",
               width: "100%",
-              overflowY: "scroll"
+              overflowY: "scroll",
             }}
           >
             <h1 className="title is-6">Pairs</h1>

@@ -11,14 +11,14 @@ import {
   ILPHistory,
   ILPToken,
   IReserve,
-  ISwapsHistory
+  ISwapsHistory,
 } from "./interfaces";
 import { SMITH_SCRIPT_HASH } from "../smith/consts";
 import {
-  BNEO_SCRIPT_HASH,
-  GAS_SCRIPT_HASH,
-  NEO_SCRIPT_HASH,
-  NEP_SCRIPT_HASH
+  NEO_BNEO_CONTRACT_ADDRESS,
+  NEO_GAS_CONTRACT_ADDRESS,
+  NEO_NEO_CONTRACT_ADDRESS,
+  NEO_NEP_CONTRACT_ADDRESS,
 } from "../../../consts/neo-contracts";
 import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
 import { WENT_WRONG } from "../../../../../consts/messages";
@@ -51,44 +51,44 @@ export class SwapContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: tokenA
+          value: tokenA,
         },
         {
           type: "Integer",
-          value: amountA
+          value: amountA,
         },
         {
           type: "Hash160",
-          value: tokenB
+          value: tokenB,
         },
         {
           type: "Integer",
-          value: amountB
+          value: amountB,
         },
         {
           type: "Integer",
-          value: defaultDeadLine()
+          value: defaultDeadLine(),
         },
         {
           type: "Integer",
-          value: lockUntil
+          value: lockUntil,
         },
         {
           type: "Integer",
-          value: slippage
-        }
+          value: slippage,
+        },
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, tokenA, tokenB]
-        }
-      ]
+          allowedContracts: [this.contractHash, tokenA, tokenB],
+        },
+      ],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -106,29 +106,29 @@ export class SwapContract {
       connectedWallet.account.address
     );
 
-    const bNEOHash = BNEO_SCRIPT_HASH[this.network];
+    const bNEOHash = NEO_BNEO_CONTRACT_ADDRESS[this.network];
 
     const bNEOScript = {
       operation: "transfer",
-      scriptHash: NEO_SCRIPT_HASH,
+      scriptHash: NEO_NEO_CONTRACT_ADDRESS,
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: bNEOHash
+          value: bNEOHash,
         },
         {
           type: "Integer",
-          value: neoAmount
+          value: neoAmount,
         },
         {
           type: "Any",
-          value: null
-        }
-      ]
+          value: null,
+        },
+      ],
     };
 
     const addLiquidityScript = {
@@ -137,37 +137,37 @@ export class SwapContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: bNEOHash
+          value: bNEOHash,
         },
         {
           type: "Integer",
-          value: neoAmount * 100000000
+          value: neoAmount * 100000000,
         },
         {
           type: "Hash160",
-          value: tokenB
+          value: tokenB,
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amountB, tokenBDecimals).toString()
+          value: u.BigInteger.fromDecimal(amountB, tokenBDecimals).toString(),
         },
         {
           type: "Integer",
-          value: defaultDeadLine()
+          value: defaultDeadLine(),
         },
         {
           type: "Integer",
-          value: lockUntil
+          value: lockUntil,
         },
         {
           type: "Integer",
-          value: slippage
-        }
-      ]
+          value: slippage,
+        },
+      ],
     };
 
     const signers = [
@@ -178,14 +178,14 @@ export class SwapContract {
           { action: "Allow", condition: { type: "CalledByEntry" } },
           {
             action: "Allow",
-            condition: { type: "ScriptHash", hash: bNEOHash }
+            condition: { type: "ScriptHash", hash: bNEOHash },
           },
           {
             action: "Allow",
-            condition: { type: "ScriptHash", hash: tokenB }
-          }
-        ]
-      }
+            condition: { type: "ScriptHash", hash: tokenB },
+          },
+        ],
+      },
     ];
 
     // const signers = [
@@ -216,18 +216,18 @@ export class SwapContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "String",
-          value: tokenId
+          value: tokenId,
         },
         {
           type: "Integer",
-          value: defaultDeadLine()
-        }
+          value: defaultDeadLine(),
+        },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)]
+      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -248,36 +248,36 @@ export class SwapContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: tokenA
+          value: tokenA,
         },
         {
           type: "Integer",
-          value: amountA
+          value: amountA,
         },
         {
           type: "Hash160",
-          value: tokenB
+          value: tokenB,
         },
         {
           type: "Integer",
-          value: amountB
+          value: amountB,
         },
         {
           type: "Integer",
-          value: defaultDeadLine()
-        }
+          value: defaultDeadLine(),
+        },
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, tokenA]
-        }
-      ]
+          allowedContracts: [this.contractHash, tokenA],
+        },
+      ],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -292,28 +292,28 @@ export class SwapContract {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
-    const bNEOHash = BNEO_SCRIPT_HASH[this.network];
+    const bNEOHash = NEO_BNEO_CONTRACT_ADDRESS[this.network];
     const bNEOScript = {
       operation: "transfer",
-      scriptHash: NEO_SCRIPT_HASH,
+      scriptHash: NEO_NEO_CONTRACT_ADDRESS,
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: bNEOHash
+          value: bNEOHash,
         },
         {
           type: "Integer",
-          value: neoAmount
+          value: neoAmount,
         },
         {
           type: "Any",
-          value: null
-        }
-      ]
+          value: null,
+        },
+      ],
     };
 
     const swapScript = {
@@ -322,29 +322,29 @@ export class SwapContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: bNEOHash
+          value: bNEOHash,
         },
         {
           type: "Integer",
-          value: neoAmount * 100000000
+          value: neoAmount * 100000000,
         },
         {
           type: "Hash160",
-          value: tokenB
+          value: tokenB,
         },
         {
           type: "Integer",
-          value: u.BigInteger.fromDecimal(amountB, tokenBDecimals).toString()
+          value: u.BigInteger.fromDecimal(amountB, tokenBDecimals).toString(),
         },
         {
           type: "Integer",
-          value: defaultDeadLine()
-        }
-      ]
+          value: defaultDeadLine(),
+        },
+      ],
     };
 
     const signers = [
@@ -357,10 +357,10 @@ export class SwapContract {
           { action: "Allow", condition: { type: "CalledByEntry" } },
           {
             action: "Allow",
-            condition: { type: "ScriptHash", hash: bNEOHash }
-          }
-        ]
-      }
+            condition: { type: "ScriptHash", hash: bNEOHash },
+          },
+        ],
+      },
     ];
 
     return wallet.WalletAPI.invokeMulti(
@@ -387,36 +387,36 @@ export class SwapContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: tokenA
+          value: tokenA,
         },
         {
           type: "Hash160",
-          value: tokenB
+          value: tokenB,
         },
         {
           type: "Integer",
-          value: amountOut
+          value: amountOut,
         },
         {
           type: "Integer",
-          value: maxTokenAAmount
+          value: maxTokenAAmount,
         },
         {
           type: "Integer",
-          value: defaultDeadLine()
-        }
+          value: defaultDeadLine(),
+        },
       ],
       signers: [
         {
           account: senderHash,
           scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [this.contractHash, tokenA]
-        }
-      ]
+          allowedContracts: [this.contractHash, tokenA],
+        },
+      ],
     };
     return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -432,7 +432,7 @@ export class SwapContract {
       connectedWallet.account.address
     );
 
-    const bNEOHash = BNEO_SCRIPT_HASH[this.network];
+    const bNEOHash = NEO_BNEO_CONTRACT_ADDRESS[this.network];
 
     const swapScript = {
       operation: "swapB",
@@ -440,55 +440,55 @@ export class SwapContract {
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: tokenA
+          value: tokenA,
         },
         {
           type: "Hash160",
-          value: bNEOHash
+          value: bNEOHash,
         },
         {
           type: "Integer",
-          value: neoOut * 100000000
+          value: neoOut * 100000000,
         },
         {
           type: "Integer",
           value: u.BigInteger.fromDecimal(
             maxTokenAAmount,
             tokenADecimals
-          ).toString()
+          ).toString(),
         },
         {
           type: "Integer",
-          value: defaultDeadLine()
-        }
-      ]
+          value: defaultDeadLine(),
+        },
+      ],
     };
 
     const bNEOScript = {
       operation: "transfer",
-      scriptHash: GAS_SCRIPT_HASH,
+      scriptHash: NEO_GAS_CONTRACT_ADDRESS,
       args: [
         {
           type: "Hash160",
-          value: senderHash
+          value: senderHash,
         },
         {
           type: "Hash160",
-          value: bNEOHash
+          value: bNEOHash,
         },
         {
           type: "Integer",
-          value: neoOut * 100000
+          value: neoOut * 100000,
         },
         {
           type: "Any",
-          value: null
-        }
-      ]
+          value: null,
+        },
+      ],
     };
     const signers = [
       {
@@ -500,10 +500,10 @@ export class SwapContract {
           { action: "Allow", condition: { type: "CalledByEntry" } },
           {
             action: "Allow",
-            condition: { type: "ScriptHash", hash: tokenA }
-          }
-        ]
-      }
+            condition: { type: "ScriptHash", hash: tokenA },
+          },
+        ],
+      },
     ];
 
     return wallet.WalletAPI.invokeMulti(
@@ -524,8 +524,8 @@ export class SwapContract {
       operation: "getReserve",
       args: [
         { type: "Hash160", value: tokenA },
-        { type: "Hash160", value: tokenB }
-      ]
+        { type: "Hash160", value: tokenB },
+      ],
     };
     scripts.push(script);
 
@@ -538,7 +538,7 @@ export class SwapContract {
     return {
       reserveA: reserves.amountA.toString(),
       reserveB: reserves.amountB.toString(),
-      shares: reserves.totalShare.toString()
+      shares: reserves.totalShare.toString(),
     };
   };
 
@@ -546,7 +546,7 @@ export class SwapContract {
     const script = {
       scriptHash: this.contractHash,
       operation: "getPairs",
-      args: []
+      args: [],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -572,9 +572,9 @@ export class SwapContract {
         { type: "Hash160", value: swapToken },
         {
           type: "Integer",
-          value: amount
-        }
-      ]
+          value: amount,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -598,9 +598,9 @@ export class SwapContract {
         { type: "Hash160", value: tokenB },
         {
           type: "Integer",
-          value: amountOut
-        }
-      ]
+          value: amountOut,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -631,13 +631,13 @@ export class SwapContract {
         {
           type: "Array",
           value: [
-            { type: "Hash160", value: BNEO_SCRIPT_HASH[this.network] },
-            { type: "Hash160", value: NEP_SCRIPT_HASH[this.network] },
-            { type: "Hash160", value: BNEO_SCRIPT_HASH[this.network] }
-          ]
+            { type: "Hash160", value: NEO_BNEO_CONTRACT_ADDRESS[this.network] },
+            { type: "Hash160", value: NEO_NEP_CONTRACT_ADDRESS[this.network] },
+            { type: "Hash160", value: NEO_BNEO_CONTRACT_ADDRESS[this.network] },
+          ],
         },
-        { type: "Integer", value: 10000000 }
-      ]
+        { type: "Integer", value: 10000000 },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     return res.stack[0].value as number;
@@ -655,35 +655,35 @@ export class SwapContract {
         { type: "Hash160", value: tokenA },
         { type: "Hash160", value: tokenB },
         { type: "Integer", value: "15" },
-        { type: "Integer", value: page }
-      ]
+        { type: "Integer", value: page },
+      ],
     };
     const symbolA = {
       scriptHash: tokenA,
       operation: "symbol",
-      args: []
+      args: [],
     };
     const decimalsA = {
       scriptHash: tokenA,
       operation: "decimals",
-      args: []
+      args: [],
     };
     const symbolB = {
       scriptHash: tokenB,
       operation: "symbol",
-      args: []
+      args: [],
     };
     const decimalsB = {
       scriptHash: tokenB,
       operation: "decimals",
-      args: []
+      args: [],
     };
     const res = await Network.read(this.network, [
       script,
       symbolA,
       decimalsA,
       symbolB,
-      decimalsB
+      decimalsB,
     ]);
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
@@ -693,13 +693,13 @@ export class SwapContract {
       pair: {
         [tokenA]: {
           symbol: base64ToString(res.stack[1].value as string),
-          decimals: parseFloat(res.stack[2].value as string)
+          decimals: parseFloat(res.stack[2].value as string),
         },
         [tokenB]: {
           symbol: base64ToString(res.stack[3].value as string),
-          decimals: parseFloat(res.stack[4].value as string)
-        }
-      }
+          decimals: parseFloat(res.stack[4].value as string),
+        },
+      },
     };
   };
 
@@ -715,35 +715,35 @@ export class SwapContract {
         { type: "Hash160", value: tokenA },
         { type: "Hash160", value: tokenB },
         { type: "Integer", value: "15" },
-        { type: "Integer", value: page }
-      ]
+        { type: "Integer", value: page },
+      ],
     };
     const symbolA = {
       scriptHash: tokenA,
       operation: "symbol",
-      args: []
+      args: [],
     };
     const decimalsA = {
       scriptHash: tokenA,
       operation: "decimals",
-      args: []
+      args: [],
     };
     const symbolB = {
       scriptHash: tokenB,
       operation: "symbol",
-      args: []
+      args: [],
     };
     const decimalsB = {
       scriptHash: tokenB,
       operation: "decimals",
-      args: []
+      args: [],
     };
     const res = await Network.read(this.network, [
       script,
       symbolA,
       decimalsA,
       symbolB,
-      decimalsB
+      decimalsB,
     ]);
     if (res.state === "FAULT") {
       throw new Error(res.exception as string);
@@ -753,13 +753,13 @@ export class SwapContract {
       pair: {
         [tokenA]: {
           symbol: base64ToString(res.stack[1].value as string),
-          decimals: parseFloat(res.stack[2].value as string)
+          decimals: parseFloat(res.stack[2].value as string),
         },
         [tokenB]: {
           symbol: base64ToString(res.stack[3].value as string),
-          decimals: parseFloat(res.stack[4].value as string)
-        }
-      }
+          decimals: parseFloat(res.stack[4].value as string),
+        },
+      },
     };
   };
 
@@ -768,12 +768,12 @@ export class SwapContract {
     const script1 = {
       scriptHash: contractHash,
       operation: "symbol",
-      args: []
+      args: [],
     };
     const script2 = {
       scriptHash: contractHash,
       operation: "decimals",
-      args: []
+      args: [],
     };
     const script3 = {
       scriptHash: smithContractHash,
@@ -781,9 +781,9 @@ export class SwapContract {
       args: [
         {
           type: "Hash160",
-          value: contractHash
-        }
-      ]
+          value: contractHash,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script1, script2, script3]);
     if (res.state === "FAULT") {
@@ -793,7 +793,7 @@ export class SwapContract {
       contractHash,
       symbol: base64ToString(res.stack[0].value as string),
       decimals: parseFloat(res.stack[1].value as string),
-      isWhitelisted: res.stack[2].value as boolean
+      isWhitelisted: res.stack[2].value as boolean,
     };
   };
 
@@ -804,9 +804,9 @@ export class SwapContract {
       args: [
         {
           type: "String",
-          value: tokenId
-        }
-      ]
+          value: tokenId,
+        },
+      ],
     };
     const res = await Network.read(this.network, [script]);
     if (res.state === "FAULT") {
@@ -821,8 +821,8 @@ export class SwapContract {
       {
         scriptHash: this.contractHash,
         operation: "getLPTokensByUser",
-        args: [{ type: "Hash160", value: senderHash }]
-      }
+        args: [{ type: "Hash160", value: senderHash }],
+      },
     ];
     const res = await Network.read(this.network, scripts);
     if (
@@ -842,8 +842,8 @@ export class SwapContract {
       {
         scriptHash: this.contractHash,
         operation: "getMarketStatus",
-        args: []
-      }
+        args: [],
+      },
     ];
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {
@@ -861,7 +861,7 @@ export class SwapContract {
     if (!connectedWallet) {
       return {
         neo: 0,
-        bNEO: 0
+        bNEO: 0,
       };
     }
     const senderHash = NeonWallet.getScriptHashFromAddress(
@@ -869,15 +869,15 @@ export class SwapContract {
     );
     const scripts = [
       {
-        scriptHash: NEO_SCRIPT_HASH,
+        scriptHash: NEO_NEO_CONTRACT_ADDRESS,
         operation: "balanceOf",
-        args: [{ type: "Hash160", value: senderHash }]
+        args: [{ type: "Hash160", value: senderHash }],
       },
       {
-        scriptHash: BNEO_SCRIPT_HASH[this.network],
+        scriptHash: NEO_BNEO_CONTRACT_ADDRESS[this.network],
         operation: "balanceOf",
-        args: [{ type: "Hash160", value: senderHash }]
-      }
+        args: [{ type: "Hash160", value: senderHash }],
+      },
     ];
     const res = await Network.read(this.network, scripts);
     if (res.state === "FAULT") {
@@ -888,7 +888,7 @@ export class SwapContract {
       neo: parseFloat(res.stack[0].value as string),
       bNEO: parseFloat(
         u.BigInteger.fromNumber(res.stack[1].value as string).toDecimal(8)
-      )
+      ),
     };
   };
 
@@ -901,12 +901,12 @@ export class SwapContract {
     const script1 = {
       scriptHash: tokenHash,
       operation: "balanceOf",
-      args: [{ type: "Hash160", value: senderHash }]
+      args: [{ type: "Hash160", value: senderHash }],
     };
     const script2 = {
       scriptHash: tokenHash,
       operation: "decimals",
-      args: []
+      args: [],
     };
     scripts.push(script1);
     scripts.push(script2);
@@ -932,12 +932,12 @@ export class SwapContract {
     const script1 = {
       scriptHash: tokenA,
       operation: "balanceOf",
-      args: [{ type: "Hash160", value: senderHash }]
+      args: [{ type: "Hash160", value: senderHash }],
     };
     const script2 = {
       scriptHash: tokenB,
       operation: "balanceOf",
-      args: [{ type: "Hash160", value: senderHash }]
+      args: [{ type: "Hash160", value: senderHash }],
     };
     scripts.push(script1);
     scripts.push(script2);
@@ -947,7 +947,7 @@ export class SwapContract {
     }
     return {
       amountA: res.stack[0].value as string,
-      amountB: res.stack[1].value as string
+      amountB: res.stack[1].value as string,
     };
   };
 }

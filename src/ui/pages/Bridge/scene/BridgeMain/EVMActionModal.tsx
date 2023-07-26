@@ -21,9 +21,9 @@ import {
   burn,
   getMintoNoFromLogs,
 } from "../../../../../packages/polygon/contracts/bridge";
-import { NEP_SCRIPT_HASHES } from "../../../../../packages/polygon/consts";
 import { getExplorer } from "../../../../../common/helpers";
 import { getScriptHashFromAddressWithPrefix } from "../../../../../packages/neo/utils";
+import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -90,7 +90,7 @@ const ActionModal = ({
       const neoBirdgeContractHash =
         BRIDGE_CONTRACTS[network][destChain.chainId][originChain.chainId];
 
-      const nepTokenContractHash = NEP_SCRIPT_HASHES[network];
+      const nepTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
 
       try {
         setTokenApproving(true);

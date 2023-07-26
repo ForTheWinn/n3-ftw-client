@@ -34,20 +34,12 @@ export const WALLET_LIST: {
   }
 ];
 
-/* Network configs */
-
 export const TESTNET_CONFIG = {
   label: "N3TestNet",
   // url: "http://seed1t5.neo.org:20332",
   url: "https://us-central1-ez-router.cloudfunctions.net/route/seed1t5.neo.org:20332"
 };
 
-// Using for tx monitor
-export const TESTNET_CONFIG_2 = {
-  label: "N3TestNet",
-  // url: "http://seed2t5.neo.org:20332",
-  url: "https://us-central1-ez-router.cloudfunctions.net/route/seed1t5.neo.org:20332"
-};
 
 export const MAINNET_CONFIG = {
   label: "N3MainNet",
