@@ -3,6 +3,7 @@ import { Avatar, List, Space } from "antd";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { getExplorer } from "../../../../../../../common/helpers";
+import { FTW_LOGO_URL } from "../../../../../../../consts/images";
 
 interface ITokenCardProps {
   chain: CHAINS;
@@ -27,6 +28,7 @@ const TokenCard = ({
   icon,
   onUpdate,
 }: ITokenCardProps) => {
+  console.log(icon)
   return (
     <List.Item
       actions={
@@ -40,7 +42,7 @@ const TokenCard = ({
       }
     >
       <List.Item.Meta
-        avatar={<Avatar size={"large"} src={icon} />}
+        avatar={<Avatar size={"large"} src={icon ? icon : FTW_LOGO_URL} />}
         title={
           <Space>
             <span>{symbol}</span>

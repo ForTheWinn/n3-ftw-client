@@ -1,4 +1,5 @@
 import {
+  NEO_B$_CONTRACT_ADDRESS,
   NEO_BNEO_CONTRACT_ADDRESS,
   NEO_FRANK_CONTRACT_ADDRESS,
   NEO_FWBTC_CONTRACT_ADDRESS,
@@ -50,6 +51,24 @@ export const NEO_MAINNET_TOKENS_METADATA_MAP = {
       NEO_TTM_CONTRACT_ADDRESS,
     ],
   },
+  [NEO_TTM_CONTRACT_ADDRESS]: {
+    hash: NEO_TTM_CONTRACT_ADDRESS,
+    symbol: "TTM",
+    icon: "/symbols/ttm.png",
+    decimals: 8,
+    pairs: [
+      NEO_NEP_CONTRACT_ADDRESS[MAINNET],
+      NEO_USDT_CONTRACT_ADDRESS,
+      NEO_BNEO_CONTRACT_ADDRESS[MAINNET],
+    ],
+  },
+  [NEO_B$_CONTRACT_ADDRESS]: {
+    hash: NEO_B$_CONTRACT_ADDRESS,
+    symbol: "B$",
+    icon: "/symbols/b$.png",
+    decimals: 8,
+    pairs: [],
+  },
   [NEO_BNEO_CONTRACT_ADDRESS[MAINNET]]: {
     ...NEO_MAINNET_BNEO_METADATA,
     pairs: [
@@ -92,17 +111,6 @@ export const NEO_MAINNET_TOKENS_METADATA_MAP = {
     pairs: [
       NEO_NEP_CONTRACT_ADDRESS[MAINNET],
       NEO_TTM_CONTRACT_ADDRESS,
-      NEO_BNEO_CONTRACT_ADDRESS[MAINNET],
-    ],
-  },
-  [NEO_TTM_CONTRACT_ADDRESS]: {
-    hash: NEO_TTM_CONTRACT_ADDRESS,
-    symbol: "TTM",
-    icon: "/symbols/ttm.png",
-    decimals: 8,
-    pairs: [
-      NEO_NEP_CONTRACT_ADDRESS[MAINNET],
-      NEO_USDT_CONTRACT_ADDRESS,
       NEO_BNEO_CONTRACT_ADDRESS[MAINNET],
     ],
   },

@@ -20,6 +20,7 @@ import Airdrop from "../ui/pages/Tools/scenes/Airdrop";
 import LPTokens from "../ui/pages/Tools/scenes/LPTokens";
 import ToolsMain from "../ui/pages/Tools/scenes/Main";
 import FNEO from "../ui/pages/FNEO";
+import MaticBoyz from "../ui/pages/MaticBoyz";
 
 /* 
   Global
@@ -191,9 +192,10 @@ export const MATIC_BOYZ_PAGE_ROUTE = {
   path: MATIC_BOYZ_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],
-    [POLYGON_CHAIN]: [MAINNET]
+    [POLYGON_CHAIN]: [MAINNET],
   },
-  category: []
+  category: [],
+  component: MaticBoyz,
 };
 
 export const RUNES_PAGE_ROUTE = {

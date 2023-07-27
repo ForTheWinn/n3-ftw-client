@@ -1,14 +1,8 @@
 import React from "react";
+import { FTW_LOGO_URL } from "../../../../consts/images";
 const Logo = () => {
   return (
-    <>
-      <img
-        alt="Forthewin Logo"
-        src={"/logo/FTW_512_512.svg"}
-        width="36px"
-        height="36px"
-      />
-    </>
+    <img alt="Forthewin Logo" src={FTW_LOGO_URL} width="36px" height="36px" />
   );
 };
 
