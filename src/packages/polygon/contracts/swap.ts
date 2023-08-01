@@ -29,16 +29,22 @@ export const getReserves = async (
   });
   // EVM swap doesn't change token order in the contract so we need to check its order by token hash
   return {
-    reserveA: res.tokenA.toLowerCase() === tokenA ? res.amountA : res.amountB,
-    reserveB: res.tokenB.toLowerCase() === tokenB ? res.amountB : res.amountA,
-    shares: res.shares,
+    reserveA:
+      res.tokenA.toLowerCase() === tokenA
+        ? res.amountA.toString()
+        : res.amountB.toString(),
+    reserveB:
+      res.tokenB.toLowerCase() === tokenB
+        ? res.amountB.toString()
+        : res.amountA.toString(),
+    shares: res.shares.toString(),
   };
 };
 
 export const getEstimated = async (
   network: INetworkType,
   args: SwapEstimateArgs
-): Promise<any> => {
+): Promise<string> => {
   const { tokenA, tokenB, amount, isReverse } = args;
   const res = await readContract({
     address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
@@ -46,7 +52,7 @@ export const getEstimated = async (
     functionName: "getSwapEstimated",
     args: [tokenA, tokenB, amount, isReverse],
   });
-  return res;
+  return res ? res.toString() : "0";
 };
 
 export const getLPTokens = async (

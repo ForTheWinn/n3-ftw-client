@@ -66,7 +66,6 @@ const TokenMainPage = () => {
           res = await new SmithContract(network).getNEP17Records(page);
         } else {
           res = await getTokenList(chain, network);
-          console.log(res);
         }
         setData(res.items);
         setTotalPages(res.totalPages);

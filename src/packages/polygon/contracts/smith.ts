@@ -48,7 +48,6 @@ export const getContractHashFromLogs = (logs: any) => {
   logs.forEach((log) => {
     try {
       const parsedLog = iface.parseLog(log);
-      console.log(parsedLog);
       if (parsedLog.name === "TokenCreated") {
         contractHash = parsedLog.args[0];
       }
@@ -64,7 +63,6 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
     functionName: "getTokens",
     args: [30, 1],
   });
-  console.log(res)
   return res;
   // return {
   //   totalItems: res.tokenItems,

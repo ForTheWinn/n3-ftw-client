@@ -577,6 +577,7 @@ export class SwapContract {
       ],
     };
     const res = await Network.read(this.network, [script]);
+
     if (res.state === "FAULT") {
       return "0";
     } else {

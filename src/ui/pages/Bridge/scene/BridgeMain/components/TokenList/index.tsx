@@ -37,7 +37,6 @@ const TokenList = ({
     }
   });
 
-  console.log(tokenList);
 
   return (
     <>

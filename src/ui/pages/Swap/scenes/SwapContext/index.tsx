@@ -54,6 +54,60 @@ interface ISwapContext {
 
 export const SwapContext = createContext({} as ISwapContext);
 
+const getEstimatedForSwap = async (
+  chain,
+  network,
+  swapInput,
+  tokenA,
+  tokenB
+) => {
+  const args = {
+    tokenA: tokenA.hash,
+    tokenB: tokenB.hash,
+    amount: ethers.utils
+      .parseUnits(
+        swapInput.value,
+        swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
+      )
+      .toString(),
+    isReverse: swapInput.type === "B",
+  };
+
+  try {
+    const estimated = await swapRouter.getEstimate(chain, network, args);
+    if (estimated !== "0") {
+      return ethers.utils.formatUnits(
+        estimated,
+        swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
+      );
+    }
+    return estimated;
+  } catch (e: any) {
+    console.error(e);
+    return null;
+  }
+};
+
+const getEstimatedForLiquidity = (swapInput, tokenA, tokenB, reserves) => {
+  if (reserves && reserves.shares !== "0") {
+    const val = ethers.utils.parseUnits(
+      swapInput.value.toString(),
+      swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
+    );
+    const estimated = val
+      .mul(swapInput.type === "A" ? reserves.reserveB : reserves.reserveA)
+      .div(swapInput.type === "A" ? reserves.reserveA : reserves.reserveB)
+      .toString();
+
+    return ethers.utils.formatUnits(
+      estimated,
+      swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
+    );
+  }
+
+  return null;
+};
+
 export const SwapContextProvider = (props: {
   type: "swap" | "liquidity";
   children: any;
@@ -179,61 +233,36 @@ export const SwapContextProvider = (props: {
     if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
       const delayDebounceFn = setTimeout(async () => {
         setEstimatedError(false);
-        if (swapInput.type === "A") {
-          setAmountBLoading(true);
-        } else {
-          setAmountALoading(true);
+        setAmountALoading(swapInput.type === "B");
+        setAmountBLoading(swapInput.type === "A");
+
+        let estimated;
+        if (props.type === "swap") {
+          estimated = await getEstimatedForSwap(
+            chain,
+            network,
+            swapInput,
+            tokenA,
+            tokenB
+          );
+        } else if (props.type === "liquidity") {
+          estimated = getEstimatedForLiquidity(
+            swapInput,
+            tokenA,
+            tokenB,
+            reserves
+          );
         }
-
-        if (swapInput.value) {
-          let estimated;
-          if (props.type === "swap") {
-            const args = {
-              tokenA: tokenA.hash,
-              tokenB: tokenB.hash,
-              amount: ethers.utils
-                .parseUnits(
-                  swapInput.value,
-                  swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
-                )
-                .toString(),
-              isReverse: swapInput.type === "B",
-            };
-            try {
-              estimated = await swapRouter.getEstimate(chain, network, args);
-            } catch (e: any) {
-              console.error(e);
-              setEstimatedError(false);
-              setAmountALoading(false);
-              setAmountBLoading(false);
-            }
-          } else if (props.type === "liquidity") {
-            if (reserves) {
-              const val = ethers.utils.parseUnits(
-                swapInput.value.toString(),
-                swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
-              );
-              estimated = val
-                .mul(
-                  swapInput.type === "A" ? reserves.reserveB : reserves.reserveA
-                )
-                .div(
-                  swapInput.type === "A" ? reserves.reserveA : reserves.reserveB
-                )
-                .toString();
-            }
-          }
-
+        if (estimated && estimated !== "0") {
           if (swapInput.type === "A") {
-            estimated = ethers.utils.formatUnits(estimated, tokenB.decimals);
-            setAmountBLoading(false);
             setAmountB(estimated);
           } else {
-            estimated = ethers.utils.formatUnits(estimated, tokenA.decimals);
-            setAmountALoading(false);
             setAmountA(estimated);
           }
         }
+
+        setAmountALoading(false);
+        setAmountBLoading(false);
       }, 800);
 
       return () => clearTimeout(delayDebounceFn);
@@ -283,17 +312,15 @@ export const SwapContextProvider = (props: {
     fetchTokens();
   }, [chain, network]);
 
-  let noLiquidity = false;
+  let noLiquidity = reserves?.shares === "0";
   let priceImpact = 0;
-
-  if (tokenA && tokenB && reserves) {
-    noLiquidity = reserves.shares === "0";
+  if (tokenA && tokenB && !noLiquidity) {
     if (amountA && amountB) {
       try {
         const parsedAmountB = new Decimal(amountB).mul(
           new Decimal(10).pow(tokenB.decimals)
         );
-        const reserveB = ethers.BigNumber.from(reserves.reserveB);
+        const reserveB = ethers.BigNumber.from(reserves?.reserveB);
 
         priceImpact = parsedAmountB
           .div(reserveB.toString())

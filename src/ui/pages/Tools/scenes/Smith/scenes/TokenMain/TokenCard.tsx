@@ -28,7 +28,6 @@ const TokenCard = ({
   icon,
   onUpdate,
 }: ITokenCardProps) => {
-  console.log(icon)
   return (
     <List.Item
       actions={

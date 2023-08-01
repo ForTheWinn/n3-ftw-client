@@ -56,7 +56,6 @@ const SwapMain = () => {
   const onCancel = () => {
     setMethod(undefined);
   };
-
   return (
     <>
       <SwapNav

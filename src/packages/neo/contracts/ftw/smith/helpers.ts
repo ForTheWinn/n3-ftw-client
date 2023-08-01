@@ -5,7 +5,6 @@ export const getTokenContractHashNotifications = (
   json: ApplicationLogJson
 ): string => {
   let contractHash;
-  console.log(json);
   try {
     json.executions[0].notifications.forEach((log) => {
       if (log.eventname === "TokenCreated" && log.state.value) {

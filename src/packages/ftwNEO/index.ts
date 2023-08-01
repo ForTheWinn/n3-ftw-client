@@ -16,7 +16,6 @@ import { IfNEODetail } from "./interfaces";
 import FNEOABI from "./fNEO.json";
 
 export const claim = async (contractHash: string): Promise<string> => {
-  console.log(contractHash);
   const config = await prepareWriteContract({
     address: contractHash as any,
     abi: FNEOABI,
@@ -31,7 +30,6 @@ export const getfNEODetail = async (
   contractHash: string,
   address?: string
 ): Promise<IfNEODetail> => {
-  console.log(address);
   const prices = await getPrices(NEO_CHAIN);
   const neoPrice = prices[NEO_BNEO_CONTRACT_ADDRESS[MAINNET]];
   const nepPrice = prices[NEO_NEP_CONTRACT_ADDRESS[MAINNET]];

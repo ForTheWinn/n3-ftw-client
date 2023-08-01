@@ -69,7 +69,6 @@ const TokenMainPage = () => {
         let res;
         if (chain === NEO_CHAIN) {
           res = await new SmithContract(network).getNEP11Records(page);
-          console.log(res)
         } else {
           // res = await getTokenList(chain, network);
           res = [];
