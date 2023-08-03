@@ -149,7 +149,7 @@ const ActionModal = ({
                 type="primary"
                 key="console"
               >
-                Detilas
+                Details
               </Button>,
               <Button onClick={onSuccess} key="close">
                 Close
