@@ -14,14 +14,10 @@ const ProvideLPInfo = ({ path }: IProvideLPInfoProps) => {
         Liquidity providers earn a {SWAP_FEE}% fee on all trades proportional to
         their share of the pool. Fees are added to the pool, accrue in real time
         and can be claimed by withdrawing your liquidity.
-        <br />
-        <br />
-        {path ? (
-          <Link className="button is-info is-inverted" to={path}>
-            Provide liquidity
+        {path && (
+          <Link className="button is-info mt-5" to={path}>
+            Provide Liquidity
           </Link>
-        ) : (
-          <></>
         )}
       </div>
     </>

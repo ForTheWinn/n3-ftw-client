@@ -34,7 +34,7 @@ const SwapMain = () => {
     setSettingsModalActive,
     onSwapInputChange,
     onInputSwitch,
-    toggleWalletSidebar
+    toggleWalletSidebar,
   } = useSwap();
 
   const { address, isConnected } = useWalletRouter(chain);
@@ -68,20 +68,6 @@ const SwapMain = () => {
         }
         onSettingClick={() => setSettingsModalActive(true)}
       />
-
-      {noLiquidity && tokenA && tokenB ? (
-        <ProvideLPInfo
-          path={{
-            pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
-            search:
-              tokenA && tokenB
-                ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
-                : ""
-          }}
-        />
-      ) : (
-        <></>
-      )}
 
       <SwapInputs
         reserves={reserves}
@@ -128,7 +114,7 @@ const SwapMain = () => {
       <SwapButton
         label="Swap"
         isLoading={false}
-        isActive={!!amountA && !!amountB}
+        isActive={!!amountA && !!amountB && !noLiquidity}
         isWalletConnected={isConnected}
         onClick={isConnected ? onSwap : toggleWalletSidebar}
       />

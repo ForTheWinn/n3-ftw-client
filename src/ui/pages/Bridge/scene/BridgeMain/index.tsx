@@ -53,7 +53,7 @@ const BridgeSwap = () => {
     <>
       <div className="box is-shadowless mb-1">
         <Level
-          left={<h1 className="title is-5 is-marginless">Brdige</h1>}
+          left={<h1 className="title is-5 is-marginless">Bridge</h1>}
           right={
             evmChainId ? (
               <Link

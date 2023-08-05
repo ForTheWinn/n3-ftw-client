@@ -26,6 +26,8 @@ import { getTokenByHash } from "../../../../../common/helpers";
 
 import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
+import ProvideLPInfo from "../../components/ProvideLPInfo";
+import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/routes";
 
 interface ISwapContext {
   chain: CHAINS;
@@ -359,27 +361,40 @@ export const SwapContextProvider = (props: {
 
   return (
     <SwapContext.Provider value={contextValue}>
-      <>
-        {props.children}
-        {isAssetChangeModalActive && (
-          <TokenList
-            chain={chain}
-            network={network}
-            activeTokenInput={isAssetChangeModalActive}
-            tokenAHash={tokenA ? tokenA.hash : undefined}
-            tokenBHash={tokenB ? tokenB.hash : undefined}
-            onAssetClick={onAssetClick}
-            onClose={() => setAssetChangeModalActive(undefined)}
-          />
-        )}
-
-        <SwapSettings
-          isActive={isSettingsModalActive}
-          onClose={() => setSettingsModalActive(false)}
-          slippage={slippage}
-          onSlippageChange={setSlippage}
+      {noLiquidity && (
+        <ProvideLPInfo
+          path={
+            props.type === "swap"
+              ? {
+                  pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
+                  search:
+                    tokenA && tokenB
+                      ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
+                      : "",
+                }
+              : null
+          }
         />
-      </>
+      )}
+      {props.children}
+      {isAssetChangeModalActive && (
+        <TokenList
+          chain={chain}
+          network={network}
+          activeTokenInput={isAssetChangeModalActive}
+          tokenAHash={tokenA ? tokenA.hash : undefined}
+          tokenBHash={tokenB ? tokenB.hash : undefined}
+          onAssetClick={onAssetClick}
+          onClose={() => setAssetChangeModalActive(undefined)}
+        />
+      )}
+
+      <SwapSettings
+        isActive={isSettingsModalActive}
+        onClose={() => setSettingsModalActive(false)}
+        slippage={slippage}
+        onSlippageChange={setSlippage}
+      />
     </SwapContext.Provider>
   );
 };

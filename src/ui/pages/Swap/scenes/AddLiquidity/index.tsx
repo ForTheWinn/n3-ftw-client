@@ -26,7 +26,7 @@ const Liquidity = () => {
     setAssetChangeModalActive,
     setSettingsModalActive,
     onSwapInputChange,
-    toggleWalletSidebar
+    toggleWalletSidebar,
   } = useSwap();
 
   const { address, isConnected } = useWalletRouter(chain);
@@ -52,7 +52,7 @@ const Liquidity = () => {
   const toMain = {
     pathname: `${SWAP_PATH}`,
     search:
-      tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : ""
+      tokenA && tokenB ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}` : "",
   };
 
   const title = noLiquidity ? "Create a new pool" : "Provide liquidity";
@@ -64,8 +64,6 @@ const Liquidity = () => {
         title={title}
         onSettingClick={() => setSettingsModalActive(true)}
       />
-
-      {noLiquidity && <ProvideLPInfo />}
 
       <div className="is-relative">
         <LPInputs
