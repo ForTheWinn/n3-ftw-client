@@ -6,7 +6,7 @@ import {
   writeContract,
   waitForTransaction,
 } from "@wagmi/core";
-import { Steps } from "antd";
+import { Steps, Typography } from "antd";
 
 import { ethers } from "ethers";
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -102,6 +102,8 @@ const ActionModal = ({
           chainId,
         });
 
+        console.log(approvedAmount);
+
         if (requiredAmount.lt(approvedAmount)) {
           setTokenApproved(true);
           setTokenApproving(false);
@@ -118,6 +120,7 @@ const ActionModal = ({
 
           const { hash } = await writeContract(script);
           await waitForTransaction({ hash });
+          setTokenApproving(false);
         }
       } catch (e) {
         console.error(e);
@@ -139,6 +142,7 @@ const ActionModal = ({
           args: [address as any, evmBridgeContractHash as any],
           chainId,
         });
+
         if (requiredFeeAmount.lt(approvedAmount)) {
           setFeeTokenApproved(true);
           setFeeTokenApproving(false);
@@ -221,65 +225,59 @@ const ActionModal = ({
             current={currentStep}
             items={[
               {
-                title: "Token approval",
+                title: "Token Approval",
                 description: (
                   <>
-                    {isTokenApproving ? (
-                      <LoadingWithText title="Approving" />
-                    ) : (
-                      <></>
+                    {isTokenApproving && <LoadingWithText title="Processing" />}
+                    {isTokenApproved && (
+                      <Typography.Text type="success">Success</Typography.Text>
                     )}
-                    {isTokenApproved ? "Approved" : ""}
-                    {hasTokenApproveError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
+                    {hasTokenApproveError && (
+                      <Typography.Text type="danger">Error</Typography.Text>
                     )}
                   </>
                 ),
               },
               {
-                title: "Fee token approval",
+                title: "Fee Token Approval",
                 description: (
                   <>
-                    {isFeeTokenApproving ? (
-                      <LoadingWithText title="Approving" />
-                    ) : (
-                      <></>
+                    {isFeeTokenApproving && (
+                      <LoadingWithText title="Processing" />
                     )}
-                    {isFeeTokenApproved ? "Approved" : ""}
-                    {hasFeeTokenApproveError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
+                    {isFeeTokenApproved && (
+                      <Typography.Text type="success">Success</Typography.Text>
+                    )}
+                    {hasFeeTokenApproveError && (
+                      <Typography.Text type="danger">Error</Typography.Text>
                     )}
                   </>
                 ),
               },
               {
-                title: "Lock",
+                title: `Token Burn on ${originChain.name}`,
                 description: (
                   <>
-                    {isLocking ? <LoadingWithText title="Locking" /> : <></>}
-                    {isLocked ? "Locked" : ""}
-                    {hasLockError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
+                    {isLocking && <LoadingWithText title="Processing" />}
+                    {isLocked && (
+                      <Typography.Text type="success">Success</Typography.Text>
+                    )}
+                    {hasLockError && (
+                      <Typography.Text type="danger">Error</Typography.Text>
                     )}
                   </>
                 ),
               },
               {
-                title: "Mint",
+                title: `Token Mint on ${destChain.name}`,
                 description: (
                   <>
-                    {isMinting ? <LoadingWithText title="Minting" /> : <></>}
-                    {isMinted ? "Minted" : ""}
-                    {hasMintError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
+                    {isMinting && <LoadingWithText title="Processing" />}
+                    {isMinted && (
+                      <Typography.Text type="success">Success</Typography.Text>
+                    )}
+                    {hasMintError && (
+                      <Typography.Text type="danger">Error</Typography.Text>
                     )}
                   </>
                 ),

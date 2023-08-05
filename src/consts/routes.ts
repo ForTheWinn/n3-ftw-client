@@ -433,7 +433,7 @@ export const ROUTE_LIST = [
   SMITH_PAGE_ROUTE,
   TOOLS_PAGE_ROUTE,
   NFT_ROUTE,
-  // BRIDGE_PAGE_ROUTE,
+  BRIDGE_PAGE_ROUTE,
   FNEO_PAGE_ROUTE,
   EVENT_PAGE_ROUTE,
   // Route only, No menu in display
