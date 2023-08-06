@@ -58,7 +58,6 @@ const TokenMainPage = () => {
       }
       setTxid(res);
     } catch (e) {
-      console.log(e);
     }
   };
 

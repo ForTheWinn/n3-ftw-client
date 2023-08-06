@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import ProvideLPInfo from "../../components/ProvideLPInfo";
 import SwapInputs from "./SwapInputs";
 import SwapDetails from "./components/SwapDetails/SwapDetails";
 import SwapButton from "../../components/SwapButton";
 import SwapNav from "./components/SwapNav";
 
-import ActionModal from "../../components/ActionModal";
 import { useSwap } from "../SwapContext";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import PriceComparison from "./components/PriceComparison";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/routes";
+import NeoActionModal from "../../components/Actions/NEOActionModal";
+import { NEO_CHAIN } from "../../../../../consts/global";
+import EVMSwapActionModal from "../../components/Actions/EVMSwapActionModal";
 
 const SwapMain = () => {
   const {
@@ -37,7 +37,7 @@ const SwapMain = () => {
     toggleWalletSidebar,
   } = useSwap();
 
-  const { address, isConnected } = useWalletRouter(chain);
+  const { address, isConnected, client } = useWalletRouter(chain);
 
   const [method, setMethod] = useState<"swap" | "provide" | undefined>();
 
@@ -119,23 +119,39 @@ const SwapMain = () => {
         onClick={isConnected ? onSwap : toggleWalletSidebar}
       />
 
-      {method && tokenA && tokenB && address && amountA && amountB && method ? (
-        <ActionModal
-          chain={chain}
-          network={network}
-          address={address}
-          tokenA={tokenA}
-          tokenB={tokenB}
-          amountA={amountA}
-          amountB={amountB}
-          slippage={slippage}
-          method={method}
-          isReverse={swapInput && swapInput.type === "B" ? true : false}
-          onSuccess={onSuccess}
-          onCancel={onCancel}
-        />
-      ) : (
-        <></>
+      {method && tokenA && tokenB && address && amountA && amountB && (
+        <>
+          {chain === NEO_CHAIN ? (
+            <NeoActionModal
+              connectedWallet={client}
+              chain={chain}
+              network={network}
+              method={method}
+              tokenA={tokenA}
+              tokenB={tokenB}
+              amountA={amountA}
+              amountB={amountB}
+              isReverse={swapInput && swapInput.type === "B" ? true : false}
+              slippage={slippage}
+              onSuccess={onSuccess}
+              onCancel={onCancel}
+            />
+          ) : (
+            <EVMSwapActionModal
+              chain={chain}
+              network={network}
+              address={address}
+              tokenA={tokenA}
+              tokenB={tokenB}
+              amountA={amountA}
+              amountB={amountB}
+              slippage={slippage}
+              isReverse={swapInput && swapInput.type === "B" ? true : false}
+              onSuccess={onSuccess}
+              onCancel={onCancel}
+            />
+          )}
+        </>
       )}
     </>
   );

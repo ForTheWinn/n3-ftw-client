@@ -15,6 +15,7 @@ export const SMITH = "SMITH";
 
 export const NEP_LOGO = "/symbols/nep.png";
 export const UNKNOWN_TOKEN_IMAGE = "/symbols/unknown.png";
+export const FTW_LOGO_URL = "/logo/FTW_512_512.svg";
 
 export const ALCHEMY_KEY = {
   POLYGON_CHAIN: {

@@ -49,7 +49,9 @@ export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
       nepTokensPerSecond: pool.nepTokensPerSecond.toString(),
       bonusToken: pool.bonusToken,
       bonusTokenSymbol: bonusToken ? bonusToken.symbol : "Unknown",
-      bonusTokenDecimals: bonusToken ? bonusToken.decimals : "Unknown",
+      bonusTokenDecimals: bonusToken
+        ? bonusToken.decimals.toString()
+        : "Unknown",
       bonusTokensPerSecond: pool.bonusTokensPerSecond.toString(),
       nepRewardsPerDay: ethers.utils.formatUnits(
         Number(pool.nepTokensPerSecond) * 86400,

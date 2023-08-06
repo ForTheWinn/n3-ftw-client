@@ -14,6 +14,12 @@ import { INetworkType } from "../packages/neo/network";
 import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
 import { explorerUrls } from "../consts/urls";
 import { CHAINS } from "../consts/chains";
+import {
+  erc20ABI,
+  prepareWriteContract,
+  writeContract,
+} from "@wagmi/core";
+import { BigNumber, ethers } from "ethers";
 
 export const getExplorer = (
   chain: string,
@@ -108,3 +114,9 @@ export const findTradePaths = (
   dfs(sourceToken, [sourceToken], 1);
   return paths;
 };
+
+export const parseAmount = (amount: string, decimals: number): BigNumber =>
+  ethers.utils.parseUnits(amount, decimals);
+
+export const calculateSlippage = (amount: BigNumber, slippage: number) =>
+  amount.mul(ethers.BigNumber.from(Math.round(slippage * 100))).div(10000);

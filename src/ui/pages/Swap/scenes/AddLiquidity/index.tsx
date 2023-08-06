@@ -4,11 +4,12 @@ import { useSwap } from "../SwapContext";
 import LPInputs from "./Inputs";
 import SwapButton from "../../components/SwapButton";
 import Nav from "./components/Nav";
-import ProvideLPInfo from "../../components/ProvideLPInfo";
-import ActionModal from "../../components/ActionModal";
 
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { SWAP_PATH } from "../../../../../consts/routes";
+import { NEO_CHAIN } from "../../../../../consts/global";
+import NeoActionModal from "../../components/Actions/NEOActionModal";
+import EVMLiquidityActionModal from "../../components/Actions/EVMLiquidityActionModal";
 
 const Liquidity = () => {
   const {
@@ -29,7 +30,7 @@ const Liquidity = () => {
     toggleWalletSidebar,
   } = useSwap();
 
-  const { address, isConnected } = useWalletRouter(chain);
+  const { address, isConnected, client } = useWalletRouter(chain);
 
   const [method, setMethod] = useState<"swap" | "provide" | undefined>();
 
@@ -87,20 +88,37 @@ const Liquidity = () => {
       </div>
 
       {method && tokenA && tokenB && address && amountA && amountB && (
-        <ActionModal
-          chain={chain}
-          network={network}
-          method={method}
-          tokenA={tokenA}
-          tokenB={tokenB}
-          amountA={amountA}
-          amountB={amountB}
-          isReverse={false}
-          address={address}
-          slippage={slippage}
-          onSuccess={onSuccess}
-          onCancel={onCancel}
-        />
+        <>
+          {chain === NEO_CHAIN ? (
+            <NeoActionModal
+              connectedWallet={client}
+              chain={chain}
+              network={network}
+              method={method}
+              tokenA={tokenA}
+              tokenB={tokenB}
+              amountA={amountA}
+              amountB={amountB}
+              isReverse={false}
+              slippage={slippage}
+              onSuccess={onSuccess}
+              onCancel={onCancel}
+            />
+          ) : (
+            <EVMLiquidityActionModal
+              chain={chain}
+              network={network}
+              tokenA={tokenA}
+              tokenB={tokenB}
+              amountA={amountA}
+              amountB={amountB}
+              address={address}
+              slippage={slippage}
+              onSuccess={onSuccess}
+              onCancel={onCancel}
+            />
+          )}
+        </>
       )}
     </>
   );

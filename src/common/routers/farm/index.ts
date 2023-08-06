@@ -17,7 +17,7 @@ import {
 } from "../../../packages/polygon/contracts/swap";
 import { IClaimable, IFarmPair } from "./interfaces";
 import { ISwapLPToken } from "../swap/interfaces";
-import { CONTRACT_LIST } from "../../../consts/contracts";
+import { CONTRACT_MAP } from "../../../consts/contracts";
 import { FARM, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 
@@ -94,12 +94,12 @@ export const stakeLPToken = async (
         !(await isApprovedForAll(
           network,
           address,
-          CONTRACT_LIST[chain][network][FARM]
+          CONTRACT_MAP[chain][network][FARM]
         ))
       ) {
         const config = await setApprovalForAll(
           network,
-          CONTRACT_LIST[chain][network][FARM]
+          CONTRACT_MAP[chain][network][FARM]
         );
         const { hash } = await writeContract(config);
         await waitForTransaction({ hash });

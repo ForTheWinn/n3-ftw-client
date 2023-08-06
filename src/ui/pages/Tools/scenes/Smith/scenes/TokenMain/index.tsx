@@ -52,9 +52,7 @@ const TokenMainPage = () => {
         res = tx.hash;
       }
       setTxid(res);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   useEffect(() => {

@@ -1,1 +1,0 @@
-export const FTW_LOGO_URL = "/logo/FTW_512_512.svg";

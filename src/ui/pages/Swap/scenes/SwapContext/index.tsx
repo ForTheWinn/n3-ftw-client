@@ -90,8 +90,13 @@ const getEstimatedForSwap = async (
   }
 };
 
-const getEstimatedForLiquidity = (swapInput, tokenA, tokenB, reserves) => {
-  if (reserves && reserves.shares !== "0") {
+const getEstimatedForLiquidity = (
+  swapInput: ISwapInputState,
+  tokenA: ITokenState,
+  tokenB: ITokenState,
+  reserves: ISwapReserves | undefined
+) => {
+  if (reserves && swapInput.value && reserves && reserves.shares !== "0") {
     const val = ethers.utils.parseUnits(
       swapInput.value.toString(),
       swapInput.type === "A" ? tokenA.decimals : tokenB.decimals

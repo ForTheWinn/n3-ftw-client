@@ -35,13 +35,13 @@ const CreateToken = () => {
     decimals: "18",
     totalSupply: "",
     website: "",
-    icon: ""
+    icon: "",
   });
 
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val
+      [key]: val,
     });
   };
 

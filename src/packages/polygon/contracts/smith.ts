@@ -2,7 +2,7 @@ import { readContract, prepareWriteContract } from "@wagmi/core";
 import { Alchemy, Network } from "alchemy-sdk";
 
 import FTWSmith from "./abi/FTWSmith.json";
-import { CONTRACT_LIST } from "../../../consts/contracts";
+import { CONTRACT_MAP } from "../../../consts/contracts";
 import { INetworkType } from "../../neo/network";
 import { ALCHEMY_KEY, SMITH } from "../../../consts/global";
 import { ethers } from "ethers";
@@ -20,7 +20,7 @@ export const createTokenContract = (
   icon: string
 ) => {
   return prepareWriteContract({
-    address: CONTRACT_LIST[chain][network][SMITH],
+    address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "createToken",
     args: [name, symbol, totalSupply, decimals, icon, website],
@@ -35,7 +35,7 @@ export const setTokenData = (
   website: string
 ) => {
   return prepareWriteContract({
-    address: CONTRACT_LIST[chain][network][SMITH],
+    address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "setTokenData",
     args: [contractHash, icon, website],
@@ -58,7 +58,7 @@ export const getContractHashFromLogs = (logs: any) => {
 
 export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
   const res: any = await readContract({
-    address: CONTRACT_LIST[chain][network][SMITH],
+    address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "getTokens",
     args: [30, 1],
@@ -86,7 +86,7 @@ const getTokenMetadata = async (
   contractHash: string
 ) => {
   const res: any = await readContract({
-    address: CONTRACT_LIST[chain][network][SMITH],
+    address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "getTokenData",
     args: [contractHash],
@@ -112,7 +112,7 @@ export const getTokenListFromProvider = async (
   const res = await alchemy.core.getLogs({
     fromBlock: "earliest",
     toBlock: "latest",
-    address: CONTRACT_LIST[chain][network][SMITH],
+    address: CONTRACT_MAP[chain][network][SMITH],
   });
 
   // Array to store promises for all the metadata fetch operations

@@ -3,6 +3,7 @@ import {
   prepareWriteContract,
   erc20ABI,
   multicall,
+  writeContract,
 } from "@wagmi/core";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
@@ -15,6 +16,8 @@ import {
 } from "../../../common/routers/swap/interfaces";
 import { POLYGON_CONTRACT_MAP } from "../consts";
 import { SWAP } from "../../../consts/global";
+import { CHAINS } from "../../../consts/chains";
+import { CONTRACT_MAP } from "../../../consts/contracts";
 
 export const getReserves = async (
   network: INetworkType,
@@ -30,11 +33,11 @@ export const getReserves = async (
   // EVM swap doesn't change token order in the contract so we need to check its order by token hash
   return {
     reserveA:
-      res.tokenA.toLowerCase() === tokenA
+      res.tokenA.toLowerCase() === tokenA.toLowerCase()
         ? res.amountA.toString()
         : res.amountB.toString(),
     reserveB:
-      res.tokenB.toLowerCase() === tokenB
+      res.tokenB.toLowerCase() === tokenB.toLowerCase
         ? res.amountB.toString()
         : res.amountA.toString(),
     shares: res.shares.toString(),
@@ -100,24 +103,37 @@ export const getTokenURI = async (
   };
 };
 
-export const swap = (network: INetworkType, args: SwapArgs) => {
+export const swap = async (
+  chain: CHAINS,
+  network: INetworkType,
+  args: SwapArgs
+): Promise<string> => {
   const { tokenA, tokenB, amountIn, amountOut, isReverse } = args;
-  return prepareWriteContract({
-    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
+  const config = await prepareWriteContract({
+    address: CONTRACT_MAP[chain][network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "swap",
     args: [tokenA, tokenB, amountIn, amountOut, isReverse],
   });
+  const { hash } = await writeContract(config);
+  return hash;
 };
 
-export const provide = (network: INetworkType, args: AddLiquidityArgs) => {
+export const provide = async (
+  chain: CHAINS,
+  network: INetworkType,
+  args: AddLiquidityArgs
+): Promise<string> => {
   const { tokenA, tokenB, amountA, amountB, slippage } = args;
-  return prepareWriteContract({
-    address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
+  const config = await prepareWriteContract({
+    address: CONTRACT_MAP[chain][network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "addLiquidity",
     args: [tokenA, amountA, tokenB, amountB, slippage],
   });
+
+  const { hash } = await writeContract(config);
+  return hash;
 };
 
 export const removeLiquidity = (network: INetworkType, tokenId: string) => {
@@ -129,46 +145,38 @@ export const removeLiquidity = (network: INetworkType, tokenId: string) => {
   });
 };
 
-export const approve = (network: INetworkType, token) => {
-  return prepareWriteContract({
-    address: token,
+export const approve = async (
+  contractAddress: any,
+  spenderAddress: any
+): Promise<string> => {
+  const script = await prepareWriteContract({
+    address: contractAddress,
     abi: erc20ABI,
     functionName: "approve",
-    args: [
-      POLYGON_CONTRACT_MAP[network][SWAP] as any,
-      ethers.constants.MaxUint256 as any,
-    ],
+    args: [spenderAddress, ethers.constants.MaxUint256.toBigInt()],
   });
+  const { hash } = await writeContract(script);
+  return hash;
 };
 
-export const getAllowances = (
+export const getAllowances = async (
+  chain: CHAINS,
   network: INetworkType,
   address: string,
-  tokenA: string,
-  tokenB: string
+  tokenAddresses: string[]
 ) => {
-  return multicall({
-    contracts: [
-      {
-        address: tokenA as `0x${string}`,
-        abi: erc20ABI,
-        functionName: "allowance",
-        args: [
-          address as `0x${string}`,
-          POLYGON_CONTRACT_MAP[network][SWAP] as `0x${string}`,
-        ],
-      },
-      {
-        address: tokenB as `0x${string}`,
-        abi: erc20ABI,
-        functionName: "allowance",
-        args: [
-          address as `0x${string}`,
-          POLYGON_CONTRACT_MAP[network][SWAP] as `0x${string}`,
-        ],
-      },
-    ],
+  const res = await multicall({
+    contracts: tokenAddresses.map((token) => ({
+      address: token as `0x${string}`,
+      abi: erc20ABI,
+      functionName: "allowance",
+      args: [
+        address as `0x${string}`,
+        CONTRACT_MAP[chain][network][SWAP] as `0x${string}`,
+      ],
+    })),
   });
+  return res.map((r) => r.result);
 };
 
 export const isApprovedForAll = (

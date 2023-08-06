@@ -13,7 +13,7 @@ import {
 import { NEO_CHAIN, SWAP } from "../../../../../consts/global";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
-import { CONTRACT_LIST } from "../../../../../consts/contracts";
+import { CONTRACT_MAP } from "../../../../../consts/contracts";
 import { getExplorer } from "../../../../../common/helpers";
 
 interface IActionModalProps {
@@ -51,7 +51,7 @@ const RemoveLiquidityModal = ({
     const doAction = async () => {
       if (chain !== NEO_CHAIN) {
         try {
-          const contractAddress = CONTRACT_LIST[chain][network][SWAP];
+          const contractAddress = CONTRACT_MAP[chain][network][SWAP];
           setApproveError(false);
           if (await isApprovedForAll(network, address, contractAddress)) {
             setApproved(true);

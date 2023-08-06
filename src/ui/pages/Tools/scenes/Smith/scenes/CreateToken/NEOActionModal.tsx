@@ -34,7 +34,6 @@ const NEOSmithActionModal = ({
         const contractHash = getTokenContractHashNotifications(res);
         setContractHash(contractHash);
       } catch (e: any) {
-        console.log(e);
         setError(e.message);
       }
       setLoading(false);

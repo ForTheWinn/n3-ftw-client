@@ -4,7 +4,7 @@ import { NEO_NEP_CONTRACT_ADDRESS } from "../packages/neo/consts/neo-contracts";
 import { POLYGON_NEP_CONTRACT_ADDRESSES } from "../packages/polygon/consts";
 import { NEO_CHAIN, POLYGON_CHAIN } from "./global";
 
-export const CONTRACT_LIST = {
+export const CONTRACT_MAP = {
   [NEO_CHAIN]: NEO_CONTRACT_LIST,
   [POLYGON_CHAIN]: POLYGON_CONTRACT_LIST,
 };

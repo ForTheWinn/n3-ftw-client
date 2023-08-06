@@ -13,7 +13,7 @@ import { ITokenMetadata } from "./EVM";
 import Modal from "../../../../../../components/Modal";
 import LoadingWithText from "../../../../../../components/Commons/LoadingWithText";
 import {
-  CONTRACT_LIST,
+  CONTRACT_MAP,
   GLOBAL_NEP_CONTRACT_ADDRESS,
 } from "../../../../../../../consts/contracts";
 import { INetworkType } from "../../../../../../../packages/neo/network";
@@ -47,7 +47,7 @@ const ActionModal = ({
   onCancel,
 }: IActionModalProps) => {
   const feeTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
-  const smithTokenContractHash = CONTRACT_LIST[chain][network][SMITH];
+  const smithTokenContractHash = CONTRACT_MAP[chain][network][SMITH];
   const [isFeeTokenApproved, setFeeTokenApproved] = useState(false);
   const [isFeeTokenApproving, setFeeTokenApproving] = useState(false);
   const [hasFeeTokenApproveError, setFeeTokenApproveError] = useState(false);
