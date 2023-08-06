@@ -1,5 +1,14 @@
 import { globalRouter } from "./routers";
-import { MAINNET, NEO_CHAIN, NEO_MAINNET_CHAIN_ID, NEO_TESTNET_CHAIN_ID, POLYGON_CHAIN, POLYGON_MAINNET_CHAIN_ID, POLYGON_TESTNET_CHAIN_ID, TESTNET } from "../consts/global";
+import {
+  MAINNET,
+  NEO_CHAIN,
+  NEO_MAINNET_CHAIN_ID,
+  NEO_TESTNET_CHAIN_ID,
+  POLYGON_CHAIN,
+  POLYGON_MAINNET_CHAIN_ID,
+  POLYGON_TESTNET_CHAIN_ID,
+  TESTNET,
+} from "../consts/global";
 import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
 import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
@@ -99,4 +108,3 @@ export const findTradePaths = (
   dfs(sourceToken, [sourceToken], 1);
   return paths;
 };
-
