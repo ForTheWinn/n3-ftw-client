@@ -1,23 +1,31 @@
-import { readContract, prepareWriteContract } from "@wagmi/core";
+import {
+  readContract,
+  prepareWriteContract,
+  writeContract,
+  waitForTransaction,
+  WaitForTransactionResult,
+} from "@wagmi/core";
 
 import FTWBridge from "./abi/FTWBridge.json";
 import { Network } from "../../neo/network";
 import { ethers } from "ethers";
 
-export const burn = (
+export const burn = async (
   chainId: number,
   bridgeAddress: any,
   tokenAddress: string,
   receiver: string,
   amount: string
-) => {
-  return prepareWriteContract({
+): Promise<WaitForTransactionResult> => {
+  const script = await prepareWriteContract({
     address: bridgeAddress,
     abi: FTWBridge,
     functionName: "burn",
     args: [tokenAddress, receiver, amount],
-    chainId
+    chainId,
   });
+  const txid = await writeContract(script);
+  return await waitForTransaction(txid);
 };
 
 export const getNextMintNo = async (
@@ -30,7 +38,7 @@ export const getNextMintNo = async (
     address,
     abi: FTWBridge,
     functionName: "getMintNo",
-    args: []
+    args: [],
   });
   return res + 1;
 };
@@ -48,10 +56,10 @@ export const getIsMinted = async (
         abi: FTWBridge,
         functionName: "isMinted",
         args: [no],
-        chainId
+        chainId,
       });
     } catch (e) {
-      console.error(e)
+      console.error(e);
       await Network.sleep(3000);
     }
   } while (!minted);
@@ -70,7 +78,6 @@ export const getMintoNoFromLogs = (logs: any) => {
       }
     } catch (e) {
       //TODO:re-visit
-      console.log(e);
     }
   });
   return mintNo;

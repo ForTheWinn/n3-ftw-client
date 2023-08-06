@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React from "react";
 import BridgeInputs from "./Inputs";
 import { BRIDGE_TRANSFERS_PATH } from "../../../../../consts/routes";
 import SwapButton from "../../../Swap/components/SwapButton";
@@ -11,7 +10,10 @@ import Level from "../../../../components/Level";
 import { Link } from "react-router-dom";
 import WalletInput from "./WalletInput";
 import BridgeDetails from "./BridgeDetails";
-import { NEO_MAINNET_CHAIN_ID, NEO_TESTNET_CHAIN_ID } from "../../../../../consts/global";
+import {
+  NEO_MAINNET_CHAIN_ID,
+  NEO_TESTNET_CHAIN_ID,
+} from "../../../../../consts/global";
 
 const BridgeSwap = () => {
   const {
@@ -31,7 +33,7 @@ const BridgeSwap = () => {
     openBridgeTokenList,
     toggleWalletSidebar,
     setActionModalActive,
-    onAfterBridgeCompleted
+    onAfterBridgeCompleted,
   } = useBridgeSwap();
 
   const onBridge = async () => {
@@ -46,13 +48,18 @@ const BridgeSwap = () => {
   ) {
     evmChainId = originChain.chainId;
   }
-  if (destChain && destChain.chainId !== NEO_MAINNET_CHAIN_ID && destChain.chainId !== NEO_TESTNET_CHAIN_ID) {
+  if (
+    destChain &&
+    destChain.chainId !== NEO_MAINNET_CHAIN_ID &&
+    destChain.chainId !== NEO_TESTNET_CHAIN_ID
+  ) {
     evmChainId = destChain.chainId;
   }
   return (
     <>
       <div className="box is-shadowless mb-1">
         <Level
+          isMobile
           left={<h1 className="title is-5 is-marginless">Bridge</h1>}
           right={
             evmChainId ? (
@@ -107,13 +114,13 @@ const BridgeSwap = () => {
 
       {isActionModaActive &&
         originChain &&
-        // connectedNeoWallet &&
         token &&
         amount &&
         connectedAddress &&
         destChain && (
           <>
-            {(originChain.chainId === NEO_MAINNET_CHAIN_ID || originChain.chainId === NEO_TESTNET_CHAIN_ID) &&
+            {(originChain.chainId === NEO_MAINNET_CHAIN_ID ||
+              originChain.chainId === NEO_TESTNET_CHAIN_ID) &&
             connectedNeoWallet ? (
               <NEOActionModal
                 chain={chain}

@@ -17,6 +17,28 @@ import { getIsMinted } from "../../../../../packages/polygon/contracts/bridge";
 import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
 import { getExplorer } from "../../../../../common/helpers";
 
+const statusState = {
+  isProcessing: false,
+  success: false,
+  error: "",
+};
+
+const initialState = {
+  lock: statusState,
+  mint: statusState,
+};
+
+const steps = [
+  {
+    title: "Token Lock",
+    key: "lock",
+  },
+  {
+    title: "Token Mint",
+    key: "mint",
+  },
+];
+
 interface IActionModalProps {
   chain: CHAINS;
   destChain: IBridgeChain;
@@ -40,77 +62,76 @@ const ActionModal = ({
   onSuccess,
   onCancel,
 }: IActionModalProps) => {
-  const [isLocking, setLocking] = useState(false);
-  const [isLocked, setLocked] = useState(false);
-  const [hasLockError, setLockError] = useState(false);
-  const [lockTxid, setLockTxid] = useState<string | undefined>();
+  const originChainId = CONFIGS[network][chain].chainId;
+  const destChainId = destChain.chainId;
+  const originBridgeContractHash =
+    BRIDGE_CONTRACTS[network][originChainId][destChainId];
 
-  const [isMinting, setMinting] = useState(false);
-  const [isMinted, setMinted] = useState(false);
-  const [hasMintError, setMintError] = useState(false);
-  const [mintTxid, setMintTxid] = useState<string | undefined>();
+  const destBridgeContractHash =
+    BRIDGE_CONTRACTS[network][destChainId][originChainId];
 
-  let currentStep = 0;
+  const bridgeAmount = ethers.utils
+    .parseUnits(amount, token.decimals)
+    .toString();
 
-  if (isLocked) {
-    currentStep = 1;
-  }
+  const [state, setState] = useState(initialState);
+
+  const handleProcess = async (
+    stepKey: string,
+    processFunction: any
+  ): Promise<string | undefined> => {
+    setState((prev) => ({
+      ...prev,
+      [stepKey]: { ...statusState, isProcessing: true },
+    }));
+
+    try {
+      const res = await processFunction();
+      setState((prev) => ({
+        ...prev,
+        [stepKey]: { ...statusState, success: true },
+      }));
+      return res;
+    } catch (e: any) {
+      console.error(e);
+      setState((prev) => ({
+        ...prev,
+        [stepKey]: { ...statusState, error: e.message },
+      }));
+      return undefined;
+    }
+  };
 
   useEffect(() => {
     async function startBridging() {
-      const parsedAmount = ethers.utils
-        .parseUnits(amount, token.decimals)
-        .toString();
-
-      const originChainId = CONFIGS[network][chain].chainId;
-      const destChainId = destChain.chainId;
-      const originBridgeContractHash =
-        BRIDGE_CONTRACTS[network][originChainId][destChainId];
-
-      const destBridgeContractHash =
-        BRIDGE_CONTRACTS[network][destChainId][originChainId];
-
-      let mintNo;
-
-      try {
-        setLocking(true);
+      const lockNo = await handleProcess("lock", async () => {
+        // ... your logic for token burn ...
         const txid = await bridgeMint(
           connectedNeoWallet,
           originBridgeContractHash,
           network,
           token.hash,
           receiver.address,
-          parsedAmount
+          bridgeAmount
         );
 
         const res = await Network.getRawTx(txid, network);
-        mintNo = getMintNoFromNotifications(res);
-        setLocked(true);
-        setLocking(false);
-      } catch (e: any) {
-        console.error(e);
-        setLockError(true);
-        setLocking(false);
-      }
+        return getMintNoFromNotifications(res);
+      });
 
-      if (mintNo) {
-        try {
-          setMinting(true);
-          await getIsMinted(destChain.chainId, destBridgeContractHash, mintNo);
-          setMinted(true);
-          setMinting(false);
-        } catch (e: any) {
-          console.error(e);
-          setMintError(true);
-          setMinting(false);
-        }
-      } else {
-        setMintError(true);
-      }
+      if (lockNo === undefined) return;
+
+      // Handle token mint
+      await handleProcess("mint", async () => {
+        // ... your logic for token mint ...
+        await getIsMinted(destChain.chainId, destBridgeContractHash, lockNo);
+      });
     }
 
     startBridging();
   }, [token]);
+
+  const currentStep = steps.findIndex((step) => !state[step.key].success);
 
   return (
     <Modal onClose={onCancel}>
@@ -123,42 +144,25 @@ const ActionModal = ({
           <Steps
             progressDot={true}
             current={currentStep}
-            items={[
-              {
-                title: "Lock",
-                description: (
-                  <>
-                    {isLocking ? <LoadingWithText title="Locking" /> : <></>}
-                    {isLocked ? "Locked" : ""}
-                    {hasLockError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
-                    )}
-                  </>
+            items={steps.map((step) => {
+              return {
+                title: step.title,
+                description: state[step.key].isProcessing ? (
+                  <LoadingWithText title="processing" />
+                ) : state[step.key].success ? (
+                  "success"
+                ) : state[step.key].error ? (
+                  "error"
+                ) : (
+                  ""
                 ),
-              },
-              {
-                title: "Mint",
-                description: (
-                  <>
-                    {isMinting ? <LoadingWithText title="Minting" /> : <></>}
-                    {isMinted ? "Minted" : ""}
-                    {hasMintError ? (
-                      <span className="has-text-danger">Error</span>
-                    ) : (
-                      ""
-                    )}
-                  </>
-                ),
-              },
-            ]}
+              };
+            })}
           />
         </div>
 
-        {isLocked && isMinted ? (
+        {state.lock.success && state.mint.success && (
           <>
-            <hr />
             <div className="buttons" style={{ justifyContent: "center" }}>
               <a
                 className="button is-primary"
@@ -177,8 +181,21 @@ const ActionModal = ({
               </button>
             </div>
           </>
-        ) : (
-          <></>
+        )}
+
+        {(state.lock.error || state.mint.error) && (
+          <div className="has-text-centered">
+            <div
+              className="message is-danger"
+              style={{ wordBreak: "break-word" }}
+            >
+              {state.lock.error}
+              {state.mint.error}
+            </div>
+            <button onClick={onCancel} className="button is-black">
+              Close
+            </button>
+          </div>
         )}
       </>
     </Modal>

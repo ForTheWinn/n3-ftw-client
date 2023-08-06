@@ -7,7 +7,7 @@ interface ILevelProps {
 const Level = ({ isMobile, left, right }: ILevelProps) => {
   return (
     <>
-      <div className="columns is-centered">
+      <div className={`columns is-centered ${isMobile && "is-mobile"}`}>
         <div className="column">{left}</div>
         <div className="column is-narrow">{right}</div>
       </div>

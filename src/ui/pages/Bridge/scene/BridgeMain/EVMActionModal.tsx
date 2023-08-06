@@ -6,7 +6,7 @@ import {
   writeContract,
   waitForTransaction,
 } from "@wagmi/core";
-import { Steps, Typography } from "antd";
+import { Steps } from "antd";
 
 import { ethers } from "ethers";
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -16,7 +16,7 @@ import { IBridgeReceiver, IBridgeSelectedtoken } from "../../interfaces";
 import Modal from "../../../../components/Modal";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
-import { BRIDGE_CONTRACTS, BRIDGE_NEP_FEE } from "../../../../../consts/bridge";
+import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
 import {
   burn,
   getMintoNoFromLogs,
@@ -25,12 +25,44 @@ import { getExplorer } from "../../../../../common/helpers";
 import { getScriptHashFromAddressWithPrefix } from "../../../../../packages/neo/utils";
 import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
 
+const statusState = {
+  isProcessing: false,
+  success: false,
+  error: "",
+};
+
+const initialState = {
+  token: statusState,
+  feeToken: statusState,
+  burn: statusState,
+  mint: statusState,
+};
+
+const steps = [
+  {
+    title: "Token Approval",
+    key: "token",
+  },
+  {
+    title: "Fee Approval",
+    key: "feeToken",
+  },
+  {
+    title: "Token Burn",
+    key: "burn",
+  },
+  {
+    title: "Token Mint",
+    key: "mint",
+  },
+];
+
 interface IActionModalProps {
   chain: CHAINS;
   originChain: IBridgeChain;
   destChain: IBridgeChain;
   network: INetworkType;
-  address: string;
+  address: any;
   token: IBridgeSelectedtoken;
   amount: string;
   receiver: IBridgeReceiver;
@@ -50,168 +82,105 @@ const ActionModal = ({
   onSuccess,
   onCancel,
 }: IActionModalProps) => {
-  const [isTokenApproved, setTokenApproved] = useState(false);
-  const [isTokenApproving, setTokenApproving] = useState(false);
-  const [hasTokenApproveError, setTokenApproveError] = useState(false);
+  const bridgeAmount = ethers.utils.parseUnits(amount, token.decimals);
+  const chainId = CONFIGS[network][chain].chainId;
+  const evmBridgeContractHash =
+    BRIDGE_CONTRACTS[network][chainId][destChain.chainId];
+  const neoBridgeContractHash =
+    BRIDGE_CONTRACTS[network][destChain.chainId][originChain.chainId];
+  const nepTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
 
-  const [isFeeTokenApproved, setFeeTokenApproved] = useState(false);
-  const [isFeeTokenApproving, setFeeTokenApproving] = useState(false);
-  const [hasFeeTokenApproveError, setFeeTokenApproveError] = useState(false);
+  const [state, setState] = useState(initialState);
 
-  const [isLocking, setLocking] = useState(false);
-  const [isLocked, setLocked] = useState(false);
-  const [hasLockError, setLockError] = useState(false);
-  const [lockTxid, setLockTxid] = useState<string | undefined>();
+  const approveContract = async (contractAddress: any, spenderAddress: any) => {
+    const approvedAmount: any = await readContract({
+      address: contractAddress,
+      abi: erc20ABI,
+      functionName: "allowance",
+      args: [address, spenderAddress],
+      chainId,
+    });
+    if (bridgeAmount.gt(approvedAmount)) {
+      const script = await prepareWriteContract({
+        address: contractAddress,
+        abi: erc20ABI,
+        functionName: "approve",
+        args: [spenderAddress, ethers.constants.MaxUint256.toBigInt()],
+      });
+      const { hash } = await writeContract(script);
+      await waitForTransaction({ hash });
+    }
+  };
 
-  const [isMinting, setMinting] = useState(false);
-  const [isMinted, setMinted] = useState(false);
-  const [hasMintError, setMintError] = useState(false);
-  const [mintTxid, setMintTxid] = useState<string | undefined>();
+  const handleProcess = async (
+    stepKey: string,
+    processFunction: any
+  ): Promise<string | undefined> => {
+    setState((prev) => ({
+      ...prev,
+      [stepKey]: { ...statusState, isProcessing: true },
+    }));
 
-  let currentStep = 0;
-  if (isTokenApproved) {
-    currentStep = 1;
-  }
-  if (isFeeTokenApproved) {
-    currentStep = 2;
-  }
-  if (isLocked) {
-    currentStep = 3;
-  }
+    try {
+      const res = await processFunction();
+      setState((prev) => ({
+        ...prev,
+        [stepKey]: { ...statusState, success: true },
+      }));
+      return res;
+    } catch (e: any) {
+      console.error(e);
+      setState((prev) => ({
+        ...prev,
+        [stepKey]: { ...statusState, error: e.message },
+      }));
+      return undefined;
+    }
+  };
 
   useEffect(() => {
     async function startBridging() {
-      const requiredAmount = ethers.utils.parseUnits(amount, token.decimals);
-
-      const chainId = CONFIGS[network][chain].chainId;
-      const evmBridgeContractHash =
-        BRIDGE_CONTRACTS[network][chainId][destChain.chainId];
-
-      const neoBirdgeContractHash =
-        BRIDGE_CONTRACTS[network][destChain.chainId][originChain.chainId];
-
-      const nepTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
-
-      try {
-        setTokenApproving(true);
-        const approvedAmount: any = await readContract({
-          address: token.hash as any,
-          abi: erc20ABI,
-          functionName: "allowance",
-          args: [address as any, evmBridgeContractHash as any],
-          chainId,
-        });
-
-        console.log(approvedAmount);
-
-        if (requiredAmount.lt(approvedAmount)) {
-          setTokenApproved(true);
-          setTokenApproving(false);
-        } else {
-          const script = await prepareWriteContract({
-            address: token.hash as any,
-            abi: erc20ABI,
-            functionName: "approve",
-            args: [
-              evmBridgeContractHash as any,
-              ethers.constants.MaxUint256 as any,
-            ],
-          });
-
-          const { hash } = await writeContract(script);
-          await waitForTransaction({ hash });
-          setTokenApproving(false);
-        }
-      } catch (e) {
-        console.error(e);
-        setTokenApproving(false);
-        setTokenApproveError(true);
+      if (
+        !(await handleProcess("token", () =>
+          approveContract(token.hash, evmBridgeContractHash)
+        ))
+      ) {
+        return;
       }
 
-      try {
-        setFeeTokenApproving(true);
-
-        const requiredFeeAmount = ethers.utils.parseUnits(
-          BRIDGE_NEP_FEE[network].toString(),
-          8
-        );
-        const approvedAmount = await readContract({
-          address: nepTokenContractHash as any,
-          abi: erc20ABI,
-          functionName: "allowance",
-          args: [address as any, evmBridgeContractHash as any],
-          chainId,
-        });
-
-        if (requiredFeeAmount.lt(approvedAmount)) {
-          setFeeTokenApproved(true);
-          setFeeTokenApproving(false);
-        } else {
-          const script = await prepareWriteContract({
-            address: nepTokenContractHash as any,
-            abi: erc20ABI,
-            functionName: "approve",
-            args: [
-              evmBridgeContractHash as any,
-              ethers.constants.MaxUint256 as any,
-            ],
-          });
-
-          const { hash } = await writeContract(script);
-          await waitForTransaction({ hash });
-          setFeeTokenApproved(true);
-          setFeeTokenApproving(false);
-        }
-      } catch (e) {
-        console.error(e);
-        setFeeTokenApproving(false);
-        setFeeTokenApproveError(true);
+      if (
+        !(await handleProcess("feeToken", () =>
+          approveContract(nepTokenContractHash, evmBridgeContractHash)
+        ))
+      ) {
+        return;
       }
 
-      let burnNo;
-      try {
-        setLocking(true);
-        const burnScript = await burn(
+      const burnNo = await handleProcess("burn", async () => {
+        // ... your logic for token burn ...
+        const data = await burn(
           chainId,
           evmBridgeContractHash,
           token.hash,
           getScriptHashFromAddressWithPrefix(receiver.address),
-          requiredAmount.toString()
+          bridgeAmount.toString()
         );
+        return getMintoNoFromLogs(data.logs);
+      });
 
-        const txid = await writeContract(burnScript);
+      if (burnNo === undefined) return;
 
-        const data = await waitForTransaction(txid);
-
-        burnNo = getMintoNoFromLogs(data.logs);
-
-        setLocked(true);
-        setLocking(false);
-      } catch (e: any) {
-        console.error(e);
-        setLockError(true);
-        setLocking(false);
-      }
-
-      if (burnNo) {
-        try {
-          setMinting(true);
-          await isBurned(destChain.rpc, neoBirdgeContractHash, burnNo);
-          setMinted(true);
-          setMinting(false);
-        } catch (e: any) {
-          console.error(e);
-          setMintError(true);
-          setMinting(false);
-        }
-      } else {
-        setMintError(true);
-      }
+      // Handle token mint
+      await handleProcess("mint", async () => {
+        // ... your logic for token mint ...
+        await isBurned(destChain.rpc, neoBridgeContractHash, burnNo);
+      });
     }
 
     startBridging();
   }, [token]);
 
+  const currentStep = steps.findIndex((step) => !state[step.key].success);
   return (
     <Modal onClose={onCancel}>
       <>
@@ -223,72 +192,25 @@ const ActionModal = ({
           <Steps
             progressDot={true}
             current={currentStep}
-            items={[
-              {
-                title: "Token Approval",
-                description: (
-                  <>
-                    {isTokenApproving && <LoadingWithText title="Processing" />}
-                    {isTokenApproved && (
-                      <Typography.Text type="success">Success</Typography.Text>
-                    )}
-                    {hasTokenApproveError && (
-                      <Typography.Text type="danger">Error</Typography.Text>
-                    )}
-                  </>
+            items={steps.map((step) => {
+              return {
+                title: step.title,
+                description: state[step.key].isProcessing ? (
+                  <LoadingWithText title="processing" />
+                ) : state[step.key].success ? (
+                  "success"
+                ) : state[step.key].error ? (
+                  "error"
+                ) : (
+                  ""
                 ),
-              },
-              {
-                title: "Fee Token Approval",
-                description: (
-                  <>
-                    {isFeeTokenApproving && (
-                      <LoadingWithText title="Processing" />
-                    )}
-                    {isFeeTokenApproved && (
-                      <Typography.Text type="success">Success</Typography.Text>
-                    )}
-                    {hasFeeTokenApproveError && (
-                      <Typography.Text type="danger">Error</Typography.Text>
-                    )}
-                  </>
-                ),
-              },
-              {
-                title: `Token Burn on ${originChain.name}`,
-                description: (
-                  <>
-                    {isLocking && <LoadingWithText title="Processing" />}
-                    {isLocked && (
-                      <Typography.Text type="success">Success</Typography.Text>
-                    )}
-                    {hasLockError && (
-                      <Typography.Text type="danger">Error</Typography.Text>
-                    )}
-                  </>
-                ),
-              },
-              {
-                title: `Token Mint on ${destChain.name}`,
-                description: (
-                  <>
-                    {isMinting && <LoadingWithText title="Processing" />}
-                    {isMinted && (
-                      <Typography.Text type="success">Success</Typography.Text>
-                    )}
-                    {hasMintError && (
-                      <Typography.Text type="danger">Error</Typography.Text>
-                    )}
-                  </>
-                ),
-              },
-            ]}
+              };
+            })}
           />
         </div>
 
-        {isLocked && isMinted ? (
+        {state.burn.success && state.mint.success && (
           <>
-            <hr />
             <div className="buttons" style={{ justifyContent: "center" }}>
               <a
                 className="button is-primary"
@@ -307,23 +229,27 @@ const ActionModal = ({
               </button>
             </div>
           </>
-        ) : (
-          <></>
         )}
 
-        {/* {hasError ||
-        hasSwappingError ||
-        hasTokenAApproveError ||
-        hasTokenBApproveError ? (
+        {(state.token.error ||
+          state.feeToken.error ||
+          state.burn.error ||
+          state.mint.error) && (
           <div className="has-text-centered">
-            <hr />
+            <div
+              className="message is-danger"
+              style={{ wordBreak: "break-word" }}
+            >
+              {state.token.error}
+              {state.feeToken.error}
+              {state.burn.error}
+              {state.mint.error}
+            </div>
             <button onClick={onCancel} className="button is-black">
               Close
             </button>
           </div>
-        ) : (
-          <></>
-        )} */}
+        )}
       </>
     </Modal>
   );

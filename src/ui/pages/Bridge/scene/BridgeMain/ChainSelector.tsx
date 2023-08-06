@@ -11,7 +11,7 @@ const ChainSelector = () => {
         left={
           <Space>
             <span>Origin</span>
-            <button className="button is-rounded is-white is-hovered">
+            <button className="button is-rounded is-white is-hovered is-small">
               {originChain ? (
                 <Space>
                   <Avatar size="small" src={originChain.icon} />
@@ -28,7 +28,7 @@ const ChainSelector = () => {
             <span>Destination</span>{" "}
             <button
               onClick={() => setChainSelectModalActive("B")}
-              className="button is-rounded"
+              className="button is-rounded  is-small"
             >
               {destChain ? (
                 <Space>
