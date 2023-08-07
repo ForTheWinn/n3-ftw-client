@@ -97,11 +97,10 @@ export const stakeLPToken = async (
           CONTRACT_MAP[chain][network][FARM]
         ))
       ) {
-        const config = await setApprovalForAll(
+        const hash: any = await setApprovalForAll(
           network,
           CONTRACT_MAP[chain][network][FARM]
         );
-        const { hash } = await writeContract(config);
         await waitForTransaction({ hash });
       }
       return stake(network, tokenId);

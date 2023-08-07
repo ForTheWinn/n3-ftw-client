@@ -164,17 +164,14 @@ export const getAllowances = async (
   network: INetworkType,
   address: string,
   tokenAddresses: string[],
-  spender: string,
+  spender: string
 ) => {
   const res = await multicall({
     contracts: tokenAddresses.map((token) => ({
       address: token as `0x${string}`,
       abi: erc20ABI,
       functionName: "allowance",
-      args: [
-        address as `0x${string}`,
-        spender as `0x${string}`,
-      ],
+      args: [address as `0x${string}`, spender as `0x${string}`],
     })),
   });
   return res.map((r) => r.result);
@@ -193,14 +190,16 @@ export const isApprovedForAll = (
   });
 };
 
-export const setApprovalForAll = (
+export const setApprovalForAll = async (
   network: INetworkType,
   contractHash: string
-) => {
-  return prepareWriteContract({
+): Promise<string> => {
+  const config = await prepareWriteContract({
     address: POLYGON_CONTRACT_MAP[network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "setApprovalForAll",
     args: [contractHash, true],
   });
+  const { hash } = await writeContract(config);
+  return hash;
 };

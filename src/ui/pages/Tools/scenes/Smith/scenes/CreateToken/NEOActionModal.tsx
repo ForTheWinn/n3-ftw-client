@@ -9,6 +9,7 @@ import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 import { getExplorer } from "../../../../../../../common/helpers";
 import NFTAds from "../../../../../../components/Ad";
+import { DisplayAd } from "../../../../../Swap/components/Actions/components/DisplayAd";
 
 interface IAfterTransactionSubmittedProps {
   txid: string;
@@ -42,17 +43,7 @@ const NEOSmithActionModal = ({
   }, [txid]);
 
   if (isLoading) {
-    return (
-      <>
-        <NFTAds />
-        <div className="has-text-centered">
-          <Spin />
-          <p className="subtitle is-6">
-            Please hold while your transaction is being confirmed
-          </p>
-        </div>
-      </>
-    );
+    return <DisplayAd />;
   }
   if (error) {
     <Result

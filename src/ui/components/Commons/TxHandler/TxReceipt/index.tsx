@@ -4,6 +4,7 @@ import { WENT_WRONG } from "../../../../../consts/messages";
 import NFTAds from "../../../Ad";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
+import { DisplayAd } from "../../../../pages/Swap/components/Actions/components/DisplayAd";
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 interface ITxReceiptProps {
   error?: string;
@@ -22,18 +23,7 @@ const TxReceipt = ({
   onSuccess,
   explorer,
 }: ITxReceiptProps) => {
-  if (!isSuccess && !error)
-    return (
-      <>
-        <NFTAds />
-        <div className="has-text-centered">
-          <Spin />
-          <p className="subtitle is-6">
-            Please hold while your transaction is being confirmed
-          </p>
-        </div>
-      </>
-    );
+  if (!isSuccess && !error) return <DisplayAd />;
   if (error) {
     return (
       <Result

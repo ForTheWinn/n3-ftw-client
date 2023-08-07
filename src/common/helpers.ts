@@ -119,7 +119,7 @@ export const calculateSlippage = (amount: BigNumber, slippage: number) =>
 
 export const getCurrentStep = (state, steps) => {
   for (let i = steps.length - 1; i >= 0; i--) {
-    if (state[steps[i].key].success) return i + 2;
+    if (state[steps[i].key].success) return i + 1;
   }
   return 1;
 };

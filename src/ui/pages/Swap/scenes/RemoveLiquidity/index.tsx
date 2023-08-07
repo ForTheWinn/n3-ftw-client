@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
 import LPTokenCard from "../../../../components/LPTokenCard";
-import RemoveLiquidityModal from "./RemoveLiquidityModal";
+import RemoveLiquidityModal from "./EVMRemoveLiquidityActionModal";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { swapRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { SWAP_PATH } from "../../../../../consts/routes";
+import { NEO_CHAIN } from "../../../../../consts/global";
+import { toast } from "react-hot-toast";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
 const RemoveLiquidity = () => {
-  const { network, chain, refreshCount, increaseRefreshCount } = useApp();
-  const { isConnected, address } = useWalletRouter(chain);
+  const { network, chain, refreshCount, increaseRefreshCount, setTxid } =
+    useApp();
+  const { isConnected, address, client } = useWalletRouter(chain);
 
   const [tokenIdForInvoke, setTokenIdForInvoke] = useState<
     string | undefined
@@ -21,6 +25,27 @@ const RemoveLiquidity = () => {
     increaseRefreshCount();
     setTokenIdForInvoke(undefined);
   };
+
+  const onWithdraw = async (tokenId: string) => {
+    if (chain === NEO_CHAIN) {
+      try {
+        const txid = await swapRouter.removeLiquidity(
+          chain,
+          network,
+          tokenId,
+          client
+        );
+        setTxid(txid);
+      } catch (e: any) {
+        toast.error(
+          e.message ? e.message : e.description ? e.description : WENT_WRONG
+        );
+      }
+    } else {
+      setTokenIdForInvoke(tokenId);
+    }
+  };
+
   const { isLoaded, error, data } = useOnChainData(
     () => swapRouter.getLPTokens(chain, network, address),
     [address, network, refreshCount]
@@ -41,7 +66,7 @@ const RemoveLiquidity = () => {
                   </div>
                   <div className="media-right">
                     <button
-                      onClick={() => setTokenIdForInvoke(token.tokenId)}
+                      onClick={() => onWithdraw(token.tokenId)}
                       className="button is-light is-small"
                     >
                       Withdraw
