@@ -121,9 +121,13 @@ const EVMSmithActionModal = ({
 
       handleStatus("allowlances", "processing");
       try {
-        allowances = await getAllowances(chain, network, address, [
-          feeTokenContractHash,
-        ]);
+        allowances = await getAllowances(
+          chain,
+          network,
+          address,
+          [feeTokenContractHash],
+          smithTokenContractHash
+        );
       } catch (e: any) {
         handleStatus(
           "allowlances",
@@ -137,7 +141,10 @@ const EVMSmithActionModal = ({
 
       if (allowances[0] < fee) {
         try {
-          feeTokenApprovalHash = await approve(smithTokenContractHash, address);
+          feeTokenApprovalHash = await approve(
+            feeTokenContractHash,
+            smithTokenContractHash
+          );
         } catch (e: any) {
           handleStatus("fee", "error", e.message ? e.message : WENT_WRONG);
           return;

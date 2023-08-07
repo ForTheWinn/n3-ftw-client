@@ -16,7 +16,7 @@ export const burn = async (
   tokenAddress: string,
   receiver: string,
   amount: string
-): Promise<WaitForTransactionResult> => {
+): Promise<string> => {
   const script = await prepareWriteContract({
     address: bridgeAddress,
     abi: FTWBridge,
@@ -24,8 +24,8 @@ export const burn = async (
     args: [tokenAddress, receiver, amount],
     chainId,
   });
-  const txid = await writeContract(script);
-  return await waitForTransaction(txid);
+  const { hash } = await writeContract(script);
+  return hash;
 };
 
 export const getNextMintNo = async (

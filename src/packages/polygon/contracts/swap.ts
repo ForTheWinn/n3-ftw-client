@@ -163,7 +163,8 @@ export const getAllowances = async (
   chain: CHAINS,
   network: INetworkType,
   address: string,
-  tokenAddresses: string[]
+  tokenAddresses: string[],
+  spender: string,
 ) => {
   const res = await multicall({
     contracts: tokenAddresses.map((token) => ({
@@ -172,7 +173,7 @@ export const getAllowances = async (
       functionName: "allowance",
       args: [
         address as `0x${string}`,
-        CONTRACT_MAP[chain][network][SWAP] as `0x${string}`,
+        spender as `0x${string}`,
       ],
     })),
   });

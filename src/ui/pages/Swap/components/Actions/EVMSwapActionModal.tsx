@@ -20,7 +20,8 @@ import { waitTransactionUntilSubmmited } from "../../../../../common/routers/glo
 import { DisplayAd } from "./components/DisplayAd";
 import { TxResult } from "./components/TxResult";
 import Errors from "./components/Errors";
-import { STATUS_STATE } from "../../../../../consts/global";
+import { STATUS_STATE, SWAP } from "../../../../../consts/global";
+import { CONTRACT_MAP } from "../../../../../consts/contracts";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -116,16 +117,23 @@ const ActionModal = (props: IActionModalProps) => {
       };
     });
   };
-  
+
   const doInvoke = async () => {
     let allowances: any;
     let tokenApprovalHash: any;
     let swapHash: any;
+    const swapContractHash = CONTRACT_MAP[chain][network][SWAP];
 
     handleStatus("allowlances", "processing");
 
     try {
-      allowances = await getAllowances(chain, network, address, [tokenA.hash]);
+      allowances = await getAllowances(
+        chain,
+        network,
+        address,
+        [tokenA.hash],
+        swapContractHash
+      );
     } catch (e: any) {
       handleStatus("allowlances", "error", e.message ? e.message : WENT_WRONG);
       return;
@@ -135,7 +143,7 @@ const ActionModal = (props: IActionModalProps) => {
 
     if (parsedAmountA.gt(allowances[0])) {
       try {
-        tokenApprovalHash = await approve(tokenA.hash, address);
+        tokenApprovalHash = await approve(tokenA.hash, swapContractHash);
       } catch (e: any) {
         handleStatus("tokenA", "error", e.message ? e.message : WENT_WRONG);
         return;
@@ -220,7 +228,7 @@ const ActionModal = (props: IActionModalProps) => {
             />
           )}
         </div>
-        
+
         {errorMessages.length > 0 && (
           <div className="block">
             <Errors

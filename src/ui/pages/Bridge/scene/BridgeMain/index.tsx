@@ -5,7 +5,7 @@ import SwapButton from "../../../Swap/components/SwapButton";
 import { useBridgeSwap } from "./context";
 import ChainSelector from "./ChainSelector";
 import NEOActionModal from "./NEOActionModal";
-import EVMActionModal from "./EVMActionModal";
+import EVMActionModal from "./EVMBridgeActionModal";
 import Level from "../../../../components/Level";
 import { Link } from "react-router-dom";
 import WalletInput from "./WalletInput";

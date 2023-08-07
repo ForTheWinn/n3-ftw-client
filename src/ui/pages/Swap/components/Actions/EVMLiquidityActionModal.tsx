@@ -16,7 +16,8 @@ import { WENT_WRONG } from "../../../../../consts/messages";
 import { DisplayAd } from "./components/DisplayAd";
 import Errors from "./components/Errors";
 import { TxResult } from "./components/TxResult";
-import { STATUS_STATE } from "../../../../../consts/global";
+import { STATUS_STATE, SWAP } from "../../../../../consts/global";
+import { CONTRACT_MAP } from "../../../../../consts/contracts";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -114,14 +115,18 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     let tokenAApprovalHash: any;
     let tokenBApprovalHash: any;
     let provideHash: any;
+    const swapContractHash = CONTRACT_MAP[chain][network][SWAP];
 
     handleStatus("allowlances", "processing");
 
     try {
-      allowances = await getAllowances(chain, network, address, [
-        tokenA.hash,
-        tokenB.hash,
-      ]);
+      allowances = await getAllowances(
+        chain,
+        network,
+        address,
+        [tokenA.hash, tokenB.hash],
+        swapContractHash
+      );
     } catch (e: any) {
       handleStatus("allowlances", "error", e.message ? e.message : WENT_WRONG);
       return;
@@ -131,7 +136,7 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
 
     if (parsedAmountA.gt(allowances[0])) {
       try {
-        tokenAApprovalHash = await approve(tokenA.hash, address);
+        tokenAApprovalHash = await approve(tokenA.hash, swapContractHash);
       } catch (e: any) {
         handleStatus("tokenA", "error", e.message ? e.message : WENT_WRONG);
         return;
@@ -146,7 +151,7 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
 
     if (parsedAmountB.gt(allowances[1])) {
       try {
-        tokenBApprovalHash = await approve(tokenB.hash, address);
+        tokenBApprovalHash = await approve(tokenB.hash, swapContractHash);
       } catch (e: any) {
         handleStatus("tokenB", "error", e.message ? e.message : WENT_WRONG);
         return;
