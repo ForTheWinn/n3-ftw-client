@@ -23,3 +23,9 @@ export const ALCHEMY_KEY = {
     [TESTNET]: process.env.REACT_APP_ALCHEMY_POLYGON_TESTNET_API_KEY,
   },
 };
+
+export const STATUS_STATE = {
+  isProcessing: false,
+  success: false,
+  error: "",
+};

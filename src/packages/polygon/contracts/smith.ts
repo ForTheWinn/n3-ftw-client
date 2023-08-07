@@ -1,4 +1,4 @@
-import { readContract, prepareWriteContract } from "@wagmi/core";
+import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
 import { Alchemy, Network } from "alchemy-sdk";
 
 import FTWSmith from "./abi/FTWSmith.json";
@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 import { ISmithTokenInfo } from "../interfaces";
 import { CHAINS } from "../../../consts/chains";
 
-export const createTokenContract = (
+export const createTokenContract = async (
   chain: CHAINS,
   network: INetworkType,
   name: string,
@@ -18,13 +18,15 @@ export const createTokenContract = (
   decimals: string,
   website: string,
   icon: string
-) => {
-  return prepareWriteContract({
+): Promise<string> => {
+  const config = await prepareWriteContract({
     address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "createToken",
     args: [name, symbol, totalSupply, decimals, icon, website],
   });
+  const { hash } = await writeContract(config);
+  return hash;
 };
 
 export const setTokenData = (

@@ -48,7 +48,7 @@ const TokenMainPage = () => {
           values.icon,
           values.website
         );
-        const tx = await writeContract(script);
+        const tx = await writeContract(script as any);
         res = tx.hash;
       }
       setTxid(res);

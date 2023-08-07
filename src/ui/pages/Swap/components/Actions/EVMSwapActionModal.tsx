@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
-import { Steps, Typography } from "antd";
+import { Steps } from "antd";
 import { ITokenState } from "../../scenes/Swap/interfaces";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { CHAINS } from "../../../../../consts/chains";
@@ -12,15 +12,15 @@ import {
 } from "../../../../../packages/polygon/contracts/swap";
 import {
   calculateSlippage,
-  getExplorer,
+  getCurrentStep,
   parseAmount,
 } from "../../../../../common/helpers";
-import NFTAds from "../../../../components/Ad";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { DisplayAd } from "./components/DisplayAd";
 import { TxResult } from "./components/TxResult";
 import Errors from "./components/Errors";
+import { STATUS_STATE } from "../../../../../consts/global";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -36,22 +36,16 @@ interface IActionModalProps {
   onCancel: () => void;
 }
 
-const statusState = {
-  isProcessing: false,
-  success: false,
-  error: "",
-};
-
 const initialState = {
-  allowlances: statusState,
-  tokenA: statusState,
-  swap: statusState,
+  allowlances: STATUS_STATE,
+  tokenA: STATUS_STATE,
+  swap: STATUS_STATE,
   txid: undefined,
 };
 
 const steps = [
   {
-    title: "Allowlance checks",
+    title: "Allowlance Checks",
     key: "allowlances",
   },
   {
@@ -62,13 +56,6 @@ const steps = [
     key: "swap",
   },
 ];
-
-const getCurrentStep = (state) => {
-  for (let i = steps.length - 1; i >= 0; i--) {
-    if (state[steps[i].key].success) return i + 2;
-  }
-  return 1;
-};
 
 const ActionModal = (props: IActionModalProps) => {
   const {
@@ -113,7 +100,7 @@ const ActionModal = (props: IActionModalProps) => {
     error?: string
   ) => {
     setState((prev) => {
-      let updatedStatus = { ...statusState };
+      let updatedStatus = { ...STATUS_STATE };
 
       if (status === "processing") {
         updatedStatus.isProcessing = true;
@@ -129,6 +116,7 @@ const ActionModal = (props: IActionModalProps) => {
       };
     });
   };
+  
   const doInvoke = async () => {
     let allowances: any;
     let tokenApprovalHash: any;
@@ -187,7 +175,7 @@ const ActionModal = (props: IActionModalProps) => {
     doInvoke();
   }, [tokenA, tokenB]);
 
-  const currentStep = getCurrentStep(state);
+  const currentStep = getCurrentStep(state, steps);
 
   const errorMessages = [
     state.tokenA.error,
@@ -199,7 +187,6 @@ const ActionModal = (props: IActionModalProps) => {
     <Modal onClose={onCancel}>
       <div className="has-text-centered">
         <h3 className="title is-5">Swap</h3>
-
         <div className="block">
           {state.txid ? (
             <TxResult

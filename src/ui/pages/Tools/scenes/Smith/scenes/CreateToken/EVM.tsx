@@ -9,7 +9,7 @@ import { SMITH_PATH } from "../../../../../../../consts/routes";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import ConnectWalletButton from "../../../../../../components/ConnectWalletButton";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
-import EVMActionModal from "./EVMActionModal";
+import EVMActionModal from "./EVMSmithActionModal";
 import { SMITH_FEE_FORMATTED } from "../../../../../../../consts/smith";
 
 export interface ITokenMetadata {

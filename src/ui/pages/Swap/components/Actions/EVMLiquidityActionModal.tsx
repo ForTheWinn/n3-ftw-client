@@ -11,11 +11,12 @@ import {
   provide,
 } from "../../../../../packages/polygon/contracts/swap";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
-import { parseAmount } from "../../../../../common/helpers";
+import { getCurrentStep, parseAmount } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { DisplayAd } from "./components/DisplayAd";
 import Errors from "./components/Errors";
 import { TxResult } from "./components/TxResult";
+import { STATUS_STATE } from "../../../../../consts/global";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -30,23 +31,17 @@ interface IActionModalProps {
   onCancel: () => void;
 }
 
-const statusState = {
-  isProcessing: false,
-  success: false,
-  error: "",
-};
-
 const initialState = {
-  allowlances: statusState,
-  tokenA: statusState,
-  tokenB: statusState,
-  provide: statusState,
+  allowlances: STATUS_STATE,
+  tokenA: STATUS_STATE,
+  tokenB: STATUS_STATE,
+  provide: STATUS_STATE,
   txid: undefined,
 };
 
 const steps = [
   {
-    title: "Allowlance checks",
+    title: "Allowlance Checks",
     key: "allowlances",
   },
   {
@@ -56,18 +51,10 @@ const steps = [
     key: "tokenB",
   },
   {
-    title: "Tranasction submit",
+    title: "Tranasction Submit",
     key: "provide",
   },
 ];
-
-const getCurrentStep = (state) => {
-  if (state.provide.success) return 5;
-  if (state.tokenB.success) return 4;
-  if (state.tokenA.success) return 3;
-  if (state.allowlances.success) return 2;
-  return 1;
-};
 
 const EVMLiquidityActionModal = (props: IActionModalProps) => {
   const {
@@ -83,7 +70,6 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     network,
   } = props;
   const [state, setState] = useState(initialState);
-
   const parsedAmountA = parseAmount(amountA, tokenA.decimals);
   const parsedAmountB = parseAmount(amountB, tokenB.decimals);
 
@@ -106,7 +92,7 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     error?: string
   ) => {
     setState((prev) => {
-      let updatedStatus = { ...statusState };
+      let updatedStatus = { ...STATUS_STATE };
 
       if (status === "processing") {
         updatedStatus.isProcessing = true;
@@ -200,7 +186,7 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     doInvoke();
   }, [tokenA, tokenB]);
 
-  const currentStep = getCurrentStep(state);
+  const currentStep = getCurrentStep(state, steps);
 
   const errorMessages = [
     state.tokenA.error,
