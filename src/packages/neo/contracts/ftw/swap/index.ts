@@ -237,7 +237,7 @@ export class SwapContract {
     tokenA: string,
     amountA: string,
     tokenB: string,
-    amountB: string // Min amount out
+    amountB: bigint // Min amount out
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
@@ -376,7 +376,7 @@ export class SwapContract {
     tokenA: string,
     tokenB: string,
     amountOut: string,
-    maxTokenAAmount: string
+    maxTokenAAmount: bigint
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
@@ -917,7 +917,7 @@ export class SwapContract {
       // throw new Error(res.exception ? (res.exception as string) : WENT_WRONG);
       return "0";
     }
-    return ethers.utils.formatUnits(
+    return ethers.formatUnits(
       res.stack[0].value as string,
       res.stack[1].value as string
     );

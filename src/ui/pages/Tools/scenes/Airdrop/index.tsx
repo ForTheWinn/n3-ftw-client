@@ -38,14 +38,14 @@ const Airdrop = () => {
       const transferItems: IMassTransaferList[] = [];
       list.forEach((item: any) => {
         const address = item[0].value;
-        const amount = ethers.utils
+        const amount = ethers
           .parseUnits(item[1].value.toString(), item[4].value)
           .toString();
         const hash = item[3].value;
         transferItems.push({
           address,
           amount,
-          hash
+          hash,
         });
       });
 
@@ -72,26 +72,26 @@ const Airdrop = () => {
       const item: IExcelData[] = [];
       item.push({
         type: String,
-        value: row.address
+        value: row.address,
       });
       item.push({
         type: Number,
-        value: row.amount
+        value: row.amount,
       });
       // symbol
       item.push({
         type: String,
-        value: ""
+        value: "",
       });
       // hash
       item.push({
         type: String,
-        value: ""
+        value: "",
       });
       // decimals
       item.push({
         type: Number,
-        value: ""
+        value: "",
       });
       newList.push(item);
     });
@@ -109,20 +109,20 @@ const Airdrop = () => {
       item.push(row[0]);
       item.push({
         type: Number,
-        value: 0
+        value: 0,
       });
       item.push({
         type: String,
-        value: ""
+        value: "",
       });
       item.push({
         type: String,
-        value: ""
+        value: "",
       });
       // decimals
       item.push({
         type: Number,
-        value: ""
+        value: "",
       });
       // privatekey
       item.push(row[1]);
@@ -147,7 +147,7 @@ const Airdrop = () => {
 
   const onExport = async () => {
     await writeXlsxFile(list, {
-      fileName: "wallets.xlsx"
+      fileName: "wallets.xlsx",
     });
   };
 

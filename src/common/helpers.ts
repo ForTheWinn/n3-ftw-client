@@ -14,8 +14,7 @@ import { INetworkType } from "../packages/neo/network";
 import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
 import { explorerUrls } from "../consts/urls";
 import { CHAINS } from "../consts/chains";
-import { erc20ABI, prepareWriteContract, writeContract } from "@wagmi/core";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 
 export const getExplorer = (
   chain: string,
@@ -111,11 +110,18 @@ export const findTradePaths = (
   return paths;
 };
 
-export const parseAmount = (amount: string, decimals: number): BigNumber =>
-  ethers.utils.parseUnits(amount, decimals);
+export const parseAmount = (amount: string, decimals: number): bigint =>
+  ethers.parseUnits(amount, decimals);
 
-export const calculateSlippage = (amount: BigNumber, slippage: number) =>
-  amount.mul(ethers.BigNumber.from(Math.round(slippage * 100))).div(10000);
+export const calculateSlippage = (amount: bigint, slippage: number) => {
+  // Convert slippage to a BigInt representation
+  const slippageBigInt = BigInt(Math.round(slippage * 100));
+
+  // Calculate the slippage
+  const calculatedAmount = (amount * slippageBigInt) / BigInt(10000);
+
+  return calculatedAmount;
+};
 
 export const getCurrentStep = (state, steps) => {
   for (let i = steps.length - 1; i >= 0; i--) {

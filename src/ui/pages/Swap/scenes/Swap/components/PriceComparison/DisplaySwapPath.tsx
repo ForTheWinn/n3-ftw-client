@@ -18,7 +18,7 @@ const DisplaySwapPath = ({
   path,
   network,
   chain,
-  amountIn
+  amountIn,
 }: IDisplaySwapPathProps) => {
   const [output, setOutput] = useState<string | undefined>();
   const [isLoading, setLoading] = useState(true);
@@ -28,7 +28,7 @@ const DisplaySwapPath = ({
     async function doLoad(_path, _amount) {
       setLoading(true);
       try {
-        let swapAmount: string = ethers.utils
+        let swapAmount: string = ethers
           .parseUnits(_amount.toString(), path[0].decimals)
           .toString();
         for (let i = 0; i < _path.length - 1; i++) {
@@ -38,13 +38,13 @@ const DisplaySwapPath = ({
             tokenA: tokenA.hash,
             tokenB: tokenB.hash,
             amount: swapAmount,
-            isReverse: false
+            isReverse: false,
           });
         }
         setLoading(false);
         setOutput(
           parseFloat(swapAmount) > 0
-            ? ethers.utils.formatUnits(
+            ? ethers.formatUnits(
                 swapAmount,
                 path[path.length - 1].decimals
               ) +

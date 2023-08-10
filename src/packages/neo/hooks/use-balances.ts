@@ -37,7 +37,7 @@ export const useBalances = async (
     if (index % 2 === 0) {
       balances.push(
         parseFloat(
-          ethers.utils
+          ethers
             .formatUnits(
               item.value as string,
               res.stack[index + 1].value as string

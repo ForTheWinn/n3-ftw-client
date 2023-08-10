@@ -70,7 +70,7 @@ const ActionModal = ({
   const destBridgeContractHash =
     BRIDGE_CONTRACTS[network][destChainId][originChainId];
 
-  const bridgeAmount = ethers.utils
+  const bridgeAmount = ethers
     .parseUnits(amount, token.decimals)
     .toString();
 

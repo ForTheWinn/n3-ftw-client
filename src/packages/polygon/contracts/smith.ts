@@ -45,12 +45,12 @@ export const setTokenData = (
 };
 
 export const getContractHashFromLogs = (logs: any) => {
-  let iface = new ethers.utils.Interface(FTWSmith);
+  let iface = new ethers.Interface(FTWSmith);
   let contractHash;
   logs.forEach((log) => {
     try {
       const parsedLog = iface.parseLog(log);
-      if (parsedLog.name === "TokenCreated") {
+      if (parsedLog?.name === "TokenCreated") {
         contractHash = parsedLog.args[0];
       }
     } catch (e) {}
@@ -104,7 +104,7 @@ export const getTokenListFromProvider = async (
   network
 ): Promise<ISmithTokenInfo[]> => {
   const apiKey = ALCHEMY_KEY[chain][network];
-  let iface = new ethers.utils.Interface(FTWSmith);
+  let iface = new ethers.Interface(FTWSmith);
   const settings = {
     apiKey,
     network: Network.MATIC_MUMBAI,
@@ -123,7 +123,7 @@ export const getTokenListFromProvider = async (
 
   for (const log of res) {
     const parsedLog = iface.parseLog(log);
-    if (parsedLog.name === "TokenCreated") {
+    if (parsedLog?.name === "TokenCreated") {
       metadataFetchPromises.push(
         getTokenMetadata(chain, network, parsedLog.args[0])
       );

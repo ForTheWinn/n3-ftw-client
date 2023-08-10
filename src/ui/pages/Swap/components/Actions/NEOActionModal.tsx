@@ -55,12 +55,11 @@ const NeoActionModal = (props: IActionModalProps) => {
   const parsedAmountA = parseAmount(amountA, tokenA.decimals);
   const parsedAmountB = parseAmount(amountB, tokenB.decimals);
 
-  const maxAmountAIn = parsedAmountA
-    .add(calculateSlippage(parsedAmountA, slippage))
-    .toString();
-  const minAmountBOut = parsedAmountB
-    .sub(calculateSlippage(parsedAmountB, slippage))
-    .toString();
+  const maxAmountAIn = parsedAmountA + calculateSlippage(parsedAmountA, slippage);
+    // .toString();
+  const minAmountBOut = parsedAmountB + calculateSlippage(parsedAmountB, slippage);
+    // .sub(calculateSlippage(parsedAmountB, slippage))
+    // .toString();
 
   const actionHandler = async () => {
     if (method === "swap") {

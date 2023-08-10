@@ -51,7 +51,7 @@ const WalletInput = ({
           setError("Wallet address is invalid");
         }
       } else {
-        isValid = ethers.utils.isAddress(inputValue);
+        isValid = ethers.isAddress(inputValue);
         if (!isValid) {
           setError("Wallet address is invalid");
         }

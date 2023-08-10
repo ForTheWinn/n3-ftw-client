@@ -8,12 +8,12 @@ const LPTokenCard = (props: ISwapLPToken) => {
       <strong>Token Id: {props.tokenId}</strong>
       <>
         <br />
-        <small>{`${ethers.utils.formatUnits(
+        <small>{`${ethers.formatUnits(
           props.amountA.toString(),
           props.decimalsA
         )} ${props.symbolA}`}</small>
         <br />
-        <small>{`${ethers.utils.formatUnits(
+        <small>{`${ethers.formatUnits(
           props.amountB.toString(),
           props.decimalsB
         )} ${props.symbolB}`}</small>

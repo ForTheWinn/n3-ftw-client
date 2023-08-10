@@ -53,12 +53,12 @@ export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
         ? bonusToken.decimals.toString()
         : "Unknown",
       bonusTokensPerSecond: pool.bonusTokensPerSecond.toString(),
-      nepRewardsPerDay: ethers.utils.formatUnits(
+      nepRewardsPerDay: ethers.formatUnits(
         Number(pool.nepTokensPerSecond) * 86400,
         8
       ),
       bonusRewardsPerDay: hasBonusRewards
-        ? ethers.utils.formatUnits(
+        ? ethers.formatUnits(
             Number(pool.bonusTokensPerSecond),
             bonusToken ? bonusToken.decimals : 0
           )

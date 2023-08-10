@@ -26,7 +26,7 @@ const ContractSearchInput = ({
   const onAddContractHash = async () => {
     setError(undefined);
 
-    if (ethers.utils.isAddress(customContractHash)) {
+    if (ethers.isAddress(customContractHash)) {
       try {
         const token = await globalRouter.fetchTokenInfo(
           chain,

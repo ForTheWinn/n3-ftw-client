@@ -16,7 +16,7 @@ const BridgeBurnCard = ({ data, network }: IBridgeBurnCardProps) => {
       <td>{data.no}</td>
       <td>{token?.symbol}</td>
       <td>
-        {token ? ethers.utils.formatUnits(data.amount, token.decimals) : ""}
+        {token ? ethers.formatUnits(data.amount, token.decimals) : ""}
       </td>
       <td>
         <TruncatedAddress address={data.evmSender} />

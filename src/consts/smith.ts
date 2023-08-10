@@ -17,7 +17,7 @@ export const SMITH_FEE_FORMATTED = {
     [TESTNET]: 1000
   },
   [POLYGON_CHAIN]: {
-    [MAINNET]: 0,
-    [TESTNET]: 0
+    [MAINNET]: 1000,
+    [TESTNET]: 1
   }
 };

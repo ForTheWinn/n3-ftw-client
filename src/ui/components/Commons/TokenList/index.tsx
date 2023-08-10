@@ -32,7 +32,7 @@ const TokenList = ({
   const [customContract, setCustomContract] = useState<string | undefined>();
 
   const searchContract = async (value: string) => {
-    if (value && ethers.utils.isAddress(value)) {
+    if (value && ethers.isAddress(value)) {
       setCustomContract(value);
     } else {
       if (!value) {

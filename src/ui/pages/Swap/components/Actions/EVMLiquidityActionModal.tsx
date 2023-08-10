@@ -134,7 +134,7 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
 
     handleStatus("allowlances", "success");
 
-    if (parsedAmountA.gt(allowances[0])) {
+    if (parsedAmountA > (allowances[0])) {
       try {
         tokenAApprovalHash = await approve(tokenA.hash, swapContractHash);
       } catch (e: any) {
@@ -149,7 +149,7 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
       handleStatus("tokenA", "success");
     }
 
-    if (parsedAmountB.gt(allowances[1])) {
+    if (parsedAmountB > (allowances[1])) {
       try {
         tokenBApprovalHash = await approve(tokenB.hash, swapContractHash);
       } catch (e: any) {

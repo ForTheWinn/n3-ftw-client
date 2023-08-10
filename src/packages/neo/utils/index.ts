@@ -1,5 +1,4 @@
 import { rpc, sc, u, wallet } from "@cityofzion/neon-core";
-import { BigNumber } from "@ethersproject/bignumber";
 import moment from "moment";
 import { IBalance } from "../wallets/interfaces";
 import {
@@ -276,23 +275,6 @@ export const parseMapValue = (stackItem: StackItemLike): any => {
   return obj;
 };
 
-export function numberToByteString(num: string) {
-  const h = BigNumber.from(num).toHexString().substr(2);
-  let hex = h.length % 2 ? "0" + h : h;
-  const fc = hex.charAt(0);
-
-  if ((fc > "7" && fc <= "9") || (fc >= "a" && fc <= "f")) {
-    hex = "00" + hex;
-  }
-
-  return btoa(
-    hex
-      .match(/.{1,2}/g)!
-      .reverse()
-      .map((v: any) => String.fromCharCode(parseInt(v, 16)))
-      .join("")
-  );
-}
 
 export const getNEP17TransferScript = (
   scriptHash: string,

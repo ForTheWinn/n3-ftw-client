@@ -153,7 +153,7 @@ export const approve = async (
     address: contractAddress,
     abi: erc20ABI,
     functionName: "approve",
-    args: [spenderAddress, ethers.constants.MaxUint256.toBigInt()],
+    args: [spenderAddress, ethers.MaxUint256],
   });
   const { hash } = await writeContract(script);
   return hash;

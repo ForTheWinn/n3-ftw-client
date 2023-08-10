@@ -40,7 +40,7 @@ export const getfNEODetail = async (
     abi: erc20ABI,
     functionName: "totalSupply",
   });
-  totalSupply = ethers.utils.formatUnits(totalSupply.toString(), 8);
+  totalSupply = ethers.formatUnits(totalSupply.toString(), 8);
 
   const nepPerYear =
     ((60 * 60 * 24 * 365) / 2) * NEP_PER_BLOCK[TESTNET][chainId];
@@ -52,7 +52,7 @@ export const getfNEODetail = async (
       functionName: "claimable",
       args: [address],
     })) as string;
-    claimable = ethers.utils.formatUnits(res.toString(), 8);
+    claimable = ethers.formatUnits(res.toString(), 8);
   }
   return {
     totalSupply,

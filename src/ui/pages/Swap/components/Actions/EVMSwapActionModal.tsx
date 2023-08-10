@@ -75,12 +75,10 @@ const ActionModal = (props: IActionModalProps) => {
   const [state, setState] = useState(initialState);
   const parsedAmountA = parseAmount(amountA, tokenA.decimals);
   const parsedAmountB = parseAmount(amountB, tokenB.decimals);
-  const maxAmountAIn = parsedAmountA
-    .add(calculateSlippage(parsedAmountA, slippage))
-    .toString();
-  const minAmountBOut = parsedAmountB
-    .sub(calculateSlippage(parsedAmountB, slippage))
-    .toString();
+  const maxAmountAIn =
+    parsedAmountA + calculateSlippage(parsedAmountA, slippage);
+  const minAmountBOut =
+    parsedAmountB + calculateSlippage(parsedAmountB, slippage);
 
   const handleTx = async (stepKey: string, txid: any): Promise<boolean> => {
     handleStatus(stepKey, "processing");
@@ -141,7 +139,7 @@ const ActionModal = (props: IActionModalProps) => {
 
     handleStatus("allowlances", "success");
 
-    if (parsedAmountA.gt(allowances[0])) {
+    if (parsedAmountA > (allowances[0])) {
       try {
         tokenApprovalHash = await approve(tokenA.hash, swapContractHash);
       } catch (e: any) {
@@ -160,8 +158,8 @@ const ActionModal = (props: IActionModalProps) => {
       swapHash = await swap(chain, network, {
         tokenA: tokenA.hash,
         tokenB: tokenB.hash,
-        amountIn: isReverse ? maxAmountAIn : parsedAmountA.toString(),
-        amountOut: isReverse ? parsedAmountB.toString() : minAmountBOut,
+        amountIn: isReverse ? maxAmountAIn : parsedAmountA,
+        amountOut: isReverse ? parsedAmountB : minAmountBOut,
         isReverse,
       });
     } catch (e: any) {

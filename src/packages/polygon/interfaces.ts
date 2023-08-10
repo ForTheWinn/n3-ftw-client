@@ -21,8 +21,8 @@ export interface SwapEstimateArgs {
 export interface SwapArgs {
   tokenA: string;
   tokenB: string;
-  amountIn: string;
-  amountOut: string;
+  amountIn: bigint;
+  amountOut: bigint;
   isReverse: boolean;
 }
 

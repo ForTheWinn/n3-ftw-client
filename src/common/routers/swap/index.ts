@@ -50,8 +50,8 @@ export const getBalances = async (
         tokenA.hash,
         tokenB.hash
       );
-      amountA = ethers.utils.formatUnits(res.amountA, tokenA.decimals);
-      amountB = ethers.utils.formatUnits(res.amountB, tokenB.decimals);
+      amountA = ethers.formatUnits(res.amountA, tokenA.decimals);
+      amountB = ethers.formatUnits(res.amountB, tokenB.decimals);
       break;
     case POLYGON_CHAIN:
       const res1 = await fetchBalance({

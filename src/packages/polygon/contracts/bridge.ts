@@ -68,12 +68,12 @@ export const getIsMinted = async (
 };
 
 export const getMintoNoFromLogs = (logs: any) => {
-  let iface = new ethers.utils.Interface(FTWBridge);
+  let iface = new ethers.Interface(FTWBridge);
   let mintNo;
   logs.forEach((log) => {
     try {
       const parsedLog = iface.parseLog(log);
-      if (parsedLog.name === "BridgeOut") {
+      if (parsedLog?.name === "BridgeOut") {
         mintNo = parsedLog.args[0].toString();
       }
     } catch (e) {

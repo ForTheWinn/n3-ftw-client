@@ -66,7 +66,7 @@ const getEstimatedForSwap = async (
   const args = {
     tokenA: tokenA.hash,
     tokenB: tokenB.hash,
-    amount: ethers.utils
+    amount: ethers
       .parseUnits(
         swapInput.value,
         swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
@@ -78,7 +78,7 @@ const getEstimatedForSwap = async (
   try {
     const estimated = await swapRouter.getEstimate(chain, network, args);
     if (estimated !== "0") {
-      return ethers.utils.formatUnits(
+      return ethers.formatUnits(
         estimated,
         swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
       );
@@ -97,16 +97,27 @@ const getEstimatedForLiquidity = (
   reserves: ISwapReserves | undefined
 ) => {
   if (reserves && swapInput.value && reserves && reserves.shares !== "0") {
-    const val = ethers.utils.parseUnits(
+    const val = ethers.parseUnits(
       swapInput.value.toString(),
       swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
     );
-    const estimated = val
-      .mul(swapInput.type === "A" ? reserves.reserveB : reserves.reserveA)
-      .div(swapInput.type === "A" ? reserves.reserveA : reserves.reserveB)
-      .toString();
+    // const estimated = val
+    //   .mul(swapInput.type === "A" ? reserves.reserveB : reserves.reserveA)
+    //   .div(swapInput.type === "A" ? reserves.reserveA : reserves.reserveB)
+    //   .toString();
 
-    return ethers.utils.formatUnits(
+    const numerator =
+      swapInput.type === "A"
+        ? BigInt(reserves.reserveB)
+        : BigInt(reserves.reserveA);
+    const denominator =
+      swapInput.type === "A"
+        ? BigInt(reserves.reserveA)
+        : BigInt(reserves.reserveB);
+
+    const estimated = (val * numerator) / denominator;
+
+    return ethers.formatUnits(
       estimated,
       swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
     );
@@ -322,12 +333,12 @@ export const SwapContextProvider = (props: {
   let noLiquidity = reserves?.shares === "0";
   let priceImpact = 0;
   if (tokenA && tokenB && !noLiquidity) {
-    if (amountA && amountB) {
+    if (amountA && amountB && reserves) {
       try {
         const parsedAmountB = new Decimal(amountB).mul(
           new Decimal(10).pow(tokenB.decimals)
         );
-        const reserveB = ethers.BigNumber.from(reserves?.reserveB);
+        const reserveB = BigInt(reserves.reserveB);
 
         priceImpact = parsedAmountB
           .div(reserveB.toString())
