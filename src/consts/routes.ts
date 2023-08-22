@@ -1,4 +1,4 @@
-import { MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "./global";
+import { ETH_CHAIN, MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "./global";
 
 import Analytics from "../ui/pages/Analytics";
 import BrandKit from "../ui/pages/BrandKit";
@@ -384,7 +384,8 @@ const HOME_PAGE_ROUTE = {
   path: HOME_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
+    [ETH_CHAIN]: [TESTNET, MAINNET]
   },
   category: [],
   noShow: true,
