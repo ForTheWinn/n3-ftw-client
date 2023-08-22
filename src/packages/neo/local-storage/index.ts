@@ -3,7 +3,7 @@ import {
   ETH_WALLET,
   NEO_WALLET,
 } from "../../../ui/components/Commons/Wallets/consts";
-import { CHAINS } from "../../../consts/chains";
+import { CHAINS, LIST } from "../../../consts/chains";
 import { NEO_CHAIN } from "../../../consts/global";
 
 const CURRENT_WALLET_TYPE = "WALLET_SWITCH";
@@ -20,6 +20,16 @@ export class LocalStorage {
       : NEO_WALLET;
 
   static setChain = (val: CHAINS) => store.set(CURRENT_CHAIN, val);
-  static getChain = () =>
-    store.get(CURRENT_CHAIN) ? store.get(CURRENT_CHAIN) : NEO_CHAIN;
+  
+  static getChain = (): CHAINS => {
+    if (store.get(CURRENT_CHAIN)) {
+      LIST.forEach((chain) => {
+        if (store.get(CURRENT_CHAIN) === chain) {
+          return store.get(CURRENT_CHAIN);
+        }
+      });
+    }
+
+    return NEO_CHAIN;
+  };
 }
