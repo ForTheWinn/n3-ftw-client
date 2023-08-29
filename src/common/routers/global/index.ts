@@ -4,11 +4,12 @@ import { INetworkType, Network } from "../../../packages/neo/network";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import { IPrices } from "../../../packages/neo/api/interfaces";
 import { MAINNET, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
-import { base64ToString } from "../../../packages/neo/utils";
+import { base64ToString, getUserBalance } from "../../../packages/neo/utils";
 import { WENT_WRONG } from "../../../consts/messages";
-import { SwapContract } from "../../../packages/neo/contracts/ftw/swap";
 import { fetchBalance } from "@wagmi/core";
 import { RestAPI } from "../../../packages/neo/api";
+import { ethers } from "ethers";
+import { formatAmount, transformString } from "../../helpers";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -18,7 +19,7 @@ export const waitTransactionUntilSubmmited = async (
   switch (chain) {
     case POLYGON_CHAIN:
       const data = await waitForTransaction({
-        hash: txid as `0x${string}`
+        hash: txid as `0x${string}`,
       });
       return true;
     case NEO_CHAIN:
@@ -38,47 +39,7 @@ export const getPrices = async (chain: CHAINS): Promise<IPrices> => {
   // }
 };
 
-export const fetchTokenInfo = async (
-  chain: CHAINS,
-  network: INetworkType,
-  hash: string
-): Promise<ITokenState> => {
-  switch (chain) {
-    case POLYGON_CHAIN:
-      const data = await fetchToken(hash as any);
-      return {
-        hash,
-        decimals: data.decimals,
-        symbol: data.symbol,
-        icon: ""
-      };
-    case NEO_CHAIN:
-      const scripts: any = [];
-      const script1 = {
-        scriptHash: hash,
-        operation: "symbol",
-        args: []
-      };
-      const script2 = {
-        scriptHash: hash,
-        operation: "decimals",
-        args: []
-      };
-      scripts.push(script1);
-      scripts.push(script2);
-      const res = await Network.read(network, scripts);
-      if (res.state === "FAULT") {
-        throw new Error(res.exception ? res.exception : WENT_WRONG);
-      }
-      return {
-        hash,
-        symbol: base64ToString(res.stack[0].value as string),
-        decimals: res.stack[1].value as number,
-        icon: ""
-      };
-  }
-};
-
+// Return formatted balance
 export const fetchTokenBalance = async (
   chain: CHAINS,
   network: INetworkType,
@@ -87,12 +48,69 @@ export const fetchTokenBalance = async (
 ): Promise<string> => {
   switch (chain) {
     case NEO_CHAIN:
-      return await new SwapContract(network).getUserBalance(address, tokenHash);
+      return await getUserBalance(network, address, tokenHash);
     case POLYGON_CHAIN:
       const res = await fetchBalance({
         address,
-        token: tokenHash
+        token: tokenHash,
       } as any);
       return res.formatted;
+  }
+};
+
+export const fetchTokenInfo = async (
+  chain: CHAINS,
+  network: INetworkType,
+  hash: string
+): Promise<ITokenState> => {
+  switch (chain) {
+    case POLYGON_CHAIN:
+      const data = await fetchToken({ address: hash as any });
+      return {
+        hash,
+        decimals: data.decimals,
+        symbol: data.symbol,
+        icon: "",
+        totalSupply: transformString(
+          ethers
+            .formatUnits(data.totalSupply.value.toString(), data.decimals)
+            .toString()
+        ),
+      };
+    case NEO_CHAIN:
+      const scripts: any = [];
+      const script1 = {
+        scriptHash: hash,
+        operation: "symbol",
+        args: [],
+      };
+      const script2 = {
+        scriptHash: hash,
+        operation: "decimals",
+        args: [],
+      };
+      const script3 = {
+        scriptHash: hash,
+        operation: "totalSupply",
+        args: [],
+      };
+      scripts.push(script1);
+      scripts.push(script2);
+      scripts.push(script3);
+      const res = await Network.read(network, scripts);
+      if (res.state === "FAULT") {
+        throw new Error(res.exception ? res.exception : WENT_WRONG);
+      }
+      const symbol = base64ToString(res.stack[0].value as string);
+      const decimals = parseFloat(res.stack[1].value as string);
+      return {
+        hash,
+        symbol,
+        decimals,
+        icon: "",
+        totalSupply: transformString(
+          formatAmount(res.stack[2].value as any, decimals)
+        ),
+      };
   }
 };

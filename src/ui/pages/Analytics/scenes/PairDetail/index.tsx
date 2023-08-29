@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SwapHistory from "./SwapHistory";
-import LiquidityChart from "../Main/LiquidityChart";
+import LiquidityChart from "../NEOAnalytics/LiquidityChart";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { RestAPI } from "../../../../../packages/neo/api";
@@ -38,11 +38,11 @@ const PairDetail = ({ id }: IPairDetailProps) => {
                   network={network}
                   pairs={{
                     [data.tokenA.id]: {
-                      ...data.tokenA
+                      ...data.tokenA,
                     },
                     [data.tokenB.id]: {
-                      ...data.tokenB
-                    }
+                      ...data.tokenB,
+                    },
                   }}
                 />
               </div>

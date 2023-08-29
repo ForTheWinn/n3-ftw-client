@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Space } from "antd";
 import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
-import { globalRouter } from "../../../../common/routers";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
 import CustomTokenWarning from "./CustomTokenWarning";
 import { SWAP_TOKEN_LIST } from "../../../../consts/tokens";
+import { fetchTokenInfo } from "../../../../common/routers/global";
 
 interface IDisplayCustomTokenProps {
   chain: CHAINS;
@@ -39,7 +39,7 @@ const DisplayCustomToken = ({
           setIsVerified(true);
           setCustomToken(target);
         } else {
-          const res = await globalRouter.fetchTokenInfo(chain, network, token);
+          const res = await fetchTokenInfo(chain, network, token);
           setCustomToken({
             hash: token,
             decimals: res.decimals,

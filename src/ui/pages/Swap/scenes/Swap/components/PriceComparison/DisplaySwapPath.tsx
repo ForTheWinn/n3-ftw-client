@@ -7,6 +7,7 @@ import { Avatar, Space } from "antd";
 import Level from "../../../../../../components/Level";
 import { ethers } from "ethers";
 import { SwapRightOutlined } from "@ant-design/icons";
+import { formatAmount } from "../../../../../../../common/helpers";
 
 interface IDisplaySwapPathProps {
   chain: CHAINS;
@@ -44,10 +45,7 @@ const DisplaySwapPath = ({
         setLoading(false);
         setOutput(
           parseFloat(swapAmount) > 0
-            ? ethers.formatUnits(
-                swapAmount,
-                path[path.length - 1].decimals
-              ) +
+            ? formatAmount(swapAmount, path[path.length - 1].decimals) +
                 " " +
                 path[path.length - 1].symbol
             : "--"

@@ -11,6 +11,7 @@ import { INetworkType } from "../../neo/network";
 import { ISwapLPToken } from "../../../common/routers/swap/interfaces";
 import { FARM, POLYGON_CHAIN } from "../../../consts/global";
 import { ethers } from "ethers";
+import { formatAmount } from "../../../common/helpers";
 
 export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
   const res: any = await readContract({
@@ -53,13 +54,13 @@ export const getPools = async (network: INetworkType): Promise<IFarmPair[]> => {
         ? bonusToken.decimals.toString()
         : "Unknown",
       bonusTokensPerSecond: pool.bonusTokensPerSecond.toString(),
-      nepRewardsPerDay: ethers.formatUnits(
-        Number(pool.nepTokensPerSecond) * 86400,
+      nepRewardsPerDay: formatAmount(
+        (Number(pool.nepTokensPerSecond) * 86400).toString(),
         8
       ),
       bonusRewardsPerDay: hasBonusRewards
-        ? ethers.formatUnits(
-            Number(pool.bonusTokensPerSecond),
+        ? formatAmount(
+            pool.bonusTokensPerSecond,
             bonusToken ? bonusToken.decimals : 0
           )
         : "0",

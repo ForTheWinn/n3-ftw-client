@@ -1,3 +1,5 @@
+import { POLYGON_LOGO } from "../../../consts/global";
+
 export const POLYGON_MAINNET_CONTRACTS = {
   SWAP: "0x67dee0d471d516221ef107c0d7ab6ce538cbc4ec",
   FARM: "",
@@ -27,7 +29,7 @@ const POLYGON_MAINNET_USDT_TOKEN_METADATA = {
 const POLYGON_MAINNET_WMATIC_TOKEN_METADATA = {
   hash: POLYGON_MAINNET_CONTRACTS.WMATIC,
   symbol: "WMATIC",
-  icon: "/symbols/wMatic.png",
+  icon: POLYGON_LOGO,
   decimals: 18,
 };
 const POLYGON_MAINNET_WETH_TOKEN_METADATA = {

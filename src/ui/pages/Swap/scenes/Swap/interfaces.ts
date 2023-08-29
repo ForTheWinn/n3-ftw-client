@@ -3,6 +3,7 @@ export interface ITokenState {
   decimals: number;
   symbol: string;
   icon: string;
+  totalSupply?: string;
 }
 
 export interface ISwapInputState {

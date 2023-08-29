@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TokenPriceChart from "../../components/PriceChart";
-import LiquidityChart from "../Main/LiquidityChart";
+import LiquidityChart from "../NEOAnalytics/LiquidityChart";
 import SwapHistory from "./SwapHistory";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
@@ -17,7 +17,7 @@ const TokenDetail = ({ tokenId }: ITokenDetailProps) => {
   }, [network]);
 
   if (!data) return <div></div>;
- 
+
   return (
     <div>
       <div className="columns is-multiline">

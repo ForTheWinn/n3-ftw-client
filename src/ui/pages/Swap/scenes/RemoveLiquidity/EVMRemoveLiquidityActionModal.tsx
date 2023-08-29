@@ -110,7 +110,6 @@ const EVMRemoveLiquidityActionModal = ({
           address,
           swapContractAddress
         );
-        console.log(isApproved);
         handleStatus("allowlances", "success");
       } catch (e: any) {
         handleStatus(
@@ -142,7 +141,6 @@ const EVMRemoveLiquidityActionModal = ({
           network,
           tokenId
         );
-        console.log(withdrawHash);
 
         await handleTx("withdraw", withdrawHash);
         

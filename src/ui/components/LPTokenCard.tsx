@@ -1,6 +1,7 @@
 import React from "react";
 import { ISwapLPToken } from "../../common/routers/swap/interfaces";
 import { ethers } from "ethers";
+import { formatAmount } from "../../common/helpers";
 
 const LPTokenCard = (props: ISwapLPToken) => {
   return (
@@ -8,15 +9,13 @@ const LPTokenCard = (props: ISwapLPToken) => {
       <strong>Token Id: {props.tokenId}</strong>
       <>
         <br />
-        <small>{`${ethers.formatUnits(
-          props.amountA.toString(),
-          props.decimalsA
-        )} ${props.symbolA}`}</small>
+        <small>{`${formatAmount(props.amountA, props.decimalsA)} ${
+          props.symbolA
+        }`}</small>
         <br />
-        <small>{`${ethers.formatUnits(
-          props.amountB.toString(),
-          props.decimalsB
-        )} ${props.symbolB}`}</small>
+        <small>{`${formatAmount(props.amountB, props.decimalsB)} ${
+          props.symbolB
+        }`}</small>
         <br />
         <small>{parseFloat(props.sharesPercentage) / 100}%</small>
       </>

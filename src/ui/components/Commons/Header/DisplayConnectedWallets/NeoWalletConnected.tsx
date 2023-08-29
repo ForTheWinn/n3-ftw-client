@@ -3,6 +3,7 @@ import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { NEO_LINE, O3 } from "../../../../../packages/neo/consts";
 import neo3Dapi from "neo3-dapi";
 import { Avatar } from "antd";
+import { NEO_LOGO } from "../../../../../consts/global";
 
 const NeoWalletConnected = ({ connectedWallet, style }) => {
   const { disConnectWallet } = useNeoWallets();
@@ -75,7 +76,7 @@ const NeoWalletConnected = ({ connectedWallet, style }) => {
   }, [connectedWallet]);
 
   if (!connectedWallet) return <></>;
-  return <Avatar src="/symbols/neo.svg" style={style} />;
+  return <Avatar src={NEO_LOGO} style={style} />;
 };
 
 export default NeoWalletConnected;

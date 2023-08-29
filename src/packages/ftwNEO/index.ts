@@ -14,6 +14,7 @@ import { NEP_PER_BLOCK } from "./consts";
 import { ethers } from "ethers";
 import { IfNEODetail } from "./interfaces";
 import FNEOABI from "./fNEO.json";
+import { formatAmount } from "../../common/helpers";
 
 export const claim = async (contractHash: string): Promise<string> => {
   const config = await prepareWriteContract({
@@ -40,7 +41,7 @@ export const getfNEODetail = async (
     abi: erc20ABI,
     functionName: "totalSupply",
   });
-  totalSupply = ethers.formatUnits(totalSupply.toString(), 8);
+  totalSupply = formatAmount(totalSupply.toString(), 8);
 
   const nepPerYear =
     ((60 * 60 * 24 * 365) / 2) * NEP_PER_BLOCK[TESTNET][chainId];
@@ -52,7 +53,7 @@ export const getfNEODetail = async (
       functionName: "claimable",
       args: [address],
     })) as string;
-    claimable = ethers.formatUnits(res.toString(), 8);
+    claimable = formatAmount(res.toString(), 8);
   }
   return {
     totalSupply,

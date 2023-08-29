@@ -94,6 +94,8 @@ export const FNEO_PATH = "/ftwNeo";
   Analytics
 */
 export const ANALYTICS_PATH = "/analytics";
+export const ANALYTICS_NEO_SWAP_PATH = "/analytics/neo-ftw-swap";
+export const ANALYTICS_POLYGON_SWAP_PATH = "/analytics/polygon-ftw-swap";
 export const ANALYTICS_PAIRS_PATH = "/analytics/pairs";
 export const ANALYTICS_TOKENS_PATH = "/analytics/tokens";
 /* 
@@ -129,10 +131,10 @@ const SWAP_PAGE_ROUTE = {
   path: SWAP_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
-  component: Swap
+  component: Swap,
 };
 
 const FARM_V2_PAGE_ROUTE = {
@@ -140,20 +142,21 @@ const FARM_V2_PAGE_ROUTE = {
   path: FARM_V2_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET]
+    [POLYGON_CHAIN]: [TESTNET],
   },
   category: [],
-  component: FarmV2
+  component: FarmV2,
 };
 
 export const ANALYTICS_ROUTE = {
   label: "Analytics",
   path: ANALYTICS_PATH,
   chain: {
-    [NEO_CHAIN]: [MAINNET]
+    [NEO_CHAIN]: [MAINNET],
+    [POLYGON_CHAIN]: [MAINNET, TESTNET],
   },
   category: [],
-  component: Analytics
+  component: Analytics,
 };
 
 /* 
@@ -166,11 +169,11 @@ export const NFT_MAIN_PAGE_ROUTE = {
   path: NFT_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
-  component: NFTCollectionMain
+  component: NFTCollectionMain,
 };
 
 export const NEO_BOYZ_PAGE_ROUTE = {
@@ -179,10 +182,10 @@ export const NEO_BOYZ_PAGE_ROUTE = {
   description: "1111 unique collectible characters stored on Neo blockchain",
   path: BOYZ_PATH,
   chain: {
-    [NEO_CHAIN]: [MAINNET]
+    [NEO_CHAIN]: [MAINNET],
   },
   category: [],
-  component: Boyz
+  component: Boyz,
 };
 
 export const MATIC_BOYZ_PAGE_ROUTE = {
@@ -204,10 +207,10 @@ export const RUNES_PAGE_ROUTE = {
   description: "500 algorithms-generated, stored onchain NFT",
   path: RUNE_PATH,
   chain: {
-    [NEO_CHAIN]: [MAINNET]
+    [NEO_CHAIN]: [MAINNET],
   },
   category: [],
-  component: Rune
+  component: Rune,
 };
 
 export const FUSION_PAGE_ROUTE = {
@@ -216,17 +219,17 @@ export const FUSION_PAGE_ROUTE = {
   description: "NFT Game Collaboration between TOTHEMOON UNIVERSE and FTW",
   path: FUSION_PATH,
   chain: {
-    [NEO_CHAIN]: [MAINNET]
+    [NEO_CHAIN]: [MAINNET],
   },
   category: [],
-  component: Fusion
+  component: Fusion,
 };
 
 export const NFT_ROUTE = {
   label: "NFT",
   path: NFT_PATH,
   chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET]
+    [NEO_CHAIN]: [TESTNET, MAINNET],
     // [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
   category: [
@@ -234,9 +237,9 @@ export const NFT_ROUTE = {
     NEO_BOYZ_PAGE_ROUTE,
     RUNES_PAGE_ROUTE,
     FUSION_PAGE_ROUTE,
-    MATIC_BOYZ_PAGE_ROUTE
+    MATIC_BOYZ_PAGE_ROUTE,
   ],
-  component: NFTCollections
+  component: NFTCollections,
 };
 
 /* 
@@ -249,11 +252,11 @@ export const TOOLS_MAIN_PAGE_ROUTE = {
   path: TOOLS_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
-  component: ToolsMain
+  component: ToolsMain,
 };
 
 const LOCKER_PAGE_ROUTE = {
@@ -263,10 +266,10 @@ const LOCKER_PAGE_ROUTE = {
     "With Locker, set a timelock on your tokens, making them accessible only when the pre-set time has elapsed. This feature allows for a controlled distribution of tokens based on your desired timeline.",
   path: LOCKER_PATH,
   chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET]
+    [NEO_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
-  component: Locker
+  component: Locker,
 };
 
 const SMITH_PAGE_ROUTE = {
@@ -277,10 +280,10 @@ const SMITH_PAGE_ROUTE = {
   path: SMITH_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
-  component: Smith
+  component: Smith,
 };
 
 const AIRDROP_PAGE_ROUTE = {
@@ -290,11 +293,11 @@ const AIRDROP_PAGE_ROUTE = {
     "Facilitate the process of executing multiple transfers simultaneously with our Batch Transfer tool, making bulk token distribution more efficient.",
   path: TOOLS_AIRDROP_PATH,
   chain: {
-    [NEO_CHAIN]: [TESTNET, MAINNET]
+    [NEO_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   // noShow: true,
-  component: Airdrop
+  component: Airdrop,
 };
 
 export const TOOLS_LP_FINDER_PAGE_ROUTE = {
@@ -305,10 +308,10 @@ export const TOOLS_LP_FINDER_PAGE_ROUTE = {
   path: TOOLS_LP_TOKENS_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
-  component: LPTokens
+  component: LPTokens,
 };
 
 export const TOOLS_PAGE_ROUTE = {
@@ -316,16 +319,16 @@ export const TOOLS_PAGE_ROUTE = {
   path: TOOLS_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [
     TOOLS_MAIN_PAGE_ROUTE,
     SMITH_PAGE_ROUTE,
     LOCKER_PAGE_ROUTE,
     TOOLS_LP_FINDER_PAGE_ROUTE,
-    AIRDROP_PAGE_ROUTE
+    AIRDROP_PAGE_ROUTE,
   ],
-  component: Tools
+  component: Tools,
 };
 
 /*
@@ -352,10 +355,10 @@ const FNEO_PAGE_ROUTE = {
   path: FNEO_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET],
-    [POLYGON_CHAIN]: [TESTNET]
+    [POLYGON_CHAIN]: [TESTNET],
   },
   category: [],
-  component: FNEO
+  component: FNEO,
 };
 
 /*
@@ -367,11 +370,11 @@ const EVENT_PAGE_ROUTE = {
   path: EVENT_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
-  component: Consensus2023
+  component: Consensus2023,
 };
 
 /*
@@ -384,22 +387,22 @@ const HOME_PAGE_ROUTE = {
   path: HOME_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
-  component: Home
+  component: Home,
 };
 
 const FARM_PAGE_ROUTE = {
   label: "Farm",
   path: FARM_PATH,
   chain: {
-    [NEO_CHAIN]: [MAINNET]
+    [NEO_CHAIN]: [MAINNET],
   },
   category: [],
   noShow: true,
-  component: Farm
+  component: Farm,
 };
 
 export const LP_FINDER_PAGE_ROUTE = {
@@ -407,11 +410,11 @@ export const LP_FINDER_PAGE_ROUTE = {
   path: LP_TOKENS_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
-  component: LPTokens
+  component: LPTokens,
 };
 
 const BRAND_PAGE_ROUTE = {
@@ -419,11 +422,11 @@ const BRAND_PAGE_ROUTE = {
   path: BRAND_KIT_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],
-    [POLYGON_CHAIN]: [TESTNET, MAINNET]
+    [POLYGON_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
-  component: BrandKit
+  component: BrandKit,
 };
 
 export const ROUTE_LIST = [
@@ -442,7 +445,7 @@ export const ROUTE_LIST = [
   BRAND_PAGE_ROUTE,
   HOME_PAGE_ROUTE,
   // { SMITH_PAGE_ROUTE, noShow: true },
-  { ...LOCKER_PAGE_ROUTE, noShow: true }
+  { ...LOCKER_PAGE_ROUTE, noShow: true },
 ];
 
 // Pending pages
@@ -478,12 +481,12 @@ const GASFI_PAGE_ROUTE = {
   label: "GAS-Fi",
   path: GASFI_PATH,
   network: [],
-  category: []
+  category: [],
 };
 
 const DAO_PAGE_ROUTE = {
   label: "DAO",
   path: DAO_PATH,
   network: [],
-  category: []
+  category: [],
 };

@@ -22,7 +22,7 @@ import { CHAINS } from "../../../../../consts/chains";
 import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
-import { getTokenByHash } from "../../../../../common/helpers";
+import { formatAmount, getTokenByHash } from "../../../../../common/helpers";
 
 import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
@@ -78,7 +78,7 @@ const getEstimatedForSwap = async (
   try {
     const estimated = await swapRouter.getEstimate(chain, network, args);
     if (estimated !== "0") {
-      return ethers.formatUnits(
+      return formatAmount(
         estimated,
         swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
       );
@@ -117,8 +117,8 @@ const getEstimatedForLiquidity = (
 
     const estimated = (val * numerator) / denominator;
 
-    return ethers.formatUnits(
-      estimated,
+    return formatAmount(
+      estimated.toString(),
       swapInput.type === "A" ? tokenB.decimals : tokenA.decimals
     );
   }

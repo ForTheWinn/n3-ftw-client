@@ -48,9 +48,10 @@ const BridgeDetails = ({
                 <div className="level-item has-text-right">
                   <a
                     target="_blank"
-                    href={`${getExplorerByChainId(originChain.chainId, "tx")}/${
-                      token.hash
-                    }`}
+                    href={`${getExplorerByChainId(
+                      originChain.chainId,
+                      "contract"
+                    )}/${token.hash}`}
                     rel="noreferrer"
                   >
                     Open
@@ -66,9 +67,10 @@ const BridgeDetails = ({
                 <div className="level-item has-text-right">
                   <a
                     target="_blank"
-                    href={`${getExplorerByChainId(destChain.chainId, "tx")}/${
-                      token.destToken.hash
-                    }`}
+                    href={`${getExplorerByChainId(
+                      destChain.chainId,
+                      "contract"
+                    )}/${token.destToken.hash}`}
                     rel="noreferrer"
                   >
                     Open

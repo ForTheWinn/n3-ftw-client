@@ -13,7 +13,9 @@ export const FARM = "FARM";
 export const BRIDGE = "BRIDGE";
 export const SMITH = "SMITH";
 
+export const POLYGON_LOGO = "/symbols/matic.png";
 export const NEP_LOGO = "/symbols/nep.png";
+export const NEO_LOGO = "/symbols/neo.svg";
 export const UNKNOWN_TOKEN_IMAGE = "/symbols/unknown.png";
 export const FTW_LOGO_URL = "/logo/FTW_512_512.svg";
 

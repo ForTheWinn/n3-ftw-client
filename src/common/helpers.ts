@@ -1,4 +1,3 @@
-import { globalRouter } from "./routers";
 import {
   MAINNET,
   NEO_CHAIN,
@@ -15,6 +14,7 @@ import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
 import { explorerUrls } from "../consts/urls";
 import { CHAINS } from "../consts/chains";
 import { ethers } from "ethers";
+import { fetchTokenInfo } from "./routers/global";
 
 export const getExplorer = (
   chain: string,
@@ -70,7 +70,7 @@ export const getTokenByHash = async (
     return TOKEN_LIST[chain][network][hash];
   } else {
     try {
-      return await globalRouter.fetchTokenInfo(chain, network, hash);
+      return await fetchTokenInfo(chain, network, hash);
     } catch (error) {
       console.error(error);
       return undefined;
@@ -113,6 +113,21 @@ export const findTradePaths = (
 export const parseAmount = (amount: string, decimals: number): bigint =>
   ethers.parseUnits(amount, decimals);
 
+export const formatAmount = (
+  amount: string,
+  decimals: string | number
+): string => {
+  // Convert decimals to a number if it's a string
+  const decimalsNumber =
+    typeof decimals === "string" ? Number(decimals) : decimals;
+
+  // Ensure decimalsNumber is a valid number before using it
+  if (isNaN(decimalsNumber)) {
+    throw new Error("Invalid decimals value");
+  }
+
+  return ethers.formatUnits(amount, decimalsNumber).toString();
+};
 export const calculateSlippage = (amount: bigint, slippage: number) => {
   // Convert slippage to a BigInt representation
   const slippageBigInt = BigInt(Math.round(slippage * 100));
@@ -128,4 +143,12 @@ export const getCurrentStep = (state, steps) => {
     if (state[steps[i].key].success) return i + 1;
   }
   return 1;
+};
+
+export const transformString = (inputString: string) => {
+  const replacedString = inputString.replace(/000/g, ",");
+
+  // Convert replaced string to a number and format it correctly with commas
+  const numberFormat = new Intl.NumberFormat("en-US");
+  return numberFormat.format(Number(replacedString));
 };

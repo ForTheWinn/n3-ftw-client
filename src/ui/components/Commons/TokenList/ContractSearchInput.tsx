@@ -1,12 +1,11 @@
-import React, { useRef, useState } from "react";
-import { fetchToken } from "@wagmi/core";
+import React, {  useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
 import { ethers } from "ethers";
 import { WENT_WRONG } from "../../../../consts/messages";
-import { globalRouter } from "../../../../common/routers";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
+import { fetchTokenInfo } from "../../../../common/routers/global";
 
 interface ContractSearchInputProps {
   chain: CHAINS;
@@ -28,7 +27,7 @@ const ContractSearchInput = ({
 
     if (ethers.isAddress(customContractHash)) {
       try {
-        const token = await globalRouter.fetchTokenInfo(
+        const token = await fetchTokenInfo(
           chain,
           network,
           customContractHash

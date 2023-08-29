@@ -8,11 +8,11 @@ import BridgeChainList from "./components/BridgeChainList";
 import TokenList from "./components/TokenList";
 import { toast } from "react-hot-toast";
 import { IBridgeReceiver, IBridgeSelectedtoken } from "../../interfaces";
-import { globalRouter } from "../../../../../common/routers";
 import { BRIDGE_CHAINS } from "../../../../../consts/bridge";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { NEO_CHAIN } from "../../../../../consts/global";
+import { fetchTokenBalance } from "../../../../../common/routers/global";
 
 interface IBridgeContext {
   chain: CHAINS;
@@ -111,7 +111,7 @@ export const SwapContextProvider = (props: { children: any }) => {
   useEffect(() => {
     const loadBalance = async (_tokenHash, _address) => {
       try {
-        const _balance = await globalRouter.fetchTokenBalance(
+        const _balance = await fetchTokenBalance(
           chain,
           network,
           _address,

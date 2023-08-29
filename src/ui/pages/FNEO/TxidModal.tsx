@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
 import TxReceipt from "../../components/Commons/TxHandler/TxReceipt";
 import { waitForTransaction } from "@wagmi/core";
-import { getExplorer, getExplorerByChainId } from "../../../common/helpers";
+import { getExplorerByChainId } from "../../../common/helpers";
 
 interface ITxidModalProps {
   txid: string;

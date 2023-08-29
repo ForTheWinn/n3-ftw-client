@@ -9,8 +9,8 @@ import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/far
 
 import { Radio, Divider } from "antd";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { globalRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
+import { getPrices } from "../../../../../common/routers/global";
 
 interface IClaimListProps {
   bonus: number;
@@ -32,7 +32,7 @@ const ClaimList = ({
 }: IClaimListProps) => {
   const [rewardDisplayType, setRewardDisplayType] = useState<string>(REALTIME);
   const { data, error } = useOnChainData(() => {
-    return globalRouter.getPrices(chain);
+    return getPrices(chain);
   }, [chain]);
   const prices: IPrices = data;
   return (

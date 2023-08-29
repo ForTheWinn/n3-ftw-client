@@ -2,7 +2,7 @@ import { INetworkType, Network } from "../../../network";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet } from "../../../index";
 import { SWAP_SCRIPT_HASH } from "./consts";
-import { base64ToString, parseMapValue, withDecimal } from "../../../utils";
+import { base64ToString, parseMapValue } from "../../../utils";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { defaultDeadLine } from "./helpers";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
@@ -237,7 +237,7 @@ export class SwapContract {
     tokenA: string,
     amountA: string,
     tokenB: string,
-    amountB: bigint // Min amount out
+    amountB: string // Min amount out
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
@@ -890,65 +890,6 @@ export class SwapContract {
       bNEO: parseFloat(
         u.BigInteger.fromNumber(res.stack[1].value as string).toDecimal(8)
       ),
-    };
-  };
-
-  getUserBalance = async (
-    address: string,
-    tokenHash: string
-  ): Promise<string> => {
-    const scripts: any = [];
-    const senderHash = NeonWallet.getScriptHashFromAddress(address);
-    const script1 = {
-      scriptHash: tokenHash,
-      operation: "balanceOf",
-      args: [{ type: "Hash160", value: senderHash }],
-    };
-    const script2 = {
-      scriptHash: tokenHash,
-      operation: "decimals",
-      args: [],
-    };
-    scripts.push(script1);
-    scripts.push(script2);
-    const res = await Network.read(this.network, scripts);
-    if (res.state === "FAULT") {
-      console.error("Failed to fetch the balance.");
-      // throw new Error(res.exception ? (res.exception as string) : WENT_WRONG);
-      return "0";
-    }
-    return ethers.formatUnits(
-      res.stack[0].value as string,
-      res.stack[1].value as string
-    );
-  };
-
-  getUserBalances = async (
-    address: string,
-    tokenA: string,
-    tokenB: string
-  ): Promise<{ amountA: string; amountB: string }> => {
-    const scripts: any = [];
-    const senderHash = NeonWallet.getScriptHashFromAddress(address);
-    const script1 = {
-      scriptHash: tokenA,
-      operation: "balanceOf",
-      args: [{ type: "Hash160", value: senderHash }],
-    };
-    const script2 = {
-      scriptHash: tokenB,
-      operation: "balanceOf",
-      args: [{ type: "Hash160", value: senderHash }],
-    };
-    scripts.push(script1);
-    scripts.push(script2);
-    const res = await Network.read(this.network, scripts);
-    if (res.state === "FAULT") {
-      throw new Error(res.exception ? (res.exception as string) : WENT_WRONG);
-    }
-    return {
-      amountA: res.stack[0].value as string,
-      amountB: res.stack[1].value as string,
     };
   };
 }

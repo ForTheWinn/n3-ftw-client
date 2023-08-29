@@ -6,6 +6,11 @@ import {
   StackItemMap,
 } from "@cityofzion/neon-core/lib/sc/StackItem";
 import { InvokeResult } from "@cityofzion/neon-core/lib/rpc";
+import { INetworkType, Network } from "../network";
+import { network } from "..";
+import { ethers } from "ethers";
+import { WENT_WRONG } from "../../../consts/messages";
+import { formatAmount } from "../../../common/helpers";
 
 export const truncateAddress = (address: string) => {
   return address
@@ -275,7 +280,6 @@ export const parseMapValue = (stackItem: StackItemLike): any => {
   return obj;
 };
 
-
 export const getNEP17TransferScript = (
   scriptHash: string,
   from: string,
@@ -322,7 +326,7 @@ export const readNeoContract = async (
   return rpcClient.invokeScript(u.HexString.fromHex(sb.build()));
 };
 
-export const getScriptHashFromAddressWithPrefix = (address) =>  {
+export const getScriptHashFromAddressWithPrefix = (address) => {
   let hash = wallet.getScriptHashFromAddress(address);
 
   if (!hash.startsWith("0x")) {
@@ -330,4 +334,34 @@ export const getScriptHashFromAddressWithPrefix = (address) =>  {
   }
 
   return hash;
-}
+};
+
+export const getUserBalance = async (
+  network: INetworkType,
+  address: string,
+  tokenHash: string
+): Promise<string> => {
+  const scripts: any = [];
+  const senderHash = wallet.getScriptHashFromAddress(address);
+  const script1 = {
+    scriptHash: tokenHash,
+    operation: "balanceOf",
+    args: [{ type: "Hash160", value: senderHash }],
+  };
+  const script2 = {
+    scriptHash: tokenHash,
+    operation: "decimals",
+    args: [],
+  };
+  scripts.push(script1);
+  scripts.push(script2);
+  const res = await Network.read(network, scripts);
+  if (res.state === "FAULT") {
+    console.error("Failed to fetch the balance.");
+    return "0";
+  }
+  return formatAmount(
+    res.stack[0].value as string,
+    parseFloat(res.stack[1].value as string)
+  );
+};

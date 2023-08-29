@@ -4,7 +4,6 @@ import { Typography } from "antd";
 import { ITokenState } from "../../scenes/Swap/interfaces";
 import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { SwapContract } from "../../../../../packages/neo/contracts";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { calculateSlippage, parseAmount } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
@@ -12,6 +11,7 @@ import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces
 import { DisplayAd } from "./components/DisplayAd";
 import { TxResult } from "./components/TxResult";
 import Errors from "./components/Errors";
+import { SwapContract } from "../../../../../packages/neo/contracts/ftw/swap";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -55,11 +55,10 @@ const NeoActionModal = (props: IActionModalProps) => {
   const parsedAmountA = parseAmount(amountA, tokenA.decimals);
   const parsedAmountB = parseAmount(amountB, tokenB.decimals);
 
-  const maxAmountAIn = parsedAmountA + calculateSlippage(parsedAmountA, slippage);
-    // .toString();
-  const minAmountBOut = parsedAmountB + calculateSlippage(parsedAmountB, slippage);
-    // .sub(calculateSlippage(parsedAmountB, slippage))
-    // .toString();
+  const maxAmountAIn =
+    parsedAmountA + calculateSlippage(parsedAmountA, slippage);
+  const minAmountBOut =
+    parsedAmountB + calculateSlippage(parsedAmountB, slippage);
 
   const actionHandler = async () => {
     if (method === "swap") {
@@ -77,7 +76,7 @@ const NeoActionModal = (props: IActionModalProps) => {
           tokenA.hash,
           parsedAmountA.toString(),
           tokenB.hash,
-          minAmountBOut
+          minAmountBOut.toString()
         );
       }
     } else if (method === "provide") {

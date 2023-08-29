@@ -6,19 +6,19 @@ import {
   getLPTokens as getPolygonLPTokens,
   getEstimated as polygonGetEstimated,
   getReserves as polygonGetReserves,
-  removeLiquidity as polygonRemoveLiquidity
+  removeLiquidity as polygonRemoveLiquidity,
 } from "../../../packages/polygon/contracts/swap";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import {
   ISwapReserves,
   ISwapEstimateArgs,
   IUserTokenBalances,
-  ISwapLPToken
+  ISwapLPToken,
 } from "./interfaces";
 import { SwapContract } from "../../../packages/neo/contracts";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
-import { ethers } from "ethers";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
+import { getUserBalance } from "../../../packages/neo/utils";
 
 export const getReserves = async (
   chain: CHAINS,
@@ -45,22 +45,17 @@ export const getBalances = async (
   let amountB;
   switch (chain) {
     case NEO_CHAIN:
-      const res = await new SwapContract(network).getUserBalances(
-        address,
-        tokenA.hash,
-        tokenB.hash
-      );
-      amountA = ethers.formatUnits(res.amountA, tokenA.decimals);
-      amountB = ethers.formatUnits(res.amountB, tokenB.decimals);
+      amountA = await getUserBalance(network, address, tokenA.hash);
+      amountB = await getUserBalance(network, address, tokenB.hash);
       break;
     case POLYGON_CHAIN:
       const res1 = await fetchBalance({
         address,
-        token: tokenA.hash
+        token: tokenA.hash,
       } as any);
       const res2 = await fetchBalance({
         address,
-        token: tokenB.hash
+        token: tokenB.hash,
       } as any);
       amountA = res1.formatted;
       amountB = res2.formatted;
@@ -68,7 +63,7 @@ export const getBalances = async (
   }
   return {
     amountA,
-    amountB
+    amountB,
   };
 };
 
@@ -140,7 +135,7 @@ export const getLPTokens = async (
           amountB: token.amountB,
           decimalsA: token.decimalsA,
           decimalsB: token.decimalsB,
-          sharesPercentage: token.sharesPercentage.toString()
+          sharesPercentage: token.sharesPercentage.toString(),
         });
       }
       return tokens;
@@ -167,7 +162,7 @@ export const getLPToken = async (
         amountB: res.amountB,
         decimalsA: res.decimalsA,
         decimalsB: res.decimalsB,
-        sharesPercentage: res.sharesPercentage.toString()
+        sharesPercentage: res.sharesPercentage.toString(),
       };
     case POLYGON_CHAIN:
       return getPolygonLPToken(network, tokenId);

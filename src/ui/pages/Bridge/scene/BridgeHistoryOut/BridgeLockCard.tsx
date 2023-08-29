@@ -5,6 +5,7 @@ import { IBridgeBurn } from "../../../../../common/routers/bridge/interfaces";
 import { ethers } from "ethers";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { NEO_CHAIN } from "../../../../../consts/global";
+import { formatAmount } from "../../../../../common/helpers";
 interface IBridgeBurnCardProps {
   data: IBridgeBurn;
   network: INetworkType;
@@ -15,9 +16,7 @@ const BridgeBurnCard = ({ data, network }: IBridgeBurnCardProps) => {
     <tr>
       <td>{data.no}</td>
       <td>{token?.symbol}</td>
-      <td>
-        {token ? ethers.formatUnits(data.amount, token.decimals) : ""}
-      </td>
+      <td>{token ? formatAmount(data.amount, token.decimals) : ""}</td>
       <td>
         <TruncatedAddress address={data.evmSender} />
       </td>

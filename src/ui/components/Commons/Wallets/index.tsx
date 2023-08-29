@@ -4,7 +4,7 @@ import { ETH_WALLET, NEO_WALLET } from "./consts";
 import ETHWallets from "./ETHWallets";
 import { LocalStorage } from "../../../../packages/neo/local-storage";
 import { useApp } from "../../../../common/hooks/use-app";
-import { NEO_CHAIN } from "../../../../consts/global";
+import { NEO_CHAIN, NEO_LOGO } from "../../../../consts/global";
 
 const Wallet = ({ isActive }: { isActive: boolean }) => {
   const { chain } = useApp();
@@ -33,7 +33,7 @@ const Wallet = ({ isActive }: { isActive: boolean }) => {
             width: "50px",
             position: "absolute",
             top: 0,
-            left: 0
+            left: 0,
           }}
         >
           <ul className="menu">
@@ -45,7 +45,7 @@ const Wallet = ({ isActive }: { isActive: boolean }) => {
                   walletType === NEO_WALLET ? "is-active" : ""
                 } `}
               >
-                <img alt="NEO wallets" src={"/symbols/neo.svg"} />
+                <img alt="NEO wallets" src={NEO_LOGO} />
               </button>
             </li>
             <li>

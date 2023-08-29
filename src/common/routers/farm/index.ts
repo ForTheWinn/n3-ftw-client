@@ -1,4 +1,4 @@
-import { waitForTransaction, writeContract } from "@wagmi/core";
+import { waitForTransaction } from "@wagmi/core";
 import { IClaimableRewards } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
 import { CHAINS } from "../../../consts/chains";
