@@ -125,8 +125,7 @@ export const formatAmount = (
   if (isNaN(decimalsNumber)) {
     throw new Error("Invalid decimals value");
   }
-
-  return ethers.formatUnits(amount, decimalsNumber).toString();
+  return ethers.formatUnits(BigInt(amount), decimalsNumber).toString();
 };
 export const calculateSlippage = (amount: bigint, slippage: number) => {
   // Convert slippage to a BigInt representation
