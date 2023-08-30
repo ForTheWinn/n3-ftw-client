@@ -78,7 +78,7 @@ const ActionModal = (props: IActionModalProps) => {
   const maxAmountAIn =
     parsedAmountA + calculateSlippage(parsedAmountA, slippage);
   const minAmountBOut =
-    parsedAmountB + calculateSlippage(parsedAmountB, slippage);
+    parsedAmountB - calculateSlippage(parsedAmountB, slippage);
 
   const handleTx = async (stepKey: string, txid: any): Promise<boolean> => {
     handleStatus(stepKey, "processing");
@@ -133,13 +133,14 @@ const ActionModal = (props: IActionModalProps) => {
         swapContractHash
       );
     } catch (e: any) {
+      console.error(e);
       handleStatus("allowlances", "error", e.message ? e.message : WENT_WRONG);
       return;
     }
 
     handleStatus("allowlances", "success");
 
-    if (parsedAmountA > (allowances[0])) {
+    if (parsedAmountA > allowances[0]) {
       try {
         tokenApprovalHash = await approve(tokenA.hash, swapContractHash);
       } catch (e: any) {
@@ -163,6 +164,7 @@ const ActionModal = (props: IActionModalProps) => {
         isReverse,
       });
     } catch (e: any) {
+      console.error(e);
       handleStatus("swap", "error", e.details ? e.details : WENT_WRONG);
       return;
     }
