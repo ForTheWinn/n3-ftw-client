@@ -145,10 +145,15 @@ export const getCurrentStep = (state, steps) => {
   return 1;
 };
 
-export const transformString = (inputString: string) => {
-  const replacedString = inputString.replace(/000/g, ",");
+export const transformString = (inputString: string | number): string => {
+  const string =
+    typeof inputString === "string" ? inputString : inputString.toString();
+  const replacedString = string.replace(/,/g, ""); // Remove commas, if any
 
-  // Convert replaced string to a number and format it correctly with commas
-  const numberFormat = new Intl.NumberFormat("en-US");
+  // Convert replaced string to a number and format it correctly with commas and two decimals
+  const numberFormat = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
   return numberFormat.format(Number(replacedString));
 };

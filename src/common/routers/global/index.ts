@@ -9,7 +9,7 @@ import { WENT_WRONG } from "../../../consts/messages";
 import { fetchBalance } from "@wagmi/core";
 import { RestAPI } from "../../../packages/neo/api";
 import { ethers } from "ethers";
-import { formatAmount, transformString } from "../../helpers";
+import { formatAmount } from "../../helpers";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -71,11 +71,9 @@ export const fetchTokenInfo = async (
         decimals: data.decimals,
         symbol: data.symbol,
         icon: "",
-        totalSupply: transformString(
-          ethers
-            .formatUnits(data.totalSupply.value.toString(), data.decimals)
-            .toString()
-        ),
+        totalSupply: ethers
+          .formatUnits(data.totalSupply.value.toString(), data.decimals)
+          .toString(),
       };
     case NEO_CHAIN:
       const scripts: any = [];
@@ -108,9 +106,7 @@ export const fetchTokenInfo = async (
         symbol,
         decimals,
         icon: "",
-        totalSupply: transformString(
-          formatAmount(res.stack[2].value as any, decimals)
-        ),
+        totalSupply: formatAmount(res.stack[2].value as any, decimals),
       };
   }
 };
