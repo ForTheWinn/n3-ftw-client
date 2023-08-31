@@ -28,22 +28,22 @@ const NEPdAnalytics = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
 
   useEffect(() => {
-    async function fetch() {
+    async function fetchData() {
+      setLoading(true);
       try {
-        setLoading(true);
-        const neoNEP = await fetchTokenInfo(
-          NEO_CHAIN,
-          network,
-          GLOBAL_NEP_CONTRACT_ADDRESS[NEO_CHAIN][network]
-        );
-        const polNEP = await fetchTokenInfo(
-          POLYGON_CHAIN,
-          network,
-          GLOBAL_NEP_CONTRACT_ADDRESS[POLYGON_CHAIN][network]
-        );
-        const nepPrice = await new RestAPI(MAINNET).getPrice(
-          NEO_NEP_CONTRACT_ADDRESS[MAINNET]
-        );
+        const [neoNEP, polNEP, nepPrice] = await Promise.all([
+          fetchTokenInfo(
+            NEO_CHAIN,
+            network,
+            GLOBAL_NEP_CONTRACT_ADDRESS[NEO_CHAIN][network]
+          ),
+          fetchTokenInfo(
+            POLYGON_CHAIN,
+            network,
+            GLOBAL_NEP_CONTRACT_ADDRESS[POLYGON_CHAIN][network]
+          ),
+          new RestAPI(MAINNET).getPrice(NEO_NEP_CONTRACT_ADDRESS[MAINNET]),
+        ]);
 
         setValues({
           neo: neoNEP,
@@ -52,10 +52,12 @@ const NEPdAnalytics = () => {
         });
       } catch (e: any) {
         console.error(e);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
-    fetch();
+
+    fetchData();
   }, []);
 
   if (loading) return null;
