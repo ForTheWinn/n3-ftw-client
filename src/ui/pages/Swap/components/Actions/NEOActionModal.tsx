@@ -58,7 +58,7 @@ const NeoActionModal = (props: IActionModalProps) => {
   const maxAmountAIn =
     parsedAmountA + calculateSlippage(parsedAmountA, slippage);
   const minAmountBOut =
-    parsedAmountB + calculateSlippage(parsedAmountB, slippage);
+    parsedAmountB - calculateSlippage(parsedAmountB, slippage);
 
   const actionHandler = async () => {
     if (method === "swap") {
