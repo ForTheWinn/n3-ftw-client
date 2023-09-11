@@ -17,7 +17,7 @@ import {
 } from "./interfaces";
 import { SwapContract } from "../../../packages/neo/contracts";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
-import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
+import { ETH_CHAIN, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 import { getUserBalance } from "../../../packages/neo/utils";
 
 export const getReserves = async (
@@ -29,7 +29,7 @@ export const getReserves = async (
   switch (chain) {
     case NEO_CHAIN:
       return await new SwapContract(network).getReserve(tokenA, tokenB);
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return await polygonGetReserves(network, tokenA, tokenB);
   }
 };
@@ -48,7 +48,7 @@ export const getBalances = async (
       amountA = await getUserBalance(network, address, tokenA.hash);
       amountB = await getUserBalance(network, address, tokenB.hash);
       break;
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       const res1 = await fetchBalance({
         address,
         token: tokenA.hash,
@@ -88,7 +88,7 @@ export const getEstimate = async (
           args.amount
         );
       }
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return polygonGetEstimated(network, args);
   }
 };
@@ -107,7 +107,7 @@ export const removeLiquidity = async (
       } else {
         throw new Error("Conneect wallet.");
       }
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       const config = (await polygonRemoveLiquidity(network, tokenId)) as any;
       const res = await writeContract(config);
       return res.hash;
@@ -139,7 +139,7 @@ export const getLPTokens = async (
         });
       }
       return tokens;
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return getPolygonLPTokens(network, address);
   }
 };
@@ -164,7 +164,7 @@ export const getLPToken = async (
         decimalsB: res.decimalsB,
         sharesPercentage: res.sharesPercentage.toString(),
       };
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return getPolygonLPToken(network, tokenId);
   }
 };

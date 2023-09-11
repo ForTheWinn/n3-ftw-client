@@ -6,7 +6,7 @@ import { INetworkType } from "../../../packages/neo/network";
 import { wallet } from "../../../packages/neo";
 import { DEFAULT_WITNESS_SCOPE } from "../../../packages/neo/consts";
 import { IMassTransaferList } from "./interfaces";
-import { NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
+import { ETH_CHAIN, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 
 export interface IExcelData {
   type: any;
@@ -26,16 +26,16 @@ export const generatePrivatekeys = (
         const account = new neonWallet.Account(p);
         row.push({
           type: String,
-          value: account.address
+          value: account.address,
         });
         row.push({
           type: String,
-          value: p
+          value: p,
         });
         list.push(row);
       }
       return list;
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return [];
   }
 };

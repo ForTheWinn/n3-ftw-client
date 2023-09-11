@@ -1,4 +1,7 @@
 import {
+  ETH_CHAIN,
+  ETH_MAINNET_CHAIN_ID,
+  ETH_TESTNET_CHAIN_ID,
   MAINNET,
   NEO_CHAIN,
   NEO_LOGO,
@@ -13,7 +16,7 @@ import {
 
 export type CHAINS = typeof NEO_CHAIN | typeof POLYGON_CHAIN;
 
-export const LIST = [NEO_CHAIN, POLYGON_CHAIN];
+export const LIST = [NEO_CHAIN, ETH_CHAIN, POLYGON_CHAIN];
 
 export const CONFIGS = {
   [MAINNET]: {
@@ -22,6 +25,12 @@ export const CONFIGS = {
       color: "primary",
       icon: NEO_LOGO,
       chainId: NEO_MAINNET_CHAIN_ID,
+    },
+    [ETH_CHAIN]: {
+      label: "Ethereum",
+      color: "dark",
+      icon: "/symbols/eth.png",
+      chainId: ETH_MAINNET_CHAIN_ID,
     },
     [POLYGON_CHAIN]: {
       label: "Polygon",
@@ -36,6 +45,12 @@ export const CONFIGS = {
       color: "primary",
       icon: NEO_LOGO,
       chainId: NEO_TESTNET_CHAIN_ID,
+    },
+    [ETH_CHAIN]: {
+      label: "Ropsten",
+      color: "dark",
+      icon: "/symbols/eth.png",
+      chainId: ETH_TESTNET_CHAIN_ID,
     },
     [POLYGON_CHAIN]: {
       label: "Polygon Mumbai",

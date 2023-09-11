@@ -18,7 +18,7 @@ import {
 import { IClaimable, IFarmPair } from "./interfaces";
 import { ISwapLPToken } from "../swap/interfaces";
 import { CONTRACT_MAP } from "../../../consts/contracts";
-import { FARM, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
+import { ETH_CHAIN, FARM, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 
 export const getPoolList = (
@@ -28,7 +28,7 @@ export const getPoolList = (
   switch (chain) {
     case NEO_CHAIN:
       return new FarmV2Contract(network).getPools();
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return getPools(network);
   }
 };
@@ -57,7 +57,7 @@ export const getStakedLPTokens = async (
         });
       }
       return tokens;
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return getStakedTokens(network, address);
   }
 };
@@ -70,7 +70,7 @@ export const getClaimable = async (
   switch (chain) {
     case NEO_CHAIN:
       return await new FarmV2Contract(network).getClaimable(address);
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return polygonGetClaimable(network, address);
   }
 };
@@ -89,7 +89,7 @@ export const stakeLPToken = async (
       } else {
         return "";
       }
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       if (
         !(await isApprovedForAll(
           network,
@@ -120,7 +120,7 @@ export const unStakeLPToken = async (
       } else {
         return "";
       }
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return unStake(network, tokenId);
   }
 };
@@ -137,7 +137,7 @@ export const claim = async (
         return new FarmV2Contract(network).claimMulti(connectedWallet, items);
       }
       return "";
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       return polygonClaim(network, items);
   }
 };

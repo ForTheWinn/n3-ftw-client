@@ -3,7 +3,7 @@ import { CHAINS } from "../../../consts/chains";
 import { INetworkType, Network } from "../../../packages/neo/network";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import { IPrices } from "../../../packages/neo/api/interfaces";
-import { MAINNET, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
+import { ETH_CHAIN, MAINNET, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
 import { base64ToString, getUserBalance } from "../../../packages/neo/utils";
 import { WENT_WRONG } from "../../../consts/messages";
 import { fetchBalance } from "@wagmi/core";
@@ -17,7 +17,7 @@ export const waitTransactionUntilSubmmited = async (
   txid: string
 ): Promise<boolean> => {
   switch (chain) {
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       const data = await waitForTransaction({
         hash: txid as `0x${string}`,
       });
@@ -49,7 +49,7 @@ export const fetchTokenBalance = async (
   switch (chain) {
     case NEO_CHAIN:
       return await getUserBalance(network, address, tokenHash);
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       const res = await fetchBalance({
         address,
         token: tokenHash,
@@ -64,7 +64,7 @@ export const fetchTokenInfo = async (
   hash: string
 ): Promise<ITokenState> => {
   switch (chain) {
-    case POLYGON_CHAIN:
+    case POLYGON_CHAIN || ETH_CHAIN:
       const data = await fetchToken({ address: hash as any });
       return {
         hash,
