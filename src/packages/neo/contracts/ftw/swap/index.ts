@@ -256,7 +256,7 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: amountA,
+          value: Number(amountA),
         },
         {
           type: "Hash160",
@@ -264,7 +264,7 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: amountB,
+          value: Number(amountB),
         },
         {
           type: "Integer",
@@ -399,11 +399,11 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: amountOut,
+          value: Number(amountOut),
         },
         {
           type: "Integer",
-          value: maxTokenAAmount,
+          value: Number(maxTokenAAmount),
         },
         {
           type: "Integer",
