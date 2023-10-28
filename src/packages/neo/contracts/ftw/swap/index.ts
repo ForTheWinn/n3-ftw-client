@@ -239,6 +239,7 @@ export class SwapContract {
     tokenB: string,
     amountB: string // Min amount out
   ): Promise<string> => {
+    console.log(amountA, amountB);
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
@@ -256,7 +257,7 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: Number(amountA),
+          value: amountA,
         },
         {
           type: "Hash160",
@@ -264,7 +265,7 @@ export class SwapContract {
         },
         {
           type: "Integer",
-          value: Number(amountB),
+          value: amountB,
         },
         {
           type: "Integer",
