@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import NumberFormat from "react-number-format";
 import { detectEmojiInString } from "../../helpers";
@@ -10,7 +10,8 @@ import PageLayout from "../../../../../../components/Commons/PageLayout";
 import ConnectWalletButton from "../../../../../../components/ConnectWalletButton";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 import EVMActionModal from "./EVMSmithActionModal";
-import { SMITH_FEE_FORMATTED } from "../../../../../../../consts/smith";
+import { SMITH_FEE } from "../../../../../../../consts/smith";
+import { withDecimal } from "../../../../../../../packages/neo/utils";
 
 export interface ITokenMetadata {
   name: string;
@@ -28,6 +29,7 @@ const CreateToken = () => {
 
   const [isActionModalActive, setActionModalActive] = useState(false);
   const [userAgreement, setUserAgreement] = useState(false);
+  const smithFee = withDecimal(SMITH_FEE[chain][network], 8, true);
 
   const [values, setValues] = useState<ITokenMetadata>({
     name: "",
@@ -259,7 +261,7 @@ const CreateToken = () => {
                   </li>
                   <li>
                     Service fee is{" "}
-                    <strong className="has-text-primary">{`${SMITH_FEE_FORMATTED[chain][network]} NEP`}</strong>
+                    <strong className="has-text-primary">{`${smithFee} NEP`}</strong>
                     .
                   </li>
                   <li>

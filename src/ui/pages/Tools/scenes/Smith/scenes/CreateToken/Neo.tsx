@@ -9,8 +9,7 @@ import { SMITH_PATH } from "../../../../../../../consts/routes";
 
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import ConnectWalletButton from "../../../../../../components/ConnectWalletButton";
-import { SMITH_FEE_FORMATTED } from "../../../../../../../consts/smith";
-import { NEO_CHAIN } from "../../../../../../../consts/global";
+import { SMITH_FEE } from "../../../../../../../consts/smith";
 import NEOSmithActionModal from "./NEOActionModal";
 import { Modal } from "antd";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
@@ -20,13 +19,14 @@ import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
 } from "../../../../../../../packages/neo/consts/neo-contracts";
+import { withDecimal } from "../../../../../../../packages/neo/utils";
 
 const CreateToken = () => {
   const { chain, network } = useApp();
   const history = useHistory();
   const [txid, setTxid] = useState<string | undefined>();
   const { client, address } = useWalletRouter(chain);
-
+  const smithFee = withDecimal(SMITH_FEE[chain][network], 8, true);
   const [values, setValues] = useState({
     name: "",
     symbol: "",
@@ -60,7 +60,7 @@ const CreateToken = () => {
         NEO_NEP_CONTRACT_ADDRESS[network],
       ]);
 
-      if (balances[1] < SMITH_FEE_FORMATTED[chain][network]) {
+      if (balances[1] < parseFloat(smithFee)) {
         toast.error("You don't have enough NEP.");
         return;
       }
@@ -290,7 +290,7 @@ const CreateToken = () => {
                   </li>
                   <li>
                     Service fee is{" "}
-                    <strong className="has-text-primary">{`${SMITH_FEE_FORMATTED[NEO_CHAIN][network]} NEP`}</strong>
+                    <strong className="has-text-primary">{`${smithFee} NEP`}</strong>
                     .
                   </li>
                   <li>

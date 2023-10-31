@@ -10,20 +10,7 @@ export const SMITH_FEE = {
     [TESTNET]: 1_00000000,
   },
   [ETH_CHAIN]: {
-    [MAINNET]: 0,
-  },
-};
-
-export const SMITH_FEE_FORMATTED = {
-  [NEO_CHAIN]: {
-    [MAINNET]: 1000,
-    [TESTNET]: 1000,
-  },
-  [POLYGON_CHAIN]: {
-    [MAINNET]: 1000,
-    [TESTNET]: 1,
-  },
-  [ETH_CHAIN]: {
-    [MAINNET]: 0,
+    [MAINNET]: 1000_00000000,
+    [TESTNET]: 0,
   },
 };
