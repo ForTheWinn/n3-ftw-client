@@ -14,7 +14,7 @@ import {
   TESTNET,
 } from "./global";
 
-export type CHAINS = typeof NEO_CHAIN | typeof POLYGON_CHAIN;
+export type CHAINS = typeof NEO_CHAIN | typeof POLYGON_CHAIN | typeof ETH_CHAIN;
 
 export const LIST = [NEO_CHAIN, ETH_CHAIN, POLYGON_CHAIN];
 
@@ -47,7 +47,7 @@ export const CONFIGS = {
       chainId: NEO_TESTNET_CHAIN_ID,
     },
     [ETH_CHAIN]: {
-      label: "Ropsten",
+      label: "Goerli",
       color: "dark",
       icon: "/symbols/eth.png",
       chainId: ETH_TESTNET_CHAIN_ID,

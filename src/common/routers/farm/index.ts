@@ -8,17 +8,22 @@ import {
   getStakedTokens,
   stake,
   unStake,
-  getClaimable as polygonGetClaimable,
-  claim as polygonClaim,
-} from "../../../packages/polygon/contracts/farm";
+  getClaimable as evmGetClaimable,
+  claim as evmClaim,
+} from "../../../packages/evm/contracts/farm";
 import {
   isApprovedForAll,
   setApprovalForAll,
-} from "../../../packages/polygon/contracts/swap";
+} from "../../../packages/evm/contracts/swap";
 import { IClaimable, IFarmPair } from "./interfaces";
 import { ISwapLPToken } from "../swap/interfaces";
 import { CONTRACT_MAP } from "../../../consts/contracts";
-import { ETH_CHAIN, FARM, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
+import {
+  ETH_CHAIN,
+  FARM,
+  NEO_CHAIN,
+  POLYGON_CHAIN,
+} from "../../../consts/global";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 
 export const getPoolList = (
@@ -28,8 +33,8 @@ export const getPoolList = (
   switch (chain) {
     case NEO_CHAIN:
       return new FarmV2Contract(network).getPools();
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return getPools(network);
+    default:
+      return getPools(chain, network);
   }
 };
 
@@ -57,8 +62,8 @@ export const getStakedLPTokens = async (
         });
       }
       return tokens;
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return getStakedTokens(network, address);
+    default:
+      return getStakedTokens(chain, network, address);
   }
 };
 
@@ -70,8 +75,8 @@ export const getClaimable = async (
   switch (chain) {
     case NEO_CHAIN:
       return await new FarmV2Contract(network).getClaimable(address);
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return polygonGetClaimable(network, address);
+    default:
+      return evmGetClaimable(chain, network, address);
   }
 };
 
@@ -89,21 +94,23 @@ export const stakeLPToken = async (
       } else {
         return "";
       }
-    case POLYGON_CHAIN || ETH_CHAIN:
+    default:
       if (
         !(await isApprovedForAll(
+          chain,
           network,
           address,
           CONTRACT_MAP[chain][network][FARM]
         ))
       ) {
         const hash: any = await setApprovalForAll(
+          chain,
           network,
           CONTRACT_MAP[chain][network][FARM]
         );
         await waitForTransaction({ hash });
       }
-      return stake(network, tokenId);
+      return stake(chain, network, tokenId);
   }
 };
 
@@ -120,8 +127,8 @@ export const unStakeLPToken = async (
       } else {
         return "";
       }
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return unStake(network, tokenId);
+    default:
+      return unStake(chain, network, tokenId);
   }
 };
 
@@ -137,7 +144,7 @@ export const claim = async (
         return new FarmV2Contract(network).claimMulti(connectedWallet, items);
       }
       return "";
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return polygonClaim(network, items);
+    default:
+      return evmClaim(chain, network, items);
   }
 };

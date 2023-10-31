@@ -6,7 +6,7 @@ export const POLYGON_MAINNET_CHAIN_ID = 137;
 export const ETH_MAINNET_CHAIN_ID = 1;
 export const NEO_TESTNET_CHAIN_ID = 889;
 export const POLYGON_TESTNET_CHAIN_ID = 80001;
-export const ETH_TESTNET_CHAIN_ID = 3;
+export const ETH_TESTNET_CHAIN_ID = 5;
 
 export const TESTNET = "N3TestNet";
 export const MAINNET = "N3MainNet";
@@ -16,6 +16,7 @@ export const FARM = "FARM";
 export const BRIDGE = "BRIDGE";
 export const SMITH = "SMITH";
 
+export const ETHEREUM_LOGO = "/symbols/eth.png";
 export const POLYGON_LOGO = "/symbols/matic.png";
 export const NEP_LOGO = "/symbols/nep.png";
 export const NEO_LOGO = "/symbols/neo.svg";

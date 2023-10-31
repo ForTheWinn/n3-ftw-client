@@ -1,18 +1,24 @@
 import {
-  POLYGON_TOKENS_METADATA_MAP,
   POLYGON_SWAP_TOKENS_MAP,
-} from "../packages/polygon/consts";
-import { ETH_CHAIN, MAINNET, NEO_CHAIN, POLYGON_CHAIN, TESTNET } from "./global";
+} from "../packages/evm/polygon";
+import {
+  ETH_CHAIN,
+  MAINNET,
+  NEO_CHAIN,
+  POLYGON_CHAIN,
+  TESTNET,
+} from "./global";
 import { NEO_MAINNET_TOKENS_METADATA_MAP } from "../packages/neo/consts/mainnet";
 import { TESTNET_TOKEN_LIST } from "../packages/neo/consts/testnet";
-import { ETH_SWAP_TOKENS_MAP } from "../packages/ethereum/consts";
+import { ETHEREUM_SWAP_TOKENS_MAP } from "../packages/evm/ethereum";
+import { EVM_TOKEN_LIST } from "../packages/evm";
 
 export const TOKEN_LIST = {
   [NEO_CHAIN]: {
     [MAINNET]: NEO_MAINNET_TOKENS_METADATA_MAP,
     [TESTNET]: TESTNET_TOKEN_LIST,
   },
-  [POLYGON_CHAIN]: POLYGON_TOKENS_METADATA_MAP,
+  ...EVM_TOKEN_LIST,
 };
 
 export const SWAP_TOKEN_LIST = {
@@ -25,5 +31,5 @@ export const SWAP_TOKEN_LIST = {
     }),
   },
   [POLYGON_CHAIN]: POLYGON_SWAP_TOKENS_MAP,
-  [ETH_CHAIN]: ETH_SWAP_TOKENS_MAP
+  [ETH_CHAIN]: ETHEREUM_SWAP_TOKENS_MAP,
 };

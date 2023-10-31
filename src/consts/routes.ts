@@ -161,6 +161,7 @@ export const ANALYTICS_ROUTE = {
   chain: {
     [NEO_CHAIN]: [MAINNET],
     [POLYGON_CHAIN]: [MAINNET, TESTNET],
+    [ETH_CHAIN]: [MAINNET],
   },
   category: [],
   component: Analytics,
@@ -288,6 +289,7 @@ const SMITH_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
+    [ETH_CHAIN]: [MAINNET, TESTNET],
   },
   category: [],
   component: Smith,
@@ -316,6 +318,7 @@ export const TOOLS_LP_FINDER_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
+    [ETH_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   component: LPTokens,
@@ -327,6 +330,7 @@ export const TOOLS_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
+    [ETH_CHAIN]: [TESTNET, MAINNET],
   },
   category: [
     TOOLS_MAIN_PAGE_ROUTE,
@@ -348,6 +352,7 @@ const BRIDGE_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
+    [ETH_CHAIN]: [MAINNET, TESTNET],
   },
   category: [],
   component: Bridge,

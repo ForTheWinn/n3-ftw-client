@@ -9,7 +9,7 @@ import { swapRouter } from "../../../../../common/routers";
 import {
   isApprovedForAll,
   setApprovalForAll,
-} from "../../../../../packages/polygon/contracts/swap";
+} from "../../../../../packages/evm/contracts/swap";
 import { NEO_CHAIN, STATUS_STATE, SWAP } from "../../../../../consts/global";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
@@ -106,6 +106,7 @@ const EVMRemoveLiquidityActionModal = ({
 
       try {
         isApproved = await isApprovedForAll(
+          chain,
           network,
           address,
           swapContractAddress
@@ -122,7 +123,7 @@ const EVMRemoveLiquidityActionModal = ({
 
       if (!isApproved) {
         try {
-          approveHash = await setApprovalForAll(network, swapContractAddress);
+          approveHash = await setApprovalForAll(chain, network, swapContractAddress);
 
           if (!(await handleTx("approve", approveHash)) === false) {
             return;
@@ -143,7 +144,7 @@ const EVMRemoveLiquidityActionModal = ({
         );
 
         await handleTx("withdraw", withdrawHash);
-        
+
         setState((prev) => {
           return {
             ...prev,

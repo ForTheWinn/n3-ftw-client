@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar } from "antd";
 import NeoWalletConnected from "./NeoWalletConnected";
-import PolygonWalletConnected from "./PolygonWalletConnected";
+import EVMWalletConnected from "./EVMWalletConnected";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { useAccount } from "wagmi";
@@ -24,7 +24,7 @@ const DisplayConnectedWallets = () => {
             connectedWallet={connectedWallet}
             style={btnStyle}
           />
-          <PolygonWalletConnected isConnected={isConnected} style={btnStyle} />
+          <EVMWalletConnected isConnected={isConnected} style={btnStyle} />
         </Avatar.Group>
       ) : (
         "Connect"

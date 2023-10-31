@@ -2,12 +2,12 @@ import { fetchBalance, writeContract } from "@wagmi/core";
 import { CHAINS } from "../../../consts/chains";
 import { INetworkType } from "../../../packages/neo/network";
 import {
-  getTokenURI as getPolygonLPToken,
-  getLPTokens as getPolygonLPTokens,
-  getEstimated as polygonGetEstimated,
-  getReserves as polygonGetReserves,
-  removeLiquidity as polygonRemoveLiquidity,
-} from "../../../packages/polygon/contracts/swap";
+  getTokenURI as evmGetLPToken,
+  getLPTokens as evmGetLPTokens,
+  getEstimated as evmGetEstimated,
+  getReserves as evmGetReserves,
+  removeLiquidity as evmRemoveLiquidity,
+} from "../../../packages/evm/contracts/swap";
 import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
 import {
   ISwapReserves,
@@ -29,8 +29,8 @@ export const getReserves = async (
   switch (chain) {
     case NEO_CHAIN:
       return await new SwapContract(network).getReserve(tokenA, tokenB);
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return await polygonGetReserves(network, tokenA, tokenB);
+    default:
+      return await evmGetReserves(chain, network, tokenA, tokenB);
   }
 };
 
@@ -48,7 +48,7 @@ export const getBalances = async (
       amountA = await getUserBalance(network, address, tokenA.hash);
       amountB = await getUserBalance(network, address, tokenB.hash);
       break;
-    case POLYGON_CHAIN || ETH_CHAIN:
+    default:
       const res1 = await fetchBalance({
         address,
         token: tokenA.hash,
@@ -88,8 +88,8 @@ export const getEstimate = async (
           args.amount
         );
       }
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return polygonGetEstimated(network, args);
+    default:
+      return evmGetEstimated(chain, network, args);
   }
 };
 
@@ -107,8 +107,8 @@ export const removeLiquidity = async (
       } else {
         throw new Error("Conneect wallet.");
       }
-    case POLYGON_CHAIN || ETH_CHAIN:
-      const config = (await polygonRemoveLiquidity(network, tokenId)) as any;
+    default:
+      const config = (await evmRemoveLiquidity(chain, network, tokenId)) as any;
       const res = await writeContract(config);
       return res.hash;
   }
@@ -139,8 +139,8 @@ export const getLPTokens = async (
         });
       }
       return tokens;
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return getPolygonLPTokens(network, address);
+    default:
+      return evmGetLPTokens(chain, network, address);
   }
 };
 
@@ -164,7 +164,7 @@ export const getLPToken = async (
         decimalsB: res.decimalsB,
         sharesPercentage: res.sharesPercentage.toString(),
       };
-    case POLYGON_CHAIN || ETH_CHAIN:
-      return getPolygonLPToken(network, tokenId);
+    default:
+      return evmGetLPToken(chain, network, tokenId);
   }
 };

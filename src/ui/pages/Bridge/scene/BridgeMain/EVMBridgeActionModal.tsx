@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
-  readContract,
-  erc20ABI,
-  prepareWriteContract,
-  writeContract,
   waitForTransaction,
 } from "@wagmi/core";
 import { Steps } from "antd";
 
-import { ethers } from "ethers";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { CHAINS, CONFIGS } from "../../../../../consts/chains";
 import { isBurned } from "../../../../../packages/neo/contracts/ftw/bridge";
@@ -20,7 +15,7 @@ import { BRIDGE_CONTRACTS, BRIDGE_NEP_FEE } from "../../../../../consts/bridge";
 import {
   burn,
   getMintoNoFromLogs,
-} from "../../../../../packages/polygon/contracts/bridge";
+} from "../../../../../packages/evm/contracts/bridge";
 import {
   getCurrentStep,
   getExplorer,
@@ -34,7 +29,7 @@ import { STATUS_STATE } from "../../../../../consts/global";
 import {
   approve,
   getAllowances,
-} from "../../../../../packages/polygon/contracts/swap";
+} from "../../../../../packages/evm/contracts/swap";
 import Errors from "../../../Swap/components/Actions/components/Errors";
 
 const initialState = {
@@ -170,7 +165,7 @@ const EVMBridgeActionModal = ({
 
       if (allowances[0] < bridgeAmount) {
         try {
-          tokenApprovalHash = await approve(token.hash, evmBridgeContractHash);
+          tokenApprovalHash = await approve(chain, network, token.hash, evmBridgeContractHash);
         } catch (e: any) {
           handleStatus("token", "error", e.message ? e.message : WENT_WRONG);
           return;
@@ -183,9 +178,12 @@ const EVMBridgeActionModal = ({
         handleStatus("token", "success");
       }
 
-      if (allowances[1] < BRIDGE_NEP_FEE[network]) {
+      const bridgeFee = BRIDGE_NEP_FEE[network][originChain.chainId][destChain.chainId];
+      if (allowances[1] < bridgeFee) {
         try {
           feeApprovalHash = await approve(
+            chain,
+            network,
             nepTokenContractHash,
             evmBridgeContractHash
           );

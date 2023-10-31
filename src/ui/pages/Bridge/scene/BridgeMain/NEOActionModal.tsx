@@ -13,7 +13,7 @@ import Modal from "../../../../components/Modal";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
-import { getIsMinted } from "../../../../../packages/polygon/contracts/bridge";
+import { getIsMinted } from "../../../../../packages/evm/contracts/bridge";
 import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
 import { getExplorer } from "../../../../../common/helpers";
 
@@ -70,9 +70,7 @@ const ActionModal = ({
   const destBridgeContractHash =
     BRIDGE_CONTRACTS[network][destChainId][originChainId];
 
-  const bridgeAmount = ethers
-    .parseUnits(amount, token.decimals)
-    .toString();
+  const bridgeAmount = ethers.parseUnits(amount, token.decimals).toString();
 
   const [state, setState] = useState(initialState);
 

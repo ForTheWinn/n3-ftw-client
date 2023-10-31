@@ -9,9 +9,9 @@ import {
   FARM_V2_PATH,
   RUNE_PATH,
   SMITH_PATH,
-  SWAP_PATH
+  SWAP_PATH,
 } from "../../consts/routes";
-import { NEO_CHAIN } from "../../consts/global";
+import { NEO_CHAIN, POLYGON_CHAIN } from "../../consts/global";
 
 const Home = () => {
   useEffect(() => {
@@ -30,15 +30,25 @@ const Home = () => {
               <p className="heading is-size-6-mobile">
                 DeFi / Web3 Tools / Cool NFTs
               </p>
-              <p>-</p>
-              {chain === NEO_CHAIN ? (
-                <div className="mt-3">
-                  <img alt="Neo Boyz #1065" width={150} src="/boyz/1065.png" />
-                  <br />
-                  <p className="heading is-size-6-mobile">Neo Boyz #1065</p>
-                </div>
-              ) : (
+
+              {chain === NEO_CHAIN && (
+                <>
+                  <p>-</p>
+                  <div className="mt-3">
+                    <img
+                      alt="Neo Boyz #1065"
+                      width={150}
+                      src="/boyz/1065.png"
+                    />
+                    <br />
+                    <p className="heading is-size-6-mobile">Neo Boyz #1065</p>
+                  </div>
+                </>
+              )}
+
+              {chain === POLYGON_CHAIN && (
                 <div>
+                  <p>-</p>
                   <img
                     alt="Matic Boyz"
                     width={150}
@@ -61,7 +71,7 @@ const Home = () => {
             options={{
               height: 10,
               amplitude: 30,
-              speed: 0.15
+              speed: 0.15,
             }}
           />
           <div
@@ -71,7 +81,7 @@ const Home = () => {
               bottom: 0,
               position: "absolute",
               backgroundColor: "black",
-              zIndex: 999
+              zIndex: 999,
             }}
           ></div>
         </div>

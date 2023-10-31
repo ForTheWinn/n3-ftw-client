@@ -7,7 +7,7 @@ import { INetworkType } from "../../neo/network";
 import { ALCHEMY_KEY, SMITH } from "../../../consts/global";
 import { ethers } from "ethers";
 import { ISmithTokenInfo } from "../interfaces";
-import { CHAINS } from "../../../consts/chains";
+import { CHAINS, CONFIGS } from "../../../consts/chains";
 
 export const createTokenContract = async (
   chain: CHAINS,
@@ -64,6 +64,7 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
     abi: FTWSmith,
     functionName: "getTokens",
     args: [30, 1],
+    chainId: CONFIGS[network][chain].chainId,
   });
   return res;
   // return {
@@ -92,6 +93,7 @@ const getTokenMetadata = async (
     abi: FTWSmith,
     functionName: "getTokenData",
     args: [contractHash],
+    chainId: CONFIGS[network][chain].chainId,
   });
   return {
     icon: res[1],

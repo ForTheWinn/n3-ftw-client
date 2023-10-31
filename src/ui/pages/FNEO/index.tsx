@@ -2,11 +2,14 @@ import React from "react";
 import PageLayout from "../../components/Commons/PageLayout";
 import FNEOCard from "./FNEOCard";
 import { useApp } from "../../../common/hooks/use-app";
-import { FNEO_CHAINS } from "../../../packages/ftwNEO/consts";
 import Level from "../../components/Level";
+import { EVM_FNEO_MAP } from "../../../packages/evm";
 
 const FNEO = () => {
-  const { network } = useApp();
+  const { chain, network } = useApp();
+  const fneoList = Object.keys(EVM_FNEO_MAP).map((chain) => {
+    return EVM_FNEO_MAP[chain];
+  });
   return (
     <div>
       <PageLayout>
@@ -27,14 +30,15 @@ const FNEO = () => {
               />
             </div>
             <div className="columns">
-              {FNEO_CHAINS.map((chain) => {
+              {fneoList.map((chain) => {
                 return (
                   <div className="column is-6">
                     <FNEOCard
+                      chain={chain}
+                      network={network}
                       name={chain.name}
                       hash={chain.address[network]}
-                      chainId={chain.chainId[network]}
-                      perBlock={chain.perBlock[network]}
+                      perBlock={chain.rewardsPerBlock[network]}
                     />
                   </div>
                 );

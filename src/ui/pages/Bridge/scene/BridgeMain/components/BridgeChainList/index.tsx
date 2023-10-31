@@ -3,12 +3,12 @@ import React from "react";
 import { Avatar, Modal, Space } from "antd";
 
 import { INetworkType } from "../../../../../../../packages/neo/network";
-import { BRIDGE_CHAIN_LIST } from "../../../../../../../consts/bridge";
+import { BRIDGE_CHAINS, BRIDGE_CHAIN_LIST } from "../../../../../../../consts/bridge";
 import { IBridgeChain } from "../../../../../../../common/routers/bridge/interfaces";
 
 interface IAssetListModalProps {
   network: INetworkType;
-  selectedChain?: IBridgeChain;
+  selectedChain: IBridgeChain;
   onClose: () => void;
   onChainClick: (chain: IBridgeChain) => void;
 }
@@ -19,10 +19,13 @@ const BridgeChainList = ({
   selectedChain,
   network
 }: IAssetListModalProps) => {
-  const chainList = BRIDGE_CHAIN_LIST(network).filter((chain) => {
-    if (chain.chainId === selectedChain?.chainId) return false;
-    if (chain.chains.length === 0) return false;
-    return true;
+  // const chainList = BRIDGE_CHAIN_LIST(network).filter((chain) => {
+  //   if (chain.chainId === selectedChain?.chainId) return false;
+  //   if (chain.chains.length === 0) return false;
+  //   return true;
+  // });
+  const chainList = BRIDGE_CHAINS[network][selectedChain.chainId].chains.map(chainId => {
+    return BRIDGE_CHAINS[network][chainId];
   });
   return (
     <>

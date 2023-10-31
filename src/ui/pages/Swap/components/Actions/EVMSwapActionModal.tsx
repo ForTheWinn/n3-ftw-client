@@ -9,7 +9,7 @@ import {
   approve,
   getAllowances,
   swap,
-} from "../../../../../packages/polygon/contracts/swap";
+} from "../../../../../packages/evm/contracts/swap";
 import {
   calculateSlippage,
   getCurrentStep,
@@ -142,7 +142,7 @@ const ActionModal = (props: IActionModalProps) => {
 
     if (parsedAmountA > allowances[0]) {
       try {
-        tokenApprovalHash = await approve(tokenA.hash, swapContractHash);
+        tokenApprovalHash = await approve(chain, network, tokenA.hash, swapContractHash);
       } catch (e: any) {
         handleStatus("tokenA", "error", e.message ? e.message : WENT_WRONG);
         return;

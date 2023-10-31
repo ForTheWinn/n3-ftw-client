@@ -9,7 +9,7 @@ import {
   approve,
   getAllowances,
   provide,
-} from "../../../../../packages/polygon/contracts/swap";
+} from "../../../../../packages/evm/contracts/swap";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { getCurrentStep, parseAmount } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
@@ -134,9 +134,9 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
 
     handleStatus("allowlances", "success");
 
-    if (parsedAmountA > (allowances[0])) {
+    if (parsedAmountA > allowances[0]) {
       try {
-        tokenAApprovalHash = await approve(tokenA.hash, swapContractHash);
+        tokenAApprovalHash = await approve(chain, network, tokenA.hash, swapContractHash);
       } catch (e: any) {
         handleStatus("tokenA", "error", e.message ? e.message : WENT_WRONG);
         return;
@@ -148,10 +148,10 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     } else {
       handleStatus("tokenA", "success");
     }
-
-    if (parsedAmountB > (allowances[1])) {
+    console.log(allowances[1]);
+    if (parsedAmountB > allowances[1]) {
       try {
-        tokenBApprovalHash = await approve(tokenB.hash, swapContractHash);
+        tokenBApprovalHash = await approve(chain, network, tokenB.hash, swapContractHash);
       } catch (e: any) {
         handleStatus("tokenB", "error", e.message ? e.message : WENT_WRONG);
         return;

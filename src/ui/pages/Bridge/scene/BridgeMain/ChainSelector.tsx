@@ -5,6 +5,7 @@ import { useBridgeSwap } from "./context";
 
 const ChainSelector = () => {
   const { originChain, destChain, setChainSelectModalActive } = useBridgeSwap();
+  console.log(originChain)
   return (
     <div className="box is-shadowless mb-1">
       <Level

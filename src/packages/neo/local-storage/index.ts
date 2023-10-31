@@ -20,16 +20,13 @@ export class LocalStorage {
       : NEO_WALLET;
 
   static setChain = (val: CHAINS) => store.set(CURRENT_CHAIN, val);
-  
-  static getChain = (): CHAINS => {
-    if (store.get(CURRENT_CHAIN)) {
-      LIST.forEach((chain) => {
-        if (store.get(CURRENT_CHAIN) === chain) {
-          return store.get(CURRENT_CHAIN);
-        }
-      });
-    }
 
+  static getChain = (): CHAINS => {
+    const storedChain = store.get(CURRENT_CHAIN);
+    if (storedChain && LIST.includes(storedChain)) {
+      return storedChain;
+    }
+    // Defalt chain is NEO
     return NEO_CHAIN;
   };
 }

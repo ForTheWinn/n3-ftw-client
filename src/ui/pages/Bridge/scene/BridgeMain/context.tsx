@@ -44,11 +44,10 @@ export const SwapContextProvider = (props: { children: any }) => {
     network,
     refreshCount,
     toggleWalletSidebar,
-    increaseRefreshCount
+    increaseRefreshCount,
   } = useApp();
   const { connectedWallet } = useNeoWallets();
   const { address } = useWalletRouter(chain);
-
   const [originChain, setOriginChain] = useState<IBridgeChain | undefined>(
     BRIDGE_CHAINS[network][CONFIGS[network][chain].chainId]
   );
@@ -58,7 +57,7 @@ export const SwapContextProvider = (props: { children: any }) => {
   const [amount, setAmount] = useState<string | undefined>();
   const [receiver, setReceiver] = useState<IBridgeReceiver>({
     address: "",
-    isValid: false
+    isValid: false,
   });
   const [balance, setBalance] = useState<string | undefined>();
 
@@ -146,7 +145,7 @@ export const SwapContextProvider = (props: { children: any }) => {
     setChainSelectModalActive,
     toggleWalletSidebar,
     openBridgeTokenList,
-    onAfterBridgeCompleted
+    onAfterBridgeCompleted,
   };
 
   return (
@@ -165,13 +164,11 @@ export const SwapContextProvider = (props: { children: any }) => {
           />
         )}
 
-        {isChainSelectModalActive && (
+        {isChainSelectModalActive && originChain && (
           <BridgeChainList
             network={network}
             onChainClick={onChainClick}
-            selectedChain={
-              isChainSelectModalActive === "A" ? destChain : originChain
-            }
+            selectedChain={originChain}
             onClose={() => setChainSelectModalActive(undefined)}
           />
         )}

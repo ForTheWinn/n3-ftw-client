@@ -1,13 +1,16 @@
 import React from "react";
 
 import { Collapse } from "antd";
-import { BRIDGE_NEP_FEE_FORMATTED } from "../../../../../consts/bridge";
+import {
+  BRIDGE_NEP_FEE,
+  BRIDGE_NEP_FEE_FORMATTED,
+} from "../../../../../consts/bridge";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IBridgeSelectedtoken } from "../../interfaces";
-import {
-  getExplorerByChainId,
-} from "../../../../../common/helpers";
+import { getExplorerByChainId } from "../../../../../common/helpers";
+import { ethers } from "ethers";
+import { toDecimal } from "../../../../../packages/neo/utils";
 
 const { Panel } = Collapse;
 
@@ -23,6 +26,8 @@ const BridgeDetails = ({
   destChain,
   token,
 }: IBridgeDetailsProps) => {
+  const bridgeFee =
+    BRIDGE_NEP_FEE[network][originChain.chainId][destChain.chainId];
   return (
     <div className="mt-1">
       <Collapse
@@ -33,9 +38,8 @@ const BridgeDetails = ({
         style={{ background: "white" }}
       >
         <Panel
-          header={
-            <div>Bridge fee: {BRIDGE_NEP_FEE_FORMATTED[network]} NEP</div>
-          }
+          // header={<div>Bridge fee: {ethers.formatUnits(bridgeFee, 8)} NEP</div>}
+          header={<div>Bridge fee: {toDecimal(bridgeFee)} NEP</div>}
           key="1"
         >
           <div className="box is-shadowless content is-small has-background-light">

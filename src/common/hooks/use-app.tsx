@@ -47,7 +47,6 @@ interface IAppContext {
 export const AppContext = createContext({} as IAppContext);
 
 export const AppContextProvider = (props: { children: any }) => {
-  // const [chain, setChain] = useState<CHAINS>(LocalStorage.getChain());
   const [chain, setChain] = useState<CHAINS>(initChain());
   const [network] = useState(
     (process.env.REACT_APP_NETWORK as INetworkType)

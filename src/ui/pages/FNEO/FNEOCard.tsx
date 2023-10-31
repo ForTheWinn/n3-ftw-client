@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { claim, getfNEODetail } from "../../../packages/ftwNEO";
-import { IfNEODetail } from "../../../packages/ftwNEO/interfaces";
+import {
+  IfNEODetail,
+  claim,
+  getfNEODetail,
+} from "../../../packages/evm/contracts/fneo";
 import { useAccount } from "wagmi";
 import toast from "react-hot-toast";
 import { WENT_WRONG } from "../../../consts/messages";
 import { useApp } from "../../../common/hooks/use-app";
 import TxidModal from "./TxidModal";
 import { Spin } from "antd";
+import { CHAINS } from "../../../consts/chains";
+import { INetworkType } from "../../../packages/neo/network";
 
 interface IFNEOCardProps {
+  chain: CHAINS;
+  network: INetworkType;
   name: string;
   hash: string;
-  chainId: number;
   perBlock: number;
 }
-const FNEOCard = ({ name, hash, chainId, perBlock }: IFNEOCardProps) => {
+const FNEOCard = ({ name, hash, chain, perBlock, network }: IFNEOCardProps) => {
   const { isConnected, address } = useAccount();
   const { refreshCount, increaseRefreshCount } = useApp();
   const [txid, setTxid] = useState<string | undefined>();
@@ -27,7 +33,7 @@ const FNEOCard = ({ name, hash, chainId, perBlock }: IFNEOCardProps) => {
 
   const onClaim = async () => {
     try {
-      const _txid = await claim(hash);
+      const _txid = await claim(chain, network, hash);
       if (_txid) {
         setTxid(_txid);
       }
@@ -45,7 +51,13 @@ const FNEOCard = ({ name, hash, chainId, perBlock }: IFNEOCardProps) => {
     const fetchToken = async () => {
       setLoading(true);
       try {
-        const res = await getfNEODetail(chainId, hash, address);
+        const res = await getfNEODetail(
+          chain,
+          network,
+          hash,
+          perBlock,
+          address
+        );
         setData(res);
       } catch (e) {
         console.error(e);
@@ -136,9 +148,10 @@ const FNEOCard = ({ name, hash, chainId, perBlock }: IFNEOCardProps) => {
 
         {txid && (
           <TxidModal
+            network={network}
             txid={txid}
             resetTxid={handleTxModalClose}
-            chainId={chainId}
+            chain={chain}
           />
         )}
       </div>

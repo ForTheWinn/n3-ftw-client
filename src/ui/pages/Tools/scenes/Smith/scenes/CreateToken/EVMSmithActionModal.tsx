@@ -15,7 +15,7 @@ import { SMITH_FEE } from "../../../../../../../consts/smith";
 import {
   createTokenContract,
   getContractHashFromLogs,
-} from "../../../../../../../packages/polygon/contracts/smith";
+} from "../../../../../../../packages/evm/contracts/smith";
 import {
   getCurrentStep,
   getExplorer,
@@ -25,7 +25,7 @@ import { WENT_WRONG } from "../../../../../../../consts/messages";
 import {
   approve,
   getAllowances,
-} from "../../../../../../../packages/polygon/contracts/swap";
+} from "../../../../../../../packages/evm/contracts/swap";
 import Errors from "../../../../../Swap/components/Actions/components/Errors";
 
 interface IActionModalProps extends ITokenMetadata {
@@ -142,6 +142,8 @@ const EVMSmithActionModal = ({
       if (allowances[0] < fee) {
         try {
           feeTokenApprovalHash = await approve(
+            chain,
+            network,
             feeTokenContractHash,
             smithTokenContractHash
           );

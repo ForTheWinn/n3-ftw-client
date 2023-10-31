@@ -63,19 +63,19 @@ const getEstimatedForSwap = async (
   tokenA,
   tokenB
 ) => {
-  const args = {
-    tokenA: tokenA.hash,
-    tokenB: tokenB.hash,
-    amount: ethers
-      .parseUnits(
-        swapInput.value,
-        swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
-      )
-      .toString(),
-    isReverse: swapInput.type === "B",
-  };
-
   try {
+    const args = {
+      tokenA: tokenA.hash,
+      tokenB: tokenB.hash,
+      amount: ethers
+        .parseUnits(
+          swapInput.value,
+          swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
+        )
+        .toString(),
+      isReverse: swapInput.type === "B",
+    };
+
     const estimated = await swapRouter.getEstimate(chain, network, args);
     if (estimated !== "0") {
       return formatAmount(
@@ -101,10 +101,6 @@ const getEstimatedForLiquidity = (
       swapInput.value.toString(),
       swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
     );
-    // const estimated = val
-    //   .mul(swapInput.type === "A" ? reserves.reserveB : reserves.reserveA)
-    //   .div(swapInput.type === "A" ? reserves.reserveA : reserves.reserveB)
-    //   .toString();
 
     const numerator =
       swapInput.type === "A"
@@ -304,7 +300,9 @@ export const SwapContextProvider = (props: {
     setAssetChangeModalActive(undefined);
     setAmountALoading(false);
     setAmountBLoading(false);
+    window.history.replaceState(null, "", `/#${location.pathname}`);
     toast.success("Chain switced!");
+    console.log("Chain switced!");
   }, [chain]);
 
   useEffect(() => {

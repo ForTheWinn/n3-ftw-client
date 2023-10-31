@@ -1,4 +1,4 @@
-import { polygon, polygonMumbai } from "wagmi/chains";
+import { mainnet, polygon, polygonMumbai, goerli } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 
@@ -18,7 +18,7 @@ import TxHandler from "./components/Commons/TxHandler";
 import Routes from "./Routes";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [process.env.REACT_APP_NETWORK === TESTNET ? polygonMumbai : polygon],
+  [mainnet, goerli, polygon, polygonMumbai],
   [
     alchemyProvider({
       apiKey:

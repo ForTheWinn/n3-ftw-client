@@ -7,7 +7,7 @@ import { NEO_CHAIN } from "../../../../../../../consts/global";
 import {
   getTokenList,
   setTokenData,
-} from "../../../../../../../packages/polygon/contracts/smith";
+} from "../../../../../../../packages/evm/contracts/smith";
 
 import TokenCard from "./TokenCard";
 import Pagination from "bulma-pagination-react";

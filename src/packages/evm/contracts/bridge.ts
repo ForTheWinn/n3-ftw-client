@@ -2,8 +2,6 @@ import {
   readContract,
   prepareWriteContract,
   writeContract,
-  waitForTransaction,
-  WaitForTransactionResult,
 } from "@wagmi/core";
 
 import FTWBridge from "./abi/FTWBridge.json";
@@ -17,6 +15,7 @@ export const burn = async (
   receiver: string,
   amount: string
 ): Promise<string> => {
+  console.log(chainId)
   const script = await prepareWriteContract({
     address: bridgeAddress,
     abi: FTWBridge,
@@ -31,7 +30,6 @@ export const burn = async (
 export const getNextMintNo = async (
   chainId: number,
   address: any,
-  no: string | number
 ): Promise<boolean> => {
   const res: any = await readContract({
     chainId,

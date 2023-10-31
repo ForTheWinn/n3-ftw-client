@@ -35,7 +35,7 @@ export const generatePrivatekeys = (
         list.push(row);
       }
       return list;
-    case POLYGON_CHAIN || ETH_CHAIN:
+    default:
       return [];
   }
 };

@@ -6,8 +6,8 @@ import { useApp } from "../../../../../../../common/hooks/use-app";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 import {
   getTokenList,
-  setTokenData
-} from "../../../../../../../packages/polygon/contracts/smith";
+  setTokenData,
+} from "../../../../../../../packages/evm/contracts/smith";
 
 import ListTabs from "../../components/ListTabs";
 import TokenCard from "./TokenCard";
@@ -41,7 +41,7 @@ const TokenMainPage = () => {
             values.contractHash,
             JSON.stringify({
               logo: values.icon,
-              website: values.website
+              website: values.website,
             })
           );
         }
@@ -57,8 +57,7 @@ const TokenMainPage = () => {
         res = tx.hash;
       }
       setTxid(res);
-    } catch (e) {
-    }
+    } catch (e) {}
   };
 
   useEffect(() => {
@@ -113,7 +112,7 @@ const TokenMainPage = () => {
                         setUpdateModalObj({
                           contractHash: item.contractHash,
                           website: item.website,
-                          icon: item.icon
+                          icon: item.icon,
                         });
                       }}
                     />
