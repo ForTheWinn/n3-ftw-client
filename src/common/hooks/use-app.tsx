@@ -2,7 +2,12 @@ import React, { createContext, useContext, useState } from "react";
 import { CHAINS } from "../../consts/chains";
 import { LocalStorage } from "../../packages/neo/local-storage";
 import { INetworkType } from "../../packages/neo/network";
-import { MAINNET, NEO_CHAIN, POLYGON_CHAIN } from "../../consts/global";
+import {
+  ETH_CHAIN,
+  MAINNET,
+  NEO_CHAIN,
+  POLYGON_CHAIN,
+} from "../../consts/global";
 
 const initChain = (): CHAINS => {
   const hostname = window.location.hostname;
@@ -19,6 +24,8 @@ const initChain = (): CHAINS => {
       return POLYGON_CHAIN;
     } else if (subdomain.includes("neo")) {
       return NEO_CHAIN;
+    } else if (subdomain.includes("eth") || subdomain.includes("ethereum")) {
+      return ETH_CHAIN;
     } else {
       return LocalStorage.getChain();
     }
