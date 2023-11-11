@@ -23,6 +23,7 @@ const StakingPairCard = (props: IStakingPairs) => {
   }, []);
 
   if (isBNEOAndGAS && process.env.NODE_ENV !== "development") return <></>;
+  console.log(props);
   return (
     <tr
       className="is-clickable"

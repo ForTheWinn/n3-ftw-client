@@ -33,7 +33,7 @@ const StakingMain = () => {
     () => farmRouter.getPoolList(chain, network),
     [chain, refresh, network]
   );
-
+    console.log(data)
   return (
     <div>
       <div className="box is-shadowless mb-1">

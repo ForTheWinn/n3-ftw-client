@@ -149,7 +149,8 @@ const FARM_V2_PAGE_ROUTE = {
   path: FARM_V2_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET],
+    [POLYGON_CHAIN]: [MAINNET],
+    [ETH_CHAIN]: [MAINNET],
   },
   category: [],
   component: FarmV2,
@@ -445,11 +446,11 @@ const BRAND_PAGE_ROUTE = {
 export const ROUTE_LIST = [
   SWAP_PAGE_ROUTE,
   FARM_V2_PAGE_ROUTE,
-  ANALYTICS_ROUTE,
   SMITH_PAGE_ROUTE,
   TOOLS_PAGE_ROUTE,
   NFT_ROUTE,
   BRIDGE_PAGE_ROUTE,
+  ANALYTICS_ROUTE,
   FNEO_PAGE_ROUTE,
   EVENT_PAGE_ROUTE,
   // Route only, No menu in display

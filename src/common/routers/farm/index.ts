@@ -19,10 +19,8 @@ import { IClaimable, IFarmPair } from "./interfaces";
 import { ISwapLPToken } from "../swap/interfaces";
 import { CONTRACT_MAP } from "../../../consts/contracts";
 import {
-  ETH_CHAIN,
   FARM,
   NEO_CHAIN,
-  POLYGON_CHAIN,
 } from "../../../consts/global";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
 

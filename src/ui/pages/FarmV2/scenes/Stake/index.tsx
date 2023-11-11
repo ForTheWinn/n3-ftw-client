@@ -7,6 +7,8 @@ import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { FARM_V2_PATH } from "../../../../../consts/routes";
+import { message } from "antd";
+import { WENT_WRONG } from "../../../../../consts/messages";
 
 const Stake = () => {
   const { setTxid, chain, network } = useApp();
@@ -15,14 +17,19 @@ const Stake = () => {
   const [refresh, setRefresh] = useState(0);
 
   const onStake = async (tokenId: string) => {
-    const txid = await farmRouter.stakeLPToken(
-      chain,
-      network,
-      tokenId,
-      address,
-      connectedWallet
-    );
-    setTxid(txid as string);
+    try {
+      const txid = await farmRouter.stakeLPToken(
+        chain,
+        network,
+        tokenId,
+        address,
+        connectedWallet
+      );
+      setTxid(txid as string);
+    } catch (e: any) {
+      console.error(e);
+      message.error(e.message ? e.message : WENT_WRONG);
+    }
   };
 
   return (
