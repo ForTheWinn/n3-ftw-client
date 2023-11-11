@@ -302,7 +302,6 @@ export const SwapContextProvider = (props: {
     setAmountBLoading(false);
     window.history.replaceState(null, "", `/#${location.pathname}`);
     toast.success("Chain switced!");
-    console.log("Chain switced!");
   }, [chain]);
 
   useEffect(() => {

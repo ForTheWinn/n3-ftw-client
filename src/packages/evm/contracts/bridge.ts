@@ -15,7 +15,6 @@ export const burn = async (
   receiver: string,
   amount: string
 ): Promise<string> => {
-  console.log(chainId)
   const script = await prepareWriteContract({
     address: bridgeAddress,
     abi: FTWBridge,

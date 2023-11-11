@@ -148,7 +148,6 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     } else {
       handleStatus("tokenA", "success");
     }
-    console.log(allowances[1]);
     if (parsedAmountB > allowances[1]) {
       try {
         tokenBApprovalHash = await approve(chain, network, tokenB.hash, swapContractHash);
