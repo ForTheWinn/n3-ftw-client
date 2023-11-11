@@ -66,7 +66,6 @@ export const getTokenByHash = async (
   network: INetworkType,
   hash: string
 ): Promise<ITokenState | undefined> => {
-  console.lxog(hash)
   if (TOKEN_LIST[chain][network][hash]) {
     return TOKEN_LIST[chain][network][hash];
   } else {
