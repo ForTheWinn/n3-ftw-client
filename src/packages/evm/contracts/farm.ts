@@ -37,10 +37,10 @@ export const getPools = async (
       chainId,
     });
 
-    const tokenA = TOKEN_LIST[chain][network][pool.tokenA.toLowerCase()];
-    const tokenB = TOKEN_LIST[chain][network][pool.tokenB.toLowerCase()];
+    const tokenA = TOKEN_LIST[chain][network][pool.tokenA];
+    const tokenB = TOKEN_LIST[chain][network][pool.tokenB];
     const bonusToken =
-      TOKEN_LIST[chain][network][pool.bonusToken.toLowerCase()];
+      TOKEN_LIST[chain][network][pool.bonusToken];
 
     const hasBonusRewards = pool.bonusTokensPerSecond > 0;
     pools.push({
@@ -121,8 +121,8 @@ export const getClaimable = async (
     const userShare = reward.shares.toString();
     if (userShare !== "0") {
       const tokenList = TOKEN_LIST[chain][network];
-      const tokenAAddress = reward.tokenA.toLowerCase();
-      const tokenBAddress = reward.tokenB.toLowerCase();
+      const tokenAAddress = reward.tokenA;
+      const tokenBAddress = reward.tokenB;
       const tokenA = tokenList[tokenAAddress];
       const tokenB = tokenList[tokenBAddress];
       const bonusToken = tokenList[reward.bonusToken];

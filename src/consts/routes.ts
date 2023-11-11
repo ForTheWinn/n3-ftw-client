@@ -149,7 +149,8 @@ const FARM_V2_PAGE_ROUTE = {
   path: FARM_V2_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
-    [POLYGON_CHAIN]: [TESTNET],
+    [POLYGON_CHAIN]: [MAINNET],
+    [ETH_CHAIN]: [MAINNET],
   },
   category: [],
   component: FarmV2,

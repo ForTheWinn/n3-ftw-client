@@ -1,4 +1,3 @@
-import { u } from "@cityofzion/neon-core";
 import React, { useEffect, useState } from "react";
 import { swapRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
@@ -43,16 +42,19 @@ const DisplayAPR = ({ chain, network, pair }: IDisplayAPRProps) => {
         let nepStaked = 0;
 
         if (tokenA === nepAddress) {
+          console.log(1)
           nepStaked =
             ((parseFloat(reserveA) * parseFloat(tokensStaked)) /
               parseFloat(shares)) *
             2;
         } else if (tokenB === nepAddress) {
+            console.log(2);
           nepStaked =
             ((parseFloat(reserveB) * parseFloat(tokensStaked)) /
               parseFloat(shares)) *
             2;
         } else {
+            console.log(3);
           const r = await swapRouter.getReserves(
             chain,
             network,
