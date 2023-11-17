@@ -17,14 +17,23 @@ import {
 } from "./global";
 import { POLYGON_CONTRACT_MAP } from "../packages/evm/polygon";
 
-import { POLYGON_MAINNET_NEP_TOKEN_METADATA } from "../packages/evm/polygon/mainnet";
-import { NEO_MAINNET_NEP_TOKEN_METADATA as NEO_NEP_DETAIL } from "../packages/neo/consts/mainnet";
+import {
+  POLYGON_MAINNET_FNEO_TOKEN_METADATA,
+  POLYGON_MAINNET_NEP_TOKEN_METADATA,
+} from "../packages/evm/polygon/mainnet";
+import {
+  NEO_MAINNET_BNEO_METADATA,
+  NEO_MAINNET_NEP_TOKEN_METADATA as NEO_NEP_DETAIL,
+} from "../packages/neo/consts/mainnet";
 
 import { MAINNET_CONFIG, TESTNET_CONFIG } from "../packages/neo/consts";
 import { INetworkType } from "../packages/neo/network";
 import { NEO_BRIDGE_SCRIPT_HASH } from "../packages/neo/contracts/ftw/bridge/consts";
 import { ETHEREUM_CONTRACT_MAP } from "../packages/evm/ethereum";
-import { ETHEREUM_MAINNET_NEP_TOKEN_METADATA } from "../packages/evm/ethereum/mainnet";
+import {
+  ETHEREUM_MAINNET_FNEO_TOKEN_METADATA,
+  ETHEREUM_MAINNET_NEP_TOKEN_METADATA,
+} from "../packages/evm/ethereum/mainnet";
 import {
   POLYGON_TESTNET_FNEO_METADATA,
   POLYGON_TESTNET_NEP_METADATA,
@@ -34,38 +43,6 @@ import {
   NEO_TESTNET_BNEO_METADATA,
   NEO_TESTNET_NEP_METADATA,
 } from "../packages/neo/consts/testnet";
-
-export const BRIDGE_NEP_FEE = {
-  [TESTNET]: {
-    [NEO_TESTNET_CHAIN_ID]: {
-      [POLYGON_TESTNET_CHAIN_ID]: 1,
-      [ETH_TESTNET_CHAIN_ID]: 0,
-    },
-    [POLYGON_TESTNET_CHAIN_ID]: {
-      [NEO_TESTNET_CHAIN_ID]: 1,
-    },
-    [ETH_TESTNET_CHAIN_ID]: {
-      [NEO_TESTNET_CHAIN_ID]: 0,
-    },
-  },
-  [MAINNET]: {
-    [NEO_MAINNET_CHAIN_ID]: {
-      [POLYGON_MAINNET_CHAIN_ID]: 100_00000000,
-      [ETH_MAINNET_CHAIN_ID]: 3000_00000000,
-    },
-    [POLYGON_MAINNET_CHAIN_ID]: {
-      [NEO_MAINNET_CHAIN_ID]: 100_00000000,
-    },
-    [ETH_MAINNET_CHAIN_ID]: {
-      [NEO_MAINNET_CHAIN_ID]: 1000_00000000,
-    },
-  },
-};
-
-export const BRIDGE_NEP_FEE_FORMATTED = {
-  [TESTNET]: 1,
-  [MAINNET]: 100,
-};
 
 export const BRIDGE_CHAINS = {
   [MAINNET]: {
@@ -137,6 +114,13 @@ export const BRIDGE_SUPPORTED_TOKEN_LIST = {
           [POLYGON_MAINNET_CHAIN_ID]: POLYGON_MAINNET_NEP_TOKEN_METADATA,
         },
       },
+      {
+        ...NEO_MAINNET_BNEO_METADATA,
+        pairs: {
+          [ETH_MAINNET_CHAIN_ID]: ETHEREUM_MAINNET_FNEO_TOKEN_METADATA,
+          [POLYGON_MAINNET_CHAIN_ID]: POLYGON_MAINNET_FNEO_TOKEN_METADATA,
+        },
+      },
     ],
     [POLYGON_MAINNET_CHAIN_ID]: [
       {
@@ -145,12 +129,24 @@ export const BRIDGE_SUPPORTED_TOKEN_LIST = {
           [NEO_MAINNET_CHAIN_ID]: NEO_NEP_DETAIL,
         },
       },
+      {
+        ...POLYGON_MAINNET_FNEO_TOKEN_METADATA,
+        pairs: {
+          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_BNEO_METADATA,
+        },
+      },
     ],
     [ETH_MAINNET_CHAIN_ID]: [
       {
         ...ETHEREUM_MAINNET_NEP_TOKEN_METADATA,
         pairs: {
           [NEO_MAINNET_CHAIN_ID]: NEO_NEP_DETAIL,
+        },
+      },
+      {
+        ...ETHEREUM_MAINNET_FNEO_TOKEN_METADATA,
+        pairs: {
+          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_BNEO_METADATA,
         },
       },
     ],

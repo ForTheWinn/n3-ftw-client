@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  waitForTransaction,
-} from "@wagmi/core";
+import { waitForTransaction } from "@wagmi/core";
 import { Steps } from "antd";
 
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -11,7 +9,7 @@ import { IBridgeReceiver, IBridgeSelectedtoken } from "../../interfaces";
 import Modal from "../../../../components/Modal";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
-import { BRIDGE_CONTRACTS, BRIDGE_NEP_FEE } from "../../../../../consts/bridge";
+import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
 import {
   burn,
   getMintoNoFromLogs,
@@ -31,6 +29,7 @@ import {
   getAllowances,
 } from "../../../../../packages/evm/contracts/swap";
 import Errors from "../../../Swap/components/Actions/components/Errors";
+import { ethers } from "ethers";
 
 const initialState = {
   allowlances: STATUS_STATE,
@@ -73,6 +72,7 @@ interface IActionModalProps {
   token: IBridgeSelectedtoken;
   amount: string;
   receiver: IBridgeReceiver;
+  fee: string;
   onSuccess: () => void;
   onCancel: () => void;
 }
@@ -86,6 +86,7 @@ const EVMBridgeActionModal = ({
   destChain,
   receiver,
   network,
+  fee,
   onSuccess,
   onCancel,
 }: IActionModalProps) => {
@@ -165,7 +166,12 @@ const EVMBridgeActionModal = ({
 
       if (allowances[0] < bridgeAmount) {
         try {
-          tokenApprovalHash = await approve(chain, network, token.hash, evmBridgeContractHash);
+          tokenApprovalHash = await approve(
+            chain,
+            network,
+            token.hash,
+            evmBridgeContractHash
+          );
         } catch (e: any) {
           handleStatus("token", "error", e.message ? e.message : WENT_WRONG);
           return;
@@ -178,8 +184,7 @@ const EVMBridgeActionModal = ({
         handleStatus("token", "success");
       }
 
-      const bridgeFee = BRIDGE_NEP_FEE[network][originChain.chainId][destChain.chainId];
-      if (allowances[1] < bridgeFee) {
+      if (allowances[1] < ethers.parseUnits(fee, 8)) {
         try {
           feeApprovalHash = await approve(
             chain,

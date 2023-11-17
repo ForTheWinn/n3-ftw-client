@@ -1,4 +1,7 @@
 import {
+  ETH_CHAIN,
+  ETH_MAINNET_CHAIN_ID,
+  ETH_TESTNET_CHAIN_ID,
   MAINNET,
   NEO_CHAIN,
   NEO_MAINNET_CHAIN_ID,
@@ -12,7 +15,7 @@ import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
 import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
 import { explorerUrls } from "../consts/urls";
-import { CHAINS } from "../consts/chains";
+import { CHAINS, CONFIGS } from "../consts/chains";
 import { ethers } from "ethers";
 import { fetchTokenInfo } from "./routers/global";
 
@@ -43,8 +46,24 @@ const getChainByChainId = (chainId: number): string => {
     case POLYGON_MAINNET_CHAIN_ID:
     case POLYGON_TESTNET_CHAIN_ID:
       return POLYGON_CHAIN;
+    case ETH_MAINNET_CHAIN_ID:
+    case ETH_TESTNET_CHAIN_ID:
+      return ETH_CHAIN;
     default:
       return "";
+  }
+};
+
+export const getChainIdByChain = (chain: CHAINS, network: INetworkType): number => {
+  switch (chain) {
+    case NEO_CHAIN:
+      return CONFIGS[network][NEO_CHAIN].chainId;
+    case POLYGON_CHAIN:
+      return CONFIGS[network][POLYGON_CHAIN].chainId;
+    case ETH_CHAIN:
+      return CONFIGS[network][ETH_CHAIN].chainId;
+    default:
+      return 0;
   }
 };
 
@@ -52,9 +71,11 @@ const getNetworkByChainId = (chainId: number): INetworkType => {
   switch (chainId) {
     case NEO_MAINNET_CHAIN_ID:
     case POLYGON_MAINNET_CHAIN_ID:
+    case ETH_MAINNET_CHAIN_ID:
       return MAINNET;
     case NEO_TESTNET_CHAIN_ID:
     case POLYGON_TESTNET_CHAIN_ID:
+    case ETH_TESTNET_CHAIN_ID:
       return TESTNET;
     default:
       return MAINNET;

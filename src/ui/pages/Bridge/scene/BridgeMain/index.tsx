@@ -28,6 +28,7 @@ const BridgeSwap = () => {
     receiver,
     connectedNeoWallet,
     connectedAddress,
+    fee,
     setReceiver,
     setAmount,
     openBridgeTokenList,
@@ -94,12 +95,12 @@ const BridgeSwap = () => {
           />
         )}
 
-        {originChain && destChain && token && (
+        {originChain && destChain && token && fee && (
           <BridgeDetails
             originChain={originChain}
             destChain={destChain}
-            network={network}
             token={token}
+            fee={fee}
           />
         )}
 
@@ -117,7 +118,8 @@ const BridgeSwap = () => {
         token &&
         amount &&
         connectedAddress &&
-        destChain && (
+        destChain &&
+        fee && (
           <>
             {(originChain.chainId === NEO_MAINNET_CHAIN_ID ||
               originChain.chainId === NEO_TESTNET_CHAIN_ID) &&
@@ -143,6 +145,7 @@ const BridgeSwap = () => {
                 amount={amount}
                 receiver={receiver}
                 address={connectedAddress}
+                fee={fee}
                 onSuccess={onAfterBridgeCompleted}
                 onCancel={() => setActionModalActive(false)}
               />

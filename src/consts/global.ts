@@ -39,3 +39,10 @@ export const STATUS_STATE = {
   success: false,
   error: "",
 };
+
+export const BLOCK_TIME = {
+  [POLYGON_MAINNET_CHAIN_ID]: 2,
+  [ETH_MAINNET_CHAIN_ID]: 15,
+  [POLYGON_TESTNET_CHAIN_ID]: 2,
+  [ETH_TESTNET_CHAIN_ID]: 15,
+};

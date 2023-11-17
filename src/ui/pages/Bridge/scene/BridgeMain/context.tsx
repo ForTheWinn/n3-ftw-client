@@ -13,6 +13,8 @@ import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { NEO_CHAIN } from "../../../../../consts/global";
 import { fetchTokenBalance } from "../../../../../common/routers/global";
+import { getBridgeFee } from "../../../../../common/routers/bridge";
+import { message } from "antd";
 
 interface IBridgeContext {
   chain: CHAINS;
@@ -26,6 +28,7 @@ interface IBridgeContext {
   connectedAddress?: string;
   connectedNeoWallet?: IConnectedWallet;
   isActionModaActive: boolean;
+  fee?: string;
   setReceiver: (v: IBridgeReceiver) => void;
   setToken: (token: IBridgeSelectedtoken | undefined) => void;
   setAmount: (amount: string | undefined) => void;
@@ -55,6 +58,7 @@ export const SwapContextProvider = (props: { children: any }) => {
 
   const [token, setToken] = useState<IBridgeSelectedtoken | undefined>();
   const [amount, setAmount] = useState<string | undefined>();
+  const [fee, setFee] = useState<string | undefined>();
   const [receiver, setReceiver] = useState<IBridgeReceiver>({
     address: "",
     isValid: false,
@@ -108,23 +112,31 @@ export const SwapContextProvider = (props: { children: any }) => {
     chain === NEO_CHAIN ? connectedWallet?.account.address : address;
 
   useEffect(() => {
-    const loadBalance = async (_tokenHash, _address) => {
+    (async () => {
       try {
-        const _balance = await fetchTokenBalance(
-          chain,
-          network,
-          _address,
-          _tokenHash
-        );
-        setBalance(_balance);
+        if (token && connectedAddress) {
+          const _balance = await fetchTokenBalance(
+            chain,
+            network,
+            connectedAddress,
+            token.hash
+          );
+          setBalance(_balance);
+        }
+        if (originChain && destChain) {
+          const _fee = await getBridgeFee(
+            originChain.chainId,
+            destChain.chainId,
+            network
+          );
+          console.log("fee", _fee);
+          setFee(_fee);
+        }
       } catch (e) {
-        console.error(e);
+        message.error("Failed to load data");
       }
-    };
-    if (token && connectedAddress) {
-      loadBalance(token.hash, connectedAddress);
-    }
-  }, [token, connectedAddress, refreshCount]);
+    })();
+  }, [token, connectedAddress, refreshCount, originChain, destChain]);
 
   const contextValue = {
     chain,
@@ -138,6 +150,7 @@ export const SwapContextProvider = (props: { children: any }) => {
     connectedAddress,
     connectedNeoWallet: connectedWallet,
     isActionModaActive,
+    fee,
     setReceiver,
     setActionModalActive,
     setToken,

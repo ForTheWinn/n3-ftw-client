@@ -56,8 +56,4 @@ export const POLYGON_NEP_CONTRACT_ADDRESSES = {
 export const POLYGON_FNEO = {
   name: "Polygon ftwNEO",
   address: POLYGON_MAINNET_FNEO_CONTRACT_ADDRESSES,
-  rewardsPerBlock: {
-    [MAINNET]: 5,
-    [TESTNET]: 5,
-  },
 };

@@ -4,11 +4,15 @@ import FNEOCard from "./FNEOCard";
 import { useApp } from "../../../common/hooks/use-app";
 import Level from "../../components/Level";
 import { EVM_FNEO_MAP } from "../../../packages/evm";
+import { getChainIdByChain } from "../../../common/helpers";
 
 const FNEO = () => {
-  const { chain, network } = useApp();
-  const fneoList = Object.keys(EVM_FNEO_MAP).map((chain) => {
-    return EVM_FNEO_MAP[chain];
+  const { network } = useApp();
+  const fneoList = Object.keys(EVM_FNEO_MAP).map((key: any) => {
+    return {
+      chain: key,
+      ...EVM_FNEO_MAP[key],
+    };
   });
   return (
     <div>
@@ -30,15 +34,15 @@ const FNEO = () => {
               />
             </div>
             <div className="columns">
-              {fneoList.map((chain) => {
+              {fneoList.map((c) => {
                 return (
-                  <div className="column is-6">
+                  <div key={c.name} className="column is-6">
                     <FNEOCard
-                      chain={chain}
+                      chain={c.chain}
+                      chainId={getChainIdByChain(c.chain, network)}
                       network={network}
-                      name={chain.name}
-                      hash={chain.address[network]}
-                      perBlock={chain.rewardsPerBlock[network]}
+                      name={c.name}
+                      hash={c.address[network]}
                     />
                   </div>
                 );

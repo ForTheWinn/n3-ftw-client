@@ -17,7 +17,8 @@ import {
 
 export const ENDPOINT = {
   [TESTNET]: "https://api.forthewin.network/mainnet",
-  [MAINNET]: "https://api.forthewin.network/mainnet",
+  // [MAINNET]: "https://api.forthewin.network/mainnet",
+  [MAINNET]: "http://localhost:3000/mainnet",
 };
 
 const BASE_URL_GHOSTMARKET = "https://api.ghostmarket.io/api/v2";
@@ -35,6 +36,7 @@ export class RestAPI {
 
   fetchResult = async (url: string) => {
     const res = await fetch(url, { mode: "cors" });
+    console.log(res)
     const json = await res.json();
     if (res.status === 200) {
       return json;

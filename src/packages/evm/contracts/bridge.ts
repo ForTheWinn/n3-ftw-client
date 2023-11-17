@@ -1,8 +1,4 @@
-import {
-  readContract,
-  prepareWriteContract,
-  writeContract,
-} from "@wagmi/core";
+import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
 
 import FTWBridge from "./abi/FTWBridge.json";
 import { Network } from "../../neo/network";
@@ -28,7 +24,7 @@ export const burn = async (
 
 export const getNextMintNo = async (
   chainId: number,
-  address: any,
+  address: any
 ): Promise<boolean> => {
   const res: any = await readContract({
     chainId,
@@ -78,4 +74,18 @@ export const getMintoNoFromLogs = (logs: any) => {
     }
   });
   return mintNo;
+};
+
+export const getBridgeFee = async (
+  chainId: number,
+  bridgeAddress: any
+): Promise<string> => {
+  const res: any = await readContract({
+    chainId,
+    address: bridgeAddress,
+    abi: FTWBridge,
+    functionName: "feeAmount",
+    args: [],
+  });
+  return ethers.formatUnits(res, 8);
 };

@@ -9,18 +9,18 @@ import toast from "react-hot-toast";
 import { WENT_WRONG } from "../../../consts/messages";
 import { useApp } from "../../../common/hooks/use-app";
 import TxidModal from "./TxidModal";
-import { Spin } from "antd";
-import { CHAINS } from "../../../consts/chains";
+import { Spin, message } from "antd";
 import { INetworkType } from "../../../packages/neo/network";
+import { CHAINS } from "../../../consts/chains";
 
 interface IFNEOCardProps {
   chain: CHAINS;
+  chainId: number;
   network: INetworkType;
   name: string;
   hash: string;
-  perBlock: number;
 }
-const FNEOCard = ({ name, hash, chain, perBlock, network }: IFNEOCardProps) => {
+const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
   const { isConnected, address } = useAccount();
   const { refreshCount, increaseRefreshCount } = useApp();
   const [txid, setTxid] = useState<string | undefined>();
@@ -29,17 +29,18 @@ const FNEOCard = ({ name, hash, chain, perBlock, network }: IFNEOCardProps) => {
     totalSupply: "0",
     apr: "0",
     claimable: "0",
+    nepPerBlock: "0",
   });
 
   const onClaim = async () => {
     try {
-      const _txid = await claim(chain, network, hash);
+      const _txid = await claim(chainId, hash);
       if (_txid) {
         setTxid(_txid);
       }
     } catch (e: any) {
       console.error(e);
-      toast.error(e && e.messages ? e.messages : WENT_WRONG);
+      message.error(e.messages ? e.messages : WENT_WRONG);
     }
   };
 
@@ -47,24 +48,19 @@ const FNEOCard = ({ name, hash, chain, perBlock, network }: IFNEOCardProps) => {
     setTxid(undefined);
     increaseRefreshCount();
   };
+
   useEffect(() => {
-    const fetchToken = async () => {
+    (async () => {
       setLoading(true);
       try {
-        const res = await getfNEODetail(
-          chain,
-          network,
-          hash,
-          perBlock,
-          address
-        );
+        const res = await getfNEODetail(chainId, hash, address);
         setData(res);
-      } catch (e) {
-        console.error(e);
+      } catch (e: any) {
+        console.log(e);
+        message.error(e.messages ? e.messages : WENT_WRONG);
       }
       setLoading(false);
-    };
-    fetchToken();
+    })();
   }, [refreshCount]);
 
   return (
@@ -130,7 +126,7 @@ const FNEOCard = ({ name, hash, chain, perBlock, network }: IFNEOCardProps) => {
                   <div
                     style={{ float: "left", width: "50%", textAlign: "right" }}
                   >
-                    {perBlock} NEP
+                    {data.nepPerBlock} NEP
                   </div>
                 </td>
               </tr>

@@ -11,7 +11,7 @@ import {
   ANALYTICS_TOKENS_PATH,
 } from "../../../consts/routes";
 import { Avatar, Tabs } from "antd";
-import { NEO_LOGO, NEP_LOGO, POLYGON_LOGO } from "../../../consts/global";
+import { NEO_LOGO, NEP_LOGO } from "../../../consts/global";
 import NEPAnalytics from "./scenes/NEPAnalytics";
 import NEOAnalytics from "./scenes/NEOAnalytics";
 import PolygonAnalytics from "./scenes/PolygonAnalytics";

@@ -9,6 +9,7 @@ import {
 } from "../../../../../common/routers/bridge/interfaces";
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/neo-contracts";
+import { ethers } from "ethers";
 
 export const bridgeMint = async (
   connectedWallet: IConnectedWallet,
@@ -189,4 +190,20 @@ export const getMintNoFromNotifications = (
   } else {
     throw Error("Can't find mint no from the txid.");
   }
+};
+
+export const getBridgeFee = async (
+  bridgeContractHash: string,
+  network: INetworkType
+): Promise<string> => {
+  const script = {
+    scriptHash: bridgeContractHash,
+    operation: "getFeeAmount",
+    args: [],
+  };
+  const res = await Network.read(network, [script]);
+  if (res.state === "FAULT") {
+    throw new Error(res.exception as string);
+  }
+  return ethers.formatUnits(res.stack[0].value as string, 8);
 };

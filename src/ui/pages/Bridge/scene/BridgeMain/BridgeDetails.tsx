@@ -1,15 +1,9 @@
 import React from "react";
 
 import { Collapse } from "antd";
-import {
-  BRIDGE_NEP_FEE,
-  BRIDGE_NEP_FEE_FORMATTED,
-} from "../../../../../consts/bridge";
-import { INetworkType } from "../../../../../packages/neo/network";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
 import { IBridgeSelectedtoken } from "../../interfaces";
 import { getExplorerByChainId } from "../../../../../common/helpers";
-import { ethers } from "ethers";
 import { toDecimal } from "../../../../../packages/neo/utils";
 
 const { Panel } = Collapse;
@@ -17,17 +11,15 @@ const { Panel } = Collapse;
 interface IBridgeDetailsProps {
   originChain: IBridgeChain;
   destChain: IBridgeChain;
-  network: INetworkType;
   token: IBridgeSelectedtoken;
+  fee: string;
 }
 const BridgeDetails = ({
-  network,
   originChain,
   destChain,
   token,
+  fee,
 }: IBridgeDetailsProps) => {
-  const bridgeFee =
-    BRIDGE_NEP_FEE[network][originChain.chainId][destChain.chainId];
   return (
     <div className="mt-1">
       <Collapse
@@ -37,11 +29,7 @@ const BridgeDetails = ({
         defaultActiveKey={[]}
         style={{ background: "white" }}
       >
-        <Panel
-          // header={<div>Bridge fee: {ethers.formatUnits(bridgeFee, 8)} NEP</div>}
-          header={<div>Bridge fee: {toDecimal(bridgeFee)} NEP</div>}
-          key="1"
-        >
+        <Panel header={<div>Bridge Fee: {fee} NEP</div>} key="1">
           <div className="box is-shadowless content is-small has-background-light">
             <p>Bridge fee will be overdrawn from your wallet.</p>
             <div className="level is-mobile mb-2">
