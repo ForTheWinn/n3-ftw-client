@@ -55,7 +55,6 @@ const NEPAnalytics = () => {
           new RestAPI(MAINNET).getPrice(NEO_NEP_CONTRACT_ADDRESS[MAINNET]),
         ]);
 
-        console.log(nepPrice);
 
         setValues({
           neo: neoNEP,
@@ -75,7 +74,6 @@ const NEPAnalytics = () => {
 
   if (loading) return null;
 
-  console.log(values);
 
   const neoSupply =
     parseFloat(values.neo.totalSupply) - parseFloat(values.polygon.totalSupply);

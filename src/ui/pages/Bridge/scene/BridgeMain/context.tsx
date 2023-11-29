@@ -129,7 +129,6 @@ export const SwapContextProvider = (props: { children: any }) => {
             destChain.chainId,
             network
           );
-          console.log("fee", _fee);
           setFee(_fee);
         }
       } catch (e) {

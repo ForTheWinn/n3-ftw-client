@@ -102,7 +102,6 @@ async function getNepPerBlock(contractHash, chainId): Promise<bigint> {
     functionName: "nepPerBlock",
     chainId,
   })) as bigint;
-  console.log(nepPerBlock);
   return nepPerBlock;
 }
 
