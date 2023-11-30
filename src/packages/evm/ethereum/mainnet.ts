@@ -19,7 +19,7 @@ export const ETHEREUM_MAINNET_NEP_TOKEN_METADATA = {
 
 export const ETHEREUM_MAINNET_FNEO_TOKEN_METADATA = {
   hash: ETHEREUM_MAINNET_CONTRACTS.FNEO,
-  symbol: "NEP",
+  symbol: "ftwNEO",
   icon: "/symbols/fneo.svg",
   decimals: 8,
 };
