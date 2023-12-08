@@ -18,7 +18,6 @@ const DisplayAPR = ({ chain, network, pair }: IDisplayAPRProps) => {
   const {
     tokenA,
     tokenB,
-    tokensStaked,
     nepTokensPerSecond,
     bonusTokensPerSecond,
     bonusToken,
@@ -42,33 +41,30 @@ const DisplayAPR = ({ chain, network, pair }: IDisplayAPRProps) => {
         let nepStaked = 0;
 
         if (tokenA === nepAddress) {
-          nepStaked =
-            ((parseFloat(reserveA) * parseFloat(tokensStaked)) /
-              parseFloat(shares)) *
-            2;
+          nepStaked = parseFloat(reserveA) * 2;
         } else if (tokenB === nepAddress) {
-          nepStaked =
-            ((parseFloat(reserveB) * parseFloat(tokensStaked)) /
-              parseFloat(shares)) *
-            2;
+          nepStaked = parseFloat(reserveB) * 2;
         } else {
+          // No NEP in the pool, need to calculate the NEP value. This is hardcode for now.
           const r = await swapRouter.getReserves(
             chain,
             network,
             nepAddress,
             tokenA
           );
+
+          // This is harccoed for now. We need to change when we have non NEP pools that has different decimals than 8.
           const estimated =
             (1_00000000 * parseFloat(r.reserveB)) / parseFloat(r.reserveA);
 
-          nepStaked =
-            ((parseFloat(reserveA) * parseFloat(tokensStaked)) /
-              parseFloat(shares)) *
-            2;
+          nepStaked = parseFloat(reserveA) * 2;
 
           nepStaked = nepStaked * (1_00000000 / estimated);
         }
+
         if (hasBonusRewards) {
+          // This is harccoed for now. We need to change when we have non NEP pools that has different decimals than 8.
+
           const r = await swapRouter.getReserves(
             chain,
             network,
@@ -91,7 +87,7 @@ const DisplayAPR = ({ chain, network, pair }: IDisplayAPRProps) => {
       }
     }
     checkTxid();
-  }, []);
+  }, [chain, network]);
 
   return <span className="has-text-success-dark">{numberTrim(APR)}%</span>;
 };

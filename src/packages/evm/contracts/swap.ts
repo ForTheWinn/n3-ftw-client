@@ -42,7 +42,7 @@ export const getReserves = async (
         ? res.amountA.toString()
         : res.amountB.toString(),
     reserveB:
-      res.tokenB.toLowerCase() === tokenB.toLowerCase
+      res.tokenB.toLowerCase() === tokenB.toLowerCase()
         ? res.amountB.toString()
         : res.amountA.toString(),
     shares: res.shares.toString(),
