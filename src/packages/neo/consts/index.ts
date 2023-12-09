@@ -43,7 +43,7 @@ export const TESTNET_CONFIG = {
 
 export const MAINNET_CONFIG = {
   label: "N3MainNet",
-  url: "https://n3seed2.ngd.network:10332"
+  url: "https://mainnet1.neo.coz.io:443",
 };
 
 export const DEFAULT_WITNESS_SCOPE = (senderHash: string) => {
