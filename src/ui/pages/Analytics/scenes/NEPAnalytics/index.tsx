@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Avatar, Card, Spin, Typography } from "antd";
+import { Avatar, Button, Card, Spin, Typography } from "antd";
 import {
   ETHEREUM_LOGO,
   ETH_CHAIN,
@@ -12,9 +12,14 @@ import {
 import { useApp } from "../../../../../common/hooks/use-app";
 import { fetchTokenInfo } from "../../../../../common/routers/global";
 import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
-import { getExplorer, transformString } from "../../../../../common/helpers";
+import {
+  getChainIdByChain,
+  getExplorer,
+  transformString,
+} from "../../../../../common/helpers";
 import { RestAPI } from "../../../../../packages/neo/api";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/neo-contracts";
+import AddTokenButton from "../../../../components/AddTokenOnMetaMaskButton";
 
 const NEPAnalytics = () => {
   const { network } = useApp();
@@ -55,7 +60,6 @@ const NEPAnalytics = () => {
           new RestAPI(MAINNET).getPrice(NEO_NEP_CONTRACT_ADDRESS[MAINNET]),
         ]);
 
-
         setValues({
           neo: neoNEP,
           polygon: polNEP,
@@ -74,7 +78,6 @@ const NEPAnalytics = () => {
 
   if (loading) return null;
 
-
   const neoSupply =
     parseFloat(values.neo.totalSupply) - parseFloat(values.polygon.totalSupply);
   const polygonSupply = parseFloat(values.polygon.totalSupply);
@@ -87,7 +90,7 @@ const NEPAnalytics = () => {
     <div>
       <div className="columns">
         <div className="column">
-          <Card>
+          <Card style={{ height: "240px" }}>
             <Card.Meta
               avatar={<Avatar src={NEO_LOGO} />}
               title="NEP on Neo"
@@ -114,7 +117,7 @@ const NEPAnalytics = () => {
           </Card>
         </div>
         <div className="column">
-          <Card>
+          <Card style={{ height: "240px" }}>
             <Card.Meta
               avatar={<Avatar src={ETHEREUM_LOGO} />}
               title="NEP on Ethereum"
@@ -134,14 +137,23 @@ const NEPAnalytics = () => {
                     Total Supply: {transformString(ethereumSupply)}
                     <br />
                     MC: ${transformString(ethereumMC)}
+                    <br />
                   </Typography.Paragraph>
+                  <AddTokenButton
+                    chainId={getChainIdByChain(ETH_CHAIN, network)}
+                    chainName={"Ethereum"}
+                    address={values.ethereum.hash}
+                    symbol={"NEP"}
+                    decimals={8}
+                    image={"https://forthewin.network/symbols/nep.png"}
+                  />
                 </>
               }
             />
           </Card>
         </div>
         <div className="column">
-          <Card>
+          <Card style={{ height: "240px" }}>
             <Card.Meta
               avatar={<Avatar src={POLYGON_LOGO} />}
               title="NEP on Polygon"
@@ -164,6 +176,14 @@ const NEPAnalytics = () => {
                     <br />
                     MC: ${transformString(polygonMC)}
                   </Typography.Paragraph>
+                  <AddTokenButton
+                    chainId={getChainIdByChain(POLYGON_CHAIN, network)}
+                    chainName={"Polygon"}
+                    address={values.polygon.hash}
+                    symbol={"NEP"}
+                    decimals={8}
+                    image={"https://forthewin.network/symbols/nep.png"}
+                  />
                 </>
               }
             />
