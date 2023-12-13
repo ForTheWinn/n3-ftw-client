@@ -5,16 +5,15 @@ import {
   getfNEODetail,
 } from "../../../packages/evm/contracts/fneo";
 import { useAccount } from "wagmi";
-import toast from "react-hot-toast";
 import { WENT_WRONG } from "../../../consts/messages";
 import { useApp } from "../../../common/hooks/use-app";
 import TxidModal from "./TxidModal";
-import { Spin, message } from "antd";
+import { Button, Spin, message } from "antd";
 import { INetworkType } from "../../../packages/neo/network";
 import { CHAINS } from "../../../consts/chains";
 import Level from "../../components/Level";
 import AddTokenButton from "../../components/AddTokenOnMetaMaskButton";
-import { getChainNameByChain } from "../../../common/helpers";
+import { getChainNameByChain, getExplorer } from "../../../common/helpers";
 
 interface IFNEOCardProps {
   chain: CHAINS;
@@ -142,6 +141,30 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
                     style={{ float: "left", width: "50%", textAlign: "right" }}
                   >
                     {data.nepPerBlock} NEP
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: 0 }}>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "left" }}
+                  >
+                    Contract
+                  </div>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "right" }}
+                  >
+                    <Button
+                      size="small"
+                      target="_blank"
+                      href={`${getExplorer(
+                        chain,
+                        network,
+                        "contract"
+                      )}/${hash}`}
+                    >
+                      View
+                    </Button>
                   </div>
                 </td>
               </tr>
