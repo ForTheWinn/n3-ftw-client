@@ -6,12 +6,17 @@ import { useApp } from "../../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import {
   ANALYTICS_PATH,
-  ANALYTICS_TOKENS_PATH
+  ANALYTICS_TOKENS_PATH,
 } from "../../../../../../consts/routes";
 import { RestAPI } from "../../../../../../packages/neo/api";
+import { CHAINS } from "../../../../../../consts/chains";
+import { INetworkType } from "../../../../../../packages/neo/network";
 
-const TokensAnalytics = () => {
-  const { chain, network } = useApp();
+interface ITokensAnalyticsProps {
+  chain: CHAINS;
+  network: INetworkType;
+}
+const TokensAnalytics = ({ chain, network }: ITokensAnalyticsProps) => {
   const [isModalActive, setModalActive] = useState("");
   const handleTokenClick = (id: string) => {
     setModalActive(id);

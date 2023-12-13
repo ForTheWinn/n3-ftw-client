@@ -27,6 +27,7 @@ import LPTokens from "../ui/pages/Tools/scenes/LPTokens";
 import ToolsMain from "../ui/pages/Tools/scenes/Main";
 import FNEO from "../ui/pages/FNEO";
 import MaticBoyz from "../ui/pages/MaticBoyz";
+import NEOAnalytics from "../ui/pages/Analytics/scenes/NEOAnalytics";
 
 /* 
   Global
@@ -156,6 +157,30 @@ const FARM_V2_PAGE_ROUTE = {
   component: FarmV2,
 };
 
+export const ANALYTICS_MAIN_ROUTE = {
+  label: "NEP",
+  path: ANALYTICS_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET],
+    [POLYGON_CHAIN]: [MAINNET, TESTNET],
+    [ETH_CHAIN]: [MAINNET],
+  },
+  category: [],
+  component: Analytics,
+};
+
+export const ANALYTICS_FTW_SWAP_ROUTE = {
+  label: "FTW Swap on Neo",
+  path: ANALYTICS_NEO_SWAP_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET],
+    [POLYGON_CHAIN]: [MAINNET, TESTNET],
+    [ETH_CHAIN]: [MAINNET],
+  },
+  category: [],
+  component: NEOAnalytics,
+};
+
 export const ANALYTICS_ROUTE = {
   label: "Analytics",
   path: ANALYTICS_PATH,
@@ -164,7 +189,7 @@ export const ANALYTICS_ROUTE = {
     [POLYGON_CHAIN]: [MAINNET, TESTNET],
     [ETH_CHAIN]: [MAINNET],
   },
-  category: [],
+  category: [ANALYTICS_MAIN_ROUTE, ANALYTICS_FTW_SWAP_ROUTE],
   component: Analytics,
 };
 

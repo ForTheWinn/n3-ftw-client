@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import PairItem from "./PairItem";
 import ModalCard from "../../../../../components/Modal";
 import PairDetail from "../../PairDetail";
-import { useApp } from "../../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import {
   ANALYTICS_PAIRS_PATH,
-  ANALYTICS_PATH
+  ANALYTICS_PATH,
 } from "../../../../../../consts/routes";
 import { RestAPI } from "../../../../../../packages/neo/api";
+import { CHAINS } from "../../../../../../consts/chains";
+import { INetworkType } from "../../../../../../packages/neo/network";
 
-const Pairs = () => {
-  const { network } = useApp();
+interface IPairsAnalyticsProps {
+  chain: CHAINS;
+  network: INetworkType;
+}
+const Pairs = ({ chain, network }: IPairsAnalyticsProps) => {
   const [isModalActive, setModalActive] = useState("");
   const handleTokenClick = (id: string) => {
     setModalActive(id);
@@ -43,6 +47,7 @@ const Pairs = () => {
             {data &&
               data.map((pair) => (
                 <PairItem
+                  chain={chain}
                   onClick={() => handleTokenClick(pair.id)}
                   key={pair.id}
                   tokenA={pair.token_A_id}

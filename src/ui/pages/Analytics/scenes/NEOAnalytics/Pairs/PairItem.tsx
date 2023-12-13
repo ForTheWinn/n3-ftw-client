@@ -3,10 +3,11 @@ import { INetworkType } from "../../../../../../packages/neo/network";
 import PairIcons from "../../../../../components/PairIcons";
 import { numberTrim } from "../../../../../../packages/neo/utils";
 import { FaChartLine } from "react-icons/fa";
-import { useApp } from "../../../../../../common/hooks/use-app";
 import { Space } from "antd";
 import { RestAPI } from "../../../../../../packages/neo/api";
+import { CHAINS } from "../../../../../../consts/chains";
 interface IPairItem {
+  chain: CHAINS;
   network: INetworkType;
   tokenA: string;
   tokenB: string;
@@ -15,14 +16,14 @@ interface IPairItem {
   onClick: () => void;
 }
 const PairItem = ({
+  chain,
   tokenA,
   tokenB,
   tokenASymbol,
   tokenBSymbol,
   network,
-  onClick
+  onClick,
 }: IPairItem) => {
-  const { chain } = useApp();
   const [data, setData] = useState<any>();
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {

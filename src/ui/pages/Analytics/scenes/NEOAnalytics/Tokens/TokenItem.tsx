@@ -31,7 +31,7 @@ const TokenItem = ({ id, symbol, chain, network, onClick }: ITokenItem) => {
     <tr>
       <td>
         <Space>
-          <Avatar size={"small"} src={logo} />
+          <Avatar size={"small"} src={process.env.PUBLIC_URL + logo} />
           <span className="heading">{symbol}</span>
         </Space>
       </td>

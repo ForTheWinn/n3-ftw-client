@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import LiquidityChart from "./LiquidityChart";
-import PageLayout from "../../../../components/Commons/PageLayout";
 import Pools from "./Pairs";
 import Tokens from "./Tokens";
 import PriceChart from "../../components/PriceChart";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
+import { NEO_CHAIN } from "../../../../../consts/global";
 
 const AnalyticsMain = () => {
-  const { chain, network } = useApp();
+  const { network } = useApp();
 
   useEffect(() => {
     document.title = "FTW Analytics";
@@ -26,7 +26,7 @@ const AnalyticsMain = () => {
         <div className="box is-shadowless">
           <h1 className="title is-6">NEP</h1>
           <PriceChart
-            tokenId={GLOBAL_NEP_CONTRACT_ADDRESS[chain][network]}
+            tokenId={GLOBAL_NEP_CONTRACT_ADDRESS[NEO_CHAIN][network]}
             days={"10"}
           />
         </div>
@@ -41,7 +41,7 @@ const AnalyticsMain = () => {
           }}
         >
           <h1 className="title is-6">Tokens</h1>
-          <Tokens />
+          <Tokens chain={NEO_CHAIN} network={network} />
         </div>
       </div>
       <div className="column is-6">
@@ -54,7 +54,7 @@ const AnalyticsMain = () => {
           }}
         >
           <h1 className="title is-6">Pairs</h1>
-          <Pools />
+          <Pools chain={NEO_CHAIN} network={network} />
         </div>
       </div>
     </div>
