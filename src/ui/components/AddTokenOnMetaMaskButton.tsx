@@ -49,7 +49,7 @@ const AddTokenButton = (props: IAddTokenButtonProps) => {
         <div style={{ height: "15px", display: "flex", alignItems: "center" }}>
           <img src="/icons/metamask.svg" width={"15px"} />
         </div>
-        Add Token to MetaMask
+        Add Token
       </Space>
     </Button>
   );

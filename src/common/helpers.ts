@@ -67,6 +67,21 @@ export const getChainIdByChain = (chain: CHAINS, network: INetworkType): number 
   }
 };
 
+export const getChainNameByChain = (
+  chain: CHAINS,
+): string => {
+  switch (chain) {
+    case NEO_CHAIN:
+      return "Neo";
+    case POLYGON_CHAIN:
+      return "Polygon";
+    case ETH_CHAIN:
+      return "Ethereum";
+    default:
+      return "";
+  }
+};
+
 const getNetworkByChainId = (chainId: number): INetworkType => {
   switch (chainId) {
     case NEO_MAINNET_CHAIN_ID:

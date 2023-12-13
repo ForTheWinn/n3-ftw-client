@@ -12,6 +12,9 @@ import TxidModal from "./TxidModal";
 import { Spin, message } from "antd";
 import { INetworkType } from "../../../packages/neo/network";
 import { CHAINS } from "../../../consts/chains";
+import Level from "../../components/Level";
+import AddTokenButton from "../../components/AddTokenOnMetaMaskButton";
+import { getChainNameByChain } from "../../../common/helpers";
 
 interface IFNEOCardProps {
   chain: CHAINS;
@@ -65,7 +68,20 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
   return (
     <>
       <div className="box is-shadowless">
-        <h5 className="title is-6">{name}</h5>
+        <Level
+          left={<h5 className="title is-6">{name}</h5>}
+          right={
+            <AddTokenButton
+              address={hash}
+              symbol={"ftwNEO"}
+              decimals={8}
+              image={"https://forthewin.network/symbols/fneo.svg"}
+              chainId={chainId}
+              chainName={getChainNameByChain(chain)}
+            />
+          }
+        />
+
         {loading ? (
           <div className="is-center box is-shadowless">
             <Spin />
