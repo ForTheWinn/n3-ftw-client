@@ -1,148 +1,95 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { List } from "antd";
-import { writeContract } from "@wagmi/core";
-import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
-import { useApp } from "../../../../../../../common/hooks/use-app";
-import { NEO_CHAIN } from "../../../../../../../consts/global";
-import {
-  getTokenList,
-  setTokenData,
-} from "../../../../../../../packages/evm/contracts/smith";
-
-import TokenCard from "./TokenCard";
 import Pagination from "bulma-pagination-react";
-import Banner from "../../components/Header";
+
 import PageLayout from "../../../../../../components/Commons/PageLayout";
+import Banner from "../../components/Header";
+import TokenCard from "./TokenCard";
 import TokenMetaUpdateModal from "../../components/UpdateTokenMetadataModal";
+
+import { useTokenData, useUpdateTokenMetadata } from "./hooks";
+import { useApp } from "../../../../../../../common/hooks/use-app";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
+import { ISmithTokenProps } from "../../../../../../../common/routers/smith/interfaces";
+
+export interface ITokenStateProps {
+  contractHash: string;
+  website?: string;
+  icon?: string;
+}
 
 const TokenMainPage = () => {
-  const { chain, network, setTxid, refreshCount } = useApp();
-  const [data, setData] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const { chain, network } = useApp();
+  const { address } = useWalletRouter(chain);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [updateModalObj, setUpdateModalObj] = useState<
-    { contractHash: string; website: string; icon: string } | undefined
-  >();
-  const { address, client } = useWalletRouter(chain);
+  const [updateModalObj, setUpdateModalObj] = useState<ITokenStateProps>();
 
-  const onUpdate = async (values) => {
-    try {
-      let res;
-      if (chain === NEO_CHAIN) {
-        res = await new SmithContract(network).updateManifest(
-          client,
-          values.contractHash,
-          JSON.stringify({
-            logo: values.icon,
-            website: values.website,
-          })
-        );
-      } else {
-        const script = await setTokenData(
-          chain,
-          network,
-          values.contractHash,
-          values.icon,
-          values.website
-        );
-        const tx = await writeContract(script as any);
-        res = tx.hash;
-      }
-      setTxid(res);
-    } catch (e) {}
-  };
+  const { data, loading, error, totalPages, fetchData }: any = useTokenData(
+    chain,
+    network,
+    page
+  );
+  console.log(data);
+
+  const { updateTokenMetadata } = useUpdateTokenMetadata(
+    chain,
+    network,
+    setUpdateModalObj
+  );
 
   useEffect(() => {
-    const fetch = async () => {
-      setLoading(true);
-      try {
-        let res;
-        if (chain === NEO_CHAIN) {
-          res = await new SmithContract(network).getNEP17Records(page);
-        } else {
-          res = await getTokenList(chain, network);
-        }
-        setData(res.items);
-        setTotalPages(res.totalPages);
-      } catch (e) {
-        console.error(e);
-        setError(true);
-      }
-      setLoading(false);
-      setUpdateModalObj(undefined);
-    };
-    fetch();
-  }, [page, refreshCount]);
+    fetchData();
+  }, [page, fetchData]);
+
+  if (error) {
+    // Handle error view here
+  }
 
   return (
-    <>
-      <PageLayout>
-        <div className="columns is-centered">
-          <div className="column is-8">
-            <div className="">
-              <Banner />
-              <div className="box is-shadowless">
-                {/* <ListTabs /> */}
-                <List
-                  itemLayout="horizontal"
-                  dataSource={data}
-                  loading={loading}
-                  renderItem={(item: any, index) => {
-                    return (
-                      <TokenCard
-                        key={index}
-                        chain={chain}
-                        network={network}
-                        owner={item.owner}
-                        tokenAddress={item.tokenAddress}
-                        name={item.name}
-                        symbol={item.symbol}
-                        website={item.website}
-                        icon={item.icon}
-                        isContractOwner={address === item.owner}
-                        onUpdate={() => {
-                          setUpdateModalObj({
-                            contractHash: item.tokenAddress,
-                            website: item.website,
-                            icon: item.icon,
-                          });
-                        }}
-                      />
-                    );
-                  }}
+    <PageLayout>
+      <div className="columns is-centered">
+        <div className="column is-8">
+          <Banner />
+          <div className="box is-shadowless">
+            <List
+              itemLayout="horizontal"
+              dataSource={data}
+              loading={loading}
+              renderItem={(item: ISmithTokenProps, index) => (
+                <TokenCard
+                  key={index}
+                  chain={chain}
+                  network={network}
+                  {...item}
+                  isContractOwner={address === item.owner}
+                  onUpdate={() =>
+                    setUpdateModalObj({
+                      contractHash: item.tokenAddress,
+                      website: item.website,
+                      icon: item.icon,
+                    })
+                  }
                 />
-
-                {totalPages > 1 && (
-                  <>
-                    <hr />
-                    <Pagination
-                      pages={data.totalPages}
-                      currentPage={page}
-                      onChange={(v) => {
-                        if (page !== v) {
-                          setPage(v);
-                        }
-                      }}
-                    />
-                  </>
-                )}
-
-                {updateModalObj && (
-                  <TokenMetaUpdateModal
-                    {...updateModalObj}
-                    onUpdate={onUpdate}
-                    onClose={() => setUpdateModalObj(undefined)}
-                  />
-                )}
-              </div>
-            </div>
+              )}
+            />
+            {totalPages > 1 && (
+              <Pagination
+                pages={totalPages}
+                currentPage={page}
+                onChange={setPage}
+              />
+            )}
+            {updateModalObj && (
+              <TokenMetaUpdateModal
+                data={updateModalObj}
+                onUpdate={updateTokenMetadata}
+                onClose={() => setUpdateModalObj(undefined)}
+              />
+            )}
           </div>
         </div>
-      </PageLayout>
-    </>
+      </div>
+    </PageLayout>
   );
 };
 

@@ -136,7 +136,7 @@ const TokenMainPage = () => {
 
                 {updateModalObj && (
                   <UpdateTokenMetadataModal
-                    {...updateModalObj}
+                    data={updateModalObj}
                     onUpdate={onUpdate}
                     onClose={() => setUpdateModalObj(undefined)}
                   />

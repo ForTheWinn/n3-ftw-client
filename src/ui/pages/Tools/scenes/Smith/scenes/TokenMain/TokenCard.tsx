@@ -1,19 +1,14 @@
 import React from "react";
-import { Avatar, List, Space } from "antd";
+import { Avatar, Button, List, Space } from "antd";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { getExplorer } from "../../../../../../../common/helpers";
 import { FTW_LOGO_URL } from "../../../../../../../consts/global";
+import { ISmithTokenProps } from "../../../../../../../common/routers/smith/interfaces";
 
-interface ITokenCardProps {
+interface ITokenCardProps extends ISmithTokenProps {
   chain: CHAINS;
   network: INetworkType;
-  owner: string;
-  tokenAddress: string;
-  name: string;
-  symbol: string;
-  website?: string;
-  icon?: string;
   isContractOwner?: boolean;
   onUpdate: () => void;
 }
@@ -33,11 +28,36 @@ const TokenCard = ({
       actions={
         isContractOwner
           ? [
-              <a onClick={onUpdate} key="list-edit">
-                Edit
-              </a>,
+              <Button
+                size="small"
+                target="_blank"
+                href={`${getExplorer(
+                  chain,
+                  network,
+                  "contract"
+                )}/${tokenAddress}`}
+                rel="noreferrer"
+              >
+                View
+              </Button>,
+              <Button size="small" onClick={onUpdate} type="primary">
+                Update
+              </Button>,
             ]
-          : []
+          : [
+              <Button
+                size="small"
+                target="_blank"
+                href={`${getExplorer(
+                  chain,
+                  network,
+                  "contract"
+                )}/${tokenAddress}`}
+                rel="noreferrer"
+              >
+                View
+              </Button>,
+            ]
       }
     >
       <List.Item.Meta
@@ -57,13 +77,6 @@ const TokenCard = ({
           </div>
         }
       />
-      <a
-        target="_blank"
-        href={`${getExplorer(chain, network, "contract")}/${tokenAddress}`}
-        rel="noreferrer"
-      >
-        View details
-      </a>
     </List.Item>
   );
 };

@@ -1,29 +1,26 @@
 import React, { useState } from "react";
 import Modal from "../../../../../components/Modal";
+import { ITokenStateProps } from "../scenes/TokenMain";
 
-interface IActionModal {
-  contractHash: string;
-  icon: string;
-  website: string;
+interface ITokenMetaUpdateModalProps {
+  data: ITokenStateProps;
   onClose: () => void;
   onUpdate: (values: any) => void;
 }
 const TokenMetaUpdateModal = ({
+  data,
   onClose,
   onUpdate,
-  contractHash,
-  icon,
-  website
-}: IActionModal) => {
+}: ITokenMetaUpdateModalProps) => {
   const [values, setValues] = useState({
-    contractHash,
-    icon: icon ? icon : "",
-    website: website ? website : ""
+    contractHash: data.contractHash,
+    icon: data.icon ? data.icon : "",
+    website: data.website ? data.website : "",
   });
   const handleValueChange = (key: string, val: string) => {
     setValues({
       ...values,
-      [key]: val
+      [key]: val,
     });
   };
 

@@ -67,20 +67,6 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
     chainId: CONFIGS[network][chain].chainId,
   });
   return res;
-  // return {
-  //   totalItems: res.tokenItems,
-  //   totalPages: res.totalPages,
-  //   items: res.items.map((item: any) => {
-  //     return {
-  //       contractHash: item[0],
-  //       owner: item[1],
-  //       name: item[2],
-  //       symbol: item[3],
-  //       icon: item[4],
-  //       website: item[5],
-  //     };
-  //   }),
-  // };
 };
 
 const getTokenMetadata = async (

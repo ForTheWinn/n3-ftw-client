@@ -18,6 +18,7 @@ import { explorerUrls } from "../consts/urls";
 import { CHAINS, CONFIGS } from "../consts/chains";
 import { ethers } from "ethers";
 import { fetchTokenInfo } from "./routers/global";
+import { WENT_WRONG } from "../consts/messages";
 
 export const getExplorer = (
   chain: string,
@@ -270,3 +271,20 @@ export const usdtABI = [
     type: "event",
   },
 ];
+
+export const extractErrorMessage = (error: any) => {
+  if (error && typeof error.message === "string") {
+    try {
+      const errorMessageJSON = JSON.parse(error.message);
+      if (errorMessageJSON && errorMessageJSON.message) {
+        return errorMessageJSON.message;
+      }
+    } catch (parsingError) {
+      console.error("Error parsing the error message:", parsingError);
+      return WENT_WRONG;
+    }
+  }
+
+  // Default error message
+  return WENT_WRONG;
+};
