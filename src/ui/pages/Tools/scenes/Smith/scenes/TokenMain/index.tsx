@@ -51,6 +51,7 @@ const TokenMainPage = () => {
         <div className="column is-8">
           <Banner />
           <div className="box is-shadowless">
+            <h6 className="title is-6">Showcases</h6>
             <List
               itemLayout="horizontal"
               dataSource={data}

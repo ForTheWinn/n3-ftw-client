@@ -307,10 +307,10 @@ const LOCKER_PAGE_ROUTE = {
 };
 
 const SMITH_PAGE_ROUTE = {
-  label: "Smith",
+  label: "Token Launcher",
   icon: "/520/smith.png",
   description:
-    "Effortlessly generate and launch your own token with Smith, eliminating the need for complex coding.",
+    "Smith simplifies crypto token creation, allowing users to launch their own token in just 1-2 minutes without any complex coding or developer experience",
   path: SMITH_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
@@ -470,9 +470,9 @@ const BRAND_PAGE_ROUTE = {
 };
 
 export const ROUTE_LIST = [
+  SMITH_PAGE_ROUTE,
   SWAP_PAGE_ROUTE,
   FARM_V2_PAGE_ROUTE,
-  SMITH_PAGE_ROUTE,
   FNEO_PAGE_ROUTE,
   BRIDGE_PAGE_ROUTE,
   TOOLS_PAGE_ROUTE,
