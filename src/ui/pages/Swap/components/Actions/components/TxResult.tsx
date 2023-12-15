@@ -22,7 +22,7 @@ export const TxResult = ({ chain, network, txid, onClose }: ITxResultProps) => {
           href={`${getExplorer(chain, network, "tx")}/${txid}`}
           type="primary"
         >
-          View tx on explorer
+          View Tx
         </Button>,
         <Button onClick={onClose}>Close</Button>,
       ]}
