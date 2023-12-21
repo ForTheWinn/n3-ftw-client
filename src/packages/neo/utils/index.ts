@@ -64,9 +64,9 @@ export const base64ToString = (str: string): string =>
 export const base64ToDate = (str: string): string =>
   moment.unix(parseFloat(str) / 1000).format("lll");
 
-export const toDecimal = (val: string | number): number => {
+export const toDecimal = (val: string | number, decimals = 8): number => {
   try {
-    return parseFloat(u.BigInteger.fromNumber(val).toDecimal(8));
+    return parseFloat(u.BigInteger.fromNumber(val).toDecimal(decimals));
   } catch (e) {
     return 0;
   }

@@ -19,6 +19,7 @@ import { CHAINS, CONFIGS } from "../consts/chains";
 import { ethers } from "ethers";
 import { fetchTokenInfo } from "./routers/global";
 import { WENT_WRONG } from "../consts/messages";
+import { Network } from "alchemy-sdk";
 
 export const getExplorer = (
   chain: string,
@@ -55,7 +56,10 @@ const getChainByChainId = (chainId: number): string => {
   }
 };
 
-export const getChainIdByChain = (chain: CHAINS, network: INetworkType): number => {
+export const getChainIdByChain = (
+  chain: CHAINS,
+  network: INetworkType
+): number => {
   switch (chain) {
     case NEO_CHAIN:
       return CONFIGS[network][NEO_CHAIN].chainId;
@@ -68,9 +72,7 @@ export const getChainIdByChain = (chain: CHAINS, network: INetworkType): number 
   }
 };
 
-export const getChainNameByChain = (
-  chain: CHAINS,
-): string => {
+export const getChainNameByChain = (chain: CHAINS): string => {
   switch (chain) {
     case NEO_CHAIN:
       return "Neo";
@@ -288,3 +290,24 @@ export const extractErrorMessage = (error: any) => {
   // Default error message
   return WENT_WRONG;
 };
+
+export function getPairId(tokenA: string, tokenB: string): string {
+  if (tokenA > tokenB) {
+    return tokenA + tokenB;
+  } else {
+    return tokenB + tokenA;
+  }
+}
+
+export function convertChainForBackend(chain: CHAINS): string {
+  switch (chain) {
+    case NEO_CHAIN:
+      return "neo";
+    case ETH_CHAIN:
+      return Network.ETH_MAINNET;
+    case POLYGON_CHAIN:
+      return Network.MATIC_MAINNET;
+    default:
+      throw new Error("Invalid chain");
+  }
+}
