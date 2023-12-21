@@ -102,9 +102,11 @@ export const FNEO_PATH = "/ftwNeo";
 */
 export const ANALYTICS_PATH = "/analytics";
 export const ANALYTICS_NEO_SWAP_PATH = "/analytics/neo-ftw-swap";
+export const ANALYTICS_PAIRS_PATH = "/analytics/neo-ftw-swap/pairs";
+export const ANALYTICS_TOKENS_PATH = "/analytics/neo-ftw-swap/tokens";
 export const ANALYTICS_POLYGON_SWAP_PATH = "/analytics/polygon-ftw-swap";
-export const ANALYTICS_PAIRS_PATH = "/analytics/pairs";
-export const ANALYTICS_TOKENS_PATH = "/analytics/tokens";
+export const ANALYTICS_POLYGON_SWAP_PAIRS_PATH = "/analytics/polygon-ftw-swap/pairs";
+export const ANALYTICS_POLYGON_SWAP_TOKENS_PATH = "/analytics/polygon-ftw-swap/tokens";
 /* 
   Archive
 */
@@ -170,11 +172,23 @@ export const ANALYTICS_MAIN_ROUTE = {
 };
 
 export const ANALYTICS_FTW_SWAP_ROUTE = {
-  label: "FTW Swap on Neo",
+  label: "FTW Swap Neo",
   path: ANALYTICS_NEO_SWAP_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],
     [POLYGON_CHAIN]: [MAINNET, TESTNET],
+    [ETH_CHAIN]: [MAINNET],
+  },
+  category: [],
+  component: NEOAnalytics,
+};
+
+export const ANALYTICS_FTW_SWAP_POLYGON_ROUTE = {
+  label: "FTW Swap Polygon",
+  path: ANALYTICS_POLYGON_SWAP_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET],
+    [POLYGON_CHAIN]: [MAINNET],
     [ETH_CHAIN]: [MAINNET],
   },
   category: [],
@@ -189,7 +203,11 @@ export const ANALYTICS_ROUTE = {
     [POLYGON_CHAIN]: [MAINNET, TESTNET],
     [ETH_CHAIN]: [MAINNET],
   },
-  category: [ANALYTICS_MAIN_ROUTE, ANALYTICS_FTW_SWAP_ROUTE],
+  category: [
+    ANALYTICS_MAIN_ROUTE,
+    ANALYTICS_FTW_SWAP_ROUTE,
+    ANALYTICS_FTW_SWAP_POLYGON_ROUTE,
+  ],
   component: Analytics,
 };
 

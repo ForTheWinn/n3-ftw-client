@@ -2,6 +2,7 @@ import { MAINNET, TESTNET } from "../../../consts/global";
 import { LOCKER_SCRIPT_HASH } from "../contracts/ftw/locker/consts";
 import { INetworkType } from "../network";
 import {
+  IEVMPair,
   ILiquidityWithTimeRange,
   INEPInfoWithTimeRange,
   IPair,
@@ -14,6 +15,8 @@ import {
   IToken,
   ITokenWithNumbers,
 } from "./interfaces";
+import { CHAINS } from "../../../consts/chains";
+import { convertChainForBackend } from "../../../common/helpers";
 
 export const ENDPOINT = {
   [TESTNET]: "https://api.forthewin.network/mainnet",
@@ -159,4 +162,11 @@ export class RestAPI {
     const params = "?" + new URLSearchParams(defaultFilters).toString();
     return this.fetchResult(`${BASE_URL_GHOSTMARKET}/asset/orders${params}`);
   }
+
+  async getEVMSwapPairs({ chain }: { chain: CHAINS }): Promise<IEVMPair> {
+    return this.fetchResult(
+      this.buildURL(`/evm/pairs/${convertChainForBackend(chain)}`)
+    );
+  }
+
 }
