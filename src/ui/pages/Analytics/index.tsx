@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Route, useHistory, useLocation } from "react-router-dom";
+import { Route, useHistory, useLocation } from "react-router-dom";
 import PairDetail from "./scenes/PairDetail";
 import TokenDetail from "./scenes/TokenDetail";
 import PageLayout from "../../components/Commons/PageLayout";
@@ -11,7 +11,7 @@ import {
   ANALYTICS_TOKENS_PATH,
 } from "../../../consts/routes";
 import { Avatar, Tabs } from "antd";
-import { NEO_LOGO, NEP_LOGO } from "../../../consts/global";
+import { NEO_LOGO, NEP_LOGO, POLYGON_LOGO } from "../../../consts/global";
 import NEPAnalytics from "./scenes/NEPAnalytics";
 import NEOAnalytics from "./scenes/NEOAnalytics";
 import PolygonAnalytics from "./scenes/PolygonAnalytics";
@@ -61,23 +61,27 @@ const Analytics = () => {
             {
               label: (
                 <>
-                  <Avatar size="small" src={NEO_LOGO} /> FTW Swap
+                  <Avatar size="small" src={NEO_LOGO} /> FTW Swap (NEO)
                 </>
               ),
               key: "neo-swap",
             },
-            // {
-            //   label: (
-            //     <>
-            //       <Avatar size="small" src={POLYGON_LOGO} /> FTW Swap
-            //     </>
-            //   ),
-            //   key: "polygon-swap",
-            // },
+            {
+              label: (
+                <>
+                  <Avatar size="small" src={POLYGON_LOGO} /> FTW Swap (Polygon)
+                </>
+              ),
+              key: "polygon-swap",
+            },
           ]}
         />
 
-        <Route exact={true} path={`${ANALYTICS_PATH}`} component={NEPAnalytics} />
+        <Route
+          exact={true}
+          path={`${ANALYTICS_PATH}`}
+          component={NEPAnalytics}
+        />
         <Route path={`${ANALYTICS_NEO_SWAP_PATH}`} component={NEOAnalytics} />
         <Route
           path={`${ANALYTICS_POLYGON_SWAP_PATH}`}

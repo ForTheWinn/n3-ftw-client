@@ -1,11 +1,12 @@
-import { Typography } from "antd";
 import React from "react";
+import Pairs from "./Pairs";
+import { POLYGON_CHAIN } from "../../../../../consts/global";
 
 const PolygonAnalytics = (props) => {
   return (
-    <div>
-      <Typography.Paragraph>In progress</Typography.Paragraph>
-    </div>
+    <>
+      <Pairs chain={POLYGON_CHAIN} />
+    </>
   );
 };
 

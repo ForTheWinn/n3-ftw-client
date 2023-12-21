@@ -29,7 +29,6 @@ const TokenMainPage = () => {
     network,
     page
   );
-  console.log(data);
 
   const { updateTokenMetadata } = useUpdateTokenMetadata(
     chain,
