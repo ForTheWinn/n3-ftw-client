@@ -19,7 +19,6 @@ import { CHAINS, CONFIGS } from "../consts/chains";
 import { ethers } from "ethers";
 import { fetchTokenInfo } from "./routers/global";
 import { WENT_WRONG } from "../consts/messages";
-import { Network } from "alchemy-sdk";
 
 export const getExplorer = (
   chain: string,
@@ -304,9 +303,9 @@ export function convertChainForBackend(chain: CHAINS): string {
     case NEO_CHAIN:
       return "neo";
     case ETH_CHAIN:
-      return Network.ETH_MAINNET;
+      return "ethereum";
     case POLYGON_CHAIN:
-      return Network.MATIC_MAINNET;
+      return "polygon";
     default:
       throw new Error("Invalid chain");
   }

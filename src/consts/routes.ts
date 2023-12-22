@@ -28,6 +28,8 @@ import ToolsMain from "../ui/pages/Tools/scenes/Main";
 import FNEO from "../ui/pages/FNEO";
 import MaticBoyz from "../ui/pages/MaticBoyz";
 import NEOAnalytics from "../ui/pages/Analytics/scenes/NEOAnalytics";
+import PolygonAnalytics from "../ui/pages/Analytics/scenes/PolygonAnalytics";
+import EthereumAnalytics from "../ui/pages/Analytics/scenes/EthereumAnalytics";
 
 /* 
   Global
@@ -105,8 +107,15 @@ export const ANALYTICS_NEO_SWAP_PATH = "/analytics/neo-ftw-swap";
 export const ANALYTICS_PAIRS_PATH = "/analytics/neo-ftw-swap/pairs";
 export const ANALYTICS_TOKENS_PATH = "/analytics/neo-ftw-swap/tokens";
 export const ANALYTICS_POLYGON_SWAP_PATH = "/analytics/polygon-ftw-swap";
-export const ANALYTICS_POLYGON_SWAP_PAIRS_PATH = "/analytics/polygon-ftw-swap/pairs";
-export const ANALYTICS_POLYGON_SWAP_TOKENS_PATH = "/analytics/polygon-ftw-swap/tokens";
+export const ANALYTICS_POLYGON_SWAP_PAIRS_PATH =
+  "/analytics/polygon-ftw-swap/pairs";
+export const ANALYTICS_POLYGON_SWAP_TOKENS_PATH =
+  "/analytics/polygon-ftw-swap/tokens";
+export const ANALYTICS_ETHEREUM_SWAP_PATH = "/analytics/ethereum-ftw-swap";
+export const ANALYTICS_ETHEREUM_SWAP_PAIRS_PATH =
+  "/analytics/ethereum-ftw-swap/pairs";
+export const ANALYTICS_ETHEREUM_SWAP_TOKENS_PATH =
+  "/analytics/ethereum-ftw-swap/tokens";
 /* 
   Archive
 */
@@ -172,7 +181,7 @@ export const ANALYTICS_MAIN_ROUTE = {
 };
 
 export const ANALYTICS_FTW_SWAP_ROUTE = {
-  label: "FTW Swap Neo",
+  label: "FTW Swap (Neo)",
   path: ANALYTICS_NEO_SWAP_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],
@@ -184,7 +193,7 @@ export const ANALYTICS_FTW_SWAP_ROUTE = {
 };
 
 export const ANALYTICS_FTW_SWAP_POLYGON_ROUTE = {
-  label: "FTW Swap Polygon",
+  label: "FTW Swap (Polygon)",
   path: ANALYTICS_POLYGON_SWAP_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],
@@ -192,7 +201,19 @@ export const ANALYTICS_FTW_SWAP_POLYGON_ROUTE = {
     [ETH_CHAIN]: [MAINNET],
   },
   category: [],
-  component: NEOAnalytics,
+  component: PolygonAnalytics,
+};
+
+export const ANALYTICS_FTW_SWAP_ETHEREUM_ROUTE = {
+  label: "FTW Swap (Ethereum)",
+  path: ANALYTICS_ETHEREUM_SWAP_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET],
+    [POLYGON_CHAIN]: [MAINNET],
+    [ETH_CHAIN]: [MAINNET],
+  },
+  category: [],
+  component: EthereumAnalytics,
 };
 
 export const ANALYTICS_ROUTE = {
@@ -206,6 +227,7 @@ export const ANALYTICS_ROUTE = {
   category: [
     ANALYTICS_MAIN_ROUTE,
     ANALYTICS_FTW_SWAP_ROUTE,
+    ANALYTICS_FTW_SWAP_ETHEREUM_ROUTE,
     ANALYTICS_FTW_SWAP_POLYGON_ROUTE,
   ],
   component: Analytics,
