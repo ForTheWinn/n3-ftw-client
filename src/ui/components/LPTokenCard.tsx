@@ -1,6 +1,5 @@
 import React from "react";
 import { ISwapLPToken } from "../../common/routers/swap/interfaces";
-import { ethers } from "ethers";
 import { formatAmount } from "../../common/helpers";
 
 const LPTokenCard = (props: ISwapLPToken) => {

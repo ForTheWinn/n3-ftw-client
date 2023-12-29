@@ -28,8 +28,8 @@ import ToolsMain from "../ui/pages/Tools/scenes/Main";
 import FNEO from "../ui/pages/FNEO";
 import MaticBoyz from "../ui/pages/MaticBoyz";
 import NEOAnalytics from "../ui/pages/Analytics/scenes/NEOAnalytics";
-import PolygonAnalytics from "../ui/pages/Analytics/scenes/PolygonAnalytics";
-import EthereumAnalytics from "../ui/pages/Analytics/scenes/EthereumAnalytics";
+import PolygonAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/Polygon";
+import EthereumAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/Ethereum";
 
 /* 
   Global
@@ -107,15 +107,7 @@ export const ANALYTICS_NEO_SWAP_PATH = "/analytics/neo-ftw-swap";
 export const ANALYTICS_PAIRS_PATH = "/analytics/neo-ftw-swap/pairs";
 export const ANALYTICS_TOKENS_PATH = "/analytics/neo-ftw-swap/tokens";
 export const ANALYTICS_POLYGON_SWAP_PATH = "/analytics/polygon-ftw-swap";
-export const ANALYTICS_POLYGON_SWAP_PAIRS_PATH =
-  "/analytics/polygon-ftw-swap/pairs";
-export const ANALYTICS_POLYGON_SWAP_TOKENS_PATH =
-  "/analytics/polygon-ftw-swap/tokens";
 export const ANALYTICS_ETHEREUM_SWAP_PATH = "/analytics/ethereum-ftw-swap";
-export const ANALYTICS_ETHEREUM_SWAP_PAIRS_PATH =
-  "/analytics/ethereum-ftw-swap/pairs";
-export const ANALYTICS_ETHEREUM_SWAP_TOKENS_PATH =
-  "/analytics/ethereum-ftw-swap/tokens";
 /* 
   Archive
 */

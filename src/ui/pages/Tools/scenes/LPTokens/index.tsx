@@ -7,8 +7,7 @@ import { swapRouter } from "../../../../../common/routers";
 import { ISwapLPToken } from "../../../../../common/routers/swap/interfaces";
 import LPTokenCard from "../../../../components/LPTokenCard";
 import { WENT_WRONG } from "../../../../../consts/messages";
-import { CONFIGS } from "../../../../../consts/chains";
-import { Avatar, Divider, Space } from "antd";
+import { Divider } from "antd";
 
 const LPTokens = () => {
   const location = useLocation();

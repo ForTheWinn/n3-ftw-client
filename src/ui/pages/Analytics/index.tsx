@@ -20,8 +20,8 @@ import {
 } from "../../../consts/global";
 import NEPAnalytics from "./scenes/NEPAnalytics";
 import NEOAnalytics from "./scenes/NEOAnalytics";
-import PolygonAnalytics from "./scenes/PolygonAnalytics";
-import EthereumAnalytics from "./scenes/EthereumAnalytics";
+import PolygonAnalytics from "./scenes/EVMAnalytics/Polygon";
+import EthereumAnalytics from "./scenes/EVMAnalytics/Ethereum";
 
 const Analytics = () => {
   const location = useLocation();

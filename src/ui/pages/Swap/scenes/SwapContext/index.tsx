@@ -28,6 +28,13 @@ import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
 import ProvideLPInfo from "../../components/ProvideLPInfo";
 import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/routes";
+import { fetchBalance } from "@wagmi/core";
+import {
+  POLYGON_MAINNET_CONTRACTS,
+  POLYGON_MAINNET_SWAP_TOKEN_MAP,
+} from "../../../../../packages/evm/polygon/mainnet";
+import { SWAP } from "../../../../../consts/global";
+import FNEO from "../../../FNEO";
 
 interface ISwapContext {
   chain: CHAINS;
@@ -227,6 +234,29 @@ export const SwapContextProvider = (props: {
             amountB,
           });
         }
+
+        //TODO::REMOVE
+
+        const fneobal = await fetchBalance({
+          address: POLYGON_MAINNET_CONTRACTS.SWAP,
+          token: POLYGON_MAINNET_CONTRACTS.FNEO,
+        } as any);
+
+        console.log("fneo", fneobal);
+
+        const nepbal = await fetchBalance({
+          address: POLYGON_MAINNET_CONTRACTS.SWAP,
+          token: POLYGON_MAINNET_CONTRACTS.NEP,
+        } as any);
+
+        console.log("nepbal", nepbal);
+
+        const usdt = await fetchBalance({
+          address: POLYGON_MAINNET_CONTRACTS.SWAP,
+          token: POLYGON_MAINNET_CONTRACTS.USDT,
+        } as any);
+
+        console.log("usdt", usdt);
 
         window.history.replaceState(
           null,

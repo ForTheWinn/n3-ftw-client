@@ -1,6 +1,6 @@
 import React from "react";
-import Pairs from "./Pairs";
-import { POLYGON_CHAIN } from "../../../../../consts/global";
+import { POLYGON_CHAIN } from "../../../../../../consts/global";
+import Pairs from "../components/Pairs";
 
 const PolygonAnalytics = (props) => {
   return (

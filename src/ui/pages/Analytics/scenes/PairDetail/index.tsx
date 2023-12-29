@@ -9,7 +9,7 @@ interface IPairDetailProps {
   id: string;
 }
 const PairDetail = ({ id }: IPairDetailProps) => {
-  const { chain, network } = useApp();
+  const { network } = useApp();
   const pairs = id.split("_");
   const tokenA = pairs[0];
   const tokenB = pairs[1];
