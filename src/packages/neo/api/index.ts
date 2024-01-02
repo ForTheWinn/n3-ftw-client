@@ -20,8 +20,8 @@ import { convertChainForBackend } from "../../../common/helpers";
 
 export const ENDPOINT = {
   [TESTNET]: "https://api.forthewin.network/mainnet",
-  [MAINNET]: "http://localhost:3000/mainnet",
-  // [MAINNET]: "https://api.forthewin.network/mainnet",
+  // [MAINNET]: "http://localhost:3000/mainnet",
+  [MAINNET]: "https://api.forthewin.network/mainnet",
 };
 
 const BASE_URL_GHOSTMARKET = "https://api.ghostmarket.io/api/v2";
