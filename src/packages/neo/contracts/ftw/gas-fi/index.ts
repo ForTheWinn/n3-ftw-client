@@ -3,7 +3,7 @@ import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet } from "../../../index";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
 
-import { parseMapValue } from "../../../utils";
+import { parseMapValue, toDecimal } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
 import { NEO_BNEO_CONTRACT_ADDRESS } from "../../../consts/neo-contracts";
@@ -219,9 +219,7 @@ export class GasFiContract {
       obj.claimable = res.stack[2].value
         ? parseMapValue(res.stack[2] as any)
         : undefined;
-      obj.bNEOBalance = parseFloat(
-        u.BigInteger.fromNumber(res.stack[3].value as any).toDecimal(8)
-      );
+      obj.bNEOBalance = toDecimal(res.stack[3].value as any);
     }
     return obj;
   };

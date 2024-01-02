@@ -3,7 +3,7 @@ import { CONST, rpc, sc, tx, u, wallet } from "@cityofzion/neon-core";
 import { BigInteger } from "@cityofzion/neon-core/lib/u";
 import { INetworkType, Network } from "../network";
 import { IBalance } from "./interfaces";
-import { convertContractCallParam } from "../utils";
+import { convertContractCallParam, toDecimal } from "../utils";
 import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEO_CONTRACT_ADDRESS,
@@ -47,7 +47,7 @@ export class DevWallet {
       let amount;
       if (item.assethash.includes(NEO_GAS_CONTRACT_ADDRESS)) {
         symbol = "GAS";
-        amount = u.BigInteger.fromNumber(item.amount).toDecimal(8).toString();
+        amount = toDecimal(item.amount);
       }
       if (item.assethash.includes(NEO_NEO_CONTRACT_ADDRESS)) {
         symbol = "NEO";

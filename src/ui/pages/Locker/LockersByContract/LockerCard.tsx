@@ -7,15 +7,14 @@ import {
   ILockerContract,
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import CountdownRender from "../components/CountdownRender";
+import { toDecimal } from "../../../../packages/neo/utils";
 interface ILockerCardProps {
   contract: ILockerContract;
   locker: ILocker;
 }
 const LockerCard = ({ locker, contract }: ILockerCardProps) => {
   const releaseAt = moment.unix(locker.releaseAt / 1000);
-  const amount = parseFloat(
-    u.BigInteger.fromNumber(locker.amount).toDecimal(contract.decimals)
-  );
+  const amount = toDecimal(locker.amount, contract.decimals);
   return (
     <tr key={locker.lockerNo}>
       <td>{locker.lockerNo}</td>

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { Avatar, Button, Card, Spin, Typography } from "antd";
+import { Avatar, Button, Card, Divider, Spin, Typography } from "antd";
 import {
   ETHEREUM_LOGO,
   ETH_CHAIN,
   MAINNET,
   NEO_CHAIN,
   NEO_LOGO,
+  NEP_LOGO,
   POLYGON_CHAIN,
   POLYGON_LOGO,
 } from "../../../../../consts/global";
@@ -20,6 +21,22 @@ import {
 import { RestAPI } from "../../../../../packages/neo/api";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/neo-contracts";
 import AddTokenButton from "../../../../components/AddTokenOnMetaMaskButton";
+import PriceChart from "../../components/PriceChart";
+
+const EMMISSIONS = [
+  {
+    chain: "Neo",
+    daily: 27324,
+  },
+  {
+    chain: "Ethereum",
+    daily: 1080,
+  },
+  {
+    chain: "Polygon",
+    daily: 1080,
+  },
+];
 
 const NEPAnalytics = () => {
   const { network } = useApp();
@@ -76,8 +93,6 @@ const NEPAnalytics = () => {
     fetchData();
   }, []);
 
-  if (loading) return null;
-
   const neoSupply =
     parseFloat(values.neo.totalSupply) - parseFloat(values.polygon.totalSupply);
   const polygonSupply = parseFloat(values.polygon.totalSupply);
@@ -85,12 +100,47 @@ const NEPAnalytics = () => {
   const neoMC = neoSupply * values.nepPrice;
   const polygonMC = polygonSupply * values.nepPrice;
   const ethereumMC = ethereumSupply * values.nepPrice;
-
+  let totalEmmissions = 0;
   return (
     <div>
-      <div className="columns">
-        <div className="column">
-          <Card style={{ height: "240px" }}>
+      <div className="columns is-multiline">
+        <div className="column is-4">
+          <PriceChart
+            tokenId={GLOBAL_NEP_CONTRACT_ADDRESS[NEO_CHAIN][network]}
+            days={"30"}
+          />
+        </div>
+        <div className="column is-4">
+          <Card style={{ height: "240px" }} loading={loading}>
+            <Card.Meta
+              avatar={<Avatar src={NEP_LOGO} />}
+              title="NEP emmisions per day"
+              description={
+                <>
+                  <Typography.Paragraph>
+                    {EMMISSIONS.map((emission) => {
+                      totalEmmissions += emission.daily;
+                      return (
+                        <>
+                          {emission.chain}: {emission.daily.toLocaleString()}{" "}
+                          NEP <br />
+                        </>
+                      );
+                    })}
+                  </Typography.Paragraph>
+
+                  <Divider />
+                  <Typography.Paragraph>
+                    Total: {totalEmmissions.toLocaleString()} NEP
+                  </Typography.Paragraph>
+                </>
+              }
+            />
+          </Card>
+        </div>
+
+        <div className="column is-4">
+          <Card style={{ height: "240px" }} loading={loading}>
             <Card.Meta
               avatar={<Avatar src={NEO_LOGO} />}
               title="NEP on Neo"
@@ -116,8 +166,8 @@ const NEPAnalytics = () => {
             />
           </Card>
         </div>
-        <div className="column">
-          <Card style={{ height: "240px" }}>
+        <div className="column is-4">
+          <Card style={{ height: "240px" }} loading={loading}>
             <Card.Meta
               avatar={<Avatar src={ETHEREUM_LOGO} />}
               title="NEP on Ethereum"
@@ -152,8 +202,8 @@ const NEPAnalytics = () => {
             />
           </Card>
         </div>
-        <div className="column">
-          <Card style={{ height: "240px" }}>
+        <div className="column is-4">
+          <Card style={{ height: "240px" }} loading={loading}>
             <Card.Meta
               avatar={<Avatar src={POLYGON_LOGO} />}
               title="NEP on Polygon"

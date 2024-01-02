@@ -16,6 +16,7 @@ import WalletSidebar from "./components/Commons/SideNavs/WalletSidebar";
 import MobileMenuSlider from "./components/Commons/SideNavs/MobileMenuSlider";
 import TxHandler from "./components/Commons/TxHandler";
 import Routes from "./Routes";
+import { ConfigProvider } from "antd";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, goerli, polygon, polygonMumbai],
@@ -38,20 +39,35 @@ const config = createConfig({
 
 const App = () => {
   return (
-    <AppContextProvider>
-      <WagmiConfig config={config as any}>
-        <NeoWalletProvider>
-          <Router>
-            <Toaster position="bottom-center" />
-            <Header />
-            <Routes />
-            <MobileMenuSlider />
-            <WalletSidebar />
-            <TxHandler />
-          </Router>
-        </NeoWalletProvider>
-      </WagmiConfig>
-    </AppContextProvider>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#rgba(0, 0, 0, 1)",
+          colorLink: "#rgba(0, 0, 0, 1)",
+        },
+        components: {
+          Menu: {
+            activeBarBorderWidth: 0,
+            itemSelectedBg: "white",
+          },
+        },
+      }}
+    >
+      <AppContextProvider>
+        <WagmiConfig config={config as any}>
+          <NeoWalletProvider>
+            <Router>
+              <Toaster position="bottom-center" />
+              <Header />
+              <Routes />
+              <MobileMenuSlider />
+              <WalletSidebar />
+              <TxHandler />
+            </Router>
+          </NeoWalletProvider>
+        </WagmiConfig>
+      </AppContextProvider>
+    </ConfigProvider>
   );
 };
 

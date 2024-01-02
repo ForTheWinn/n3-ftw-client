@@ -65,7 +65,7 @@ const Analytics = () => {
             {
               label: (
                 <>
-                  <Avatar size="small" src={NEP_LOGO} /> NEP
+                  <Avatar size="small" src={NEP_LOGO} /> NEPs
                 </>
               ),
               key: "nep",
@@ -73,7 +73,7 @@ const Analytics = () => {
             {
               label: (
                 <>
-                  <Avatar size="small" src={NEO_LOGO} /> FTW Swap (NEO)
+                  <Avatar size="small" src={NEO_LOGO} /> FTW Swap (Neo)
                 </>
               ),
               key: "neo-swap",

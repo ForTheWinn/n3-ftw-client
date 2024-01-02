@@ -28,13 +28,11 @@ const MyLPTokenItem = ({ network, token, prices }: IMyTokenItemProps) => {
   //         u.BigInteger.fromNumber(tokenAReserve)
   //           .mul(info.amount)
   //           .div(parseFloat(reserve.shares))
-  //           .toDecimal(reserve.pair[info.tokenA].decimals)
   //       );
   //       let tokenBAmount = parseFloat(
   //         u.BigInteger.fromNumber(tokenBReserve)
   //           .mul(info.amount)
   //           .div(reserve.totalShare)
-  //           .toDecimal(reserve.pair[info.tokenB].decimals)
   //       );
   //       setData({
   //         tokenASymbol: reserve.pair[info.tokenA].symbol,

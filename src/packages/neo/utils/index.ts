@@ -7,9 +7,6 @@ import {
 } from "@cityofzion/neon-core/lib/sc/StackItem";
 import { InvokeResult } from "@cityofzion/neon-core/lib/rpc";
 import { INetworkType, Network } from "../network";
-import { network } from "..";
-import { ethers } from "ethers";
-import { WENT_WRONG } from "../../../consts/messages";
 import { formatAmount } from "../../../common/helpers";
 
 export const truncateAddress = (address: string) => {

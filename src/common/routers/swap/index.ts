@@ -17,8 +17,9 @@ import {
 } from "./interfaces";
 import { SwapContract } from "../../../packages/neo/contracts";
 import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
-import { ETH_CHAIN, NEO_CHAIN, POLYGON_CHAIN } from "../../../consts/global";
+import { NEO_CHAIN } from "../../../consts/global";
 import { getUserBalance } from "../../../packages/neo/utils";
+import { getChainIdByChain } from "../../helpers";
 
 export const getReserves = async (
   chain: CHAINS,
@@ -52,10 +53,12 @@ export const getBalances = async (
       const res1 = await fetchBalance({
         address,
         token: tokenA.hash,
+        chainId: getChainIdByChain(chain, network),
       } as any);
       const res2 = await fetchBalance({
         address,
         token: tokenB.hash,
+        chainId: getChainIdByChain(chain, network),
       } as any);
       amountA = res1.formatted;
       amountB = res2.formatted;

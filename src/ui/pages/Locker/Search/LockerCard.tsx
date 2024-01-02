@@ -4,12 +4,12 @@ import { u } from "@cityofzion/neon-core";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import {
   ILocker,
-  ILockerContract
+  ILockerContract,
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { FaLock, FaUnlock } from "react-icons/fa";
 import CountdownRender from "../components/CountdownRender";
 import { useApp } from "../../../../common/hooks/use-app";
-import { truncateAddress } from "../../../../packages/neo/utils";
+import { toDecimal, truncateAddress } from "../../../../packages/neo/utils";
 
 interface ILockerByUserCardProps extends ILocker {}
 
@@ -38,9 +38,7 @@ const LockerCard = (locker: ILockerByUserCardProps) => {
       <td>{data ? data.symbol : ""}</td>
       <td>
         {data
-          ? `${parseFloat(
-              u.BigInteger.fromNumber(locker.amount).toDecimal(data.decimals)
-            ).toLocaleString()} ${data.symbol}`
+          ? `${toDecimal(locker.amount, data.decimals)} ${data.symbol}`
           : ""}
       </td>
       <td>{releaseAt.format("lll")}</td>

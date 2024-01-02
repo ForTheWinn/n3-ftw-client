@@ -5,6 +5,7 @@ import { UNKNOWN_TOKEN_IMAGE } from "../../../../consts/global";
 import { TOKEN_LIST } from "../../../../consts/tokens";
 import { CHAINS } from "../../../../consts/chains";
 import { LOCKER_PATH } from "../../../../consts/routes";
+import { toDecimal } from "../../../../packages/neo/utils";
 interface ILockerTokenCardProps {
   chain: CHAINS;
   lockedAmount: number;
@@ -19,15 +20,13 @@ const LockerTokenCard = ({
   lockedAmount,
   decimals,
   contractHash,
-  symbol
+  symbol,
 }: ILockerTokenCardProps) => {
   const history = useHistory();
   const logo = TOKEN_LIST[chain][network][contractHash]
     ? TOKEN_LIST[chain][network][contractHash].icon
     : UNKNOWN_TOKEN_IMAGE;
-  const amount = parseFloat(
-    u.BigInteger.fromNumber(lockedAmount).toDecimal(decimals)
-  );
+  const amount = toDecimal(lockedAmount, decimals);
   return (
     <div
       onClick={() => {

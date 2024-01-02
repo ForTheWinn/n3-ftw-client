@@ -4,11 +4,12 @@ import { u } from "@cityofzion/neon-core";
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import {
   ILockerContract,
-  ILockerKeyToken
+  ILockerKeyToken,
 } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import { INetworkType } from "../../../../packages/neo/network";
 import CountdownRender from "../components/CountdownRender";
+import { toDecimal } from "../../../../packages/neo/utils";
 
 interface ILockerByUserCardProps extends ILockerKeyToken {
   network: INetworkType;
@@ -43,9 +44,7 @@ const LockerKeyCard = (locker: ILockerByUserCardProps) => {
       <td>{data ? data.symbol : ""}</td>
       <td>
         {data
-          ? `${parseFloat(
-              u.BigInteger.fromNumber(locker.amount).toDecimal(data.decimals)
-            ).toLocaleString()} ${data.symbol}`
+          ? `${toDecimal(locker.amount, data.decimals)} ${data.symbol}`
           : ""}
       </td>
       <td>{releaseAt.format("lll")}</td>

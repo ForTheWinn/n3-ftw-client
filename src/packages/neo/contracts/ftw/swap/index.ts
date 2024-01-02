@@ -2,7 +2,7 @@ import { INetworkType, Network } from "../../../network";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet } from "../../../index";
 import { SWAP_SCRIPT_HASH } from "./consts";
-import { base64ToString, parseMapValue } from "../../../utils";
+import { base64ToString, parseMapValue, toDecimal } from "../../../utils";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { defaultDeadLine } from "./helpers";
 import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
@@ -887,9 +887,7 @@ export class SwapContract {
     // @ts-ignore
     return {
       neo: parseFloat(res.stack[0].value as string),
-      bNEO: parseFloat(
-        u.BigInteger.fromNumber(res.stack[1].value as string).toDecimal(8)
-      ),
+      bNEO: toDecimal(res.stack[1].value as string),
     };
   };
 }

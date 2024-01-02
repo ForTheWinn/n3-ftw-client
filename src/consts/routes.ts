@@ -1,11 +1,3 @@
-import {
-  ETH_CHAIN,
-  MAINNET,
-  NEO_CHAIN,
-  POLYGON_CHAIN,
-  TESTNET,
-} from "./global";
-
 import Analytics from "../ui/pages/Analytics";
 import BrandKit from "../ui/pages/BrandKit";
 import Consensus2023 from "../ui/pages/Events/Consensus";
@@ -31,6 +23,13 @@ import NEOAnalytics from "../ui/pages/Analytics/scenes/NEOAnalytics";
 import PolygonAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/Polygon";
 import EthereumAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/Ethereum";
 
+import {
+  ETH_CHAIN,
+  MAINNET,
+  NEO_CHAIN,
+  POLYGON_CHAIN,
+  TESTNET,
+} from "./global";
 /* 
   Global
 */
@@ -161,7 +160,7 @@ const FARM_V2_PAGE_ROUTE = {
 };
 
 export const ANALYTICS_MAIN_ROUTE = {
-  label: "NEP",
+  label: "NEPs",
   path: ANALYTICS_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],

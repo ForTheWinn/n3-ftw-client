@@ -20,7 +20,8 @@ import { convertChainForBackend } from "../../../common/helpers";
 
 export const ENDPOINT = {
   [TESTNET]: "https://api.forthewin.network/mainnet",
-  [MAINNET]: "https://api.forthewin.network/mainnet",
+  [MAINNET]: "http://localhost:3000/mainnet",
+  // [MAINNET]: "https://api.forthewin.network/mainnet",
 };
 
 const BASE_URL_GHOSTMARKET = "https://api.ghostmarket.io/api/v2";
@@ -169,4 +170,25 @@ export class RestAPI {
     );
   }
 
+  async getEVMSwaps({
+    chain,
+    tokens,
+  }: {
+    chain: CHAINS;
+    tokens: string;
+  }): Promise<IEVMPair> {
+    return this.fetchResult(
+      this.buildURL(
+        `/evm/swaps/${convertChainForBackend(chain)}?tokens=${tokens}`
+      )
+    );
+  }
+
+  async getNEOPairs(): Promise<IEVMPair> {
+    return this.fetchResult(this.buildURL(`/neo/pairs`));
+  }
+
+  async getNEOSwaps({ tokens }: { tokens: string }): Promise<IEVMPair> {
+    return this.fetchResult(this.buildURL(`/neo/swaps?tokens=${tokens}`));
+  }
 }
