@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Avatar, Button, Card, Divider, Spin, Typography } from "antd";
+import { Avatar, Card, Divider, Typography } from "antd";
 import {
   ETHEREUM_LOGO,
   ETH_CHAIN,
@@ -21,7 +21,8 @@ import {
 import { RestAPI } from "../../../../../packages/neo/api";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/neo-contracts";
 import AddTokenButton from "../../../../components/AddTokenOnMetaMaskButton";
-import PriceChart from "../../components/PriceChart";
+import { NEO_MAINNET_NEP_TOKEN_METADATA } from "../../../../../packages/neo/consts/mainnet";
+import CandleChart from "../../components/Pairs/TokenDetailPage/CandleChart";
 
 const EMMISSIONS = [
   {
@@ -37,6 +38,18 @@ const EMMISSIONS = [
     daily: 1080,
   },
 ];
+const EllipsisMiddle: React.FC<{ suffixCount: number; children: string }> = ({
+  suffixCount,
+  children,
+}) => {
+  const start = children.slice(0, children.length - suffixCount).trim();
+  const suffix = children.slice(-suffixCount).trim();
+  return (
+    <Typography.Text style={{ maxWidth: "100%" }} ellipsis={{ suffix }}>
+      {start}
+    </Typography.Text>
+  );
+};
 
 const NEPAnalytics = () => {
   const { network } = useApp();
@@ -50,7 +63,7 @@ const NEPAnalytics = () => {
     ethereum: {
       totalSupply: "0",
     },
-    nepPrice: "0",
+    nepPrice: 0,
   });
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -105,10 +118,37 @@ const NEPAnalytics = () => {
     <div>
       <div className="columns is-multiline">
         <div className="column is-4">
-          <PriceChart
-            tokenId={GLOBAL_NEP_CONTRACT_ADDRESS[NEO_CHAIN][network]}
-            days={"30"}
-          />
+          <Card style={{ minHeight: "240px", padding: 0 }} loading={loading}>
+            <Card.Meta title={"About NEP"} />
+            <br />
+            <Typography.Paragraph
+              ellipsis={{
+                symbol: "more",
+                rows: 6,
+                expandable: true,
+              }}
+            >
+              NEP primarily functions as a utility token within the Forthewin
+              ecosystem, facilitating a range of critical operations such as
+              token launches, vesting, and bridging. While it also serves as the
+              governance token, enabling voting on the platform's development,
+              its utility aspect stands out as a key feature. This versatility
+              makes NEP essential for the efficient functioning and continuous
+              growth of the Forthewin ecosystem, extending its significance
+              beyond governance into various operational realms.
+            </Typography.Paragraph>
+          </Card>
+        </div>
+        <div className="column is-4">
+          <Card style={{ height: "240px", padding: 0 }} loading={loading}>
+            <Card.Meta title={"NEP Now"} />
+            <br />
+            <CandleChart
+              chain={"NEO_CHAIN"}
+              tokenHash={NEO_MAINNET_NEP_TOKEN_METADATA.hash}
+              height={160}
+            />
+          </Card>
         </div>
         <div className="column is-4">
           <Card style={{ height: "240px" }} loading={loading}>

@@ -8,12 +8,12 @@ import { createChart, CrosshairMode } from "lightweight-charts";
 interface ICandleChartProps {
   chain: CHAINS;
   tokenHash: string;
+  height?: number;
 }
 
 function showCustomTooltip(percentage: number) {
   const tooltip: any = document.getElementById("percentage_tooltip");
   if (percentage) {
-    console.log(percentage > 0);
     tooltip.innerHTML = percentage.toFixed(2) + "%";
     tooltip.style.display = "block";
     tooltip.style.color = percentage > 0 ? GREEN : RED;
@@ -25,7 +25,7 @@ function showCustomTooltip(percentage: number) {
 const RED = "rgba(255, 82, 82, 1)";
 const GREEN = "rgba(38, 166, 154, 1)";
 
-const CandleChart = ({ chain, tokenHash }: ICandleChartProps) => {
+const CandleChart = ({ chain, tokenHash, height = 300 }: ICandleChartProps) => {
   const { data, isLoaded, error } = useOnChainData(() => {
     if (chain === NEO_CHAIN) {
       return new RestAPI(MAINNET).getNEOPriceCandle(tokenHash);
@@ -43,7 +43,7 @@ const CandleChart = ({ chain, tokenHash }: ICandleChartProps) => {
     if (chartContainerRef.current && data && isLoaded) {
       const chart = createChart(chartContainerRef.current, {
         width: chartContainerRef.current.clientWidth,
-        height: 300,
+        height,
         layout: {
           //@ts-ignore
           backgroundColor: "#ffffff",

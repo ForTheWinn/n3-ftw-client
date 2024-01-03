@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import TokenPriceChart from "../../components/PriceChart";
 import LiquidityChart from "../NEOAnalytics/LiquidityChart";
 import SwapHistory from "./SwapHistory";
 import { useApp } from "../../../../../common/hooks/use-app";
@@ -27,12 +26,12 @@ const TokenDetail = ({ tokenId }: ITokenDetailProps) => {
             <LiquidityChart id={tokenId} days="15" />
           </div>
         </div>
-        <div className="column is-6">
+        {/* <div className="column is-6">
           <div className="box is-shadowless">
             <h1 className="title is-6">Price</h1>
             <TokenPriceChart tokenId={tokenId} days="15" />
           </div>
-        </div>
+        </div> */}
         <div className="column is-12">
           <div className="box is-shadowless">
             <h1 className="title is-6">Swap history</h1>

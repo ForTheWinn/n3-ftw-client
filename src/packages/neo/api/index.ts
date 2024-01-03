@@ -20,7 +20,6 @@ import { convertChainForBackend } from "../../../common/helpers";
 
 export const ENDPOINT = {
   [TESTNET]: "https://api.forthewin.network/mainnet",
-  // [MAINNET]: "http://localhost:3000/mainnet",
   [MAINNET]: "https://api.forthewin.network/mainnet",
 };
 
@@ -190,5 +189,9 @@ export class RestAPI {
 
   async getNEOSwaps({ tokens }: { tokens: string }): Promise<IEVMPair> {
     return this.fetchResult(this.buildURL(`/neo/swaps?tokens=${tokens}`));
+  }
+
+  async getNEOPriceCandle(tokenHash: string): Promise<IEVMPair> {
+    return this.fetchResult(this.buildURL(`/prices/candle/${tokenHash}/1h`));
   }
 }
