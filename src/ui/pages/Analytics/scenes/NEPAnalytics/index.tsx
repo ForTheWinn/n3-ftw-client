@@ -118,13 +118,13 @@ const NEPAnalytics = () => {
               description={
                 <>
                   <Typography.Paragraph>
-                    {EMMISSIONS.map((emission) => {
+                    {EMMISSIONS.map((emission, i) => {
                       totalEmmissions += emission.daily;
                       return (
-                        <>
+                        <div key={`em-${i}`}>
                           {emission.chain}: {emission.daily.toLocaleString()}{" "}
                           NEP <br />
-                        </>
+                        </div>
                       );
                     })}
                   </Typography.Paragraph>
