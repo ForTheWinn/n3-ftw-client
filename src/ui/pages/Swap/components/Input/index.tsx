@@ -101,7 +101,8 @@ const Input = ({
               }}
               className={`help has-text-righ is-clickable`}
             >
-              Balance: {userBalance ? userBalance.toLocaleString() : "0"}
+              Balance:{" "}
+              {userBalance ? parseFloat(userBalance).toLocaleString() : "0"}
             </p>
           </div>
         </div>
