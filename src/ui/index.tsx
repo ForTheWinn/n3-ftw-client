@@ -9,7 +9,7 @@ import { Toaster } from "react-hot-toast";
 
 import { NeoWalletProvider } from "../common/hooks/use-neo-wallets";
 import { AppContextProvider } from "../common/hooks/use-app";
-import { TESTNET } from "../consts/global";
+import { NEOX_MAINNET_CHAIN_ID, TESTNET } from "../consts/global";
 
 import Header from "./components/Commons/Header/Header";
 import WalletSidebar from "./components/Commons/SideNavs/WalletSidebar";
@@ -17,9 +17,10 @@ import MobileMenuSlider from "./components/Commons/SideNavs/MobileMenuSlider";
 import TxHandler from "./components/Commons/TxHandler";
 import Routes from "./Routes";
 import { ConfigProvider } from "antd";
+import { NEOX_MAINNET_CHAIN_DETAIL } from "../consts/chains";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, goerli, polygon, polygonMumbai],
+  [mainnet, goerli, polygon, polygonMumbai, NEOX_MAINNET_CHAIN_DETAIL, ],
   [
     alchemyProvider({
       apiKey:
