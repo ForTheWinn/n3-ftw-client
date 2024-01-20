@@ -1,6 +1,6 @@
 import { wallet } from "@cityofzion/neon-core";
 import { INetworkType, Network } from "../network";
-import { ethers } from "ethers";
+import { toDecimal } from "../utils";
 
 export const useBalances = async (
   network: INetworkType,
@@ -31,19 +31,13 @@ export const useBalances = async (
   if (res.state === "FAULT") {
     throw new Error(res.exception as string);
   }
+
   const balances: number[] = [];
 
   res.stack.forEach((item, index) => {
     if (index % 2 === 0) {
       balances.push(
-        parseFloat(
-          ethers
-            .formatUnits(
-              item.value as string,
-              res.stack[index + 1].value as string
-            )
-            .toString()
-        )
+        toDecimal(item.value as string, res.stack[index + 1].value as number)
       );
     }
   });
