@@ -1,26 +1,51 @@
 import React from "react";
-import { getWalletIcon } from "./helpers";
 import DisplayConnectedWallet from "./DisplayConnectedWallet";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { Connector, useAccount, useConnect } from "wagmi";
 import toast from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { WALLET_CONNECTED, WENT_WRONG } from "../../../../../consts/messages";
+import { Button, Space } from "antd";
+
+function ConnectorButton({
+  connector,
+  onClick,
+}: {
+  connector: Connector;
+  onClick: () => void;
+}) {
+  const [ready, setReady] = React.useState(false);
+  React.useEffect(() => {
+    (async () => {
+      const provider = await connector.getProvider();
+      setReady(!!provider);
+    })();
+  }, [connector, setReady]);
+
+  return (
+    <Button
+      style={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      disabled={!ready}
+      onClick={onClick}
+      icon={<img width="14px" src={connector.icon} />}
+    >
+      {connector.name}
+    </Button>
+  );
+}
 
 const ETHWallets = () => {
   const { toggleWalletSidebar } = useApp();
-  const { address, connector, isConnected } = useAccount();
-  const {
-    connectAsync,
-    connectors,
-    error,
-    isLoading,
-    pendingConnector
-  } = useConnect();
+  const { isConnected } = useAccount();
+  const { connectAsync, connectors, error } = useConnect();
 
-  const { disconnect } = useDisconnect();
   const onConnect = async (connector) => {
     try {
-      await connectAsync({connector});
+      await connectAsync({ connector });
       toggleWalletSidebar();
       toast.success(WALLET_CONNECTED);
     } catch (e: any) {
@@ -31,37 +56,20 @@ const ETHWallets = () => {
   return (
     <div>
       <h1 className="title is-6">ETH wallets</h1>
-      {isConnected && address && connector ? (
-        <DisplayConnectedWallet
-          account={address}
-          connectorId={connector.id}
-          disConnectWallet={disconnect}
-        />
+      {isConnected ? (
+        <DisplayConnectedWallet />
       ) : (
-        <>
+        <Space direction="vertical" style={{ width: "100%" }}>
           {connectors.map((connector) => {
             return (
-              <div key={connector.id} className="mb-1">
-                <button
-                  className="button is-fullwidth"
-                  onClick={() => onConnect(connector)}
-                >
-                  <span className="panel-icon">
-                    <img
-                      alt={`${connector.name} logo`}
-                      src={getWalletIcon(connector.id)}
-                    />
-                  </span>
-                  {connector.name}
-                  {!connector.ready && " (unsupported)"}
-                  {isLoading &&
-                    connector.id === pendingConnector?.id &&
-                    " (connecting)"}
-                </button>
-              </div>
+              <ConnectorButton
+                key={connector.name}
+                connector={connector}
+                onClick={() => onConnect(connector)}
+              />
             );
           })}
-        </>
+        </Space>
       )}
     </div>
   );

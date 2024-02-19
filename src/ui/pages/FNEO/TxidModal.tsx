@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../components/Modal";
 import TxReceipt from "../../components/Commons/TxHandler/TxReceipt";
-import { waitForTransaction } from "@wagmi/core";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { getExplorerByChainId } from "../../../common/helpers";
 import { CHAINS, CONFIGS } from "../../../consts/chains";
 import { INetworkType } from "../../../packages/neo/network";
+import { wagmiConfig } from "../../../wagmi-config";
 
 interface ITxidModalProps {
   txid: string;
@@ -19,7 +20,7 @@ const TxidModal = ({ txid, network, chain, resetTxid }: ITxidModalProps) => {
   useEffect(() => {
     async function checkTxid(_txid: string) {
       try {
-        await waitForTransaction({
+        await waitForTransactionReceipt(wagmiConfig, {
           hash: txid as `0x${string}`,
           chainId,
         });

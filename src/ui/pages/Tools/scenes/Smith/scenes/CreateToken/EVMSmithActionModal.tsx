@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { waitForTransaction } from "@wagmi/core";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { Button, Result, Steps } from "antd";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { ITokenMetadata } from "./EVM";
@@ -27,6 +27,7 @@ import {
   getAllowances,
 } from "../../../../../../../packages/evm/contracts/swap";
 import Errors from "../../../../../Swap/components/Actions/components/Errors";
+import { wagmiConfig } from "../../../../../../../wagmi-config";
 
 interface IActionModalProps extends ITokenMetadata {
   chain: CHAINS;
@@ -173,7 +174,9 @@ const EVMSmithActionModal = ({
 
         handleStatus("deploy", "processing");
 
-        const data = await waitForTransaction({ hash: deployHash });
+        const data = await waitForTransactionReceipt(wagmiConfig, {
+          hash: deployHash,
+        });
         const contractHash = getContractHashFromLogs(data.logs);
         setState((prev) => ({
           ...prev,

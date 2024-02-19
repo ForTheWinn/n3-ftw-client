@@ -26,6 +26,7 @@ import EthereumAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/Ethereu
 import {
   ETH_CHAIN,
   MAINNET,
+  NEOX_CHAIN,
   NEO_CHAIN,
   POLYGON_CHAIN,
   TESTNET,
@@ -347,6 +348,7 @@ const SMITH_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [MAINNET, TESTNET],
+    [NEOX_CHAIN]: [MAINNET, TESTNET],
   },
   category: [],
   component: Smith,

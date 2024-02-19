@@ -1,9 +1,4 @@
-import {
-  erc20ABI,
-  readContract,
-  prepareWriteContract,
-  writeContract,
-} from "@wagmi/core";
+import { readContract, simulateContract, writeContract } from "@wagmi/core";
 import { getPrices } from "../../../common/routers/global";
 import {
   NEO_BNEO_CONTRACT_ADDRESS,
@@ -11,8 +6,8 @@ import {
 } from "../../neo/consts/neo-contracts";
 import { BLOCK_TIME, MAINNET, NEO_CHAIN } from "../../../consts/global";
 import FNEOABI from "./abi/fNEO.json";
-import { formatAmount } from "../../../common/helpers";
 import { ethers } from "ethers";
+import { wagmiConfig } from "../../../wagmi-config";
 export interface IfNEODetail {
   totalSupply: string;
   nepPerBlock: string;
@@ -24,14 +19,14 @@ export const claim = async (
   chainId: number,
   contractHash: string
 ): Promise<string> => {
-  const config = await prepareWriteContract({
+  const args = {
     address: contractHash as any,
     abi: FNEOABI,
     functionName: "claim",
     chainId,
-  });
-  const { hash } = await writeContract(config);
-  return hash as string;
+  };
+  await simulateContract(wagmiConfig, args);
+  return await writeContract(wagmiConfig, args);
 };
 
 export const getfNEODetail = async (
@@ -86,23 +81,22 @@ export const getfNEODetail = async (
 
 // Helper functions to mock fetching contract values, replace these with actual contract interaction logic
 async function getTotalSupply(contractHash, chainId) {
-  let totalSupply: bigint = (await readContract({
+  let totalSupply: any = await readContract(wagmiConfig, {
     address: contractHash as any,
     abi: FNEOABI,
     functionName: "totalSupply",
     chainId,
-  })) as bigint;
+  });
   return totalSupply;
 }
 
 async function getNepPerBlock(contractHash, chainId): Promise<bigint> {
-  let nepPerBlock: bigint = (await readContract({
+  return (await readContract(wagmiConfig, {
     address: contractHash as any,
     abi: FNEOABI,
     functionName: "nepPerBlock",
     chainId,
   })) as bigint;
-  return nepPerBlock;
 }
 
 async function getClaimableAmount(
@@ -111,8 +105,7 @@ async function getClaimableAmount(
   address
 ): Promise<string> {
   if (!address) return "0";
-
-  const res = (await readContract({
+  const res = (await readContract(wagmiConfig, {
     address: contractHash as any,
     abi: FNEOABI,
     functionName: "claimable",

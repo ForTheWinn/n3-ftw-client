@@ -1,13 +1,18 @@
-import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
+import { readContract, writeContract, simulateContract } from "@wagmi/core";
 import { Alchemy, Network } from "alchemy-sdk";
-
 import FTWSmith from "./abi/FTWSmith.json";
 import { CONTRACT_MAP } from "../../../consts/contracts";
 import { INetworkType } from "../../neo/network";
 import { ALCHEMY_KEY, SMITH } from "../../../consts/global";
 import { ethers } from "ethers";
 import { ISmithTokenInfo } from "../interfaces";
-import { CHAINS, CONFIGS } from "../../../consts/chains";
+import {
+  CHAINS,
+  CONFIGS,
+  NEOX_MAINNET_CHAIN_DETAIL,
+} from "../../../consts/chains";
+import { wagmiConfig } from "../../../wagmi-config";
+import { smithABI } from "./abi/smithAbi";
 
 export const createTokenContract = async (
   chain: CHAINS,
@@ -19,29 +24,31 @@ export const createTokenContract = async (
   website: string,
   icon: string
 ): Promise<string> => {
-  const config = await prepareWriteContract({
+  const args = {
     address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "createToken",
     args: [name, symbol, totalSupply, decimals, icon, website],
-  });
-  const { hash } = await writeContract(config);
-  return hash;
+  };
+  await simulateContract(wagmiConfig, args);
+  return await writeContract(wagmiConfig, args);
 };
 
-export const setTokenData = (
+export const setTokenData = async (
   chain: CHAINS,
   network: INetworkType,
   contractHash: string,
   icon: string,
   website: string
 ) => {
-  return prepareWriteContract({
+  const args = {
     address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "setTokenData",
     args: [contractHash, icon, website],
-  });
+  };
+  await simulateContract(wagmiConfig, args);
+  return writeContract(wagmiConfig, args);
 };
 
 export const getContractHashFromLogs = (logs: any) => {
@@ -58,14 +65,33 @@ export const getContractHashFromLogs = (logs: any) => {
   return contractHash;
 };
 
+const getProvider = (network: INetworkType, chain: CHAINS) => {
+  const rpcUrl = CONFIGS[network][chain].rpc;
+  return new ethers.JsonRpcProvider(rpcUrl);
+};
+
 export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
-  const res: any = await readContract({
+  const provider = getProvider(network, chain);
+  const contractAddress = CONTRACT_MAP[chain][network][SMITH];
+  const contract = new ethers.Contract(contractAddress, FTWSmith, provider);
+
+  const res1 = await contract.getTokens(30, 1); // Calls the getTokens function on the contract
+  const replacer = (key, value) =>
+    typeof value === "bigint"
+      ? value.toString() // Convert BigInt to a string
+      : value; // Return other values unchanged
+
+  const jsonString = JSON.stringify(res1, replacer, 2);
+  console.log(jsonString);
+
+  const res: any = await readContract(wagmiConfig, {
     address: CONTRACT_MAP[chain][network][SMITH],
-    abi: FTWSmith,
+    abi: smithABI,
     functionName: "getTokens",
     args: [30, 1],
     chainId: CONFIGS[network][chain].chainId,
   });
+  console.log(res);
   return res;
 };
 
@@ -74,7 +100,7 @@ const getTokenMetadata = async (
   network: INetworkType,
   contractHash: string
 ) => {
-  const res: any = await readContract({
+  const res: any = await readContract(wagmiConfig, {
     address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "getTokenData",

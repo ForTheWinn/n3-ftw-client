@@ -1,10 +1,10 @@
 import {
   readContract,
-  prepareWriteContract,
-  erc20ABI,
   multicall,
   writeContract,
+  simulateContract,
 } from "@wagmi/core";
+import { erc20Abi } from "viem";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
 import FTWSwapABI from "./abi/FTWSwap.json";
@@ -19,6 +19,7 @@ import { CHAINS, CONFIGS } from "../../../consts/chains";
 import { CONTRACT_MAP } from "../../../consts/contracts";
 import { EVM_CONTRACT_MAP } from "..";
 import { usdtABI } from "../../../common/helpers";
+import { wagmiConfig } from "../../../wagmi-config";
 
 export const getReserves = async (
   chain: CHAINS,
@@ -28,7 +29,7 @@ export const getReserves = async (
 ): Promise<ISwapReserves> => {
   const address = EVM_CONTRACT_MAP[chain][network][SWAP];
   const chainId = CONFIGS[network][chain].chainId;
-  const res: any = await readContract({
+  const res: any = await readContract(wagmiConfig, {
     address,
     abi: FTWSwapABI,
     functionName: "getReserves",
@@ -57,7 +58,7 @@ export const getEstimated = async (
   const address = EVM_CONTRACT_MAP[chain][network][SWAP];
   const chainId = CONFIGS[network][chain].chainId;
   const { tokenA, tokenB, amount, isReverse } = args;
-  const res = await readContract({
+  const res = await readContract(wagmiConfig, {
     address,
     abi: FTWSwapABI,
     functionName: "getSwapEstimated",
@@ -74,7 +75,7 @@ export const getLPTokens = async (
 ): Promise<ISwapLPToken[]> => {
   const address = EVM_CONTRACT_MAP[chain][network][SWAP];
   const chainId = CONFIGS[network][chain].chainId;
-  const res: any = await readContract({
+  const res: any = await readContract(wagmiConfig, {
     address,
     abi: FTWSwapABI,
     functionName: "getTokensOf",
@@ -97,13 +98,13 @@ export const getTokenURI = async (
 ): Promise<ISwapLPToken> => {
   const address = EVM_CONTRACT_MAP[chain][network][SWAP];
   const chainId = CONFIGS[network][chain].chainId;
-  const res = (await readContract({
+  const res: any = await readContract(wagmiConfig, {
     address,
     abi: FTWSwapABI,
     functionName: "tokenURI",
     args: [tokenId],
     chainId,
-  })) as string;
+  });
   const json = Buffer.from(res.substring(29), "base64").toString();
   const jsonObject = JSON.parse(json);
   return {
@@ -123,54 +124,53 @@ export const getTokenURI = async (
 export const swap = async (
   chain: CHAINS,
   network: INetworkType,
-  args: SwapArgs
+  params: SwapArgs
 ): Promise<string> => {
-  const { tokenA, tokenB, amountIn, amountOut, isReverse } = args;
+  const { tokenA, tokenB, amountIn, amountOut, isReverse } = params;
   const chainId = CONFIGS[network][chain].chainId;
-  const config = await prepareWriteContract({
+  const args = {
     address: CONTRACT_MAP[chain][network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "swap",
     args: [tokenA, tokenB, amountIn, amountOut, isReverse],
     chainId,
-  });
-  const { hash } = await writeContract(config);
-  return hash;
+  };
+  await simulateContract(wagmiConfig, args);
+  return await writeContract(wagmiConfig, args);
 };
 
 export const provide = async (
   chain: CHAINS,
   network: INetworkType,
-  args: AddLiquidityArgs
+  params: AddLiquidityArgs
 ): Promise<string> => {
-  const { tokenA, tokenB, amountA, amountB, slippage } = args;
-  const chainId = CONFIGS[network][chain].chainId;
-  const config = await prepareWriteContract({
+  const { tokenA, tokenB, amountA, amountB, slippage } = params;
+  const args = {
     address: CONTRACT_MAP[chain][network][SWAP] as any,
     abi: FTWSwapABI,
     functionName: "addLiquidity",
     args: [tokenA, amountA, tokenB, amountB, slippage],
-    chainId,
-  });
+    chainId: CONFIGS[network][chain].chainId,
+  };
+  const config = await simulateContract(wagmiConfig, args);
 
-  const { hash } = await writeContract(config);
-  return hash;
+  return await writeContract(wagmiConfig, args);
 };
 
-export const removeLiquidity = (
+export const removeLiquidity = async (
   chain: CHAINS,
   network: INetworkType,
   tokenId: string
 ) => {
-  const address = EVM_CONTRACT_MAP[chain][network][SWAP];
-  const chainId = CONFIGS[network][chain].chainId;
-  return prepareWriteContract({
-    address,
+  const args = {
+    address: EVM_CONTRACT_MAP[chain][network][SWAP],
     abi: FTWSwapABI,
     functionName: "removeLiquidity",
     args: [tokenId],
-    chainId,
-  });
+    chainId: CONFIGS[network][chain].chainId,
+  };
+  await simulateContract(wagmiConfig, args);
+  return writeContract(wagmiConfig, args);
 };
 
 export const approve = async (
@@ -179,16 +179,15 @@ export const approve = async (
   contractAddress: any,
   spenderAddress: any
 ): Promise<string> => {
-  const chainId = CONFIGS[network][chain].chainId;
-  const script = await prepareWriteContract({
+  const args = {
     address: contractAddress,
     abi: usdtABI,
     functionName: "approve",
     args: [spenderAddress, ethers.MaxUint256],
-    chainId,
-  });
-  const { hash } = await writeContract(script);
-  return hash;
+    chainId: CONFIGS[network][chain].chainId,
+  };
+  await simulateContract(wagmiConfig, args);
+  return await writeContract(wagmiConfig, args);
 };
 
 export const getAllowances = async (
@@ -199,10 +198,10 @@ export const getAllowances = async (
   spender: string
 ) => {
   const chainId = CONFIGS[network][chain].chainId;
-  const res = await multicall({
+  const res = await multicall(wagmiConfig, {
     contracts: tokenAddresses.map((token) => ({
       address: token as `0x${string}`,
-      abi: erc20ABI,
+      abi: erc20Abi,
       functionName: "allowance",
       args: [address as `0x${string}`, spender as `0x${string}`],
       chainId,
@@ -219,7 +218,7 @@ export const isApprovedForAll = (
 ) => {
   const address = EVM_CONTRACT_MAP[chain][network][SWAP];
   const chainId = CONFIGS[network][chain].chainId;
-  return readContract({
+  return readContract(wagmiConfig, {
     address,
     abi: FTWSwapABI,
     functionName: "isApprovedForAll",
@@ -233,15 +232,14 @@ export const setApprovalForAll = async (
   network: INetworkType,
   contractHash: string
 ): Promise<string> => {
-  const address = EVM_CONTRACT_MAP[chain][network][SWAP];
-  const chainId = CONFIGS[network][chain].chainId;
-  const config = await prepareWriteContract({
-    address,
+  const args = {
+    address: EVM_CONTRACT_MAP[chain][network][SWAP],
     abi: FTWSwapABI,
     functionName: "setApprovalForAll",
     args: [contractHash, true],
-    chainId,
-  });
-  const { hash } = await writeContract(config);
-  return hash;
+    chainId: CONFIGS[network][chain].chainId,
+  };
+
+  await simulateContract(wagmiConfig, args);
+  return await writeContract(wagmiConfig, args);
 };

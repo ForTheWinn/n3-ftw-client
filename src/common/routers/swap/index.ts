@@ -1,4 +1,4 @@
-import { fetchBalance, writeContract } from "@wagmi/core";
+import { getBalance } from "@wagmi/core";
 import { CHAINS } from "../../../consts/chains";
 import { INetworkType } from "../../../packages/neo/network";
 import {
@@ -20,6 +20,7 @@ import { IConnectedWallet } from "../../../packages/neo/wallets/interfaces";
 import { NEO_CHAIN } from "../../../consts/global";
 import { getUserBalance } from "../../../packages/neo/utils";
 import { getChainIdByChain } from "../../helpers";
+import { wagmiConfig } from "../../../wagmi-config";
 
 export const getReserves = async (
   chain: CHAINS,
@@ -50,12 +51,12 @@ export const getBalances = async (
       amountB = await getUserBalance(network, address, tokenB.hash);
       break;
     default:
-      const res1 = await fetchBalance({
+      const res1 = await getBalance(wagmiConfig, {
         address,
         token: tokenA.hash,
         chainId: getChainIdByChain(chain, network),
       } as any);
-      const res2 = await fetchBalance({
+      const res2 = await getBalance(wagmiConfig, {
         address,
         token: tokenB.hash,
         chainId: getChainIdByChain(chain, network),
@@ -111,9 +112,7 @@ export const removeLiquidity = async (
         throw new Error("Conneect wallet.");
       }
     default:
-      const config = (await evmRemoveLiquidity(chain, network, tokenId)) as any;
-      const res = await writeContract(config);
-      return res.hash;
+      return await evmRemoveLiquidity(chain, network, tokenId);
   }
 };
 

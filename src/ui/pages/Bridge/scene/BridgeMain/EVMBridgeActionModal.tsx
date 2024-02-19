@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { waitForTransaction } from "@wagmi/core";
+import { waitForTransaction, waitForTransactionReceipt } from "@wagmi/core";
 import { Steps } from "antd";
 
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -30,6 +30,7 @@ import {
 } from "../../../../../packages/evm/contracts/swap";
 import Errors from "../../../Swap/components/Actions/components/Errors";
 import { ethers } from "ethers";
+import { wagmiConfig } from "../../../../../wagmi-config";
 
 const initialState = {
   allowlances: STATUS_STATE,
@@ -215,7 +216,9 @@ const EVMBridgeActionModal = ({
 
         handleStatus("burn", "processing");
 
-        const data = await waitForTransaction({ hash: burnHash });
+        const data = await waitForTransactionReceipt(wagmiConfig, {
+          hash: burnHash,
+        });
 
         burnNo = getMintoNoFromLogs(data.logs);
 

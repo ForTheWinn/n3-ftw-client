@@ -4,10 +4,7 @@ import { writeContract } from "@wagmi/core";
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
-import {
-  getTokenList,
-  setTokenData,
-} from "../../../../../../../packages/evm/contracts/smith";
+import { setTokenData } from "../../../../../../../packages/evm/contracts/smith";
 
 import ListTabs from "../../components/ListTabs";
 import TokenCard from "./TokenCard";
@@ -17,6 +14,7 @@ import PageLayout from "../../../../../../components/Commons/PageLayout";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 import UpdateTokenMetadataModal from "../../components/UpdateTokenMetadataModal";
+import { wagmiConfig } from "../../../../../../../wagmi-config";
 
 const TokenMainPage = () => {
   const { chain, network, setTxid, refreshCount } = useApp();
@@ -46,15 +44,13 @@ const TokenMainPage = () => {
           );
         }
       } else {
-        const script = await setTokenData(
+        return await setTokenData(
           chain,
           network,
           values.contractHash,
           values.icon,
           values.website
         );
-        const tx = await writeContract(script as any);
-        res = tx.hash;
       }
       setTxid(res);
     } catch (e) {}
