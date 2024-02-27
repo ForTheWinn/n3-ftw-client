@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
-import Pagination from "bulma-pagination-react";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { IDrawsResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import { withDecimal } from "../../../../../packages/neo/utils";
@@ -9,6 +8,7 @@ import { IMainData } from "../Main";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { Pagination } from "antd";
 
 export interface IDrawHistoryProps {
   network: INetworkType;
@@ -89,8 +89,8 @@ const DrawHistory = ({ network, data, connectedWallet }: IDrawHistoryProps) => {
               <tr>
                 <td colSpan={6}>
                   <Pagination
-                    pages={drawHistory.totalPages}
-                    currentPage={page}
+                    total={drawHistory.totalPages}
+                    current={page}
                     onChange={(_page) => {
                       if (page !== _page) {
                         setPage(_page);

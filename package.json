@@ -19,7 +19,6 @@
     "antd": "^5.1.7",
     "browserify": "^17.0.0",
     "bulma": "^0.9.3",
-    "bulma-pagination-react": "^0.1.1",
     "chart.js": "^3.8.0",
     "decimal.js": "^10.4.3",
     "ethers": "^6.7.0",

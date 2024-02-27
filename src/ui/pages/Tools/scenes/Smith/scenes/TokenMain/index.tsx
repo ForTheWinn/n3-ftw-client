@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { List } from "antd";
-import Pagination from "bulma-pagination-react";
+import { List, Pagination, Result } from "antd";
 
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import Banner from "../../components/Header";
@@ -41,7 +40,9 @@ const TokenMainPage = () => {
   }, [page, fetchData]);
 
   if (error) {
-    // Handle error view here
+    return (
+      <Result status="warning" title="There are some problems to load data." />
+    );
   }
 
   return (
@@ -74,9 +75,13 @@ const TokenMainPage = () => {
             />
             {totalPages > 1 && (
               <Pagination
-                pages={totalPages}
-                currentPage={page}
-                onChange={setPage}
+                total={totalPages}
+                current={page}
+                onChange={(_page) => {
+                  if (page !== _page) {
+                    setPage(_page);
+                  }
+                }}
               />
             )}
             {updateModalObj && (
