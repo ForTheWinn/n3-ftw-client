@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
-import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
@@ -11,6 +10,7 @@ import PageLayout from "../../../../../../components/Commons/PageLayout";
 import { SMITH_FEE } from "../../../../../../../consts/smith";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
+import { message } from "antd";
 
 const NEP11FormModal = () => {
   const { network, setTxid } = useApp();
@@ -42,29 +42,29 @@ const NEP11FormModal = () => {
 
   const onMint = async () => {
     if (hasEmoji) {
-      toast.error(
+      message.error(
         "Emoji is not supported yet. Please remove emojis and try again."
       );
       return;
     }
 
     if (!connectedWallet) {
-      toast.error("Please connect wallet.");
+      message.error("Please connect wallet.");
       return;
     }
 
     if (isBalanceLoading) {
-      toast.error("Balance check hasn't been done. Please try again.");
+      message.error("Balance check hasn't been done. Please try again.");
       return;
     }
 
     if (balances.nepBalance < SMITH_FEE[NEO_CHAIN][network]) {
-      toast.error("You don't have enough NEP for platform fee.");
+      message.error("You don't have enough NEP for platform fee.");
       return;
     }
 
     if (balances.gasBalance < 10_00000000) {
-      toast.error("You don't have enough GAS for deploy fee.");
+      message.error("You don't have enough GAS for deploy fee.");
       return;
     }
 
@@ -73,7 +73,7 @@ const NEP11FormModal = () => {
         values.symbol
       );
       if (res) {
-        toast.error("Token symbol is already taken. Try other symbol.");
+        message.error("Token symbol is already taken. Try other symbol.");
       } else {
         const res = await new SmithContract(network).createNEP11(
           connectedWallet,
@@ -86,7 +86,7 @@ const NEP11FormModal = () => {
         setTxid(res);
       }
     } catch (e: any) {
-      toast.error(e.message ? e.message : WENT_WRONG);
+      message.error(e.message ? e.message : WENT_WRONG);
     }
   };
 

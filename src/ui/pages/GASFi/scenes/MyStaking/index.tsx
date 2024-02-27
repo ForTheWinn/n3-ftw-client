@@ -4,12 +4,12 @@ import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi"
 import { IStakeResult } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { withDecimal } from "../../../../../packages/neo/utils";
-import { toast } from "react-hot-toast";
 import { useHistory } from "react-router-dom";
 import { useApp } from "../../../../../common/hooks/use-app";
 import moment from "moment";
 import { DRAWING_FREQUENCY } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
 import { GASFI_PATH } from "../../../../../consts/routes";
+import { message } from "antd";
 
 const MyStaking = () => {
   const history = useHistory();
@@ -26,7 +26,7 @@ const MyStaking = () => {
         const tx = await new GasFiContract(network).unStake(connectedWallet);
         setTxid(tx);
       } catch (e: any) {
-        toast.error(e.message);
+        message.error(e.message);
       }
     } else {
       // toggleWalletSidebar();

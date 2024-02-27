@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import ClaimModal from "./ClaimModal";
-import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import ClaimList from "./ClaimList";
 import { NEP_LOGO } from "../../../../../consts/global";
-import { Avatar } from "antd";
+import { Avatar, message } from "antd";
 import { WENT_WRONG } from "../../../../../consts/messages";
 
 const ClaimRewards = () => {
@@ -25,10 +24,10 @@ const ClaimRewards = () => {
         setClaimModalOpen(false);
         setTxid(res);
       } catch (e: any) {
-        toast.error(e.message ? e.message : WENT_WRONG);
+        message.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
-      toast.error("Please connect wallet");
+      message.error("Please connect wallet");
     }
   };
 

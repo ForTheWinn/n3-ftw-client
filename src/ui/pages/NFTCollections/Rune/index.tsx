@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../../components/Commons/PageLayout";
 import PropertiesModal from "./PropertiesModal";
-import toast from "react-hot-toast";
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
 import { NFTContract } from "../../../../packages/neo/contracts";
 import Banner from "./Banner";
@@ -9,6 +8,7 @@ import { RUNE_PHASE_FILTER } from "../../../../packages/neo/contracts/ftw/rune/c
 import { useApp } from "../../../../common/hooks/use-app";
 import { WENT_WRONG } from "../../../../consts/messages";
 import { RestAPI } from "../../../../packages/neo/api";
+import { message } from "antd";
 
 const Gallery = () => {
   const [filter, setFilter] = useState<string>(RUNE_PHASE_FILTER[0]);
@@ -28,10 +28,10 @@ const Gallery = () => {
         const res = await new NFTContract(network).mint(connectedWallet);
         setTxid(res);
       } catch (e: any) {
-        toast.error(e.message ? e.message : WENT_WRONG);
+        message.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
-      toast.error("Please connect wallet.");
+      message.error("Please connect wallet.");
     }
   };
 

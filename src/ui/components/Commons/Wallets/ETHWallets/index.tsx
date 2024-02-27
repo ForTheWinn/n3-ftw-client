@@ -1,10 +1,9 @@
 import React from "react";
 import DisplayConnectedWallet from "./DisplayConnectedWallet";
 import { Connector, useAccount, useConnect } from "wagmi";
-import toast from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { WALLET_CONNECTED, WENT_WRONG } from "../../../../../consts/messages";
-import { Button, Space } from "antd";
+import { Button, Space, message } from "antd";
 
 function ConnectorButton({
   connector,
@@ -47,9 +46,9 @@ const ETHWallets = () => {
     try {
       await connectAsync({ connector });
       toggleWalletSidebar();
-      toast.success(WALLET_CONNECTED);
+      message.success(WALLET_CONNECTED);
     } catch (e: any) {
-      toast.error(e.message ? e.meesage : WENT_WRONG);
+      message.error(e.message ? e.meesage : WENT_WRONG);
     }
   };
 

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
-import { toast } from "react-hot-toast";
 import { ILocker } from "../../../../packages/neo/contracts/ftw/locker/interface";
 import { useApp } from "../../../../common/hooks/use-app";
+import { message } from "antd";
 
 const SearchLockerModal = () => {
   const { network } = useApp();
@@ -18,7 +18,7 @@ const SearchLockerModal = () => {
       }
       setLoading(false);
     } catch (e: any) {
-      toast.error("We cannot find the locker with the locker number");
+      message.error("We cannot find the locker with the locker number");
       setLoading(false);
     }
   };

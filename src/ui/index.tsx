@@ -1,6 +1,5 @@
 import { WagmiProvider } from "wagmi";
 import { HashRouter as Router } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 
 import { NeoWalletProvider } from "../common/hooks/use-neo-wallets";
 import { AppContextProvider } from "../common/hooks/use-app";
@@ -13,29 +12,16 @@ import Routes from "./Routes";
 import { ConfigProvider } from "antd";
 import { wagmiConfig as config } from "../wagmi-config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ANTD_THEME } from "../consts/antd-config";
 const queryClient = new QueryClient();
 const App = () => {
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: "#rgba(0, 0, 0, 1)",
-          colorLink: "#rgba(0, 0, 0, 1)",
-        },
-        components: {
-          Menu: {
-            activeBarBorderWidth: 0,
-            itemSelectedBg: "white",
-          },
-        },
-      }}
-    >
+    <ConfigProvider theme={ANTD_THEME}>
       <AppContextProvider>
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>
             <NeoWalletProvider>
               <Router>
-                <Toaster position="bottom-center" />
                 <Header />
                 <Routes />
                 <MobileMenuSlider />

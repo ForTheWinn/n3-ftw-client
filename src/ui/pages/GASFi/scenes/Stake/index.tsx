@@ -3,12 +3,12 @@ import NumberFormat from "react-number-format";
 import { POSITION_RANGE } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
-import { toast } from "react-hot-toast";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { useHistory } from "react-router-dom";
 import { IMainData } from "../Main";
 import About from "../Main/About";
 import { GASFI_PATH } from "../../../../../consts/routes";
+import { message } from "antd";
 
 const Stake = () => {
   const history = useHistory();
@@ -26,7 +26,7 @@ const Stake = () => {
       try {
         const res = await new GasFiContract(network).getStake(connectedWallet);
         if (res) {
-          toast.error("You already have staking.");
+          message.error("You already have staking.");
           return false;
         }
         const tx = await new GasFiContract(network).stake(
@@ -36,7 +36,7 @@ const Stake = () => {
         );
         setTxid(tx);
       } catch (e: any) {
-        toast.error(e.message);
+        message.error(e.message);
       }
     } else {
       toggleWalletSidebar();

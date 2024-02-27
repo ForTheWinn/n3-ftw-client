@@ -10,12 +10,11 @@ import writeXlsxFile from "write-excel-file";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { useApp } from "../../../../../common/hooks/use-app";
 import TruncatedAddress from "../../../../components/TruncatedAddress";
-import { Space } from "antd";
+import { Space, message } from "antd";
 import BatchAmount from "./BatchAmount";
 import ImportAddresses from "./ImportAddresses";
 import { toolsRouter } from "../../../../../common/routers";
 import { WENT_WRONG } from "../../../../../consts/messages";
-import toast from "react-hot-toast";
 import { IMassTransaferList } from "../../../../../common/routers/tools/interfaces";
 import { ethers } from "ethers";
 
@@ -57,7 +56,7 @@ const Airdrop = () => {
       );
       setTxid(txid);
     } catch (e: any) {
-      toast.error(e && e.message ? e.message : WENT_WRONG);
+      message.error(e && e.message ? e.message : WENT_WRONG);
     }
   };
 
@@ -66,7 +65,7 @@ const Airdrop = () => {
   const onImportFile = (addresses: { address: string; amount: number }[]) => {
     const newList: IExcelData[][] = [];
     if (!addresses || addresses.length === 0) {
-      toast.error("Failed");
+      message.error("Failed");
     }
     addresses.forEach((row) => {
       const item: IExcelData[] = [];
@@ -102,7 +101,7 @@ const Airdrop = () => {
   const onNewWallets = (addresses: IExcelData[][]) => {
     const newList: IExcelData[][] = [];
     if (!addresses || addresses.length === 0) {
-      toast.error("Failed to import. Please check your excel file.");
+      message.error("Failed to import. Please check your excel file.");
     }
     addresses.forEach((row) => {
       const item: IExcelData[] = [];

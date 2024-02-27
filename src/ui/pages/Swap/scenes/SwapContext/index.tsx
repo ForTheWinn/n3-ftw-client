@@ -6,7 +6,6 @@ import React, {
   useRef,
 } from "react";
 import Decimal from "decimal.js";
-import toast from "react-hot-toast";
 import { ethers } from "ethers";
 
 import { ISwapInputState, ITokenState } from "../Swap/interfaces";
@@ -28,10 +27,7 @@ import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
 import ProvideLPInfo from "../../components/ProvideLPInfo";
 import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/routes";
-import { fetchBalance } from "@wagmi/core";
-import {
-  POLYGON_MAINNET_CONTRACTS,
-} from "../../../../../packages/evm/polygon/mainnet";
+import { message } from "antd";
 
 interface ISwapContext {
   chain: CHAINS;
@@ -304,7 +300,7 @@ export const SwapContextProvider = (props: {
     setAmountALoading(false);
     setAmountBLoading(false);
     window.history.replaceState(null, "", `/#${location.pathname}`);
-    toast.success("Chain switced!");
+    message.success("Chain switced!");
   }, [chain]);
 
   useEffect(() => {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNeoWallets } from "../../../../common/hooks/use-neo-wallets";
-import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import SelectTokenContract from "./SelectTokenContract";
 import NumberFormat from "react-number-format";
@@ -14,6 +13,7 @@ import { LOCKER_NEP_FEE } from "../../../../packages/neo/contracts/ftw/locker/co
 import { useApp } from "../../../../common/hooks/use-app";
 import { LOCKER_USER_PATH } from "../../../../consts/routes";
 import { ITokenState } from "../../Swap/scenes/Swap/interfaces";
+import { message } from "antd";
 
 const Create = () => {
   const location = useLocation();
@@ -47,17 +47,17 @@ const Create = () => {
   const onSubmit = async () => {
     if (connectedWallet && contract && receiver && amount) {
       if (!wallet.isAddress(receiver)) {
-        toast.error("Please check receiver");
+        message.error("Please check receiver");
         return;
       }
 
       if (balances.nepBalance < LOCKER_NEP_FEE[network]) {
-        toast.error("You don't have enough NEP for platform fee.");
+        message.error("You don't have enough NEP for platform fee.");
         return;
       }
 
       if (keys === 0 || keys === undefined || keys > 10) {
-        toast.error("Lockers needs to be 1 ~ 10.");
+        message.error("Lockers needs to be 1 ~ 10.");
         return;
       }
 
@@ -74,10 +74,10 @@ const Create = () => {
         );
         setTxid(res);
       } catch (e: any) {
-        toast.error(e.message);
+        message.error(e.message);
       }
     } else {
-      toast.error("Connect your wallet");
+      message.error("Connect your wallet");
     }
   };
 

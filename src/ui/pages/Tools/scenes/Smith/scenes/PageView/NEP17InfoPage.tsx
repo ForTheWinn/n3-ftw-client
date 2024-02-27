@@ -4,7 +4,6 @@ import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
-import { toast } from "react-hot-toast";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import {
   MAINNET,
@@ -13,6 +12,7 @@ import {
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { SMITH_PATH } from "../../../../../../../consts/routes";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
+import { message } from "antd";
 
 const NEP17InfoPage = () => {
   const params = useParams();
@@ -52,10 +52,10 @@ const NEP17InfoPage = () => {
           setTxid(res);
         }
       } catch (e: any) {
-        toast.error(e.message ? e.message : WENT_WRONG);
+        message.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
-      toast.error("Please connect wallet.");
+      message.error("Please connect wallet.");
     }
   };
   if (!isLoaded) return <div></div>;

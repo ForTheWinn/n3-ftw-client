@@ -1,5 +1,4 @@
 import React from "react";
-import ReactSwitch from "react-switch";
 import DatePicker from "react-datepicker";
 import { FaLock } from "react-icons/fa";
 interface ITimeLockInputProps {
@@ -26,7 +25,7 @@ const TimeLockInput = ({
                 <FaLock />
               </div>
               <div className="level-item">
-                <ReactSwitch onChange={toggleSwitch} checked={isActive} />
+                {/* <ReactSwitch onChange={toggleSwitch} checked={isActive} /> */}
               </div>
             </div>
             <div className="dropdown-menu">

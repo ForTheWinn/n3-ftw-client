@@ -113,12 +113,12 @@ export const NEOX_MAINNET_CHAIN_DETAIL: Chain = {
       url: "https://xt2scan.ngd.network/",
     },
   },
-  contracts: {
-    multicall3: {
-      address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 25770160,
-    },
-  },
+  // contracts: {
+  //   multicall3: {
+  //     address: "0xca11bde05977b3631167028862be2a173976ca11",
+  //     blockCreated: 25770160,
+  //   },
+  // },
 };
 
 export const NEOX_TESTNET_CHAIN_DETAIL = {
@@ -145,10 +145,10 @@ export const NEOX_TESTNET_CHAIN_DETAIL = {
     }, // Replace with your block explorer details
   },
   testnet: false, // Set to true if it's a testnet
-  contracts: {
-    multicall3: {
-      address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 25770160,
-    },
-  },
+  // contracts: {
+  //   multicall3: {
+  //     address: "0xca11bde05977b3631167028862be2a173976ca11",
+  //     blockCreated: 25770160,
+  //   },
+  // },
 };
