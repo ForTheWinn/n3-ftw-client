@@ -45,7 +45,7 @@ const TokenMetaUpdateModal = ({
           </div>
         </div>
         <div className="field">
-          <label className="label">Icon url</label>
+          <label className="label">Icon</label>
           <div className="control">
             <input
               placeholder={"https://"}
