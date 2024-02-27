@@ -14,7 +14,7 @@ import {
 import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
 import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
-import { explorerUrls } from "../consts/urls";
+import { EXPLORER_URLS } from "../consts/urls";
 import { CHAINS, CONFIGS } from "../consts/chains";
 import { ethers } from "ethers";
 import { fetchTokenInfo } from "./routers/global";
@@ -25,7 +25,7 @@ export const getExplorer = (
   network: INetworkType,
   type: "tx" | "account" | "contract"
 ): string => {
-  const explorerUrl = explorerUrls[chain]?.[network]?.[type];
+  const explorerUrl = EXPLORER_URLS[chain]?.[network]?.[type];
   return explorerUrl || "";
 };
 

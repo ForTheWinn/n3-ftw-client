@@ -1,12 +1,13 @@
 import {
   ETH_CHAIN,
   MAINNET,
+  NEOX_CHAIN,
   NEO_CHAIN,
   POLYGON_CHAIN,
   TESTNET,
 } from "./global";
 
-export const explorerUrls = {
+export const EXPLORER_URLS = {
   [NEO_CHAIN]: {
     [MAINNET]: {
       tx: "https://explorer.onegate.space/transactionInfo",
@@ -41,6 +42,18 @@ export const explorerUrls = {
       tx: "https://goerli.etherscan.io/tx",
       account: "https://goerli.etherscan.io/address",
       contract: "https://goerli.etherscan.io/token",
+    },
+  },
+  [NEOX_CHAIN]: {
+    [MAINNET]: {
+      tx: "https://xt2scan.ngd.network/tx",
+      account: "https://xt2scan.ngd.network/address",
+      contract: "https://xt2scan.ngd.network/token",
+    },
+    [TESTNET]: {
+      tx: "https://xt2scan.ngd.network/tx",
+      account: "https://xt2scan.ngd.network/address",
+      contract: "https://xt2scan.ngd.network/token",
     },
   },
 };
