@@ -20,7 +20,7 @@ import {
   transformString,
 } from "../../../../../common/helpers";
 import { RestAPI } from "../../../../../packages/neo/api";
-import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/neo-contracts";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/tokens";
 import AddTokenButton from "../../../../components/AddTokenOnMetaMaskButton";
 import { NEO_MAINNET_NEP_TOKEN_METADATA } from "../../../../../packages/neo/consts/mainnet";
 import CandleChart from "../../components/Pairs/TokenDetailPage/CandleChart";

@@ -1,5 +1,5 @@
 import { u } from "@cityofzion/neon-core";
-import { NEO_NEO_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/neo-contracts";
+import { NEO_NEO_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/tokens";
 
 export const priceImpactFormat = (p: number) => {
   if (p < 0.01) {

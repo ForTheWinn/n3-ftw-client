@@ -19,7 +19,7 @@ import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEO_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
-} from "../../../consts/neo-contracts";
+} from "../../../consts/tokens";
 import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { ethers } from "ethers";

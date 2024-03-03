@@ -4,7 +4,7 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { DISPLAY_OPTIONS, REALTIME } from "./consts";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";
 import RewardsInRange from "./RewardsInRange";
-import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/neo-contracts";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/tokens";
 import { IClaimableRewards } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 
 import { Radio, Divider } from "antd";

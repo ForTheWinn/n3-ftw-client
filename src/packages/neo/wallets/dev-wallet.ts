@@ -7,7 +7,7 @@ import { convertContractCallParam, toDecimal } from "../utils";
 import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEO_CONTRACT_ADDRESS,
-} from "../consts/neo-contracts";
+} from "../consts/tokens";
 
 export class DevWallet {
   static account = new wallet.Account("");

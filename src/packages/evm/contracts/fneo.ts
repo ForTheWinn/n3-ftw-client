@@ -3,7 +3,7 @@ import { getPrices } from "../../../common/routers/global";
 import {
   NEO_BNEO_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
-} from "../../neo/consts/neo-contracts";
+} from "../../neo/consts/tokens";
 import { BLOCK_TIME, MAINNET, NEO_CHAIN } from "../../../consts/global";
 import FNEOABI from "./abi/fNEO.json";
 import { ethers } from "ethers";

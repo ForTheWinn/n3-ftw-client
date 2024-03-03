@@ -17,7 +17,7 @@ import { useBalances } from "../../../../../../../packages/neo/hooks/use-balance
 import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
-} from "../../../../../../../packages/neo/consts/neo-contracts";
+} from "../../../../../../../packages/neo/consts/tokens";
 import { withDecimal } from "../../../../../../../packages/neo/utils";
 
 const CreateToken = () => {

@@ -14,7 +14,7 @@ import { parseMapValue } from "../../../utils";
 import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
-} from "../../../consts/neo-contracts";
+} from "../../../consts/tokens";
 
 export class SmithContract {
   network: INetworkType;

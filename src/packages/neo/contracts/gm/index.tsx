@@ -2,7 +2,7 @@ import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { wallet } from "../..";
 import { INetworkType } from "../../network";
 import { IConnectedWallet } from "../../wallets/interfaces";
-import { NEO_NEP_CONTRACT_ADDRESS } from "../../consts/neo-contracts";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../consts/tokens";
 
 export class GMContract {
   network: INetworkType;

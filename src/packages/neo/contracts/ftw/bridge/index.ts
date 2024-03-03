@@ -8,7 +8,7 @@ import {
   IBridgeMintPagenate,
 } from "../../../../../common/routers/bridge/interfaces";
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc";
-import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/neo-contracts";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/tokens";
 import { ethers } from "ethers";
 
 export const bridgeMint = async (

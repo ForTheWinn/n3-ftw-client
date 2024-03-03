@@ -7,7 +7,7 @@ import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm"
 import {
   NEO_BNEO_CONTRACT_ADDRESS,
   NEO_GAS_CONTRACT_ADDRESS,
-} from "../../../../../packages/neo/consts/neo-contracts";
+} from "../../../../../packages/neo/consts/tokens";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { FARM_STAKE_PATH } from "../../../../../consts/routes";
 

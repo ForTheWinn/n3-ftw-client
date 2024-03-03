@@ -6,7 +6,7 @@ import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet } from "../../../index";
 import { IRuneMeta } from "./interfaces";
 import { parseProperties } from "./helpers";
-import { NEO_GAS_CONTRACT_ADDRESS } from "../../../consts/neo-contracts";
+import { NEO_GAS_CONTRACT_ADDRESS } from "../../../consts/tokens";
 
 export class NFTContract {
   network: INetworkType;

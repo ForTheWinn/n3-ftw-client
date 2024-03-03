@@ -21,7 +21,7 @@ import {
   NEO_USDT_CONTRACT_ADDRESS,
   NEO_WATT_CONTRACT_ADDRESS,
   NEO__7F_CONTRACT_ADDRESS,
-} from "./neo-contracts";
+} from "./tokens";
 
 import { MAINNET } from "../../../consts/global";
 

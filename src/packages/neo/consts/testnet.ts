@@ -4,7 +4,7 @@ import {
   NEO_BNEO_CONTRACT_ADDRESS,
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
-} from "./neo-contracts";
+} from "./tokens";
 
 export const NEO_TESTNET_BNEO_METADATA = {
   hash: NEO_BNEO_CONTRACT_ADDRESS[TESTNET],
