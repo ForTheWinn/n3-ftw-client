@@ -4,7 +4,7 @@ import {
   ETHEREUM_TOKENS_METADATA_MAP,
   ETH_FNEO,
 } from "./ethereum";
-import { NEOX_CONTRACT_MAP } from "./neox";
+import { NEOX_CONTRACT_MAP, NEOX_TOKENS_MAP } from "./neox";
 import {
   POLYGON_CONTRACT_MAP,
   POLYGON_TOKENS_METADATA_MAP,
@@ -20,6 +20,7 @@ export const EVM_CONTRACT_MAP = {
 export const EVM_TOKEN_LIST = {
   [POLYGON_CHAIN]: POLYGON_TOKENS_METADATA_MAP,
   [ETH_CHAIN]: ETHEREUM_TOKENS_METADATA_MAP,
+  [NEOX_CHAIN]: NEOX_TOKENS_MAP,
 };
 
 export const EVM_FNEO_MAP = {

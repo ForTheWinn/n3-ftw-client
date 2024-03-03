@@ -4,6 +4,7 @@ import {
 import {
   ETH_CHAIN,
   MAINNET,
+  NEOX_CHAIN,
   NEO_CHAIN,
   POLYGON_CHAIN,
   TESTNET,
@@ -12,6 +13,7 @@ import { NEO_MAINNET_TOKENS_METADATA_MAP } from "../packages/neo/consts/mainnet"
 import { TESTNET_TOKEN_LIST } from "../packages/neo/consts/testnet";
 import { ETHEREUM_SWAP_TOKENS_MAP } from "../packages/evm/ethereum";
 import { EVM_TOKEN_LIST } from "../packages/evm";
+import { NEOX_SWAP_TOKENS_MAP } from "../packages/evm/neox";
 
 export const TOKEN_LIST = {
   [NEO_CHAIN]: {
@@ -32,4 +34,5 @@ export const SWAP_TOKEN_LIST = {
   },
   [POLYGON_CHAIN]: POLYGON_SWAP_TOKENS_MAP,
   [ETH_CHAIN]: ETHEREUM_SWAP_TOKENS_MAP,
+  [NEOX_CHAIN]: NEOX_SWAP_TOKENS_MAP,
 };

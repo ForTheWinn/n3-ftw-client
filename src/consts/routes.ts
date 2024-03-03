@@ -31,6 +31,7 @@ import {
   POLYGON_CHAIN,
   TESTNET,
 } from "./global";
+import NeoXAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/NeoX";
 /* 
   Global
 */
@@ -104,6 +105,7 @@ export const FNEO_PATH = "/ftwNeo";
 */
 export const ANALYTICS_PATH = "/analytics";
 export const ANALYTICS_NEO_SWAP_PATH = "/analytics/neo-ftw-swap";
+export const ANALYTICS_NEOX_SWAP_PATH = "/analytics/neox-ftw-swap";
 export const ANALYTICS_PAIRS_PATH = "/analytics/neo-ftw-swap/pairs";
 export const ANALYTICS_TOKENS_PATH = "/analytics/neo-ftw-swap/tokens";
 export const ANALYTICS_POLYGON_SWAP_PATH = "/analytics/polygon-ftw-swap";
@@ -143,6 +145,7 @@ const SWAP_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   component: Swap,
@@ -155,6 +158,7 @@ const FARM_V2_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [MAINNET],
     [ETH_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [MAINNET],
   },
   category: [],
   component: FarmV2,
@@ -208,6 +212,18 @@ export const ANALYTICS_FTW_SWAP_ETHEREUM_ROUTE = {
   component: EthereumAnalytics,
 };
 
+export const ANALYTICS_FTW_SWAP_NEOX_ROUTE = {
+  label: "FTW Swap (NeoX)",
+  path: ANALYTICS_NEOX_SWAP_PATH,
+  chain: {
+    [NEO_CHAIN]: [MAINNET],
+    [POLYGON_CHAIN]: [MAINNET],
+    [ETH_CHAIN]: [MAINNET],
+  },
+  category: [],
+  component: NeoXAnalytics,
+};
+
 export const ANALYTICS_ROUTE = {
   label: "Analytics",
   path: ANALYTICS_PATH,
@@ -221,6 +237,7 @@ export const ANALYTICS_ROUTE = {
     ANALYTICS_FTW_SWAP_ROUTE,
     ANALYTICS_FTW_SWAP_ETHEREUM_ROUTE,
     ANALYTICS_FTW_SWAP_POLYGON_ROUTE,
+    ANALYTICS_FTW_SWAP_NEOX_ROUTE,
   ],
   component: Analytics,
 };
@@ -461,6 +478,7 @@ const HOME_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
@@ -517,49 +535,12 @@ export const ROUTE_LIST = [
   FARM_PAGE_ROUTE,
   BRAND_PAGE_ROUTE,
   HOME_PAGE_ROUTE,
-  // { SMITH_PAGE_ROUTE, noShow: true },
   { ...LOCKER_PAGE_ROUTE, noShow: true },
 ];
-
-// Pending pages
-
-// export const ARENA_PAGE_ROUTE = {
-//   label: "Arena",
-//   path: TOURNAMENT_PATH,
-//   chain: {
-//     [NEO_CHAIN]: [MAINNET]
-//   },
-//   category: []
-// };
-
-// export const MIGRATION_PAGE_ROUTE = {
-//   label: "Migration",
-//   path: MIGRATION_PATH,
-//   chain: {
-//     [NEO_CHAIN]: [MAINNET]
-//   },
-//   category: []
-// };
-
-// const ARCHIVE_ROUTE = {
-//   label: "Archive",
-//   path: ARCHIVE_PATH,
-//   chain: {
-//     [NEO_CHAIN]: [MAINNET]
-//   },
-//   category: [{ ...ARENA_PAGE_ROUTE }, { ...MIGRATION_PAGE_ROUTE }]
-// };
 
 const GASFI_PAGE_ROUTE = {
   label: "GAS-Fi",
   path: GASFI_PATH,
-  network: [],
-  category: [],
-};
-
-const DAO_PAGE_ROUTE = {
-  label: "DAO",
-  path: DAO_PATH,
   network: [],
   category: [],
 };

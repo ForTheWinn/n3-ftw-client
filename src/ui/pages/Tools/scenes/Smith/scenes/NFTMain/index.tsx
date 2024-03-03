@@ -12,7 +12,6 @@ import PageLayout from "../../../../../../components/Commons/PageLayout";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 import UpdateTokenMetadataModal from "../../components/UpdateTokenMetadataModal";
-import { wagmiConfig } from "../../../../../../../wagmi-config";
 
 const TokenMainPage = () => {
   const { chain, network, setTxid, refreshCount } = useApp();
@@ -131,7 +130,6 @@ const TokenMainPage = () => {
                 {updateModalObj && (
                   <UpdateTokenMetadataModal
                     data={updateModalObj}
-                    onUpdate={onUpdate}
                     onClose={() => setUpdateModalObj(undefined)}
                   />
                 )}

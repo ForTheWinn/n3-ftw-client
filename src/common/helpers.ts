@@ -3,6 +3,7 @@ import {
   ETH_MAINNET_CHAIN_ID,
   ETH_TESTNET_CHAIN_ID,
   MAINNET,
+  NEOX_CHAIN,
   NEO_CHAIN,
   NEO_MAINNET_CHAIN_ID,
   NEO_TESTNET_CHAIN_ID,
@@ -66,6 +67,8 @@ export const getChainIdByChain = (
       return CONFIGS[network][POLYGON_CHAIN].chainId;
     case ETH_CHAIN:
       return CONFIGS[network][ETH_CHAIN].chainId;
+    case NEOX_CHAIN:
+      return CONFIGS[network][NEOX_CHAIN].chainId;
     default:
       return 0;
   }

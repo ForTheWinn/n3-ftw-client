@@ -5,6 +5,7 @@ import TokenDetail from "./scenes/TokenDetail";
 import PageLayout from "../../components/Commons/PageLayout";
 import {
   ANALYTICS_ETHEREUM_SWAP_PATH,
+  ANALYTICS_NEOX_SWAP_PATH,
   ANALYTICS_NEO_SWAP_PATH,
   ANALYTICS_PAIRS_PATH,
   ANALYTICS_PATH,
@@ -22,6 +23,7 @@ import NEPAnalytics from "./scenes/NEPAnalytics";
 import NEOAnalytics from "./scenes/NEOAnalytics";
 import PolygonAnalytics from "./scenes/EVMAnalytics/Polygon";
 import EthereumAnalytics from "./scenes/EVMAnalytics/Ethereum";
+import NeoXAnalytics from "./scenes/EVMAnalytics/NeoX";
 
 const Analytics = () => {
   const location = useLocation();
@@ -33,6 +35,9 @@ const Analytics = () => {
         break;
       case "neo-swap":
         history.push(ANALYTICS_NEO_SWAP_PATH);
+        break;
+      case "neox-swap":
+        history.push(ANALYTICS_NEOX_SWAP_PATH);
         break;
       case "polygon-swap":
         history.push(ANALYTICS_POLYGON_SWAP_PATH);
@@ -54,11 +59,12 @@ const Analytics = () => {
           activeKey={(() => {
             if (location.pathname.includes(ANALYTICS_NEO_SWAP_PATH))
               return "neo-swap";
+            if (location.pathname.includes(ANALYTICS_NEOX_SWAP_PATH))
+              return "neox-swap";
             if (location.pathname.includes(ANALYTICS_POLYGON_SWAP_PATH))
               return "polygon-swap";
             if (location.pathname.includes(ANALYTICS_ETHEREUM_SWAP_PATH))
               return "ethereum-swap";
-            // Handle other routes...
             return "nep"; // Default tab
           })()}
           items={[
@@ -77,6 +83,14 @@ const Analytics = () => {
                 </>
               ),
               key: "neo-swap",
+            },
+            {
+              label: (
+                <>
+                  <Avatar size="small" src={NEO_LOGO} /> FTW Swap (NeoX)
+                </>
+              ),
+              key: "neox-swap",
             },
             {
               label: (
@@ -104,6 +118,10 @@ const Analytics = () => {
           component={NEPAnalytics}
         />
         <Route path={`${ANALYTICS_NEO_SWAP_PATH}`} component={NEOAnalytics} />
+        <Route
+          path={`${ANALYTICS_NEOX_SWAP_PATH}`}
+          component={NeoXAnalytics}
+        />
         <Route
           path={`${ANALYTICS_POLYGON_SWAP_PATH}`}
           component={PolygonAnalytics}

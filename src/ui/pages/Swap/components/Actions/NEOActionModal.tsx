@@ -9,7 +9,7 @@ import { calculateSlippage, parseAmount } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { DisplayAd } from "./components/DisplayAd";
-import { TxResult } from "./components/TxResult";
+import { TxResult } from "../../../../components/TxResult";
 import Errors from "./components/Errors";
 import { SwapContract } from "../../../../../packages/neo/contracts/ftw/swap";
 

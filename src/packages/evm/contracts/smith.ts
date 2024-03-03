@@ -9,7 +9,6 @@ import { ISmithTokenInfo } from "../interfaces";
 import {
   CHAINS,
   CONFIGS,
-  NEOX_MAINNET_CHAIN_DETAIL,
 } from "../../../consts/chains";
 import { wagmiConfig } from "../../../wagmi-config";
 import { smithABI } from "./abi/smithAbi";

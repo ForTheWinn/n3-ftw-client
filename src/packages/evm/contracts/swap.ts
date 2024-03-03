@@ -1,9 +1,4 @@
-import {
-  readContract,
-  multicall,
-  writeContract,
-  simulateContract,
-} from "@wagmi/core";
+import { readContract, writeContract, simulateContract } from "@wagmi/core";
 import { erc20Abi } from "viem";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
@@ -198,17 +193,47 @@ export const getAllowances = async (
   spender: string
 ) => {
   const chainId = CONFIGS[network][chain].chainId;
-  const res = await multicall(wagmiConfig, {
-    contracts: tokenAddresses.map((token) => ({
-      address: token as `0x${string}`,
+
+  // An array to hold the promises for each readContract call
+  const promises = tokenAddresses.map((tokenAddress) =>
+    readContract(wagmiConfig, {
+      address: tokenAddress as any,
       abi: erc20Abi,
       functionName: "allowance",
-      args: [address as `0x${string}`, spender as `0x${string}`],
+      args: [address as any, spender as any],
       chainId,
-    })),
-  });
-  return res.map((r) => r.result);
+    })
+  );
+
+  // Wait for all promises to resolve
+  const results = await Promise.all(promises);
+
+  // Return the results directly, assuming results contain the allowance data
+  return results.map((r) => {
+    console.log(r);
+    return r;
+  }); // Adjust according to how readContract returns data
 };
+
+// export const getAllowances = async (
+//   chain: CHAINS,
+//   network: INetworkType,
+//   address: string,
+//   tokenAddresses: string[],
+//   spender: string
+// ) => {
+//   const chainId = CONFIGS[network][chain].chainId;
+//   const res = await multicall(wagmiConfig, {
+//     contracts: tokenAddresses.map((token) => ({
+//       address: token as `0x${string}`,
+//       abi: erc20Abi,
+//       functionName: "allowance",
+//       args: [address as `0x${string}`, spender as `0x${string}`],
+//       chainId,
+//     })),
+//   });
+//   return res.map((r) => r.result);
+// };
 
 export const isApprovedForAll = (
   chain: CHAINS,

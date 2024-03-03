@@ -6,7 +6,7 @@ import Banner from "../../components/Header";
 import TokenCard from "./TokenCard";
 import TokenMetaUpdateModal from "../../components/UpdateTokenMetadataModal";
 
-import { useTokenData, useUpdateTokenMetadata } from "./hooks";
+import { useTokenData } from "./hooks";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 import { ISmithTokenProps } from "../../../../../../../common/routers/smith/interfaces";
@@ -22,17 +22,10 @@ const TokenMainPage = () => {
   const { address } = useWalletRouter(chain);
   const [page, setPage] = useState(1);
   const [updateModalObj, setUpdateModalObj] = useState<ITokenStateProps>();
-
   const { data, loading, error, totalPages, fetchData }: any = useTokenData(
     chain,
     network,
     page
-  );
-
-  const { updateTokenMetadata } = useUpdateTokenMetadata(
-    chain,
-    network,
-    setUpdateModalObj
   );
 
   useEffect(() => {
@@ -87,7 +80,6 @@ const TokenMainPage = () => {
             {updateModalObj && (
               <TokenMetaUpdateModal
                 data={updateModalObj}
-                onUpdate={updateTokenMetadata}
                 onClose={() => setUpdateModalObj(undefined)}
               />
             )}

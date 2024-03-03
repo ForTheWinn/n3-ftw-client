@@ -18,7 +18,7 @@ import {
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { DisplayAd } from "./components/DisplayAd";
-import { TxResult } from "./components/TxResult";
+import { TxResult } from "../../../../components/TxResult";
 import Errors from "./components/Errors";
 import { STATUS_STATE, SWAP } from "../../../../../consts/global";
 import { CONTRACT_MAP } from "../../../../../consts/contracts";
@@ -142,7 +142,12 @@ const ActionModal = (props: IActionModalProps) => {
 
     if (parsedAmountA > allowances[0]) {
       try {
-        tokenApprovalHash = await approve(chain, network, tokenA.hash, swapContractHash);
+        tokenApprovalHash = await approve(
+          chain,
+          network,
+          tokenA.hash,
+          swapContractHash
+        );
       } catch (e: any) {
         handleStatus("tokenA", "error", e.message ? e.message : WENT_WRONG);
         return;

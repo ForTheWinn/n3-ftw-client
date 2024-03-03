@@ -1,8 +1,4 @@
-import {
-  readContract,
-  writeContract,
-  simulateContract,
-} from "@wagmi/core";
+import { readContract, writeContract, simulateContract } from "@wagmi/core";
 import { IClaimable, IFarmPair } from "../../../common/routers/farm/interfaces";
 import { TOKEN_LIST } from "../../../consts/tokens";
 import { IClaimableRewards } from "../../neo/contracts/ftw/farm-v2/interfaces";
@@ -30,6 +26,8 @@ export const getPools = async (
     args: [],
     chainId,
   });
+
+  console.log(res);
 
   const pools: IFarmPair[] = [];
 

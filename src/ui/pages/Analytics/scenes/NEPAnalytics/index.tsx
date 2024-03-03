@@ -4,6 +4,7 @@ import {
   ETHEREUM_LOGO,
   ETH_CHAIN,
   MAINNET,
+  NEOX_CHAIN,
   NEO_CHAIN,
   NEO_LOGO,
   NEP_LOGO,
@@ -37,6 +38,10 @@ const EMMISSIONS = [
     chain: "Polygon",
     daily: 1080,
   },
+  {
+    chain: "NeoX",
+    daily: 0,
+  },
 ];
 const EllipsisMiddle: React.FC<{ suffixCount: number; children: string }> = ({
   suffixCount,
@@ -63,6 +68,9 @@ const NEPAnalytics = () => {
     ethereum: {
       totalSupply: "0",
     },
+    neoX: {
+      totalSupply: "0",
+    },
     nepPrice: 0,
   });
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -71,7 +79,7 @@ const NEPAnalytics = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        const [neoNEP, polNEP, ethNEP, nepPrice] = await Promise.all([
+        const [neoNEP, polNEP, ethNEP, neoXNep, nepPrice] = await Promise.all([
           fetchTokenInfo(
             NEO_CHAIN,
             network,
@@ -87,6 +95,11 @@ const NEPAnalytics = () => {
             network,
             GLOBAL_NEP_CONTRACT_ADDRESS[ETH_CHAIN][network]
           ),
+          fetchTokenInfo(
+            NEOX_CHAIN,
+            network,
+            GLOBAL_NEP_CONTRACT_ADDRESS[NEOX_CHAIN][network]
+          ),
           new RestAPI(MAINNET).getPrice(NEO_NEP_CONTRACT_ADDRESS[MAINNET]),
         ]);
 
@@ -94,6 +107,7 @@ const NEPAnalytics = () => {
           neo: neoNEP,
           polygon: polNEP,
           ethereum: ethNEP,
+          neoX: neoXNep,
           nepPrice: nepPrice.price,
         });
       } catch (e: any) {
@@ -110,9 +124,11 @@ const NEPAnalytics = () => {
     parseFloat(values.neo.totalSupply) - parseFloat(values.polygon.totalSupply);
   const polygonSupply = parseFloat(values.polygon.totalSupply);
   const ethereumSupply = parseFloat(values.ethereum.totalSupply);
+  const neoXSupply = parseFloat(values.neoX.totalSupply);
   const neoMC = neoSupply * values.nepPrice;
   const polygonMC = polygonSupply * values.nepPrice;
   const ethereumMC = ethereumSupply * values.nepPrice;
+  const neoXMC = neoXSupply * values.nepPrice;
   let totalEmmissions = 0;
   return (
     <div>
@@ -270,6 +286,42 @@ const NEPAnalytics = () => {
                     chainId={getChainIdByChain(POLYGON_CHAIN, network)}
                     chainName={"Polygon"}
                     address={values.polygon.hash}
+                    symbol={"NEP"}
+                    decimals={8}
+                    image={"https://forthewin.network/symbols/nep.png"}
+                  />
+                </>
+              }
+            />
+          </Card>
+        </div>
+
+        <div className="column is-4">
+          <Card style={{ height: "240px" }} loading={loading}>
+            <Card.Meta
+              avatar={<Avatar src={NEO_LOGO} />}
+              title="NEP on NeoX"
+              description={
+                <>
+                  <Typography.Paragraph>
+                    Hash:{" "}
+                    <a
+                      target="_blank"
+                      href={`${getExplorer(NEO_CHAIN, network, "contract")}/${
+                        values.neoX.hash
+                      }`}
+                    >
+                      {values.neoX.hash}
+                    </a>
+                    <br />
+                    Total Supply: {transformString(neoXSupply)}
+                    <br />
+                    MC: ${transformString(neoXMC)}
+                  </Typography.Paragraph>
+                  <AddTokenButton
+                    chainId={getChainIdByChain(NEOX_CHAIN, network)}
+                    chainName={"NeoX"}
+                    address={values.neoX.hash}
                     symbol={"NEP"}
                     decimals={8}
                     image={"https://forthewin.network/symbols/nep.png"}
