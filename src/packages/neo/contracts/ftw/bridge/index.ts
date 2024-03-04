@@ -1,7 +1,6 @@
 import { INetworkType, Network } from "../../../network";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { tx, wallet as NeonWallet } from "@cityofzion/neon-core";
-import { wallet } from "../../../index";
 import { parseMapValue, readNeoContract } from "../../../utils";
 import {
   IBridgeBurnPagenate,
@@ -10,6 +9,7 @@ import {
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/tokens";
 import { ethers } from "ethers";
+import { WalletAPI } from "../../../wallets";
 
 export const bridgeMint = async (
   connectedWallet: IConnectedWallet,
@@ -55,7 +55,7 @@ export const bridgeMint = async (
       },
     ],
   };
-  return wallet.WalletAPI.invoke(connectedWallet, network, invokeScript);
+  return WalletAPI.invoke(connectedWallet, network, invokeScript);
 };
 
 export const getMints = async (

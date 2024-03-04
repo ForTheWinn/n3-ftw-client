@@ -1,7 +1,6 @@
 import { INetworkType, Network } from "../../../network";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
-import { wallet } from "../../../index";
 import { LOCKER_SCRIPT_HASH } from "./consts";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/tokens";
 import { parseMapValue } from "../../../utils";
@@ -12,8 +11,9 @@ import {
   ILockerKeyToken,
   ILockersByToken,
 } from "./interface";
-import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
+import { getDefaultWitnessScope } from "../../../utils";
 import { ITokenState } from "../../../../../ui/pages/Swap/scenes/Swap/interfaces";
+import { WalletAPI } from "../../../wallets";
 
 export class LockerContract {
   network: INetworkType;
@@ -100,7 +100,7 @@ export class LockerContract {
 
     if (invokeCount === 1) {
       invokeScript.signers = signers;
-      return wallet.WalletAPI.invoke(
+      return WalletAPI.invoke(
         connectedWallet,
         this.network,
         invokeScript
@@ -110,7 +110,7 @@ export class LockerContract {
       for (var i = 0; i < invokeCount; ++i) {
         invokes.push(invokeScript);
       }
-      return wallet.WalletAPI.invokeMulti(
+      return WalletAPI.invokeMulti(
         connectedWallet,
         this.network,
         invokes,
@@ -140,9 +140,9 @@ export class LockerContract {
           value: null,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getContract = async (contractHash): Promise<ILockerContract> => {

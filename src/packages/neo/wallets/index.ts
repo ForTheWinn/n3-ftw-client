@@ -1,18 +1,37 @@
 import { IConnectedWallet, IWalletType } from "./interfaces";
-import {
-  NEO_LINE,
-  NEO_LINE_MOBILE,
-  NEON,
-  O3,
-  ONE_GATE,
-  WALLET_LIST
-} from "../consts";
+import { NEO_LINE, NEO_LINE_MOBILE, NEON, O3, ONE_GATE } from "../consts";
 import { INetworkType } from "../network";
 import { initNeoLine, initNeoLineMobile } from "./neoline";
 import { initOG } from "./onegate";
 import { initO3 } from "./o3";
 import { initNeon } from "./neon";
 import { tx } from "@cityofzion/neon-core";
+
+const WALLET_LIST: {
+  label: string;
+  key: IWalletType;
+}[] = [
+  {
+    label: "NeoLine",
+    key: NEO_LINE,
+  },
+  {
+    label: "Neon",
+    key: NEON,
+  },
+  {
+    label: "OneGate",
+    key: ONE_GATE,
+  },
+  {
+    label: "O3",
+    key: O3,
+  },
+  {
+    label: "NeoLine Mobile",
+    key: NEO_LINE_MOBILE,
+  },
+];
 
 export class WalletAPI {
   static list = WALLET_LIST;
@@ -41,7 +60,7 @@ export class WalletAPI {
     }
     return {
       key: walletType,
-      ...instance
+      ...instance,
     };
   };
 
@@ -67,7 +86,7 @@ export class WalletAPI {
       invokeScript.signers = invokeScript.signers.map((signer) => {
         return {
           ...signer,
-          scopes: tx.toString(signer.scopes)
+          scopes: tx.toString(signer.scopes),
         };
       });
     }
@@ -106,12 +125,15 @@ export class WalletAPI {
     if (connectedWallet.key === NEON) {
       return await instance.invokeFunction({
         invocations: invokeArgs,
-        signers
+        signers,
       });
-    } else if (connectedWallet.key === NEO_LINE || connectedWallet.key === NEO_LINE_MOBILE) {
+    } else if (
+      connectedWallet.key === NEO_LINE ||
+      connectedWallet.key === NEO_LINE_MOBILE
+    ) {
       const res = await instance.invokeMultiple({
         invokeArgs,
-        signers
+        signers,
       });
       return res.txid;
     } else if (connectedWallet.key === ONE_GATE) {
@@ -119,19 +141,19 @@ export class WalletAPI {
       const ogSigners = signers.map((s: any) => {
         return {
           ...s,
-          scopes: tx.toString(s.scopes)
+          scopes: tx.toString(s.scopes),
         };
       });
       const res = await instance.invokeMultiple({
         invocations: invokeArgs,
-        signers: ogSigners
+        signers: ogSigners,
       });
       return res.txid;
     } else {
       const invokeRes = await instance.invokeMulti({
         invokeArgs,
         signers,
-        network: currentNetwork
+        network: currentNetwork,
       });
       return invokeRes.txid;
     }

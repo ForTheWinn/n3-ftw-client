@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ILPToken } from "../../../../../packages/neo/contracts/ftw/swap/interfaces";
-import { SwapContract } from "../../../../../packages/neo/contracts";
-import { u } from "@cityofzion/neon-core";
 import { numberTrim } from "../../../../../packages/neo/utils";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { IPrices } from "../../../../../packages/neo/api/interfaces";

@@ -1,6 +1,6 @@
 import { POLYGON_CONTRACT_MAP as POLYGON_CONTRACT_LIST } from "../packages/evm/polygon";
 import { ETHEREUM_CONTRACT_MAP as ETHEREUM_CONTRACT_LIST } from "../packages/evm/ethereum";
-import { CONTRACT_LIST as NEO_CONTRACT_LIST } from "../packages/neo/consts/contracts";
+import { CONTRACT_LIST as NEO_CONTRACT_LIST } from "../packages/neo/consts";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../packages/neo/consts/tokens";
 import { POLYGON_NEP_CONTRACT_ADDRESSES } from "../packages/evm/polygon";
 import { ETH_CHAIN, NEOX_CHAIN, NEO_CHAIN, POLYGON_CHAIN } from "./global";

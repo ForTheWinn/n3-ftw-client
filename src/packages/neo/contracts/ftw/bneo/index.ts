@@ -6,8 +6,8 @@ import {
 } from "../../../consts/tokens";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
-import { wallet } from "../../../index";
-import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
+import { getDefaultWitnessScope } from "../../../utils";
+import { WalletAPI } from "../../../wallets";
 
 export class BNEOContract {
   network: INetworkType;
@@ -46,9 +46,9 @@ export class BNEOContract {
           value: null,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   redeem = async (
@@ -79,8 +79,8 @@ export class BNEOContract {
           value: null,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 }

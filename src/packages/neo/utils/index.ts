@@ -8,6 +8,7 @@ import {
 import { InvokeResult } from "@cityofzion/neon-core/lib/rpc";
 import { INetworkType, Network } from "../network";
 import { formatAmount } from "../../../common/helpers";
+import { tx } from "@cityofzion/neon-core";
 
 export const truncateAddress = (address: string) => {
   return address
@@ -361,4 +362,11 @@ export const getUserBalance = async (
     res.stack[0].value as string,
     parseFloat(res.stack[1].value as string)
   );
+};
+
+export const getDefaultWitnessScope = (senderHash: string) => {
+  return {
+    account: senderHash,
+    scopes: tx.WitnessScope.CalledByEntry,
+  };
 };

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useApp } from "../../../../common/hooks/use-app";
 import Modal from "../../Modal";
 import { CHAINS, CONFIGS, LIST } from "../../../../consts/chains";
-import { network } from "../../../../packages/neo";
 
 const DisplayCurrentChain = () => {
   const [isActive, setActive] = useState(false);

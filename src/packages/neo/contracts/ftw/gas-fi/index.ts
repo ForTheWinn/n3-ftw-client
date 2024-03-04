@@ -1,7 +1,6 @@
 import { INetworkType, Network } from "../../../network";
 import { IConnectedWallet } from "../../../wallets/interfaces";
-import { wallet } from "../../../index";
-import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
+import { getDefaultWitnessScope } from "../../../utils";
 
 import { parseMapValue, toDecimal } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
@@ -13,6 +12,7 @@ import {
   IGASFiStatus,
   IStakeResult,
 } from "./interfaces";
+import { WalletAPI } from "../../../wallets";
 
 export class GasFiContract {
   network: INetworkType;
@@ -52,9 +52,9 @@ export class GasFiContract {
           value: position,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   unStake = async (connectedWallet: IConnectedWallet): Promise<string> => {
@@ -70,9 +70,9 @@ export class GasFiContract {
           value: senderHash,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   draw = async (connectedWallet: IConnectedWallet): Promise<string> => {
@@ -83,9 +83,9 @@ export class GasFiContract {
       operation: "draw",
       scriptHash: this.contractHash,
       args: [],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   claim = async (
@@ -108,9 +108,9 @@ export class GasFiContract {
           value: drawNo,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   claimAll = async (connectedWallet: IConnectedWallet): Promise<string> => {
@@ -126,9 +126,9 @@ export class GasFiContract {
           value: senderHash,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getClaimable = async (

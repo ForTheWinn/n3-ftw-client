@@ -1,11 +1,10 @@
 import { INetworkType, Network } from "../../../network";
 import { IConnectedWallet } from "../../../wallets/interfaces";
-import { wallet } from "../../../index";
 import { SWAP_SCRIPT_HASH } from "./consts";
 import { base64ToString, parseMapValue, toDecimal } from "../../../utils";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { defaultDeadLine } from "./helpers";
-import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
+import { getDefaultWitnessScope } from "../../../utils";
 import {
   IContractInfo,
   ILPHistory,
@@ -13,7 +12,6 @@ import {
   IReserve,
   ISwapsHistory,
 } from "./interfaces";
-import { SMITH_SCRIPT_HASH } from "../smith/consts";
 import {
   NEO_BNEO_CONTRACT_ADDRESS,
   NEO_GAS_CONTRACT_ADDRESS,
@@ -22,7 +20,9 @@ import {
 } from "../../../consts/tokens";
 import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
 import { WENT_WRONG } from "../../../../../consts/messages";
-import { ethers } from "ethers";
+import { CONTRACT_LIST } from "../../../consts";
+import { SMITH } from "../../../../../consts/global";
+import { WalletAPI } from "../../../wallets";
 
 export class SwapContract {
   network: INetworkType;
@@ -90,7 +90,7 @@ export class SwapContract {
         },
       ],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   provideWithNEO = async (
@@ -195,7 +195,7 @@ export class SwapContract {
     //     allowedContracts: [NEO_SCRIPT_HASH, this.contractHash, bNEOHash, tokenB],
     //   },
     // ];
-    return wallet.WalletAPI.invokeMulti(
+    return WalletAPI.invokeMulti(
       connectedWallet,
       this.network,
       [bNEOScript, addLiquidityScript],
@@ -227,9 +227,9 @@ export class SwapContract {
           value: defaultDeadLine(),
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   swap = async (
@@ -279,7 +279,7 @@ export class SwapContract {
         },
       ],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   swapWithNEO = async (
@@ -363,7 +363,7 @@ export class SwapContract {
       },
     ];
 
-    return wallet.WalletAPI.invokeMulti(
+    return WalletAPI.invokeMulti(
       connectedWallet,
       this.network,
       [bNEOScript, swapScript],
@@ -418,7 +418,7 @@ export class SwapContract {
         },
       ],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   swapBWithNEO = async (
@@ -506,7 +506,7 @@ export class SwapContract {
       },
     ];
 
-    return wallet.WalletAPI.invokeMulti(
+    return WalletAPI.invokeMulti(
       connectedWallet,
       this.network,
       [swapScript, bNEOScript],
@@ -765,7 +765,7 @@ export class SwapContract {
   };
 
   getContractInfo = async (contractHash: string): Promise<IContractInfo> => {
-    const smithContractHash = SMITH_SCRIPT_HASH[this.network];
+    const smithContractHash = CONTRACT_LIST[this.network][SMITH];
     const script1 = {
       scriptHash: contractHash,
       operation: "symbol",

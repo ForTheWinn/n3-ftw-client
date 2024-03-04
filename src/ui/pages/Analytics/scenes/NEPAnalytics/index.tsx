@@ -22,8 +22,8 @@ import {
 import { RestAPI } from "../../../../../packages/neo/api";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/tokens";
 import AddTokenButton from "../../../../components/AddTokenOnMetaMaskButton";
-import { NEO_MAINNET_NEP_TOKEN_METADATA } from "../../../../../packages/neo/consts/mainnet";
 import CandleChart from "../../components/Pairs/TokenDetailPage/CandleChart";
+import { NEO_MAINNET_TOKENS } from "../../../../../packages/neo/consts/tokens";
 
 const EMMISSIONS = [
   {
@@ -161,7 +161,7 @@ const NEPAnalytics = () => {
             <br />
             <CandleChart
               chain={"NEO_CHAIN"}
-              tokenHash={NEO_MAINNET_NEP_TOKEN_METADATA.hash}
+              tokenHash={NEO_MAINNET_TOKENS.NEP.hash}
               height={160}
             />
           </Card>

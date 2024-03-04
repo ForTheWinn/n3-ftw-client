@@ -4,7 +4,6 @@ import AddLiquidityButton from "./AddLiquidityButton";
 import RemoveLiquidityButton from "./RemoveLiquidityButton";
 import { CHAINS, CONFIGS } from "../../../../../../../consts/chains";
 import { Avatar, Space } from "antd";
-import { network } from "../../../../../../../packages/neo";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 
 interface ISwapNavProps {

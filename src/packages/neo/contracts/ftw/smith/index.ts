@@ -1,20 +1,16 @@
 import { INetworkType, Network } from "../../../network";
 import { IConnectedWallet } from "../../../wallets/interfaces";
-import { wallet } from "../../../index";
-import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
-import { SMITH_SCRIPT_HASH } from "./consts";
-import {
-  ISmithNEP11Info,
-  ISmithNEP11RecordPaginate,
-  ISmithNEP17Info,
-  ISmithNEP17RecordPaginate,
-} from "./interfaces";
+import { getDefaultWitnessScope } from "../../../utils";
+import { ISmithNEP11Info, ISmithNEP17Info } from "./interfaces";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { parseMapValue } from "../../../utils";
 import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
 } from "../../../consts/tokens";
+import { CONTRACT_LIST } from "../../../consts";
+import { SMITH } from "../../../../../consts/global";
+import { WalletAPI } from "../../../wallets";
 
 export class SmithContract {
   network: INetworkType;
@@ -22,7 +18,7 @@ export class SmithContract {
 
   constructor(networkType: INetworkType) {
     this.network = networkType;
-    this.contractHash = SMITH_SCRIPT_HASH[networkType];
+    this.contractHash = CONTRACT_LIST[networkType][SMITH];
   }
 
   createNEP17V3 = async (
@@ -90,7 +86,7 @@ export class SmithContract {
         },
       ],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   createNEP17 = async (
@@ -149,7 +145,7 @@ export class SmithContract {
         },
       ],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   createNEP11 = async (
@@ -207,7 +203,7 @@ export class SmithContract {
         },
       ],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   mintNFT = async (
@@ -242,9 +238,9 @@ export class SmithContract {
           value: json,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   updateManifest = async (
@@ -273,9 +269,9 @@ export class SmithContract {
           value: manifest,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(walletClient, this.network, invokeScript);
+    return WalletAPI.invoke(walletClient, this.network, invokeScript);
   };
 
   adminUpdate = async (
@@ -300,9 +296,9 @@ export class SmithContract {
           value: manifest,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getNEP17Records = async (page: number) => {

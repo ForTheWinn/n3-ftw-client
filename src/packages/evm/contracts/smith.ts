@@ -6,10 +6,7 @@ import { INetworkType } from "../../neo/network";
 import { ALCHEMY_KEY, SMITH } from "../../../consts/global";
 import { ethers } from "ethers";
 import { ISmithTokenInfo } from "../interfaces";
-import {
-  CHAINS,
-  CONFIGS,
-} from "../../../consts/chains";
+import { CHAINS, CONFIGS } from "../../../consts/chains";
 import { wagmiConfig } from "../../../wagmi-config";
 import { smithABI } from "./abi/smithAbi";
 
@@ -23,7 +20,7 @@ export const createTokenContract = async (
   website: string,
   icon: string
 ): Promise<string> => {
-  const args = {
+  const args: any = {
     address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "createToken",
@@ -40,7 +37,7 @@ export const setTokenData = async (
   icon: string,
   website: string
 ) => {
-  const args = {
+  const args: any = {
     address: CONTRACT_MAP[chain][network][SMITH],
     abi: FTWSmith,
     functionName: "setTokenData",
@@ -84,7 +81,7 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
   console.log(jsonString);
 
   const res: any = await readContract(wagmiConfig, {
-    address: CONTRACT_MAP[chain][network][SMITH],
+    address: CONTRACT_MAP[chain][network][SMITH] as any,
     abi: smithABI,
     functionName: "getTokens",
     args: [30, 1],
@@ -100,7 +97,7 @@ const getTokenMetadata = async (
   contractHash: string
 ) => {
   const res: any = await readContract(wagmiConfig, {
-    address: CONTRACT_MAP[chain][network][SMITH],
+    address: CONTRACT_MAP[chain][network][SMITH] as any,
     abi: FTWSmith,
     functionName: "getTokenData",
     args: [contractHash],

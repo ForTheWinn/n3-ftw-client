@@ -1,7 +1,3 @@
-import { u } from "@cityofzion/neon-core";
-
-
-
 export interface ISwapsHistory {
   totalItems: number;
   totalPages: number;
