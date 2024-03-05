@@ -12,6 +12,7 @@ interface IInputProps {
   userBalance?: string;
   setValue: (val?: string) => void;
   onClickAsset: () => void;
+  isDisabled?: boolean;
 }
 
 const Input = ({
@@ -19,6 +20,7 @@ const Input = ({
   val,
   isLoading,
   userBalance,
+  isDisabled,
   setValue,
   onClickAsset
 }: IInputProps) => {
@@ -49,6 +51,7 @@ const Input = ({
               }}
               thousandSeparator={true}
               allowLeadingZeros={false}
+              disabled={isDisabled}
             />
           </div>
         </div>

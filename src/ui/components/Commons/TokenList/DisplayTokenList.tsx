@@ -15,9 +15,9 @@ const DisplayTokenList = ({
   keyword,
   chain,
   network,
-  onClick
+  onClick,
 }: ITokenListProps) => {
-  let tokenList = SWAP_TOKEN_LIST[chain][network];
+  let tokenList: any = SWAP_TOKEN_LIST[chain][network];
   if (keyword) {
     tokenList = tokenList.filter((item) =>
       item.symbol.toLowerCase().includes(keyword.toLowerCase())

@@ -5,13 +5,14 @@ import { ITokenState } from "../../scenes/Swap/interfaces";
 import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
-import { calculateSlippage, parseAmount } from "../../../../../common/helpers";
+import { calculateSlippage } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { DisplayAd } from "./components/DisplayAd";
 import { TxResult } from "../../../../components/TxResult";
 import Errors from "./components/Errors";
 import { SwapContract } from "../../../../../packages/neo/contracts/ftw/swap";
+import { ethers } from "ethers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -52,8 +53,8 @@ const NeoActionModal = (props: IActionModalProps) => {
   } = props;
   const [state, setState] = useState(initialState);
 
-  const parsedAmountA = parseAmount(amountA, tokenA.decimals);
-  const parsedAmountB = parseAmount(amountB, tokenB.decimals);
+  const parsedAmountA = ethers.parseUnits(amountA, tokenA.decimals);
+  const parsedAmountB = ethers.parseUnits(amountB, tokenB.decimals);
 
   const maxAmountAIn =
     parsedAmountA + calculateSlippage(parsedAmountA, slippage);

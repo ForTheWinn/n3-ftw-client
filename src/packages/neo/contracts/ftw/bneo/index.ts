@@ -7,7 +7,7 @@ import {
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
 import { getDefaultWitnessScope } from "../../../utils";
-import { WalletAPI } from "../../../wallets";
+import { NeoWallets } from "../../../wallets";
 
 export class BNEOContract {
   network: INetworkType;
@@ -48,7 +48,7 @@ export class BNEOContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   redeem = async (
@@ -81,6 +81,6 @@ export class BNEOContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 }

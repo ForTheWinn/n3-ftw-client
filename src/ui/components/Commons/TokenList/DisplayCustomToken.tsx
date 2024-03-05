@@ -19,7 +19,7 @@ const DisplayCustomToken = ({
   network,
   token,
   onClick,
-  onCancel
+  onCancel,
 }: IDisplayCustomTokenProps) => {
   const [customToken, setCustomToken] = useState<ITokenState | undefined>();
   const [hasError, setError] = useState<boolean>(false);
@@ -30,7 +30,7 @@ const DisplayCustomToken = ({
       setError(false);
       try {
         let target;
-        SWAP_TOKEN_LIST[chain][network].forEach((t) => {
+        SWAP_TOKEN_LIST[chain][network].forEach((t: any) => {
           if (t.hash === token) {
             target = t;
           }
@@ -44,7 +44,7 @@ const DisplayCustomToken = ({
             hash: token,
             decimals: res.decimals,
             symbol: res.symbol,
-            icon: ""
+            icon: "",
           });
         }
       } catch (e) {

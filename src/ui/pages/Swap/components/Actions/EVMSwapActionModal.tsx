@@ -13,7 +13,6 @@ import {
 import {
   calculateSlippage,
   getCurrentStep,
-  parseAmount,
 } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
@@ -22,6 +21,7 @@ import { TxResult } from "../../../../components/TxResult";
 import Errors from "./components/Errors";
 import { STATUS_STATE, SWAP } from "../../../../../consts/global";
 import { CONTRACT_MAP } from "../../../../../consts/contracts";
+import { ethers } from "ethers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -73,8 +73,8 @@ const ActionModal = (props: IActionModalProps) => {
     onCancel,
   } = props;
   const [state, setState] = useState(initialState);
-  const parsedAmountA = parseAmount(amountA, tokenA.decimals);
-  const parsedAmountB = parseAmount(amountB, tokenB.decimals);
+  const parsedAmountA = ethers.parseUnits(amountA, tokenA.decimals);
+  const parsedAmountB = ethers.parseUnits(amountB, tokenB.decimals);
   const maxAmountAIn =
     parsedAmountA + calculateSlippage(parsedAmountA, slippage);
   const minAmountBOut =

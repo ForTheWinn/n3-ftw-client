@@ -1,5 +1,6 @@
 import { CONST as NEON_CONST } from "@cityofzion/neon-core";
 import { MAINNET, TESTNET } from "../../../consts/global";
+import { createTokenMetadata } from "../../../common/helpers";
 
 /* Contract hashes */
 export const NEO_GAS_CONTRACT_ADDRESS = `0x${NEON_CONST.NATIVE_CONTRACT_HASH.GasToken}`;
@@ -43,16 +44,6 @@ const NEO_GLC_CONTRACT_ADDRESS = "0x77dc8cadcaef3694ab0f23901d8d9d825b19e6a2";
 const NEO__7F_CONTRACT_ADDRESS = "0x8d91c0b210dcd568d287711a4c1c54c7ae392814";
 const NEO_PEPE_CONTRACT_ADDRESSH = "0x8a651ecad98582603323bdd20169b81b81c1da5c";
 
-function createTokenMetadata({
-  hash,
-  symbol,
-  icon,
-  decimals,
-  pairs = [],
-}: any) {
-  return { hash, symbol, icon, decimals, pairs };
-}
-
 export const NEO_MAINNET_TOKENS = {
   NEP: createTokenMetadata({
     hash: NEO_NEP_CONTRACT_ADDRESS[MAINNET],
@@ -67,6 +58,22 @@ export const NEO_MAINNET_TOKENS = {
       NEO_USDT_CONTRACT_ADDRESS,
       NEO_TTM_CONTRACT_ADDRESS,
     ],
+    isWhitelisted: true,
+  }),
+  NEO: createTokenMetadata({
+    hash: NEO_NEO_CONTRACT_ADDRESS,
+    symbol: "NEO",
+    icon: "/symbols/neo.svg",
+    decimals: 0,
+    pairs: [
+      NEO_GAS_CONTRACT_ADDRESS,
+      NEO_USDT_CONTRACT_ADDRESS,
+      NEO_NEP_CONTRACT_ADDRESS[MAINNET],
+      NEO_TTM_CONTRACT_ADDRESS,
+    ],
+    isWhitelisted: true,
+    isNative: true,
+    nativePair: "bNEO",
   }),
   bNEO: createTokenMetadata({
     hash: NEO_BNEO_CONTRACT_ADDRESS[MAINNET],
@@ -79,6 +86,7 @@ export const NEO_MAINNET_TOKENS = {
       NEO_NEP_CONTRACT_ADDRESS[MAINNET],
       NEO_TTM_CONTRACT_ADDRESS,
     ],
+    isWhitelisted: true,
   }),
   TTM: createTokenMetadata({
     hash: NEO_TTM_CONTRACT_ADDRESS,
@@ -90,15 +98,14 @@ export const NEO_MAINNET_TOKENS = {
       NEO_USDT_CONTRACT_ADDRESS,
       NEO_BNEO_CONTRACT_ADDRESS[MAINNET],
     ],
+    isWhitelisted: true,
   }),
   B$: createTokenMetadata({
     hash: NEO_B$_CONTRACT_ADDRESS,
     symbol: "B$",
     icon: "/symbols/b$.png",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
   }),
   GAS: createTokenMetadata({
     hash: NEO_GAS_CONTRACT_ADDRESS,
@@ -110,6 +117,7 @@ export const NEO_MAINNET_TOKENS = {
       NEO_NEP_CONTRACT_ADDRESS[MAINNET],
       NEO_USDT_CONTRACT_ADDRESS,
     ],
+    isWhitelisted: true,
   }),
   fWBTC: createTokenMetadata({
     hash: NEO_FWBTC_CONTRACT_ADDRESS,
@@ -124,6 +132,7 @@ export const NEO_MAINNET_TOKENS = {
     icon: "/symbols/eth.png",
     decimals: 18,
     pairs: [NEO_NEP_CONTRACT_ADDRESS[MAINNET]],
+    isWhitelisted: true,
   }),
   fUSDT: createTokenMetadata({
     hash: NEO_USDT_CONTRACT_ADDRESS,
@@ -135,132 +144,112 @@ export const NEO_MAINNET_TOKENS = {
       NEO_TTM_CONTRACT_ADDRESS,
       NEO_BNEO_CONTRACT_ADDRESS[MAINNET],
     ],
+    isWhitelisted: true,
   }),
   TGAS: createTokenMetadata({
     hash: NEO_TGAS_CONTRACT_ADDRESS,
     symbol: "TGAS",
     icon: "/symbols/TGAS.svg",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
   }),
   WATT: createTokenMetadata({
     hash: NEO_WATT_CONTRACT_ADDRESS,
     symbol: "WATT",
     icon: "/symbols/WATT.svg",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
+    isWhitelisted: true,
   }),
   LITH: createTokenMetadata({
     hash: NEO_LITH_CONTRACT_ADDRESS,
     symbol: "LITH",
     icon: "/symbols/LITH.svg",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
+    isWhitelisted: true,
   }),
   HIST: createTokenMetadata({
     hash: NEO_HIST_CONTRACT_ADDRESS,
     symbol: "HIST",
     icon: "/symbols/HIST.svg",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
+    isWhitelisted: true,
   }),
   MAG: createTokenMetadata({
     hash: NEO_MAG_CONTRACT_ADDRESS,
     symbol: "MAG",
     icon: "/symbols/MAG.svg",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
+    isWhitelisted: true,
   }),
   Hood: createTokenMetadata({
     hash: NEO_HOOD_CONTRACT_ADDRESS,
     symbol: "Hood",
     icon: "/symbols/hood.png",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
+    isWhitelisted: true,
   }),
   NUDES: createTokenMetadata({
     hash: NEO_NUDES_CONTRACT_ADDRESS,
     symbol: "TIPS",
     icon: "/symbols/tips.svg",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
   }),
   TED: createTokenMetadata({
     hash: NEO_TED_CONTRACT_ADDRESS,
     symbol: "TEDS",
     icon: "/symbols/ted.png",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
   }),
   MAXI: createTokenMetadata({
     hash: NEO_MAXI_CONTRACT_ADDRESS,
     symbol: "MAXI",
     icon: "/symbols/maxi.png",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
   }),
   FRANK: createTokenMetadata({
     hash: NEO_FRANK_CONTRACT_ADDRESS,
     symbol: "frank",
     icon: "/symbols/frank.png",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
+    isWhitelisted: true,
   }),
   N3F: createTokenMetadata({
     hash: NEO_N3F_CONTRACT_ADDRESS,
     symbol: "N3F",
     icon: "/symbols/n3f.jpg",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
   }),
   GLC: createTokenMetadata({
     hash: NEO_GLC_CONTRACT_ADDRESS,
     symbol: "GLC",
     icon: "/symbols/glc.png",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
   }),
   "7F": createTokenMetadata({
     hash: NEO__7F_CONTRACT_ADDRESS,
     symbol: "7f",
     icon: "/symbols/7f.png",
     decimals: 8,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
   }),
   PEPE: createTokenMetadata({
     hash: NEO_PEPE_CONTRACT_ADDRESSH,
     symbol: "pepe",
     icon: "/symbols/pepe.png",
     decimals: 18,
-    pairs: [
-      // Specify pairs if any
-    ],
+    pairs: [],
+    isWhitelisted: true,
   }),
 };
 
@@ -270,17 +259,20 @@ export const NEO_TESTNET_TOKENS = {
     symbol: "bNEO",
     icon: "/symbols/bneo.jpeg",
     decimals: 8,
+    isWhitelisted: true,
   }),
   GAS: createTokenMetadata({
     hash: NEO_GAS_CONTRACT_ADDRESS,
     symbol: "GAS",
     icon: "/symbols/gas.svg",
     decimals: 8,
+    isWhitelisted: true,
   }),
   NEP: createTokenMetadata({
     hash: NEO_NEP_CONTRACT_ADDRESS[TESTNET],
     symbol: "NEP",
     icon: "/symbols/nep.png",
     decimals: 8,
+    isWhitelisted: true,
   }),
 };

@@ -6,7 +6,7 @@ import { IConnectedWallet } from "../../../wallets/interfaces";
 import { IRuneMeta } from "./interfaces";
 import { parseProperties } from "./helpers";
 import { NEO_GAS_CONTRACT_ADDRESS } from "../../../consts/tokens";
-import { WalletAPI } from "../../../wallets";
+import { NeoWallets } from "../../../wallets";
 
 export class NFTContract {
   network: INetworkType;
@@ -47,7 +47,7 @@ export class NFTContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(
+    return NeoWallets.invoke(
       connectedWallet,
       this.network,
       invokeScript,
@@ -65,7 +65,7 @@ export class NFTContract {
       args: [],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getProperties = async (tokenId: string): Promise<IRuneMeta | null> => {

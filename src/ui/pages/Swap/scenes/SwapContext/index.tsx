@@ -345,6 +345,10 @@ export const SwapContextProvider = (props: {
       }
     }
   }
+  // let isNativeTokenSwap = false;
+  // if (tokenA && tokenB) {
+  //   isNativeTokenSwap = tokenA.isNative || tokenB.isNative;
+  // }
 
   const contextValue = {
     chain,

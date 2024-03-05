@@ -13,7 +13,7 @@ import NEOSmithActionModal from "./NEOActionModal";
 import { Modal, message } from "antd";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
-import { useBalances } from "../../../../../../../packages/neo/hooks/use-balances";
+import { useBalances } from "../../../../../../../packages/neo/utils";
 import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,

@@ -2,7 +2,7 @@ import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { INetworkType } from "../../network";
 import { IConnectedWallet } from "../../wallets/interfaces";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../consts/tokens";
-import { WalletAPI } from "../../wallets";
+import { NeoWallets } from "../../wallets";
 
 export class GMContract {
   network: INetworkType;
@@ -52,6 +52,6 @@ export class GMContract {
     };
 
     invokeScript.signers = signers;
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 }

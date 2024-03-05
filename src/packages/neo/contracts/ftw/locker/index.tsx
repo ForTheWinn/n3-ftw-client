@@ -13,7 +13,7 @@ import {
 } from "./interface";
 import { getDefaultWitnessScope } from "../../../utils";
 import { ITokenState } from "../../../../../ui/pages/Swap/scenes/Swap/interfaces";
-import { WalletAPI } from "../../../wallets";
+import { NeoWallets } from "../../../wallets";
 
 export class LockerContract {
   network: INetworkType;
@@ -100,17 +100,13 @@ export class LockerContract {
 
     if (invokeCount === 1) {
       invokeScript.signers = signers;
-      return WalletAPI.invoke(
-        connectedWallet,
-        this.network,
-        invokeScript
-      );
+      return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
     } else {
       const invokes: any[] = [];
       for (var i = 0; i < invokeCount; ++i) {
         invokes.push(invokeScript);
       }
-      return WalletAPI.invokeMulti(
+      return NeoWallets.invokeMulti(
         connectedWallet,
         this.network,
         invokes,
@@ -142,7 +138,7 @@ export class LockerContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getContract = async (contractHash): Promise<ILockerContract> => {

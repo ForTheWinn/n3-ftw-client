@@ -33,7 +33,7 @@ const WALLET_LIST: {
   },
 ];
 
-export class WalletAPI {
+export class NeoWallets {
   static list = WALLET_LIST;
 
   static init = async (

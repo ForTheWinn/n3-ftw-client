@@ -6,7 +6,7 @@ import { INetworkType } from "../../../packages/neo/network";
 import { getDefaultWitnessScope } from "../../../packages/neo/utils";
 import { IMassTransaferList } from "./interfaces";
 import { NEO_CHAIN } from "../../../consts/global";
-import { WalletAPI } from "../../../packages/neo/wallets";
+import { NeoWallets } from "../../../packages/neo/wallets";
 
 export interface IExcelData {
   type: any;
@@ -68,12 +68,7 @@ export const massTransfers = async (
 
         const signers = [getDefaultWitnessScope(senderHash)];
 
-        return WalletAPI.invokeMulti(
-          connectedWallet,
-          network,
-          batch,
-          signers
-        );
+        return NeoWallets.invokeMulti(connectedWallet, network, batch, signers);
       } else {
         throw new Error("Connect wallet.");
       }

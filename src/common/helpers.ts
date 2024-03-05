@@ -151,9 +151,6 @@ export const findTradePaths = (
   return paths;
 };
 
-export const parseAmount = (amount: string, decimals: number): bigint =>
-  ethers.parseUnits(amount, decimals);
-
 export const formatAmount = (
   amount: string,
   decimals: string | number
@@ -168,14 +165,10 @@ export const formatAmount = (
   }
   return ethers.formatUnits(BigInt(amount), decimalsNumber).toLocaleString();
 };
+
 export const calculateSlippage = (amount: bigint, slippage: number) => {
-  // Convert slippage to a BigInt representation
   const slippageBigInt = BigInt(Math.round(slippage * 100));
-
-  // Calculate the slippage
-  const calculatedAmount = (amount * slippageBigInt) / BigInt(10000);
-
-  return calculatedAmount;
+  return (amount * slippageBigInt) / BigInt(10000);
 };
 
 export const getCurrentStep = (state, steps) => {
@@ -198,84 +191,6 @@ export const transformString = (inputString: string | number): string => {
   return numberFormat.format(Number(replacedString));
 };
 
-export const usdtABI = [
-  {
-    constant: true,
-    inputs: [],
-    name: "totalSupply",
-    outputs: [{ name: "", type: "uint256" }],
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [{ name: "_owner", type: "address" }],
-    name: "balanceOf",
-    outputs: [{ name: "balance", type: "uint256" }],
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: "_to", type: "address" },
-      { name: "_value", type: "uint256" },
-    ],
-    name: "transfer",
-    outputs: [{ name: "", type: "bool" }],
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: "_spender", type: "address" },
-      { name: "_value", type: "uint256" },
-    ],
-    name: "approve",
-    outputs: [],
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [
-      { name: "_owner", type: "address" },
-      { name: "_spender", type: "address" },
-    ],
-    name: "allowance",
-    outputs: [{ name: "", type: "uint256" }],
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: "_from", type: "address" },
-      { name: "_to", type: "address" },
-      { name: "_value", type: "uint256" },
-    ],
-    name: "transferFrom",
-    outputs: [{ name: "", type: "bool" }],
-    type: "function",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: "_from", type: "address" },
-      { indexed: true, name: "_to", type: "address" },
-      { indexed: false, name: "_value", type: "uint256" },
-    ],
-    name: "Transfer",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: "_owner", type: "address" },
-      { indexed: true, name: "_spender", type: "address" },
-      { indexed: false, name: "_value", type: "uint256" },
-    ],
-    name: "Approval",
-    type: "event",
-  },
-];
-
 export const extractErrorMessage = (error: any) => {
   if (error && typeof error.message === "string") {
     try {
@@ -288,18 +203,8 @@ export const extractErrorMessage = (error: any) => {
       return WENT_WRONG;
     }
   }
-
-  // Default error message
   return WENT_WRONG;
 };
-
-export function getPairId(tokenA: string, tokenB: string): string {
-  if (tokenA > tokenB) {
-    return tokenA + tokenB;
-  } else {
-    return tokenB + tokenA;
-  }
-}
 
 export function convertChainForBackend(chain: CHAINS): string {
   switch (chain) {
@@ -312,4 +217,34 @@ export function convertChainForBackend(chain: CHAINS): string {
     default:
       throw new Error("Invalid chain");
   }
+}
+export function createTokenMetadata({
+  hash,
+  symbol,
+  icon,
+  decimals,
+  pairs = [],
+  isWhitelisted = false,
+  isNative = false,
+  nativePair,
+}: {
+  hash: string;
+  symbol: string;
+  decimals: number;
+  icon: string;
+  pairs?: string[];
+  isWhitelisted?: boolean;
+  isNative?: boolean;
+  nativePair?: string;
+}) {
+  return {
+    hash,
+    symbol,
+    icon,
+    decimals,
+    pairs,
+    isWhitelisted,
+    isNative,
+    nativePair,
+  };
 }

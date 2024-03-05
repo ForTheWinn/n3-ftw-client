@@ -12,7 +12,7 @@ import {
   IGASFiStatus,
   IStakeResult,
 } from "./interfaces";
-import { WalletAPI } from "../../../wallets";
+import { NeoWallets } from "../../../wallets";
 
 export class GasFiContract {
   network: INetworkType;
@@ -54,7 +54,7 @@ export class GasFiContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   unStake = async (connectedWallet: IConnectedWallet): Promise<string> => {
@@ -72,7 +72,7 @@ export class GasFiContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   draw = async (connectedWallet: IConnectedWallet): Promise<string> => {
@@ -85,7 +85,7 @@ export class GasFiContract {
       args: [],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   claim = async (
@@ -110,7 +110,7 @@ export class GasFiContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   claimAll = async (connectedWallet: IConnectedWallet): Promise<string> => {
@@ -128,7 +128,7 @@ export class GasFiContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getClaimable = async (

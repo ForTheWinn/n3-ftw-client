@@ -1,11 +1,6 @@
-import { POLYGON_SWAP_TOKENS_MAP } from "../packages/evm/polygon";
-import {
-  ETH_CHAIN,
-  NEOX_CHAIN,
-  NEO_CHAIN,
-  POLYGON_CHAIN,
-} from "./global";
+import { ETH_CHAIN, NEOX_CHAIN, NEO_CHAIN, POLYGON_CHAIN } from "./global";
 import { ETHEREUM_SWAP_TOKENS_MAP } from "../packages/evm/ethereum";
+import { POLYGON_SWAP_TOKENS_MAP } from "../packages/evm/polygon";
 import { EVM_TOKEN_LIST } from "../packages/evm";
 import { NEOX_SWAP_TOKENS_MAP } from "../packages/evm/neox";
 import { NEO_SWAP_TOKENS, NEO_TOKENS } from "../packages/neo/consts";

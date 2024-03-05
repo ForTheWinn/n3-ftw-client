@@ -10,7 +10,7 @@ import {
   parsePairsMap,
   parseStakedLPTokensMap,
 } from "./helpers";
-import { WalletAPI } from "../../../wallets";
+import { NeoWallets } from "../../../wallets";
 
 export class StakingContract {
   network: INetworkType;
@@ -49,7 +49,7 @@ export class StakingContract {
         },
       ],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   remove = async (
@@ -74,7 +74,7 @@ export class StakingContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   claim = async (
@@ -104,7 +104,7 @@ export class StakingContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   claimMulti = async (
@@ -143,7 +143,7 @@ export class StakingContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getStakingPairs = async (): Promise<IStakingPairs[]> => {

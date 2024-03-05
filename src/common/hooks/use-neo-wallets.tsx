@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 import {
   IConnectedWallet,
-  IWalletType
+  IWalletType,
 } from "../../packages/neo/wallets/interfaces";
-import { WalletAPI } from "../../packages/neo/wallets";
+import { NeoWallets } from "../../packages/neo/wallets";
 import { INetworkType } from "../../packages/neo/network";
 import { NEON } from "../../packages/neo/consts";
 import { message } from "antd";
@@ -34,7 +34,7 @@ export const NeoWalletProvider = (props: { children: any }) => {
     onSuccess: () => void
   ) => {
     try {
-      const res = await WalletAPI.init(walletType, network);
+      const res = await NeoWallets.init(walletType, network);
       setConnectedWallet(res);
       message.success("Connected!");
       onSuccess();
@@ -54,10 +54,10 @@ export const NeoWalletProvider = (props: { children: any }) => {
   };
 
   const contextValue: IWalletStates = {
-    list: WalletAPI.list,
+    list: NeoWallets.list,
     connectedWallet,
     connectWallet,
-    disConnectWallet
+    disConnectWallet,
   };
 
   return (

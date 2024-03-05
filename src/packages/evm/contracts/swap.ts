@@ -13,7 +13,7 @@ import { SWAP } from "../../../consts/global";
 import { CHAINS, CONFIGS } from "../../../consts/chains";
 import { CONTRACT_MAP } from "../../../consts/contracts";
 import { EVM_CONTRACT_MAP } from "..";
-import { usdtABI } from "../../../common/helpers";
+import { usdtABI } from "./abi/usdtABI";
 import { wagmiConfig } from "../../../wagmi-config";
 
 export const getReserves = async (

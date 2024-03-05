@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { waitForTransaction, waitForTransactionReceipt } from "@wagmi/core";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { Steps } from "antd";
 
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -14,11 +14,7 @@ import {
   burn,
   getMintoNoFromLogs,
 } from "../../../../../packages/evm/contracts/bridge";
-import {
-  getCurrentStep,
-  getExplorer,
-  parseAmount,
-} from "../../../../../common/helpers";
+import { getCurrentStep, getExplorer } from "../../../../../common/helpers";
 import { getScriptHashFromAddressWithPrefix } from "../../../../../packages/neo/utils";
 import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
@@ -91,7 +87,7 @@ const EVMBridgeActionModal = ({
   onSuccess,
   onCancel,
 }: IActionModalProps) => {
-  const bridgeAmount = parseAmount(amount, token.decimals);
+  const bridgeAmount = ethers.parseUnits(amount, token.decimals);
   const chainId = CONFIGS[network][chain].chainId;
   const evmBridgeContractHash =
     BRIDGE_CONTRACTS[network][chainId][destChain.chainId];

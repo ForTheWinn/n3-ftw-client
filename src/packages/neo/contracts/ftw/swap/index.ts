@@ -22,7 +22,7 @@ import { ISwapReserves } from "../../../../../common/routers/swap/interfaces";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { CONTRACT_LIST } from "../../../consts";
 import { SMITH } from "../../../../../consts/global";
-import { WalletAPI } from "../../../wallets";
+import { NeoWallets } from "../../../wallets";
 
 export class SwapContract {
   network: INetworkType;
@@ -90,7 +90,7 @@ export class SwapContract {
         },
       ],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   provideWithNEO = async (
@@ -195,7 +195,7 @@ export class SwapContract {
     //     allowedContracts: [NEO_SCRIPT_HASH, this.contractHash, bNEOHash, tokenB],
     //   },
     // ];
-    return WalletAPI.invokeMulti(
+    return NeoWallets.invokeMulti(
       connectedWallet,
       this.network,
       [bNEOScript, addLiquidityScript],
@@ -229,7 +229,7 @@ export class SwapContract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   swap = async (
@@ -279,7 +279,7 @@ export class SwapContract {
         },
       ],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   swapWithNEO = async (
@@ -363,7 +363,7 @@ export class SwapContract {
       },
     ];
 
-    return WalletAPI.invokeMulti(
+    return NeoWallets.invokeMulti(
       connectedWallet,
       this.network,
       [bNEOScript, swapScript],
@@ -418,7 +418,7 @@ export class SwapContract {
         },
       ],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   swapBWithNEO = async (
@@ -506,7 +506,7 @@ export class SwapContract {
       },
     ];
 
-    return WalletAPI.invokeMulti(
+    return NeoWallets.invokeMulti(
       connectedWallet,
       this.network,
       [swapScript, bNEOScript],

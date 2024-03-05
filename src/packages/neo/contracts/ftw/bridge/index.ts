@@ -9,7 +9,7 @@ import {
 import { ApplicationLogJson } from "@cityofzion/neon-core/lib/rpc";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/tokens";
 import { ethers } from "ethers";
-import { WalletAPI } from "../../../wallets";
+import { NeoWallets } from "../../../wallets";
 
 export const bridgeMint = async (
   connectedWallet: IConnectedWallet,
@@ -55,7 +55,7 @@ export const bridgeMint = async (
       },
     ],
   };
-  return WalletAPI.invoke(connectedWallet, network, invokeScript);
+  return NeoWallets.invoke(connectedWallet, network, invokeScript);
 };
 
 export const getMints = async (

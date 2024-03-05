@@ -11,13 +11,14 @@ import {
   provide,
 } from "../../../../../packages/evm/contracts/swap";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
-import { getCurrentStep, parseAmount } from "../../../../../common/helpers";
+import { getCurrentStep } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { DisplayAd } from "./components/DisplayAd";
 import Errors from "./components/Errors";
 import { TxResult } from "../../../../components/TxResult";
 import { STATUS_STATE, SWAP } from "../../../../../consts/global";
 import { CONTRACT_MAP } from "../../../../../consts/contracts";
+import { ethers } from "ethers";
 
 interface IActionModalProps {
   chain: CHAINS;
@@ -71,8 +72,8 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     network,
   } = props;
   const [state, setState] = useState(initialState);
-  const parsedAmountA = parseAmount(amountA, tokenA.decimals);
-  const parsedAmountB = parseAmount(amountB, tokenB.decimals);
+  const parsedAmountA = ethers.parseUnits(amountA, tokenA.decimals);
+  const parsedAmountB = ethers.parseUnits(amountB, tokenB.decimals);
 
   const handleTx = async (stepKey: string, txid: any): Promise<boolean> => {
     handleStatus(stepKey, "processing");

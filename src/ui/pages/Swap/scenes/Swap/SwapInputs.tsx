@@ -4,7 +4,7 @@ import { FaArrowDown } from "react-icons/fa";
 import { ISwapInputState, ITokenState } from "./interfaces";
 import {
   ISwapReserves,
-  IUserTokenBalances
+  IUserTokenBalances,
 } from "../../../../../common/routers/swap/interfaces";
 import SwapErrors from "./components/SwapErrors";
 import InputDivider from "../../components/InputDivider";
@@ -44,7 +44,7 @@ const SwapInputs = ({
   priceImpact,
   onSwitch,
   setSwapInputChange,
-  onAssetChange
+  onAssetChange,
 }: ISwapInputsProps) => {
   const errors: string[] = [];
   if (hasReservesError) {
@@ -71,9 +71,10 @@ const SwapInputs = ({
           setValue={(value) => {
             setSwapInputChange({
               type: "A",
-              value
+              value,
             });
           }}
+          isDisabled={tokenB?.decimals === 0}
         />
       </div>
 
@@ -91,9 +92,10 @@ const SwapInputs = ({
           setValue={(value) => {
             setSwapInputChange({
               type: "B",
-              value
+              value,
             });
           }}
+          isDisabled={tokenA?.decimals === 0}
         />
       </div>
 

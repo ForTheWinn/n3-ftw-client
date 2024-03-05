@@ -38,10 +38,12 @@ export const NEO_TOKENS = {
   [TESTNET]: NEO_TESTNET_TOKENS,
 };
 
+const getWhitelistSwapTokens = (tokens: any) => {
+  return Object.values(tokens).filter((token: any) => !!token.isWhitelisted);
+};
+
 export const NEO_SWAP_TOKENS = {
-  [MAINNET]: Object.keys(NEO_MAINNET_TOKENS).map((key) => {
-    return NEO_MAINNET_TOKENS[key];
-  }),
+  [MAINNET]: getWhitelistSwapTokens(NEO_MAINNET_TOKENS),
   [TESTNET]: Object.keys(NEO_TESTNET_TOKENS).map((key) => {
     return NEO_TESTNET_TOKENS[key];
   }),

@@ -15,7 +15,7 @@ import {
 } from "../../../../../common/routers/farm/interfaces";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../../consts/global";
-import { WalletAPI } from "../../../wallets";
+import { NeoWallets } from "../../../wallets";
 
 export class FarmV2Contract {
   network: INetworkType;
@@ -52,7 +52,7 @@ export class FarmV2Contract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   remove = async (
@@ -77,7 +77,7 @@ export class FarmV2Contract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   claim = async (
@@ -107,7 +107,7 @@ export class FarmV2Contract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   claimMulti = async (
@@ -146,7 +146,7 @@ export class FarmV2Contract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   stakeBoy = async (
@@ -176,7 +176,7 @@ export class FarmV2Contract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   UnStakeBoy = async (
@@ -206,7 +206,7 @@ export class FarmV2Contract {
       ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
-    return WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getPools = async (): Promise<IFarmPair[]> => {
