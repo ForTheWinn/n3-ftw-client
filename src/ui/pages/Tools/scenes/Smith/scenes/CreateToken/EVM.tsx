@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { toast } from "react-hot-toast";
 import NumberFormat from "react-number-format";
 import { detectEmojiInString } from "../../helpers";
 import { useHistory } from "react-router-dom";
@@ -12,6 +11,7 @@ import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-ro
 import EVMActionModal from "./EVMSmithActionModal";
 import { SMITH_FEE } from "../../../../../../../consts/smith";
 import { withDecimal } from "../../../../../../../packages/neo/utils";
+import { message } from "antd";
 
 export interface ITokenMetadata {
   name: string;
@@ -51,14 +51,14 @@ const CreateToken = () => {
 
   const onMint = async () => {
     if (hasEmoji) {
-      toast.error(
+      message.error(
         "Emoji is not supported yet. Please remove emojis and try again."
       );
       return;
     }
 
     if (!isConnected) {
-      toast.error("Please connect wallet.");
+      message.error("Please connect wallet.");
       return;
     }
 

@@ -9,9 +9,8 @@ import { FARM_PATH } from "../../../../../consts/routes";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import toast from "react-hot-toast";
 import { NEO_CHAIN, NEP_LOGO } from "../../../../../consts/global";
-import { Avatar } from "antd";
+import { Avatar, message } from "antd";
 import { WENT_WRONG } from "../../../../../consts/messages";
 
 const ClaimRewards = () => {
@@ -37,7 +36,7 @@ const ClaimRewards = () => {
       );
       setTxid(txid);
     } catch (e: any) {
-      toast.error(e.message ? e.message : WENT_WRONG);
+      message.error(e.message ? e.message : WENT_WRONG);
     }
   };
 

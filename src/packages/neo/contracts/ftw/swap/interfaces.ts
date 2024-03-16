@@ -1,7 +1,3 @@
-import { u } from "@cityofzion/neon-core";
-
-
-
 export interface ISwapsHistory {
   totalItems: number;
   totalPages: number;
@@ -52,7 +48,7 @@ export interface ILPToken {
   amount: number;
   name: string;
   owner: string;
-  lock: string;
+  lock: number;
   tokenId: string;
   createdAt: string;
   tokenA: string;

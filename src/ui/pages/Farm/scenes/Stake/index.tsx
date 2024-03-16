@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import HeaderBetween from "../../../../components/Commons/HeaderBetween";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
-import { toast } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { StakingContract } from "../../../../../packages/neo/contracts/ftw/farm";
 import ConnectWalletButton from "../../../../components/ConnectWalletButton";
@@ -9,6 +8,7 @@ import LPTokenList from "./LPTokenList";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { FARM_PATH } from "../../../../../consts/routes";
 import { WENT_WRONG } from "../../../../../consts/messages";
+import { message } from "antd";
 
 const Stake = () => {
   const { network, setTxid } = useApp();
@@ -35,10 +35,10 @@ const Stake = () => {
         );
         setTxid(res);
       } catch (e: any) {
-        toast.error(e.message ? e.message : WENT_WRONG);
+        message.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
-      toast.error("Please connect wallet");
+      message.error("Please connect wallet");
     }
   };
 

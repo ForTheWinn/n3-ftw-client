@@ -2,9 +2,9 @@ import React from "react";
 import Swaps from "./Swaps";
 import { CHAINS } from "../../../../../../consts/chains";
 import CandleChart from "./CandleChart";
-import { TOKEN_LIST } from "../../../../../../consts/tokens";
 import { MAINNET } from "../../../../../../consts/global";
 import { Avatar, Space, Typography } from "antd";
+import { getTokenByHash } from "../../../../../../common/helpers";
 
 interface ITokenDetailPageProps {
   chain: CHAINS;
@@ -14,7 +14,7 @@ interface ITokenDetailPageProps {
 const TokenDetailPage = (props: ITokenDetailPageProps) => {
   let token;
   if (props.tokenHash) {
-    token = TOKEN_LIST[props.chain][MAINNET][props.tokenHash];
+    token = getTokenByHash(props.chain, MAINNET, props.tokenHash);
   }
   return (
     <div>

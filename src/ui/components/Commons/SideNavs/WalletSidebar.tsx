@@ -8,14 +8,16 @@ const WalletSidebar = () => {
   return (
     <>
       <Drawer
-        headerStyle={{ display: "none" }}
         rootStyle={{ top: "53px" }}
-        bodyStyle={{ padding: "0" }}
         title="Basic Drawer"
         placement={"right"}
         closable={false}
         onClose={toggleWalletSidebar}
         open={walletSidebarStatus}
+        styles={{
+          header: { display: "none" },
+          body: { padding: "0" },
+        }}
       >
         <Wallet isActive={walletSidebarStatus} />
       </Drawer>

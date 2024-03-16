@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
-import { Steps } from "antd";
-import { ITokenState } from "../../scenes/Swap/interfaces";
+import { Button, Result, Space, Steps } from "antd";
+import { IToken } from "../../../../../consts/tokens";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -11,20 +11,21 @@ import {
   provide,
 } from "../../../../../packages/evm/contracts/swap";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
-import { getCurrentStep, parseAmount } from "../../../../../common/helpers";
+import { getCurrentStep } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { DisplayAd } from "./components/DisplayAd";
 import Errors from "./components/Errors";
-import { TxResult } from "./components/TxResult";
+import { TxResult } from "../../../../components/TxResult";
 import { STATUS_STATE, SWAP } from "../../../../../consts/global";
 import { CONTRACT_MAP } from "../../../../../consts/contracts";
+import { ethers } from "ethers";
 
 interface IActionModalProps {
   chain: CHAINS;
   network: INetworkType;
   address: any;
-  tokenA: ITokenState;
-  tokenB: ITokenState;
+  tokenA: IToken;
+  tokenB: IToken;
   amountA: string;
   amountB: string;
   slippage: number;
@@ -52,7 +53,7 @@ const steps = [
     key: "tokenB",
   },
   {
-    title: "Tranasction Submit",
+    title: "Confirm",
     key: "provide",
   },
 ];
@@ -65,14 +66,14 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     amountB,
     slippage,
     address,
-    onSuccess,
-    onCancel,
     chain,
     network,
+    onSuccess,
+    onCancel,
   } = props;
   const [state, setState] = useState(initialState);
-  const parsedAmountA = parseAmount(amountA, tokenA.decimals);
-  const parsedAmountB = parseAmount(amountB, tokenB.decimals);
+  const parsedAmountA = ethers.parseUnits(amountA, tokenA.decimals);
+  const parsedAmountB = ethers.parseUnits(amountB, tokenB.decimals);
 
   const handleTx = async (stepKey: string, txid: any): Promise<boolean> => {
     handleStatus(stepKey, "processing");
@@ -136,7 +137,12 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
 
     if (parsedAmountA > allowances[0]) {
       try {
-        tokenAApprovalHash = await approve(chain, network, tokenA.hash, swapContractHash);
+        tokenAApprovalHash = await approve(
+          chain,
+          network,
+          tokenA.hash,
+          swapContractHash
+        );
       } catch (e: any) {
         handleStatus("tokenA", "error", e.message ? e.message : WENT_WRONG);
         return;
@@ -150,7 +156,12 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     }
     if (parsedAmountB > allowances[1]) {
       try {
-        tokenBApprovalHash = await approve(chain, network, tokenB.hash, swapContractHash);
+        tokenBApprovalHash = await approve(
+          chain,
+          network,
+          tokenB.hash,
+          swapContractHash
+        );
       } catch (e: any) {
         handleStatus("tokenB", "error", e.message ? e.message : WENT_WRONG);
         return;
@@ -238,12 +249,18 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
         </div>
 
         {errorMessages.length > 0 && (
-          <div className="block">
+          <Space
+            style={{
+              width: "100%",
+            }}
+            direction="vertical"
+          >
             <Errors
               errorMessages={errorMessages.join(" ")}
               onClose={onCancel}
             />
-          </div>
+            <Button onClick={onCancel}>Close</Button>
+          </Space>
         )}
       </div>
     </Modal>

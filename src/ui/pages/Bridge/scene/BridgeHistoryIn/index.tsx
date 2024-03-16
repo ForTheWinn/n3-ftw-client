@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "bulma-pagination-react";
 import BridgeLockCard from "./BridgeLockCard";
 import { IBridgeMintPagenate } from "../../../../../common/routers/bridge/interfaces";
 import { getMints } from "../../../../../packages/neo/contracts/ftw/bridge";
 import { INetworkType } from "../../../../../packages/neo/network";
+import { Pagination } from "antd";
 
 interface IBridgeHistoryInProps {
   network: INetworkType;
@@ -53,8 +53,8 @@ const BridgeHistoryIn = ({ contractHash, network }: IBridgeHistoryInProps) => {
             <tr>
               <td colSpan={6}>
                 <Pagination
-                  pages={data.totalPages}
-                  currentPage={page}
+                  total={data.totalPages}
+                  current={page}
                   onChange={(v) => {
                     if (page !== v) {
                       setPage(v);

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
-import { Steps } from "antd";
-import { waitForTransaction, writeContract } from "@wagmi/core";
+import { Button, Space, Steps } from "antd";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -10,8 +9,7 @@ import {
   isApprovedForAll,
   setApprovalForAll,
 } from "../../../../../packages/evm/contracts/swap";
-import { NEO_CHAIN, STATUS_STATE, SWAP } from "../../../../../consts/global";
-import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
+import { STATUS_STATE, SWAP } from "../../../../../consts/global";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { CONTRACT_MAP } from "../../../../../consts/contracts";
 import { getCurrentStep, getExplorer } from "../../../../../common/helpers";
@@ -44,7 +42,7 @@ const steps = [
     key: "approve",
   },
   {
-    title: "Tranasction Submit",
+    title: "Confirm",
     key: "withdraw",
   },
 ];
@@ -123,7 +121,11 @@ const EVMRemoveLiquidityActionModal = ({
 
       if (!isApproved) {
         try {
-          approveHash = await setApprovalForAll(chain, network, swapContractAddress);
+          approveHash = await setApprovalForAll(
+            chain,
+            network,
+            swapContractAddress
+          );
 
           if (!(await handleTx("approve", approveHash)) === false) {
             return;
@@ -152,6 +154,7 @@ const EVMRemoveLiquidityActionModal = ({
           };
         });
       } catch (e: any) {
+        console.error(e);
         handleStatus("withdraw", "error", e.message ? e.message : WENT_WRONG);
         return;
       }
@@ -191,33 +194,33 @@ const EVMRemoveLiquidityActionModal = ({
               };
             })}
           />
-        </div>
 
-        {state.withdraw.success && (
-          <div className="block">
-            <div className="buttons" style={{ justifyContent: "center" }}>
-              <a
-                className="button is-primary"
-                target="_blank"
-                href={`${getExplorer(chain, network, "tx")}/${state.txid}`}
-                rel="noreferrer"
-              >
-                View txid on explorer
-              </a>
-              <button onClick={onSuccess} className="button is-black">
-                Close
-              </button>
+          {state.txid && (
+            <div className="block">
+              <div className="buttons" style={{ justifyContent: "center" }}>
+                <a
+                  className="button is-primary"
+                  target="_blank"
+                  href={`${getExplorer(chain, network, "tx")}/${state.txid}`}
+                  rel="noreferrer"
+                >
+                  View txid on explorer
+                </a>
+                <button onClick={onSuccess} className="button is-black">
+                  Close
+                </button>
+              </div>
             </div>
-          </div>
-        )}
-
+          )}
+        </div>
         {errorMessages.length > 0 && (
-          <div className="block">
+          <Space style={{ width: "100%" }} direction="vertical">
             <Errors
               errorMessages={errorMessages.join(" ")}
               onClose={onCancel}
             />
-          </div>
+            <Button onClick={onSuccess}>Close</Button>
+          </Space>
         )}
       </div>
     </Modal>

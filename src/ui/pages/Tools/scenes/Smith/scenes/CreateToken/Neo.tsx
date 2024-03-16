@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { toast } from "react-hot-toast";
 import NumberFormat from "react-number-format";
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
 import { detectEmojiInString } from "../../helpers";
@@ -11,14 +10,14 @@ import PageLayout from "../../../../../../components/Commons/PageLayout";
 import ConnectWalletButton from "../../../../../../components/ConnectWalletButton";
 import { SMITH_FEE } from "../../../../../../../consts/smith";
 import NEOSmithActionModal from "./NEOActionModal";
-import { Modal } from "antd";
+import { Modal, message } from "antd";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
-import { useBalances } from "../../../../../../../packages/neo/hooks/use-balances";
+import { useBalances } from "../../../../../../../packages/neo/utils";
 import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
-} from "../../../../../../../packages/neo/consts/neo-contracts";
+} from "../../../../../../../packages/neo/consts/tokens";
 import { withDecimal } from "../../../../../../../packages/neo/utils";
 
 const CreateToken = () => {
@@ -49,7 +48,7 @@ const CreateToken = () => {
   const onMint = async () => {
     try {
       if (hasEmoji) {
-        toast.error(
+        message.error(
           "Emoji is not supported yet. Please remove emojis and try again."
         );
         return;
@@ -61,12 +60,12 @@ const CreateToken = () => {
       ]);
 
       if (balances[1] < parseFloat(smithFee)) {
-        toast.error("You don't have enough NEP.");
+        message.error("You don't have enough NEP.");
         return;
       }
 
       if (balances[0] < 10) {
-        toast.error("You don't have enough GAS.");
+        message.error("You don't have enough GAS.");
         return;
       }
 
@@ -82,7 +81,7 @@ const CreateToken = () => {
       );
       setTxid(res);
     } catch (e: any) {
-      toast.error(e.message ? e.message : WENT_WRONG);
+      message.error(e.message ? e.message : WENT_WRONG);
     }
   };
 

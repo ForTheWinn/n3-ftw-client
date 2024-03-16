@@ -31,35 +31,14 @@ const Home = () => {
                 DeFi / Web3 Tools / Cool NFTs
               </p>
 
-              {chain === NEO_CHAIN && (
-                <>
-                  <p>-</p>
-                  <div className="mt-3">
-                    <img
-                      alt="Neo Boyz #1065"
-                      width={150}
-                      src="/boyz/1065.png"
-                    />
-                    <br />
-                    <p className="heading is-size-6-mobile">Neo Boyz #1065</p>
-                  </div>
-                </>
-              )}
-
-              {chain === POLYGON_CHAIN && (
-                <div>
-                  <p>-</p>
-                  <img
-                    alt="Matic Boyz"
-                    width={150}
-                    src="/boyz/sample-matic-boy.png"
-                  />
+              <>
+                <p>-</p>
+                <div className="mt-3">
+                  <img alt="Neo Boyz #1065" width={150} src="/boyz/1065.png" />
                   <br />
-                  <p className="heading is-size-6-mobile">
-                    Matic Boyz - Coming soon
-                  </p>
+                  <p className="heading is-size-6-mobile">Neo Boyz #1065</p>
                 </div>
-              )}
+              </>
             </div>
           </div>
         </div>

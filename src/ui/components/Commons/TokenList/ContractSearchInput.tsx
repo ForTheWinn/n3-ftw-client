@@ -1,8 +1,8 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
-import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../../consts/tokens";
 import { ethers } from "ethers";
-import { WENT_WRONG } from "../../../../consts/messages";
+import { TOKEN_FETCH_ERROR, WENT_WRONG } from "../../../../consts/messages";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
 import { fetchTokenInfo } from "../../../../common/routers/global";
@@ -10,36 +10,32 @@ import { fetchTokenInfo } from "../../../../common/routers/global";
 interface ContractSearchInputProps {
   chain: CHAINS;
   network: INetworkType;
-  onAssetClick: (token: ITokenState) => void;
+  onAssetClick: (token: IToken) => void;
   filterDecimals?: boolean; // This to know use of swap or locker
 }
 const ContractSearchInput = ({
   onAssetClick,
   chain,
-  network
+  network,
 }: ContractSearchInputProps) => {
   const [customContractHash, setContractHash] = useState("");
-  const [contractInfo, setContractInfo] = useState<ITokenState | undefined>();
+  const [contractInfo, setContractInfo] = useState<IToken | undefined>();
   const [error, setError] = useState<string | undefined>();
 
   const onAddContractHash = async () => {
     setError(undefined);
 
     if (ethers.isAddress(customContractHash)) {
-      try {
-        const token = await fetchTokenInfo(
-          chain,
-          network,
-          customContractHash
-        );
+      const token = await fetchTokenInfo(chain, network, customContractHash);
+      if (token) {
         setContractInfo({
           hash: customContractHash,
           decimals: token.decimals,
           symbol: token.symbol,
-          icon: ""
+          icon: "",
         });
-      } catch (e: any) {
-        setError(e.message ? e.message : WENT_WRONG);
+      } else {
+        setError(TOKEN_FETCH_ERROR);
       }
     } else {
       setError("Please enter a valid contract script hash.");

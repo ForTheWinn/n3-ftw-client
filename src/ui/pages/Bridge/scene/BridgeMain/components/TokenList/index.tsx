@@ -22,7 +22,7 @@ const TokenList = ({
   onAssetClick,
   onClose,
   originChain,
-  destChain
+  destChain,
 }: IAssetListModalProps) => {
   const tokenList: IBridgeSelectedtoken[] = [];
   BRIDGE_SUPPORTED_TOKEN_LIST[network][originChain.chainId].forEach((t) => {
@@ -32,11 +32,10 @@ const TokenList = ({
         decimals: t.decimals,
         icon: t.icon,
         hash: t.hash,
-        destToken: t.pairs[destChain.chainId]
+        destToken: t.pairs[destChain.chainId],
       });
     }
   });
-
 
   return (
     <>
@@ -47,14 +46,14 @@ const TokenList = ({
         open={true}
         onCancel={onClose}
         // footer={null}
-        bodyStyle={{ padding: "-10px" }}
+        styles={{ body: { padding: "-10px" } }}
         footer={
           <nav
             className="panel is-shadowless"
             style={{
               border: "1px solid #eee",
               height: "500px",
-              overflowY: "auto"
+              overflowY: "auto",
             }}
           >
             {tokenList.map((token) => {

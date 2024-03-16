@@ -1,13 +1,13 @@
 import React from "react";
-import toast from "react-hot-toast";
 import { MAINNET, TESTNET } from "../../../consts/global";
 import { useApp } from "../../../common/hooks/use-app";
+import { message } from "antd";
 
 const NetworkSwitch = () => {
   const { network } = useApp();
   const handleSwitchNetwork = () => {
     const targetNetwork = network === TESTNET ? MAINNET : TESTNET;
-    toast.success(`Network switched. You are on ${targetNetwork}`);
+    message.success(`Network switched. You are on ${targetNetwork}`);
   };
   return (
     <div className="level is-mobile">

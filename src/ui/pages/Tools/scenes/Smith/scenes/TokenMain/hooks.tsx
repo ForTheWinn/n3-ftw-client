@@ -1,11 +1,7 @@
 import { useState, useCallback } from "react";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
-import {
-  getTokenList,
-  setTokenData,
-} from "../../../../../../../packages/evm/contracts/smith";
-import { writeContract } from "@wagmi/core";
+import { setTokenData } from "../../../../../../../packages/evm/contracts/smith";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
@@ -50,7 +46,7 @@ export const useUpdateTokenMetadata = (chain, network, setTxid) => {
     async (values) => {
       setError(false);
       try {
-        let res;
+        let res: any;
         if (chain === NEO_CHAIN) {
           res = await new SmithContract(network).updateManifest(
             client,
@@ -61,15 +57,13 @@ export const useUpdateTokenMetadata = (chain, network, setTxid) => {
             })
           );
         } else {
-          const script = await setTokenData(
+          res = await setTokenData(
             chain,
             network,
             values.contractHash,
             values.icon,
             values.website
           );
-          const tx = await writeContract(script);
-          res = tx.hash;
         }
         setTxid(res);
       } catch (e) {

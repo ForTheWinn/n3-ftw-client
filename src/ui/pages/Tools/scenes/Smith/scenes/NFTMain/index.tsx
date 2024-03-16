@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { List } from "antd";
-import { writeContract } from "@wagmi/core";
+import { List, Pagination } from "antd";
 import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/smith";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
-import {
-  getTokenList,
-  setTokenData,
-} from "../../../../../../../packages/evm/contracts/smith";
+import { setTokenData } from "../../../../../../../packages/evm/contracts/smith";
 
 import ListTabs from "../../components/ListTabs";
 import TokenCard from "./TokenCard";
-import Pagination from "bulma-pagination-react";
 import Banner from "../../components/Header";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
@@ -46,15 +41,13 @@ const TokenMainPage = () => {
           );
         }
       } else {
-        const script = await setTokenData(
+        return await setTokenData(
           chain,
           network,
           values.contractHash,
           values.icon,
           values.website
         );
-        const tx = await writeContract(script as any);
-        res = tx.hash;
       }
       setTxid(res);
     } catch (e) {}
@@ -123,8 +116,8 @@ const TokenMainPage = () => {
                   <>
                     <hr />
                     <Pagination
-                      pages={data.totalPages}
-                      currentPage={page}
+                      total={data.totalPages}
+                      current={page}
                       onChange={(v) => {
                         if (page !== v) {
                           setPage(v);
@@ -137,7 +130,6 @@ const TokenMainPage = () => {
                 {updateModalObj && (
                   <UpdateTokenMetadataModal
                     data={updateModalObj}
-                    onUpdate={onUpdate}
                     onClose={() => setUpdateModalObj(undefined)}
                   />
                 )}

@@ -3,11 +3,11 @@ import {
   NEO_BNEO_CONTRACT_ADDRESS,
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEO_CONTRACT_ADDRESS,
-} from "../../../consts/neo-contracts";
+} from "../../../consts/tokens";
 import { IConnectedWallet } from "../../../wallets/interfaces";
 import { wallet as NeonWallet } from "@cityofzion/neon-core";
-import { wallet } from "../../../index";
-import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
+import { getDefaultWitnessScope } from "../../../utils";
+import { NeoWallets } from "../../../wallets";
 
 export class BNEOContract {
   network: INetworkType;
@@ -46,9 +46,9 @@ export class BNEOContract {
           value: null,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   redeem = async (
@@ -79,8 +79,8 @@ export class BNEOContract {
           value: null,
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 }

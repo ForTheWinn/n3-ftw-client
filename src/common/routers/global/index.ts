@@ -1,15 +1,14 @@
-import { waitForTransaction, fetchToken } from "@wagmi/core";
+import { getBalance, getToken, waitForTransactionReceipt } from "@wagmi/core";
 import { CHAINS, CONFIGS } from "../../../consts/chains";
 import { INetworkType, Network } from "../../../packages/neo/network";
-import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../consts/tokens";
 import { IPrices } from "../../../packages/neo/api/interfaces";
 import { MAINNET, NEO_CHAIN } from "../../../consts/global";
 import { base64ToString, getUserBalance } from "../../../packages/neo/utils";
-import { WENT_WRONG } from "../../../consts/messages";
-import { fetchBalance } from "@wagmi/core";
 import { RestAPI } from "../../../packages/neo/api";
 import { ethers } from "ethers";
 import { formatAmount } from "../../helpers";
+import { wagmiConfig } from "../../../wagmi-config";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -22,7 +21,7 @@ export const waitTransactionUntilSubmmited = async (
       return true;
     default:
       const chainId = CONFIGS[network][chain].chainId;
-      await waitForTransaction({
+      await waitForTransactionReceipt(wagmiConfig, {
         hash: txid as `0x${string}`,
         chainId,
       });
@@ -43,19 +42,19 @@ export const getPrices = async (chain: CHAINS): Promise<IPrices> => {
 export const fetchTokenBalance = async (
   chain: CHAINS,
   network: INetworkType,
-  address: string,
-  tokenHash: string
+  address: any,
+  tokenHash: any
 ): Promise<string> => {
   switch (chain) {
     case NEO_CHAIN:
       return await getUserBalance(network, address, tokenHash);
     default:
       const chainId = CONFIGS[network][chain].chainId;
-      const res = await fetchBalance({
+      const res = await getBalance(wagmiConfig, {
         address,
         token: tokenHash,
         chainId,
-      } as any);
+      });
       return res.formatted;
   }
 };
@@ -64,7 +63,7 @@ export const fetchTokenInfo = async (
   chain: CHAINS,
   network: INetworkType,
   hash: string
-): Promise<ITokenState> => {
+): Promise<IToken | null> => {
   switch (chain) {
     case NEO_CHAIN:
       const scripts: any = [];
@@ -88,7 +87,8 @@ export const fetchTokenInfo = async (
       scripts.push(script3);
       const res = await Network.read(network, scripts);
       if (res.state === "FAULT") {
-        throw new Error(res.exception ? res.exception : WENT_WRONG);
+        console.error(res.exception);
+        return null;
       }
       const symbol = base64ToString(res.stack[0].value as string);
       const decimals = parseFloat(res.stack[1].value as string);
@@ -100,16 +100,24 @@ export const fetchTokenInfo = async (
         totalSupply: formatAmount(res.stack[2].value as any, decimals),
       };
     default:
-      const chainId = CONFIGS[network][chain].chainId;
-      const data = await fetchToken({ address: hash as any, chainId });
-      return {
-        hash,
-        decimals: data.decimals,
-        symbol: data.symbol,
-        icon: "",
-        totalSupply: ethers
-          .formatUnits(data.totalSupply.value.toString(), data.decimals)
-          .toString(),
-      };
+      try {
+        const chainId = CONFIGS[network][chain].chainId;
+        const data = await getToken(wagmiConfig, {
+          address: hash as any,
+          chainId,
+        });
+        return {
+          hash,
+          decimals: data.decimals,
+          symbol: data.symbol as any,
+          icon: "",
+          totalSupply: ethers
+            .formatUnits(data.totalSupply.value.toString(), data.decimals)
+            .toString(),
+        };
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
   }
 };

@@ -2,7 +2,7 @@ import React from "react";
 import {
   NEO_BNEO_CONTRACT_ADDRESS,
   NEO_NEO_CONTRACT_ADDRESS,
-} from "../../../../../../../packages/neo/consts/neo-contracts";
+} from "../../../../../../../packages/neo/consts/tokens";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { toDecimal } from "../../../../../../../packages/neo/utils";
 

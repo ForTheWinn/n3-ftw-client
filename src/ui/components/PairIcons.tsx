@@ -1,9 +1,9 @@
 import React from "react";
 import { INetworkType } from "../../packages/neo/network";
 import { UNKNOWN_TOKEN_IMAGE } from "../../consts/global";
-import { TOKEN_LIST } from "../../consts/tokens";
 import { Avatar, Space } from "antd";
 import { CHAINS } from "../../consts/chains";
+import { getTokenByHash } from "../../common/helpers";
 
 interface IPairIconsProps {
   network: INetworkType;
@@ -12,18 +12,18 @@ interface IPairIconsProps {
   chain: CHAINS;
 }
 const PairIcons = ({ network, tokenA, tokenB, chain }: IPairIconsProps) => {
-  let token1 = TOKEN_LIST[chain][network][tokenA]
-    ? TOKEN_LIST[chain][network][tokenA].icon
-    : UNKNOWN_TOKEN_IMAGE;
-
-  let token2 = TOKEN_LIST[chain][network][tokenB]
-    ? TOKEN_LIST[chain][network][tokenB].icon
-    : UNKNOWN_TOKEN_IMAGE;
-
+  const tokenAObj = getTokenByHash(chain, network, tokenA);
+  const tokenBObj = getTokenByHash(chain, network, tokenB);
   return (
     <Space>
-      <Avatar size={"small"} src={token1} />
-      <Avatar size={"small"} src={token2} />
+      <Avatar
+        size={"small"}
+        src={tokenAObj && tokenAObj.icon ? tokenAObj.icon : UNKNOWN_TOKEN_IMAGE}
+      />
+      <Avatar
+        size={"small"}
+        src={tokenBObj && tokenBObj.icon ? tokenBObj.icon : UNKNOWN_TOKEN_IMAGE}
+      />
     </Space>
   );
 };

@@ -6,7 +6,6 @@ import { INetworkType } from "../../../../../packages/neo/network";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import BridgeChainList from "./components/BridgeChainList";
 import TokenList from "./components/TokenList";
-import { toast } from "react-hot-toast";
 import { IBridgeReceiver, IBridgeSelectedtoken } from "../../interfaces";
 import { BRIDGE_CHAINS } from "../../../../../consts/bridge";
 import { IBridgeChain } from "../../../../../common/routers/bridge/interfaces";
@@ -99,7 +98,7 @@ export const SwapContextProvider = (props: { children: any }) => {
     if (originChain && destChain) {
       setAssetChangeModalActive(true);
     } else {
-      toast.error("Select chains first.");
+      message.error("Select chains first.");
     }
   };
 

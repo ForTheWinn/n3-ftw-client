@@ -1,5 +1,5 @@
 import React from "react";
-import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../../consts/tokens";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
 import { getExplorer } from "../../../../common/helpers";
@@ -7,8 +7,8 @@ import { getExplorer } from "../../../../common/helpers";
 interface ICustomTokenWarningProps {
   chain: CHAINS;
   network: INetworkType;
-  token: ITokenState;
-  onOk: (token: ITokenState) => void;
+  token: IToken;
+  onOk: (token: IToken) => void;
   onCancel: () => void;
 }
 const CustomTokenWarning = ({

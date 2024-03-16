@@ -1,4 +1,4 @@
-import { waitForTransaction } from "@wagmi/core";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { IClaimableRewards } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { INetworkType } from "../../../packages/neo/network";
 import { CHAINS } from "../../../consts/chains";
@@ -18,11 +18,9 @@ import {
 import { IClaimable, IFarmPair } from "./interfaces";
 import { ISwapLPToken } from "../swap/interfaces";
 import { CONTRACT_MAP } from "../../../consts/contracts";
-import {
-  FARM,
-  NEO_CHAIN,
-} from "../../../consts/global";
+import { FARM, NEO_CHAIN } from "../../../consts/global";
 import { FarmV2Contract } from "../../../packages/neo/contracts/ftw/farm-v2";
+import { wagmiConfig } from "../../../wagmi-config";
 
 export const getPoolList = (
   chain: CHAINS,
@@ -106,7 +104,7 @@ export const stakeLPToken = async (
           network,
           CONTRACT_MAP[chain][network][FARM]
         );
-        await waitForTransaction({ hash });
+        await waitForTransactionReceipt(wagmiConfig, { hash });
       }
       return stake(chain, network, tokenId);
   }

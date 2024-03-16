@@ -1,8 +1,8 @@
 import React from "react";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
-import { toast } from "react-hot-toast";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { message } from "antd";
 
 const DrawBtn = () => {
   const { network, setTxid } = useApp();
@@ -14,7 +14,7 @@ const DrawBtn = () => {
         const tx = await new GasFiContract(network).draw(connectedWallet);
         setTxid(tx);
       } catch (e: any) {
-        toast.error(e.message);
+        message.error(e.message);
       }
     } else {
     }

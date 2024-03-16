@@ -1,12 +1,12 @@
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
-import { DEFAULT_WITNESS_SCOPE } from "../../../consts";
+import { getDefaultWitnessScope } from "../../../utils";
 import { INetworkType, Network } from "../../../network";
 import { RUNE_SCRIPT_HASH, RUNE_PRICE } from "./consts";
 import { IConnectedWallet } from "../../../wallets/interfaces";
-import { wallet } from "../../../index";
 import { IRuneMeta } from "./interfaces";
 import { parseProperties } from "./helpers";
-import { NEO_GAS_CONTRACT_ADDRESS } from "../../../consts/neo-contracts";
+import { NEO_GAS_CONTRACT_ADDRESS } from "../../../consts/tokens";
+import { NeoWallets } from "../../../wallets";
 
 export class NFTContract {
   network: INetworkType;
@@ -45,9 +45,9 @@ export class NFTContract {
           value: "1",
         },
       ],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(
+    return NeoWallets.invoke(
       connectedWallet,
       this.network,
       invokeScript,
@@ -63,9 +63,9 @@ export class NFTContract {
       operation: "withdrawFund",
       scriptHash: this.contractHash,
       args: [],
-      signers: [DEFAULT_WITNESS_SCOPE(senderHash)],
+      signers: [getDefaultWitnessScope(senderHash)],
     };
-    return wallet.WalletAPI.invoke(connectedWallet, this.network, invokeScript);
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
   getProperties = async (tokenId: string): Promise<IRuneMeta | null> => {

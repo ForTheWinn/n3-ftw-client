@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "bulma-pagination-react";
 import BridgeLockCard from "./BridgeLockCard";
 import { IBridgeBurnPagenate } from "../../../../../common/routers/bridge/interfaces";
 import { getBurns } from "../../../../../packages/neo/contracts/ftw/bridge";
 import { INetworkType } from "../../../../../packages/neo/network";
+import { Pagination } from "antd";
 
 interface IBridgeHistoryOutProps {
   network: INetworkType;
@@ -11,7 +11,7 @@ interface IBridgeHistoryOutProps {
 }
 const BridgeHistoryOut = ({
   network,
-  contractHash
+  contractHash,
 }: IBridgeHistoryOutProps) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<IBridgeBurnPagenate>();
@@ -56,8 +56,8 @@ const BridgeHistoryOut = ({
             <tr>
               <td colSpan={6}>
                 <Pagination
-                  pages={data.totalPages}
-                  currentPage={page}
+                  total={data.totalPages}
+                  current={page}
                   onChange={(v) => {
                     if (page !== v) {
                       setPage(v);

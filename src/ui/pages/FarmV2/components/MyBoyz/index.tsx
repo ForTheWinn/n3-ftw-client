@@ -3,6 +3,7 @@ import { BoyzContract } from "../../../../../packages/neo/contracts/ftw/boyz";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import DisplayBoy from "./DisplayBoy";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { Spin } from "antd";
 
 interface IMyBoyzProps {
   onStake: (tokenId: string) => void;
@@ -30,7 +31,9 @@ const MyBoyz = ({ onStake }: IMyBoyzProps) => {
   return (
     <div>
       {isLoading ? (
-        <p>Loading..</p>
+        <div className="has-text-centered">
+          <Spin />
+        </div>
       ) : tokens.length > 0 ? (
         <>
           <h1 className="title is-5">Click a boy to stake</h1>

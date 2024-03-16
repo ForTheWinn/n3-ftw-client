@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { List } from "antd";
-import Pagination from "bulma-pagination-react";
+import { List, Pagination, Result } from "antd";
 
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import Banner from "../../components/Header";
 import TokenCard from "./TokenCard";
 import TokenMetaUpdateModal from "../../components/UpdateTokenMetadataModal";
 
-import { useTokenData, useUpdateTokenMetadata } from "./hooks";
+import { useTokenData } from "./hooks";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 import { ISmithTokenProps } from "../../../../../../../common/routers/smith/interfaces";
@@ -23,17 +22,10 @@ const TokenMainPage = () => {
   const { address } = useWalletRouter(chain);
   const [page, setPage] = useState(1);
   const [updateModalObj, setUpdateModalObj] = useState<ITokenStateProps>();
-
   const { data, loading, error, totalPages, fetchData }: any = useTokenData(
     chain,
     network,
     page
-  );
-
-  const { updateTokenMetadata } = useUpdateTokenMetadata(
-    chain,
-    network,
-    setUpdateModalObj
   );
 
   useEffect(() => {
@@ -41,7 +33,9 @@ const TokenMainPage = () => {
   }, [page, fetchData]);
 
   if (error) {
-    // Handle error view here
+    return (
+      <Result status="warning" title="There are some problems to load data." />
+    );
   }
 
   return (
@@ -74,15 +68,18 @@ const TokenMainPage = () => {
             />
             {totalPages > 1 && (
               <Pagination
-                pages={totalPages}
-                currentPage={page}
-                onChange={setPage}
+                total={totalPages}
+                current={page}
+                onChange={(_page) => {
+                  if (page !== _page) {
+                    setPage(_page);
+                  }
+                }}
               />
             )}
             {updateModalObj && (
               <TokenMetaUpdateModal
                 data={updateModalObj}
-                onUpdate={updateTokenMetadata}
                 onClose={() => setUpdateModalObj(undefined)}
               />
             )}

@@ -14,15 +14,25 @@ const SwapButton = ({
   isActive,
   onClick,
 }: ISwapButtonProps) => {
+  if (!isWalletConnected) {
+    return (
+      <button
+        onClick={onClick}
+        className={`button is-fullwidth is-primary mt-1 is-large`}
+      >
+        Connect wallet
+      </button>
+    );
+  }
   return (
     <button
       disabled={!isActive}
       onClick={onClick}
-      className={`button is-fullwidth is-large is-primary mt-2 ${
+      className={`button is-fullwidth is-primary mt-1 is-large ${
         isLoading ? "is-loading" : ""
       }`}
     >
-      {isWalletConnected ? label : "Connect wallet"}
+      {label}
     </button>
   );
 };

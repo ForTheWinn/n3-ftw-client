@@ -13,7 +13,7 @@ import {
   SMITH_CREATE_NEP11_PATH,
   SMITH_CREATE_NEP17_PATH,
   SMITH_PATH,
-  SMITH_PATH_NEP11
+  SMITH_PATH_NEP11,
 } from "../../../../../consts/routes";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { NEO_CHAIN } from "../../../../../consts/global";
@@ -25,7 +25,6 @@ const Smith = () => {
     return (
       <>
         <Route exact path={SMITH_PATH} component={() => <TokenMain />} />
-        <Route exact path={SMITH_PATH_NEP11} component={() => <NFTMain />} />
         <Route
           exact
           path={SMITH_CREATE_NEP17_PATH}
@@ -35,13 +34,14 @@ const Smith = () => {
         />
         <Route
           exact
-          path={SMITH_CREATE_NEP11_PATH}
-          component={() => <CreateNEP11 />}
-        />
-        <Route
-          exact
           path={`${SMITH_CONTRACT_NEP17_PATH}/:contractHash`}
           component={() => <NEP17InfoPage />}
+        />
+        <Route exact path={SMITH_PATH_NEP11} component={() => <NFTMain />} />
+        <Route
+          exact
+          path={SMITH_CREATE_NEP11_PATH}
+          component={() => <CreateNEP11 />}
         />
         <Route
           exact

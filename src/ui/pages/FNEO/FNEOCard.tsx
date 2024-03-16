@@ -14,6 +14,7 @@ import { CHAINS } from "../../../consts/chains";
 import Level from "../../components/Level";
 import AddTokenButton from "../../components/AddTokenOnMetaMaskButton";
 import { getChainNameByChain, getExplorer } from "../../../common/helpers";
+import { FNEO_LOGO } from "../../../consts/global";
 
 interface IFNEOCardProps {
   chain: CHAINS;
@@ -74,7 +75,7 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
               address={hash}
               symbol={"ftwNEO"}
               decimals={8}
-              image={"https://forthewin.network/symbols/fneo.svg"}
+              image={FNEO_LOGO}
               chainId={chainId}
               chainName={getChainNameByChain(chain)}
             />

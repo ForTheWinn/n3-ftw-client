@@ -1,7 +1,7 @@
+import { Button } from "antd";
 import React from "react";
-import { FaAngleLeft, FaCog } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+import { SettingOutlined, LeftOutlined } from "@ant-design/icons";
 interface INavProps {
   title: string;
   path: any;
@@ -14,25 +14,24 @@ const Nav = ({ title, path, onSettingClick }: INavProps) => {
       style={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
       }}
     >
-      <div style={{ width: "50px" }}>
-        <Link className="button is-white is-small" to={path}>
-          <span className="icon">
-            <FaAngleLeft />
-          </span>
-          <span className="is-hidden-mobile">Main</span>
+      <div style={{ width: "80px" }}>
+        <Link to={path}>
+          <Button size="small" icon={<LeftOutlined />} type="text">
+            Main
+          </Button>
         </Link>
       </div>
 
       <h1 className="title is-5 is-marginless has-text-centered">{title}</h1>
 
-      <div className="is-relative" style={{ width: "50px" }}>
+      <div className="is-relative" style={{ width: "80px" }}>
         <div className="is-pulled-right">
-          <button onClick={onSettingClick} className="button is-white is-small">
-            <FaCog />
-          </button>
+          <Button onClick={onSettingClick} type="text" size="small">
+            <SettingOutlined />
+          </Button>
         </div>
       </div>
     </div>

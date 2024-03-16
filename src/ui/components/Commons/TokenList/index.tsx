@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-
-// import Modal from "../../Modal";
 import { Input, Modal } from "antd";
 
 import { FaSearch } from "react-icons/fa";
 
-import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../../consts/tokens";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
 import { ethers } from "ethers";
@@ -19,14 +17,14 @@ interface IAssetListModalProps {
   tokenAHash?: string;
   tokenBHash?: string;
   onClose: () => void;
-  onAssetClick: (token: ITokenState) => void;
+  onAssetClick: (token: IToken) => void;
 }
 
 const TokenList = ({
   chain,
   network,
   onAssetClick,
-  onClose
+  onClose,
 }: IAssetListModalProps) => {
   const [search, setSearch] = useState<string | undefined>();
   const [customContract, setCustomContract] = useState<string | undefined>();
@@ -56,14 +54,14 @@ const TokenList = ({
         open={true}
         onCancel={onClose}
         // footer={null}
-        bodyStyle={{ padding: "-10px" }}
+        styles={{ body: { padding: "-10px" } }}
         footer={
           <nav
             className="panel is-shadowless"
             style={{
               border: "1px solid #eee",
               height: "500px",
-              overflowY: "auto"
+              overflowY: "auto",
             }}
           >
             {customContract ? (

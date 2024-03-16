@@ -3,6 +3,7 @@ import {
   ETH_MAINNET_CHAIN_ID,
   ETH_TESTNET_CHAIN_ID,
   MAINNET,
+  NEOX_CHAIN,
   NEO_CHAIN,
   NEO_MAINNET_CHAIN_ID,
   NEO_TESTNET_CHAIN_ID,
@@ -13,19 +14,40 @@ import {
 } from "../consts/global";
 import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
-import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
-import { explorerUrls } from "../consts/urls";
+import { IToken } from "../consts/tokens";
+import { EXPLORER_URLS } from "../consts/urls";
 import { CHAINS, CONFIGS } from "../consts/chains";
 import { ethers } from "ethers";
-import { fetchTokenInfo } from "./routers/global";
 import { WENT_WRONG } from "../consts/messages";
+
+export function createTokenMetadata({
+  hash,
+  symbol,
+  decimals,
+  icon = "",
+  pairs = [],
+  isWhitelisted = false,
+  isNative = false,
+  nativePair,
+}: IToken) {
+  return {
+    hash,
+    symbol,
+    icon,
+    decimals,
+    pairs,
+    isWhitelisted,
+    isNative,
+    nativePair,
+  };
+}
 
 export const getExplorer = (
   chain: string,
   network: INetworkType,
   type: "tx" | "account" | "contract"
 ): string => {
-  const explorerUrl = explorerUrls[chain]?.[network]?.[type];
+  const explorerUrl = EXPLORER_URLS[chain]?.[network]?.[type];
   return explorerUrl || "";
 };
 
@@ -66,6 +88,8 @@ export const getChainIdByChain = (
       return CONFIGS[network][POLYGON_CHAIN].chainId;
     case ETH_CHAIN:
       return CONFIGS[network][ETH_CHAIN].chainId;
+    case NEOX_CHAIN:
+      return CONFIGS[network][NEOX_CHAIN].chainId;
     default:
       return 0;
   }
@@ -99,32 +123,39 @@ const getNetworkByChainId = (chainId: number): INetworkType => {
   }
 };
 
-export const getTokenByHash = async (
+export const getTokenByHash = (
   chain: CHAINS,
   network: INetworkType,
   hash: string
-): Promise<ITokenState | undefined> => {
-  if (TOKEN_LIST[chain][network][hash]) {
-    return TOKEN_LIST[chain][network][hash];
+): IToken | undefined => {
+  const tokens: any = TOKEN_LIST[chain][network];
+  let token: IToken | undefined = undefined;
+
+  if (tokens) {
+    tokens.forEach((t) => {
+      if (t.hash.toLocaleLowerCase() === hash.toLocaleLowerCase()) {
+        token = t;
+      }
+    });
+  }
+
+  if (token) {
+    return token;
   } else {
-    try {
-      return await fetchTokenInfo(chain, network, hash);
-    } catch (error) {
-      console.error(error);
-      return undefined;
-    }
+    return undefined;
   }
 };
 
 export const findTradePaths = (
-  tokenList,
-  sourceToken: ITokenState,
-  targetToken: ITokenState,
+  chain: CHAINS,
+  network: INetworkType,
+  sourceToken: IToken,
+  targetToken: IToken,
   maxDepth = 3
 ) => {
-  const paths: ITokenState[][] = [];
+  const paths: IToken[][] = [];
 
-  function dfs(currentToken: ITokenState, currentPath: ITokenState[], depth) {
+  function dfs(currentToken: IToken, currentPath: IToken[], depth) {
     if (depth > maxDepth) return;
 
     if (currentToken === targetToken) {
@@ -132,14 +163,17 @@ export const findTradePaths = (
       paths.push(currentPath);
       return;
     }
+    const token = getTokenByHash(chain, network, currentToken.hash);
+
     const nextTokens =
-      tokenList[currentToken.hash] && tokenList[currentToken.hash].pairs
-        ? tokenList[currentToken.hash].pairs
-        : [];
+      token && token.pairs && token.pairs.length > 0 ? token.pairs : [];
+
     for (const nextToken of nextTokens) {
-      const _nextToken = tokenList[nextToken];
-      if (!currentPath.includes(_nextToken)) {
-        dfs(_nextToken, [...currentPath, _nextToken], depth + 1);
+      const _nextToken = getTokenByHash(chain, network, nextToken);
+      if (_nextToken) {
+        if (!currentPath.includes(_nextToken)) {
+          dfs(_nextToken, [...currentPath, _nextToken], depth + 1);
+        }
       }
     }
   }
@@ -147,9 +181,6 @@ export const findTradePaths = (
   dfs(sourceToken, [sourceToken], 1);
   return paths;
 };
-
-export const parseAmount = (amount: string, decimals: number): bigint =>
-  ethers.parseUnits(amount, decimals);
 
 export const formatAmount = (
   amount: string,
@@ -165,14 +196,10 @@ export const formatAmount = (
   }
   return ethers.formatUnits(BigInt(amount), decimalsNumber).toLocaleString();
 };
+
 export const calculateSlippage = (amount: bigint, slippage: number) => {
-  // Convert slippage to a BigInt representation
   const slippageBigInt = BigInt(Math.round(slippage * 100));
-
-  // Calculate the slippage
-  const calculatedAmount = (amount * slippageBigInt) / BigInt(10000);
-
-  return calculatedAmount;
+  return (amount * slippageBigInt) / BigInt(10000);
 };
 
 export const getCurrentStep = (state, steps) => {
@@ -195,84 +222,6 @@ export const transformString = (inputString: string | number): string => {
   return numberFormat.format(Number(replacedString));
 };
 
-export const usdtABI = [
-  {
-    constant: true,
-    inputs: [],
-    name: "totalSupply",
-    outputs: [{ name: "", type: "uint256" }],
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [{ name: "_owner", type: "address" }],
-    name: "balanceOf",
-    outputs: [{ name: "balance", type: "uint256" }],
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: "_to", type: "address" },
-      { name: "_value", type: "uint256" },
-    ],
-    name: "transfer",
-    outputs: [{ name: "", type: "bool" }],
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: "_spender", type: "address" },
-      { name: "_value", type: "uint256" },
-    ],
-    name: "approve",
-    outputs: [],
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [
-      { name: "_owner", type: "address" },
-      { name: "_spender", type: "address" },
-    ],
-    name: "allowance",
-    outputs: [{ name: "", type: "uint256" }],
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: "_from", type: "address" },
-      { name: "_to", type: "address" },
-      { name: "_value", type: "uint256" },
-    ],
-    name: "transferFrom",
-    outputs: [{ name: "", type: "bool" }],
-    type: "function",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: "_from", type: "address" },
-      { indexed: true, name: "_to", type: "address" },
-      { indexed: false, name: "_value", type: "uint256" },
-    ],
-    name: "Transfer",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: "_owner", type: "address" },
-      { indexed: true, name: "_spender", type: "address" },
-      { indexed: false, name: "_value", type: "uint256" },
-    ],
-    name: "Approval",
-    type: "event",
-  },
-];
-
 export const extractErrorMessage = (error: any) => {
   if (error && typeof error.message === "string") {
     try {
@@ -285,18 +234,8 @@ export const extractErrorMessage = (error: any) => {
       return WENT_WRONG;
     }
   }
-
-  // Default error message
   return WENT_WRONG;
 };
-
-export function getPairId(tokenA: string, tokenB: string): string {
-  if (tokenA > tokenB) {
-    return tokenA + tokenB;
-  } else {
-    return tokenB + tokenA;
-  }
-}
 
 export function convertChainForBackend(chain: CHAINS): string {
   switch (chain) {
@@ -310,3 +249,40 @@ export function convertChainForBackend(chain: CHAINS): string {
       throw new Error("Invalid chain");
   }
 }
+
+export const getWhitelistSwapTokens = (tokens: any) => {
+  return Object.values(tokens).filter((token: any) => !!token.isWhitelisted);
+};
+
+export const getParamsFromBrowser = (): { tokenA: string; tokenB: string } | undefined => {
+  try {
+    const href = window.location.href;
+    // Find the start of the query string
+    const queryStringStart = href.indexOf("?");
+
+    // If there is a query string, extract and parse it; otherwise, params is an empty object
+    const params: any =
+      queryStringStart !== -1
+        ? href
+            .substring(queryStringStart + 1)
+            .split("&")
+            .reduce((acc, pair) => {
+              const [key, value] = pair.split("=").map(decodeURIComponent);
+              if (key) acc[key] = value; // Only add to acc if key is not empty
+              return acc;
+            }, {})
+        : {};
+
+    if (params && params.tokenA && params.tokenB) {
+      return {
+        tokenA: params.tokenA,
+        tokenB: params.tokenB,
+      };
+    } else {
+      return undefined;
+    }
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};

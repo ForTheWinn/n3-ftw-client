@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { waitForTransaction } from "@wagmi/core";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { Steps } from "antd";
 
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -14,13 +14,9 @@ import {
   burn,
   getMintoNoFromLogs,
 } from "../../../../../packages/evm/contracts/bridge";
-import {
-  getCurrentStep,
-  getExplorer,
-  parseAmount,
-} from "../../../../../common/helpers";
+import { getCurrentStep, getExplorer } from "../../../../../common/helpers";
 import { getScriptHashFromAddressWithPrefix } from "../../../../../packages/neo/utils";
-import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
+import { NEP_ADDRESSES } from "../../../../../consts/contracts";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { STATUS_STATE } from "../../../../../consts/global";
@@ -30,6 +26,7 @@ import {
 } from "../../../../../packages/evm/contracts/swap";
 import Errors from "../../../Swap/components/Actions/components/Errors";
 import { ethers } from "ethers";
+import { wagmiConfig } from "../../../../../wagmi-config";
 
 const initialState = {
   allowlances: STATUS_STATE,
@@ -90,13 +87,13 @@ const EVMBridgeActionModal = ({
   onSuccess,
   onCancel,
 }: IActionModalProps) => {
-  const bridgeAmount = parseAmount(amount, token.decimals);
+  const bridgeAmount = ethers.parseUnits(amount, token.decimals);
   const chainId = CONFIGS[network][chain].chainId;
   const evmBridgeContractHash =
     BRIDGE_CONTRACTS[network][chainId][destChain.chainId];
   const neoBridgeContractHash =
     BRIDGE_CONTRACTS[network][destChain.chainId][originChain.chainId];
-  const nepTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
+  const nepTokenContractHash = NEP_ADDRESSES[chain][network];
 
   const [state, setState] = useState(initialState);
 
@@ -215,7 +212,9 @@ const EVMBridgeActionModal = ({
 
         handleStatus("burn", "processing");
 
-        const data = await waitForTransaction({ hash: burnHash });
+        const data = await waitForTransactionReceipt(wagmiConfig, {
+          hash: burnHash,
+        });
 
         burnNo = getMintoNoFromLogs(data.logs);
 

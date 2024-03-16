@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Route } from "react-router-dom";
 
 import PageLayout from "../../components/Commons/PageLayout";
@@ -9,14 +9,38 @@ import RemoveLiquidity from "./scenes/RemoveLiquidity";
 import {
   SWAP_PATH,
   SWAP_PATH_LIQUIDITY_ADD,
-  SWAP_PATH_LIQUIDITY_REMOVE
+  SWAP_PATH_LIQUIDITY_REMOVE,
 } from "../../../consts/routes";
+import { useApp } from "../../../common/hooks/use-app";
+import { useWalletRouter } from "../../../common/hooks/use-wallet-router";
 
 const Swap = () => {
   useEffect(() => {
     document.title = "FTW Swap";
   }, []);
 
+  const appContext = useApp();
+  const walletRouterContext = useWalletRouter(appContext.chain);
+
+  const SwapMainMemoized = useMemo(() => {
+    return (
+      <SwapContextProvider
+        type="swap"
+        chain={appContext.chain}
+        network={appContext.network}
+        refreshCount={appContext.refreshCount}
+        userWalletAddress={walletRouterContext.address}
+        increaseRefreshCount={appContext.increaseRefreshCount}
+      >
+        <SwapMain />
+      </SwapContextProvider>
+    );
+  }, [
+    appContext.chain,
+    appContext.network,
+    appContext.refreshCount,
+    walletRouterContext.address,
+  ]);
   return (
     <div>
       <PageLayout>
@@ -29,16 +53,19 @@ const Swap = () => {
               <Route
                 exact={true}
                 path={SWAP_PATH}
-                component={() => (
-                  <SwapContextProvider type="swap">
-                    <SwapMain />
-                  </SwapContextProvider>
-                )}
+                render={() => SwapMainMemoized}
               />
               <Route
                 path={SWAP_PATH_LIQUIDITY_ADD}
-                component={() => (
-                  <SwapContextProvider type="liquidity">
+                render={() => (
+                  <SwapContextProvider
+                    type="liquidity"
+                    chain={appContext.chain}
+                    network={appContext.network}
+                    refreshCount={appContext.refreshCount}
+                    userWalletAddress={walletRouterContext.address}
+                    increaseRefreshCount={appContext.increaseRefreshCount}
+                  >
                     <AddLiquidity />
                   </SwapContextProvider>
                 )}

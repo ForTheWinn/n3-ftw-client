@@ -4,7 +4,7 @@ import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { numberTrim } from "../../../../../packages/neo/utils";
 import { IFarmPair } from "../../../../../common/routers/farm/interfaces";
-import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
+import { NEP_ADDRESSES } from "../../../../../consts/contracts";
 
 interface IDisplayAPRProps {
   chain: CHAINS;
@@ -24,7 +24,7 @@ const DisplayAPR = ({ chain, network, pair }: IDisplayAPRProps) => {
     hasBonusRewards,
   } = pair;
   const [APR, setAPR] = useState(0);
-  const nepAddress = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
+  const nepAddress = NEP_ADDRESSES[chain][network];
 
   useEffect(() => {
     async function checkTxid() {

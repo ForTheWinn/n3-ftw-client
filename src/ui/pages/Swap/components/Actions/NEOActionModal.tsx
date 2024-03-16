@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
 import { Typography } from "antd";
-import { ITokenState } from "../../scenes/Swap/interfaces";
+import { IToken } from "../../../../../consts/tokens";
 import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
-import { calculateSlippage, parseAmount } from "../../../../../common/helpers";
+import { calculateSlippage } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { IConnectedWallet } from "../../../../../packages/neo/wallets/interfaces";
 import { DisplayAd } from "./components/DisplayAd";
-import { TxResult } from "./components/TxResult";
+import { TxResult } from "../../../../components/TxResult";
 import Errors from "./components/Errors";
 import { SwapContract } from "../../../../../packages/neo/contracts/ftw/swap";
+import { ethers } from "ethers";
 
 interface IActionModalProps {
   chain: CHAINS;
   network: INetworkType;
-  tokenA: ITokenState;
-  tokenB: ITokenState;
+  tokenA: IToken;
+  tokenB: IToken;
   amountA: string;
   amountB: string;
   slippage: number;
-  method: "swap" | "provide";
+  type: "swap" | "liquidity";
   isReverse: boolean;
   connectedWallet: IConnectedWallet;
+  isWrapping: boolean;
+  isUnWrapping: boolean;
+  isSwapWithWrapping: boolean;
+  isSwapWithUnWrapping: boolean;
+  lockUntil: Date | undefined;
   onSuccess: () => void;
   onCancel: () => void;
 }
@@ -42,18 +48,23 @@ const NeoActionModal = (props: IActionModalProps) => {
     amountA,
     amountB,
     slippage,
-    method,
+    type,
     chain,
     isReverse,
     network,
     connectedWallet,
+    isWrapping,
+    isUnWrapping,
+    isSwapWithWrapping,
+    isSwapWithUnWrapping,
+    lockUntil,
     onSuccess,
     onCancel,
   } = props;
   const [state, setState] = useState(initialState);
 
-  const parsedAmountA = parseAmount(amountA, tokenA.decimals);
-  const parsedAmountB = parseAmount(amountB, tokenB.decimals);
+  const parsedAmountA = ethers.parseUnits(amountA, tokenA.decimals);
+  const parsedAmountB = ethers.parseUnits(amountB, tokenB.decimals);
 
   const maxAmountAIn =
     parsedAmountA + calculateSlippage(parsedAmountA, slippage);
@@ -61,32 +72,64 @@ const NeoActionModal = (props: IActionModalProps) => {
     parsedAmountB - calculateSlippage(parsedAmountB, slippage);
 
   const actionHandler = async () => {
-    if (method === "swap") {
-      if (isReverse) {
-        return await new SwapContract(network).swapBtoA(
-          connectedWallet,
-          tokenA.hash,
-          tokenB.hash,
-          parsedAmountB.toString(),
-          maxAmountAIn
-        );
+    if (type === "swap") {
+      if (isWrapping || isUnWrapping) {
+        if (isWrapping) {
+          return await new SwapContract(network).mintBNEO(
+            connectedWallet,
+            parsedAmountA.toString()
+          );
+        } else {
+          return await new SwapContract(network).burnBNEO(
+            connectedWallet,
+            parsedAmountB.toString()
+          );
+        }
       } else {
-        return await new SwapContract(network).swap(
-          connectedWallet,
-          tokenA.hash,
-          parsedAmountA.toString(),
-          tokenB.hash,
-          minAmountBOut.toString()
-        );
+        if (isReverse) {
+          if (isSwapWithUnWrapping) {
+            return await new SwapContract(network).swapBWithNEO(
+              connectedWallet,
+              tokenA.hash,
+              parsedAmountB.toString(),
+              maxAmountAIn.toString()
+            );
+          } else {
+            return await new SwapContract(network).swapBtoA(
+              connectedWallet,
+              tokenA.hash,
+              tokenB.hash,
+              parsedAmountB.toString(),
+              maxAmountAIn
+            );
+          }
+        } else {
+          if (isSwapWithWrapping) {
+            return await new SwapContract(network).swapWithNEO(
+              connectedWallet,
+              parsedAmountA.toString(),
+              tokenB.hash,
+              minAmountBOut.toString()
+            );
+          } else {
+            return await new SwapContract(network).swap(
+              connectedWallet,
+              tokenA.hash,
+              parsedAmountA.toString(),
+              tokenB.hash,
+              minAmountBOut.toString()
+            );
+          }
+        }
       }
-    } else if (method === "provide") {
+    } else if (type === "liquidity") {
       return await new SwapContract(network).provide(
         connectedWallet,
         isReverse ? tokenB.hash : tokenA.hash,
         isReverse ? parsedAmountB.toString() : parsedAmountA.toString(),
         isReverse ? tokenA.hash : tokenB.hash,
         isReverse ? parsedAmountA.toString() : parsedAmountB.toString(),
-        0, // Deprecated LP lock
+        lockUntil, // Deprecated LP lock
         slippage * 100 // BPS
       );
     }
@@ -140,7 +183,7 @@ const NeoActionModal = (props: IActionModalProps) => {
     <Modal onClose={onCancel}>
       <div className="has-text-centered">
         <h3 className="title is-5 has-text-centered">
-          {method === "swap" ? "Swap" : "Add Liquidity"}
+          {type === "swap" ? "Swap" : "Add Liquidity"}
         </h3>
 
         <div className="block">

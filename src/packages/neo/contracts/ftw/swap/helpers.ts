@@ -1,8 +1,4 @@
-import { u } from "@cityofzion/neon-core";
-import { base64ToHash160, parseMapValue, toDecimal } from "../../../utils";
 import moment from "moment";
-import { IReserve } from "./interfaces";
-import { DEFAULT_SLIPPAGE } from "./consts";
 
 //TODO:Concider later
 // export const getEstimate = (
@@ -38,13 +34,8 @@ export const defaultDeadLine = () =>
   moment().utc().add("10", "minutes").valueOf();
 
 export const getAfterSlippage = (amountB: string, slippage: number): string => {
-  return (parseFloat(amountB) - (parseFloat(amountB) * slippage) / 100).toString();
-};
-
-// Slippage for swapB
-export const getMaxTokenAAmount = (
-  amountA: string,
-  slippage: number
-): string => {
-  return (parseFloat(amountA) + (parseFloat(amountA) * slippage) / 100).toString();
+  return (
+    parseFloat(amountB) -
+    (parseFloat(amountB) * slippage) / 100
+  ).toString();
 };

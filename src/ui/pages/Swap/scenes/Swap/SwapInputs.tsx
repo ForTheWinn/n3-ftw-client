@@ -1,18 +1,19 @@
 import React from "react";
 import Input from "../../components/Input";
 import { FaArrowDown } from "react-icons/fa";
-import { ISwapInputState, ITokenState } from "./interfaces";
+import { ISwapInputState } from "./interfaces";
+import { IToken } from "../../../../../consts/tokens";
 import {
   ISwapReserves,
-  IUserTokenBalances
+  IUserTokenBalances,
 } from "../../../../../common/routers/swap/interfaces";
 import SwapErrors from "./components/SwapErrors";
 import InputDivider from "../../components/InputDivider";
 
 interface ISwapInputsProps {
   reserves?: ISwapReserves;
-  tokenA?: ITokenState;
-  tokenB?: ITokenState;
+  tokenA?: IToken;
+  tokenB?: IToken;
   amountA?: string;
   amountB?: string;
   balances?: IUserTokenBalances;
@@ -23,6 +24,7 @@ interface ISwapInputsProps {
   hasEstimatedError: boolean;
   hasReservesError: boolean;
   priceImpact: number;
+  notEnoughBalance?: boolean;
   onAssetChange: (type: "A" | "B") => void;
   onSwitch: () => void;
   setSwapInputChange: (val: ISwapInputState) => void;
@@ -42,9 +44,10 @@ const SwapInputs = ({
   hasReservesError,
   noLiquidity,
   priceImpact,
+  notEnoughBalance,
   onSwitch,
   setSwapInputChange,
-  onAssetChange
+  onAssetChange,
 }: ISwapInputsProps) => {
   const errors: string[] = [];
   if (hasReservesError) {
@@ -59,6 +62,16 @@ const SwapInputs = ({
     errors.push("Check price impact");
   }
 
+  let inputADisable = false;
+  let inputBDisable = false;
+
+  if (tokenB?.decimals === 0) {
+    inputADisable = true;
+  }
+  if (tokenA?.decimals === 0) {
+    inputBDisable = true;
+  }
+
   return (
     <>
       <div className="box is-shadowless is-marginless">
@@ -71,9 +84,11 @@ const SwapInputs = ({
           setValue={(value) => {
             setSwapInputChange({
               type: "A",
-              value
+              value,
             });
           }}
+          isDisabled={inputADisable}
+          notEnoughBalance={notEnoughBalance}
         />
       </div>
 
@@ -91,9 +106,10 @@ const SwapInputs = ({
           setValue={(value) => {
             setSwapInputChange({
               type: "B",
-              value
+              value,
             });
           }}
+          isDisabled={inputBDisable}
         />
       </div>
 

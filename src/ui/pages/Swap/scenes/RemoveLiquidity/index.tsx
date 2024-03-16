@@ -9,8 +9,8 @@ import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { SWAP_PATH } from "../../../../../consts/routes";
 import { NEO_CHAIN } from "../../../../../consts/global";
-import { toast } from "react-hot-toast";
 import { WENT_WRONG } from "../../../../../consts/messages";
+import { Spin, message } from "antd";
 
 const RemoveLiquidity = () => {
   const { network, chain, refreshCount, increaseRefreshCount, setTxid } =
@@ -37,7 +37,7 @@ const RemoveLiquidity = () => {
         );
         setTxid(txid);
       } catch (e: any) {
-        toast.error(
+        message.error(
           e.message ? e.message : e.description ? e.description : WENT_WRONG
         );
       }
@@ -52,11 +52,13 @@ const RemoveLiquidity = () => {
   );
   return (
     <>
-      <HeaderBetween path={SWAP_PATH} title={"Withdraw liquidity"} />
+      <HeaderBetween path={SWAP_PATH} title={"LP Tokens"} />
       {isConnected ? (
         <div className="box is-shadowless">
           {!isLoaded ? (
-            <div>Loading..</div>
+            <div className="has-text-centered">
+              <Spin />
+            </div>
           ) : data.length > 0 ? (
             data.map((token) => {
               return (

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Space } from "antd";
-import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../../consts/tokens";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
 import CustomTokenWarning from "./CustomTokenWarning";
-import { SWAP_TOKEN_LIST } from "../../../../consts/tokens";
 import { fetchTokenInfo } from "../../../../common/routers/global";
+import { TOKEN_FETCH_ERROR } from "../../../../consts/messages";
+import { getTokenByHash } from "../../../../common/helpers";
 
 interface IDisplayCustomTokenProps {
   chain: CHAINS;
   network: INetworkType;
   token: string;
-  onClick: (token: ITokenState) => void;
+  onClick: (token: IToken) => void;
   onCancel: () => void;
 }
 const DisplayCustomToken = ({
@@ -19,37 +20,31 @@ const DisplayCustomToken = ({
   network,
   token,
   onClick,
-  onCancel
+  onCancel,
 }: IDisplayCustomTokenProps) => {
-  const [customToken, setCustomToken] = useState<ITokenState | undefined>();
-  const [hasError, setError] = useState<boolean>(false);
+  const [customToken, setCustomToken] = useState<IToken | undefined>();
+  const [error, setError] = useState<string | undefined>();
   const [showConfirm, setShowConfirm] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   useEffect(() => {
     const fetchToken = async () => {
-      setError(false);
-      try {
-        let target;
-        SWAP_TOKEN_LIST[chain][network].forEach((t) => {
-          if (t.hash === token) {
-            target = t;
-          }
-        });
-        if (target) {
-          setIsVerified(true);
-          setCustomToken(target);
-        } else {
-          const res = await fetchTokenInfo(chain, network, token);
+      setError(undefined);
+      let _token = getTokenByHash(chain, network, token);
+      if (_token) {
+        setIsVerified(true);
+        setCustomToken(_token);
+      } else {
+        const res = await fetchTokenInfo(chain, network, token);
+        if (res) {
           setCustomToken({
             hash: token,
             decimals: res.decimals,
             symbol: res.symbol,
-            icon: ""
+            icon: "",
           });
+        } else {
+          setError(TOKEN_FETCH_ERROR);
         }
-      } catch (e) {
-        console.error(e);
-        setError(true);
       }
     };
     if (token) {
@@ -65,7 +60,7 @@ const DisplayCustomToken = ({
     }
   };
 
-  if (hasError) return <div className="panel-block">No result</div>;
+  if (error) return <div className="panel-block">{TOKEN_FETCH_ERROR}</div>;
   if (!customToken) return <></>;
   if (showConfirm)
     return (

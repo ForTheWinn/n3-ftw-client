@@ -1,17 +1,20 @@
 import React from "react";
 import Input from "../../components/Input";
 import { FaPlusSquare } from "react-icons/fa";
-import { ISwapInputState, ITokenState } from "../Swap/interfaces";
+import { ISwapInputState } from "../Swap/interfaces";
+import { IToken } from "../../../../../consts/tokens";
 import { IUserTokenBalances } from "../../../../../common/routers/swap/interfaces";
 import InputDivider from "../../components/InputDivider";
 
 interface ILPInputsProps {
-  tokenA?: ITokenState;
-  tokenB?: ITokenState;
+  tokenA?: IToken;
+  tokenB?: IToken;
   amountA?: string;
   amountB?: string;
   balances?: IUserTokenBalances;
   swapInput?: ISwapInputState;
+  notEnoughBalanceA?: boolean
+  notEnoughBalanceB?: boolean
   onAssetChange: (type: "A" | "B") => void;
   setSwapInputChange: (val: ISwapInputState) => void;
 }
@@ -22,41 +25,21 @@ const LPInputs = ({
   amountA,
   amountB,
   balances,
-  swapInput,
+  notEnoughBalanceA,
+  notEnoughBalanceB,
   onAssetChange,
-  setSwapInputChange
+  setSwapInputChange,
 }: ILPInputsProps) => {
-  // const amountAOverflow =
-  //   !!(
-  //     swapInput &&
-  //     swapInput.type === "A" &&
-  //     amountA &&
-  //     balances &&
-  //     parseFloat(amountA) > parseFloat(balances.amountA)
-  //   ) ||
-  //   !!(
-  //     swapInput &&
-  //     swapInput.type === "B" &&
-  //     amountA &&
-  //     balances &&
-  //     parseFloat(amountA) > parseFloat(balances.amountA)
-  //   );
+  let inputADisabled = false;
+  let inputBDisabled = false;
 
-  // const amountBOverflow =
-  //   !!(
-  //     swapInput &&
-  //     swapInput.type === "B" &&
-  //     amountB &&
-  //     balances &&
-  //     amountB > parseFloat(balances.amountB)
-  //   ) ||
-  //   !!(
-  //     swapInput &&
-  //     swapInput.type === "B" &&
-  //     amountB &&
-  //     balances &&
-  //     amountB > parseFloat(balances.amountB)
-  //   );
+  if (tokenA?.isNative) {
+    inputADisabled = true;
+  }
+  if (tokenB?.isNative) {
+    inputBDisabled = true;
+  }
+
   return (
     <>
       <div className="box is-shadowless mb-0">
@@ -71,9 +54,11 @@ const LPInputs = ({
           setValue={(value) => {
             setSwapInputChange({
               type: "A",
-              value
+              value,
             });
           }}
+          isDisabled={inputADisabled}
+          notEnoughBalance={notEnoughBalanceA}
         />
       </div>
 
@@ -91,9 +76,11 @@ const LPInputs = ({
           setValue={(value) => {
             setSwapInputChange({
               type: "B",
-              value
+              value,
             });
           }}
+          isDisabled={inputBDisabled}
+          notEnoughBalance={notEnoughBalanceB}
         />
       </div>
     </>

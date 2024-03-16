@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Result } from "antd";
-import { CHAINS } from "../../../../../../consts/chains";
-import { INetworkType } from "../../../../../../packages/neo/network";
-import { getExplorer } from "../../../../../../common/helpers";
+import { CHAINS } from "../../consts/chains";
+import { INetworkType } from "../../packages/neo/network";
+import { getExplorer } from "../../common/helpers";
 
 interface ITxResultProps {
   chain: CHAINS;

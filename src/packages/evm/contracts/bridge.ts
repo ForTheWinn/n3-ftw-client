@@ -1,8 +1,13 @@
-import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
+import {
+  readContract,
+  writeContract,
+  simulateContract,
+} from "@wagmi/core";
 
 import FTWBridge from "./abi/FTWBridge.json";
 import { Network } from "../../neo/network";
 import { ethers } from "ethers";
+import { wagmiConfig } from "../../../wagmi-config";
 
 export const burn = async (
   chainId: number,
@@ -11,22 +16,22 @@ export const burn = async (
   receiver: string,
   amount: string
 ): Promise<string> => {
-  const script = await prepareWriteContract({
+  const args = {
     address: bridgeAddress,
     abi: FTWBridge,
     functionName: "burn",
     args: [tokenAddress, receiver, amount],
     chainId,
-  });
-  const { hash } = await writeContract(script);
-  return hash;
+  };
+  await simulateContract(wagmiConfig, args);
+  return await writeContract(wagmiConfig, args);
 };
 
 export const getNextMintNo = async (
   chainId: number,
   address: any
 ): Promise<boolean> => {
-  const res: any = await readContract({
+  const res: any = await readContract(wagmiConfig, {
     chainId,
     address,
     abi: FTWBridge,
@@ -44,7 +49,7 @@ export const getIsMinted = async (
   let minted: any;
   do {
     try {
-      minted = await readContract({
+      minted = await readContract(wagmiConfig, {
         address,
         abi: FTWBridge,
         functionName: "isMinted",
@@ -80,7 +85,7 @@ export const getBridgeFee = async (
   chainId: number,
   bridgeAddress: any
 ): Promise<string> => {
-  const res: any = await readContract({
+  const res: any = await readContract(wagmiConfig, {
     chainId,
     address: bridgeAddress,
     abi: FTWBridge,

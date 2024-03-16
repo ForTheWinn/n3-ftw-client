@@ -5,7 +5,6 @@ import { SmithContract } from "../../../../../../../packages/neo/contracts/ftw/s
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useOnChainData } from "../../../../../../../common/hooks/use-onchain-data";
 import NEP11MintFormModal from "./NEP11MintFormModal";
-import { toast } from "react-hot-toast";
 import PageLayout from "../../../../../../components/Commons/PageLayout";
 import {
   MAINNET,
@@ -14,6 +13,7 @@ import {
 import { useApp } from "../../../../../../../common/hooks/use-app";
 import { SMITH_PATH_NEP11 } from "../../../../../../../consts/routes";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
+import { message } from "antd";
 
 const NEP11InfoPage = () => {
   const params = useParams();
@@ -53,10 +53,10 @@ const NEP11InfoPage = () => {
           setTxid(res);
         }
       } catch (e: any) {
-        toast.error(e.message ? e.message : WENT_WRONG);
+        message.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
-      toast.error("Please connect wallet.");
+      message.error("Please connect wallet.");
     }
   };
 
@@ -65,10 +65,10 @@ const NEP11InfoPage = () => {
       if (connectedWallet.account.address === data.owner) {
         setMintModalActive(contractHash);
       } else {
-        toast.error("Only contract owner can mint");
+        message.error("Only contract owner can mint");
       }
     } else {
-      toast.error("Please connect your wallet");
+      message.error("Please connect your wallet");
     }
   };
   const onMint = async (values) => {
@@ -85,10 +85,10 @@ const NEP11InfoPage = () => {
         setMintModalActive("");
         setTxid(res);
       } catch (e: any) {
-        toast.error(e.message ? e.message : WENT_WRONG);
+        message.error(e.message ? e.message : WENT_WRONG);
       }
     } else {
-      toast.error("Please connect wallet.");
+      message.error("Please connect wallet.");
     }
   };
 

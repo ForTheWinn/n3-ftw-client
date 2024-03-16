@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { waitForTransaction } from "@wagmi/core";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { Button, Result, Steps } from "antd";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { ITokenMetadata } from "./EVM";
@@ -7,7 +7,7 @@ import Modal from "../../../../../../components/Modal";
 import LoadingWithText from "../../../../../../components/Commons/LoadingWithText";
 import {
   CONTRACT_MAP,
-  GLOBAL_NEP_CONTRACT_ADDRESS,
+  NEP_ADDRESSES,
 } from "../../../../../../../consts/contracts";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { SMITH, STATUS_STATE } from "../../../../../../../consts/global";
@@ -27,6 +27,7 @@ import {
   getAllowances,
 } from "../../../../../../../packages/evm/contracts/swap";
 import Errors from "../../../../../Swap/components/Actions/components/Errors";
+import { wagmiConfig } from "../../../../../../../wagmi-config";
 
 interface IActionModalProps extends ITokenMetadata {
   chain: CHAINS;
@@ -53,7 +54,7 @@ const steps = [
     key: "fee",
   },
   {
-    title: "Tranasction Submit",
+    title: "Confirm",
     key: "deploy",
   },
 ];
@@ -71,7 +72,7 @@ const EVMSmithActionModal = ({
   onSuccess,
   onCancel,
 }: IActionModalProps) => {
-  const feeTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
+  const feeTokenContractHash = NEP_ADDRESSES[chain][network];
   const smithTokenContractHash = CONTRACT_MAP[chain][network][SMITH];
   const fee = SMITH_FEE[chain][network];
 
@@ -173,7 +174,9 @@ const EVMSmithActionModal = ({
 
         handleStatus("deploy", "processing");
 
-        const data = await waitForTransaction({ hash: deployHash });
+        const data = await waitForTransactionReceipt(wagmiConfig, {
+          hash: deployHash,
+        });
         const contractHash = getContractHashFromLogs(data.logs);
         setState((prev) => ({
           ...prev,

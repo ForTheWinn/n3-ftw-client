@@ -8,9 +8,9 @@ import {
   IStatusResult
 } from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
 import { withDecimal } from "../../../../../packages/neo/utils";
-import { toast } from "react-hot-toast";
 import History from "../History";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { message } from "antd";
 
 export interface IMainData {
   status: IStatusResult;
@@ -31,7 +31,7 @@ const Main = (props) => {
         const tx = await new GasFiContract(network).claimAll(connectedWallet);
         setTxid(tx);
       } catch (e: any) {
-        toast.error(e.message);
+        message.error(e.message);
       }
     } else {
       // toggleWalletSidebar();

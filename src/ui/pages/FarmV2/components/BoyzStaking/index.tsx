@@ -4,10 +4,10 @@ import Modal from "../../../../components/Modal";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import DisplayBoy from "../MyBoyz/DisplayBoy";
 import StakingModal from "./StakingModal";
-import toast from "react-hot-toast";
 import { IBoyStaked } from "../../../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { FarmV2Contract } from "../../../../../packages/neo/contracts/ftw/farm-v2";
+import { message } from "antd";
 
 interface IBoyzStakingProps {
   boyz: IBoyStaked[];
@@ -27,7 +27,7 @@ const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
       );
       setTxid(res);
     } else {
-      toast.error("Connect your wallet");
+      message.error("Connect your wallet");
     }
   };
   const handleUnStake = async (tokenId: string, lotNo: string) => {
@@ -39,7 +39,7 @@ const BoyzStaking = ({ boyz, increaseRefreshCnt }: IBoyzStakingProps) => {
       );
       setTxid(res);
     } else {
-      toast.error("Connect your wallet");
+      message.error("Connect your wallet");
     }
   };
 

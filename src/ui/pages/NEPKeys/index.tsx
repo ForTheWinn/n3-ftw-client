@@ -1,5 +1,4 @@
 import React from "react";
-import toast from "react-hot-toast";
 import { useApp } from "../../../common/hooks/use-app";
 import { useOnChainData } from "../../../common/hooks/use-onchain-data";
 import { GMContract } from "../../../packages/neo/contracts/gm";
@@ -8,6 +7,7 @@ import KeyCard from "./components/KeyCard";
 import PageLayout from "../../components/Commons/PageLayout";
 import { useNeoWallets } from "../../../common/hooks/use-neo-wallets";
 import { RestAPI } from "../../../packages/neo/api";
+import { message } from "antd";
 
 const KeysLoading = () => {
   return (
@@ -66,10 +66,10 @@ const NEPKeys = () => {
           );
           setTxid(tx);
         } else {
-          toast.error("Fetching GM API failed.");
+          message.error("Fetching GM API failed.");
         }
       } catch (e: any) {
-        toast.error(e.message);
+        message.error(e.message);
       }
     } else {
       toggleWalletSidebar();

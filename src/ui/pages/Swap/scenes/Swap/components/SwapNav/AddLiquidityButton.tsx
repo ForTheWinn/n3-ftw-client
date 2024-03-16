@@ -1,7 +1,8 @@
 import React from "react";
-import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../../../consts/routes";
+import { Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 interface IAddLiquidityButtonProps {
   search?: string;
@@ -11,14 +12,12 @@ const AddLiquidityButton = ({ search }: IAddLiquidityButtonProps) => {
     <Link
       to={{
         pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
-        search
+        search,
       }}
-      className="button is-small is-white"
     >
-      <span className="icon">
-        <FaPlus />
-      </span>
-      <span className="ml-1">Add Liquidity</span>
+      <Button icon={<PlusOutlined />} size="small" type="text">
+        Add Liquidity
+      </Button>
     </Link>
   );
 };

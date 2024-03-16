@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Pagination from "bulma-pagination-react";
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import {
   ILockerContract,
@@ -10,6 +9,7 @@ import { FaPlus } from "react-icons/fa";
 import LockerCard from "./LockerCard";
 import { useApp } from "../../../../common/hooks/use-app";
 import { LOCKER_CREATE_PATH } from "../../../../consts/routes";
+import { Pagination } from "antd";
 
 const LockersByContract = () => {
   const { network } = useApp();
@@ -99,8 +99,8 @@ const LockersByContract = () => {
                     <tr>
                       <td colSpan={6}>
                         <Pagination
-                          pages={data.items.totalPages}
-                          currentPage={page}
+                          total={data.items.totalPages}
+                          current={page}
                           onChange={(v) => {
                             if (page !== v) {
                               setPage(v);

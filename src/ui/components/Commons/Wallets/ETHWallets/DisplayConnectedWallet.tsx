@@ -1,47 +1,38 @@
-import React, { useState } from "react";
-import { getWalletIcon } from "./helpers";
-import { truncateAddress } from "../../../../../packages/neo/utils";
+import { Button, Dropdown, MenuProps } from "antd";
+import React from "react";
+import { useAccount, useDisconnect } from "wagmi";
 
-interface IDisplayConnectedWalletProps {
-  connectorId: string;
-  account: string;
-  disConnectWallet: () => void;
+function formatAddress(address?: string) {
+  if (!address) return null;
+  return `${address.slice(0, 6)}…${address.slice(38, 42)}`;
 }
-const DisplayConnectedWallet = ({
-  connectorId,
-  account,
-  disConnectWallet
-}: IDisplayConnectedWalletProps) => {
-  const [isActive, setActive] = useState(false);
+
+const DisplayConnectedWallet = () => {
+  const { address, connector } = useAccount();
+  const { disconnect } = useDisconnect();
+  const formattedAddress = formatAddress(address);
+
+  const items: MenuProps["items"] = [
+    {
+      label: <a onClick={() => disconnect()}>Disconnect</a>,
+      key: "0",
+    },
+  ];
+
   return (
-    <div>
-      <div
-        style={{ width: "100%" }}
-        className={`dropdown ${isActive ? "is-active" : ""}`}
+    <Dropdown menu={{ items }} trigger={["click"]}>
+      <Button
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+        }}
+        onClick={(e) => e.preventDefault()}
+        icon={<img width="14px" src={connector?.icon} />}
       >
-        <div style={{ width: "100%" }} className="dropdown-trigger">
-          <button
-            style={{ justifyContent: "flex-start" }}
-            className="button is-fullwidth"
-            aria-haspopup="true"
-            aria-controls="disconnect-menu"
-            onClick={() => setActive(!isActive)}
-          >
-            <span className="panel-icon">
-              <img alt={connectorId} src={getWalletIcon(connectorId)} />
-            </span>
-            <span>{truncateAddress(account)}</span>
-          </button>
-        </div>
-        <div className="dropdown-menu" id="disconnect-menu" role="menu">
-          <div className="dropdown-content">
-            <a onClick={disConnectWallet} className="dropdown-item">
-              Disconnect
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+        {formattedAddress}
+      </Button>
+    </Dropdown>
   );
 };
 

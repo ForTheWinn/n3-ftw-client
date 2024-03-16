@@ -4,10 +4,11 @@ import { RestAPI } from "../../../../../../packages/neo/api";
 import { MAINNET, NEO_CHAIN } from "../../../../../../consts/global";
 import { CHAINS } from "../../../../../../consts/chains";
 import { Table, Typography } from "antd";
-import { TOKEN_LIST } from "../../../../../../consts/tokens";
 import { toDecimal } from "../../../../../../packages/neo/utils";
 import TruncatedAddress from "../../../../../components/TruncatedAddress";
 import moment from "moment";
+import { get } from "http";
+import { getTokenByHash } from "../../../../../../common/helpers";
 
 interface ISwapsProps {
   chain: CHAINS;
@@ -26,7 +27,6 @@ const Swaps = ({ chain, tokens }: ISwapsProps) => {
       });
     }
   }, [chain]);
-  let tokenList = TOKEN_LIST[chain][MAINNET];
 
   return (
     <Table
@@ -39,7 +39,7 @@ const Swaps = ({ chain, tokens }: ISwapsProps) => {
           title: "In",
           key: "out",
           render: (data, i) => {
-            const token = tokenList[data.tokenIn];
+            const token = getTokenByHash(chain, MAINNET, data.tokenIn);
             if (!token)
               return (
                 <div>
@@ -61,7 +61,7 @@ const Swaps = ({ chain, tokens }: ISwapsProps) => {
           title: "Out",
           key: "out",
           render: (data, i) => {
-            const token = tokenList[data.tokenOut];
+            const token = getTokenByHash(chain, MAINNET, data.tokenOut);
             if (!token)
               return (
                 <div>

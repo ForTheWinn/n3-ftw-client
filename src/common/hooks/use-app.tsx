@@ -21,6 +21,7 @@ const initChain = (): CHAINS => {
   ) {
     const subdomain = parts[0];
     if (subdomain.includes("polygon")) {
+      
       return POLYGON_CHAIN;
     } else if (subdomain.includes("neo")) {
       return NEO_CHAIN;

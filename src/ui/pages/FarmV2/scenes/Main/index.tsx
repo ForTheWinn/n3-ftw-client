@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import { CONFIGS } from "../../../../../consts/chains";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
-import { Avatar, Space } from "antd";
+import { Avatar, Space, Spin } from "antd";
 import DisplayAPR from "../../components/DisplayAPR";
 import { farmRouter } from "../../../../../common/routers";
 import { IFarmPair } from "../../../../../common/routers/farm/interfaces";
@@ -62,7 +62,9 @@ const StakingMain = () => {
       <div className="box is-shadowless mb-1">
         <div>
           {!data ? (
-            <div>Loading..</div>
+            <div className="has-text-centered">
+              <Spin />
+            </div>
           ) : error ? (
             <ErrorNotificationWithRefresh
               error={error}

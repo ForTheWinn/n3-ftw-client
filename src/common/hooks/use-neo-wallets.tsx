@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
 import {
   IConnectedWallet,
-  IWalletType
+  IWalletType,
 } from "../../packages/neo/wallets/interfaces";
-import { WalletAPI } from "../../packages/neo/wallets";
-import toast from "react-hot-toast";
+import { NeoWallets } from "../../packages/neo/wallets";
 import { INetworkType } from "../../packages/neo/network";
 import { NEON } from "../../packages/neo/consts";
+import { message } from "antd";
 
 export interface IWalletStates {
   list: {
@@ -34,12 +34,12 @@ export const NeoWalletProvider = (props: { children: any }) => {
     onSuccess: () => void
   ) => {
     try {
-      const res = await WalletAPI.init(walletType, network);
+      const res = await NeoWallets.init(walletType, network);
       setConnectedWallet(res);
-      toast.success("Connected!");
+      message.success("Connected!");
       onSuccess();
     } catch (e: any) {
-      toast.error(
+      message.error(
         e && e.message ? e.message : `Failed to connect ${walletType}.`
       );
     }
@@ -50,14 +50,14 @@ export const NeoWalletProvider = (props: { children: any }) => {
     if (connectedWallet && connectedWallet.key === NEON) {
       connectedWallet.instance.disconnect();
     }
-    toast.error("Wallet disconnected");
+    message.error("Wallet disconnected");
   };
 
   const contextValue: IWalletStates = {
-    list: WalletAPI.list,
+    list: NeoWallets.list,
     connectedWallet,
     connectWallet,
-    disConnectWallet
+    disConnectWallet,
   };
 
   return (

@@ -19,7 +19,7 @@ const LPTokenCard = ({
   tokenB,
 }: ILPTokenCardProps) => {
   const now = moment.utc().valueOf();
-  const expired = lock === "None" ? 0 : moment(lock).valueOf();
+  const expired = lock ? 0 : moment(lock).valueOf();
   const { isLoaded, data } = useOnChainData(() => {
     return new SwapContract(network).getReserve(tokenA, tokenB);
   }, [network]);
@@ -27,18 +27,20 @@ const LPTokenCard = ({
   return (
     <div className="media">
       <div className="media-content">
-	      <div className="content">
-		      <strong>{name}</strong>
-		      <br />
-		      <small>Share of pool / {((amount / data.totalShare) * 100).toFixed(2)}%</small>
-	      </div>
+        <div className="content">
+          <strong>{name}</strong>
+          <br />
+          <small>
+            Share of pool / {((amount / data.totalShare) * 100).toFixed(2)}%
+          </small>
+        </div>
 
-	      <div className="control">
-		      <div className="tags has-addons">
-			      <span className="tag is-dark">Lock</span>
-			      <span className="tag is-info">{lock}</span>
-		      </div>
-	      </div>
+        <div className="control">
+          <div className="tags has-addons">
+            <span className="tag is-dark">Lock</span>
+            <span className="tag is-info">{lock}</span>
+          </div>
+        </div>
       </div>
       <div className="media-right">
         <button

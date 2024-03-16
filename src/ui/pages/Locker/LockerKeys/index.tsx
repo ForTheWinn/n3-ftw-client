@@ -4,8 +4,8 @@ import { ILockerKeyToken } from "../../../../packages/neo/contracts/ftw/locker/i
 import { LockerContract } from "../../../../packages/neo/contracts/ftw/locker";
 import LockerKeyCard from "./LockerKeyCard";
 import ConnectWalletButton from "../../../components/ConnectWalletButton";
-import toast from "react-hot-toast";
 import { useApp } from "../../../../common/hooks/use-app";
+import { message } from "antd";
 
 const LockerKeys = () => {
   const { network, setTxid, refreshCount } = useApp();
@@ -23,10 +23,10 @@ const LockerKeys = () => {
         );
         setTxid(res);
       } catch (e: any) {
-        toast.error(e.message);
+        message.error(e.message);
       }
     } else {
-      toast.error("Connect your wallet");
+      message.error("Connect your wallet");
     }
   };
 
@@ -35,7 +35,7 @@ const LockerKeys = () => {
       try {
         const items = await new LockerContract(network).getLockerKeys(address);
         setData({
-          items
+          items,
         });
       } catch (e: any) {
         console.error(e);

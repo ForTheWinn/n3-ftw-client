@@ -1,38 +1,45 @@
 import React, { useEffect, useState } from "react";
-import Modal from "../../../../components/Modal";
-import { Steps } from "antd";
-import { ITokenState } from "../../scenes/Swap/interfaces";
-import LoadingWithText from "../../../../components/Commons/LoadingWithText";
+import { Modal, Space, Spin, Typography } from "antd";
+import { IToken } from "../../../../../consts/tokens";
+import { LoadingOutlined } from "@ant-design/icons";
 import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
 import {
   approve,
   getAllowances,
   swap,
+  swapAndUnwrap,
+  unWrapNative,
+  wrapAndSwap,
+  wrapNative,
 } from "../../../../../packages/evm/contracts/swap";
 import {
   calculateSlippage,
   getCurrentStep,
-  parseAmount,
 } from "../../../../../common/helpers";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { DisplayAd } from "./components/DisplayAd";
-import { TxResult } from "./components/TxResult";
+import { TxResult } from "../../../../components/TxResult";
 import Errors from "./components/Errors";
 import { STATUS_STATE, SWAP } from "../../../../../consts/global";
 import { CONTRACT_MAP } from "../../../../../consts/contracts";
+import { ethers } from "ethers";
 
 interface IActionModalProps {
   chain: CHAINS;
   network: INetworkType;
   address: any;
-  tokenA: ITokenState;
-  tokenB: ITokenState;
+  tokenA: IToken;
+  tokenB: IToken;
   amountA: string;
   amountB: string;
   slippage: number;
   isReverse: boolean;
+  isWrapping: boolean;
+  isUnWrapping: boolean;
+  isSwapWithWrapping: boolean;
+  isSwapWithUnWrapping: boolean;
   onSuccess: () => void;
   onCancel: () => void;
 }
@@ -53,7 +60,7 @@ const steps = [
     key: "tokenA",
   },
   {
-    title: "Tranasction Submit",
+    title: "Confirm",
     key: "swap",
   },
 ];
@@ -69,60 +76,79 @@ const ActionModal = (props: IActionModalProps) => {
     chain,
     isReverse,
     network,
+    isWrapping,
+    isUnWrapping,
+    isSwapWithWrapping,
+    isSwapWithUnWrapping,
     onSuccess,
     onCancel,
   } = props;
-  const [state, setState] = useState(initialState);
-  const parsedAmountA = parseAmount(amountA, tokenA.decimals);
-  const parsedAmountB = parseAmount(amountB, tokenB.decimals);
+  const [status, setStatus] = useState({
+    isProcessing: false,
+    message: "",
+    error: "",
+  });
+  const [txid, setTxid] = useState<string | undefined>();
+  const [isSubmitting, setSubmitting] = useState(false);
+  const parsedAmountA = ethers.parseUnits(amountA, tokenA.decimals);
+  const parsedAmountB = ethers.parseUnits(amountB, tokenB.decimals);
   const maxAmountAIn =
     parsedAmountA + calculateSlippage(parsedAmountA, slippage);
   const minAmountBOut =
     parsedAmountB - calculateSlippage(parsedAmountB, slippage);
 
-  const handleTx = async (stepKey: string, txid: any): Promise<boolean> => {
-    handleStatus(stepKey, "processing");
+  const nativeConvert = async () => {
+    setStatus({
+      isProcessing: false,
+      message: "Check your wallet to confirm the transaction.",
+      error: "",
+    });
+    let tx;
+
     try {
-      await waitTransactionUntilSubmmited(chain, network, txid);
-      handleStatus(stepKey, "success");
-      return true;
+      if (isWrapping) {
+        tx = await wrapNative(
+          chain,
+          network,
+          tokenA.nativePair?.hash,
+          parsedAmountA.toString()
+        );
+      } else {
+        tx = await unWrapNative(
+          chain,
+          network,
+          tokenB.nativePair?.hash,
+          parsedAmountB.toString()
+        );
+      }
     } catch (e: any) {
       console.error(e);
-      handleStatus(stepKey, "error", e.message ? e.message : WENT_WRONG);
-      return false;
+      setStatus({
+        isProcessing: false,
+        message: "",
+        error: `Failed. Try again`,
+      });
+      return;
     }
+
+    setSubmitting(true);
+
+    await waitTransactionUntilSubmmited(chain, network, tx);
+
+    setTxid(tx);
   };
 
-  const handleStatus = (
-    stepKey: string,
-    status: "processing" | "success" | "error",
-    error?: string
-  ) => {
-    setState((prev) => {
-      let updatedStatus = { ...STATUS_STATE };
-
-      if (status === "processing") {
-        updatedStatus.isProcessing = true;
-      } else if (status === "success") {
-        updatedStatus.success = true;
-      } else if (status === "error" && error) {
-        updatedStatus.error = error;
-      }
-
-      return {
-        ...prev,
-        [stepKey]: updatedStatus,
-      };
-    });
-  };
-
-  const doInvoke = async () => {
+  const standardSwap = async () => {
     let allowances: any;
-    let tokenApprovalHash: any;
-    let swapHash: any;
+    let approveTx: any;
+    let swapTx: any;
     const swapContractHash = CONTRACT_MAP[chain][network][SWAP];
 
-    handleStatus("allowlances", "processing");
+    setStatus({
+      isProcessing: true,
+      message: `Checking ${tokenA.symbol} allowlance`,
+      error: "",
+    });
 
     try {
       allowances = await getAllowances(
@@ -134,29 +160,51 @@ const ActionModal = (props: IActionModalProps) => {
       );
     } catch (e: any) {
       console.error(e);
-      handleStatus("allowlances", "error", e.message ? e.message : WENT_WRONG);
+      setStatus({
+        isProcessing: false,
+        message: "",
+        error: "Failed to get allowances",
+      });
       return;
     }
 
-    handleStatus("allowlances", "success");
-
     if (parsedAmountA > allowances[0]) {
+      setStatus({
+        isProcessing: false,
+        message: `Check your wallet to approve ${tokenA.symbol}`,
+        error: "",
+      });
       try {
-        tokenApprovalHash = await approve(chain, network, tokenA.hash, swapContractHash);
+        approveTx = await approve(
+          chain,
+          network,
+          tokenA.hash,
+          swapContractHash
+        );
       } catch (e: any) {
-        handleStatus("tokenA", "error", e.message ? e.message : WENT_WRONG);
+        console.error(e);
+        setStatus({
+          isProcessing: false,
+          message: "",
+          error: `Failed to approve ${tokenA.symbol}. Try again`,
+        });
         return;
       }
-
-      if (!(await handleTx("tokenA", tokenApprovalHash))) {
-        return;
-      }
-    } else {
-      handleStatus("tokenA", "success");
+      setStatus({
+        isProcessing: true,
+        message: `Submitting`,
+        error: "",
+      });
+      await waitTransactionUntilSubmmited(chain, network, approveTx);
     }
 
+    setStatus({
+      isProcessing: false,
+      message: `Check your wallet to swap`,
+      error: "",
+    });
     try {
-      swapHash = await swap(chain, network, {
+      swapTx = await swap(chain, network, {
         tokenA: tokenA.hash,
         tokenB: tokenB.hash,
         amountIn: isReverse ? maxAmountAIn : parsedAmountA,
@@ -165,78 +213,136 @@ const ActionModal = (props: IActionModalProps) => {
       });
     } catch (e: any) {
       console.error(e);
-      handleStatus("swap", "error", e.details ? e.details : WENT_WRONG);
+      setStatus({
+        isProcessing: false,
+        message: "",
+        error: `Failed to swap`,
+      });
       return;
     }
 
-    if (!(await handleTx("swap", swapHash))) {
+    setSubmitting(true);
+
+    await waitTransactionUntilSubmmited(chain, network, approveTx);
+
+    setTxid(swapTx);
+  };
+
+  const _wrapAndSwap = async () => {
+    setStatus({
+      isProcessing: false,
+      message: "Check your wallet to confirm the transaction.",
+      error: "",
+    });
+    let tx;
+    try {
+      tx = await wrapAndSwap(chain, network, {
+        tokenA: tokenA,
+        tokenB: tokenB,
+        amountIn: parsedAmountA,
+        amountOut: minAmountBOut,
+      });
+    } catch (e: any) {
+      console.error(e);
+      setStatus({
+        isProcessing: false,
+        message: "",
+        error: `Failed. Try again`,
+      });
       return;
     }
 
-    setState((prev) => ({
-      ...prev,
-      txid: swapHash,
-    }));
+    setSubmitting(true);
+
+    await waitTransactionUntilSubmmited(chain, network, tx);
+
+    setTxid(tx);
+  };
+
+  const _swapAndUnwrap = async () => {
+    setStatus({
+      isProcessing: false,
+      message: "Check your wallet to confirm the transaction.",
+      error: "",
+    });
+    let tx;
+    try {
+      tx = await swapAndUnwrap(chain, network, {
+        tokenA: tokenA,
+        tokenB: tokenB,
+        amountIn: isReverse ? maxAmountAIn : parsedAmountA,
+        amountOut: isReverse ? parsedAmountB : minAmountBOut,
+        isReverse,
+      });
+    } catch (e: any) {
+      console.error(e);
+      setStatus({
+        isProcessing: false,
+        message: "",
+        error: `Failed. Try again`,
+      });
+      return;
+    }
+
+    setSubmitting(true);
+
+    await waitTransactionUntilSubmmited(chain, network, tx);
+
+    setTxid(tx);
+  };
+
+  const doInvoke = async () => {
+    if (isWrapping || isUnWrapping) {
+      nativeConvert();
+    } else {
+      if (isSwapWithWrapping || isSwapWithUnWrapping) {
+        if (isSwapWithWrapping) {
+          _wrapAndSwap();
+        } else if (isSwapWithUnWrapping) {
+          _swapAndUnwrap();
+        }
+      } else {
+        standardSwap();
+      }
+    }
   };
 
   useEffect(() => {
     doInvoke();
   }, [tokenA, tokenB]);
 
-  const currentStep = getCurrentStep(state, steps);
-
-  const errorMessages = [
-    state.tokenA.error,
-    state.swap.error,
-    state.allowlances.error,
-  ].filter(Boolean);
-
   return (
-    <Modal onClose={onCancel}>
+    <Modal open={true} onCancel={onCancel} footer={[]} closeIcon={false}>
       <div className="has-text-centered">
         <h3 className="title is-5">Swap</h3>
         <div className="block">
-          {state.txid ? (
+          {txid ? (
             <TxResult
-              txid={state.txid}
+              txid={txid}
               chain={chain}
               network={network}
               onClose={onSuccess}
             />
-          ) : state.swap.isProcessing ? (
+          ) : isSubmitting ? (
             <DisplayAd />
           ) : (
-            <Steps
-              progressDot={true}
-              current={currentStep}
-              items={steps.map((step) => {
-                return {
-                  title: step.title
-                    ? step.title
-                    : `${props[step.key].symbol} Approval`,
-                  description: state[step.key].isProcessing ? (
-                    <LoadingWithText title="processing" />
-                  ) : state[step.key].success ? (
-                    "success"
-                  ) : state[step.key].error ? (
-                    "error"
-                  ) : (
-                    ""
-                  ),
-                };
-              })}
-            />
+            <>
+              <Space>
+                {status.message && (
+                  <Typography.Text>{status.message}</Typography.Text>
+                )}
+                {status.isProcessing && (
+                  <Spin indicator={<LoadingOutlined spin />} />
+                )}
+                {status.error && (
+                  <Typography.Text type="danger">
+                    {status.error}
+                  </Typography.Text>
+                )}
+              </Space>
+            </>
           )}
         </div>
-
-        {errorMessages.length > 0 && (
-          <div className="block">
-            <Errors
-              errorMessages={errorMessages.join(" ")}
-              onClose={onCancel}
-            />
-          </div>
-        )}
       </div>
     </Modal>
   );
