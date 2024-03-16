@@ -9,13 +9,15 @@ const MobileMenuSlider = () => {
     <>
       <Drawer
         title="Basic Drawer"
-        headerStyle={{ display: "none" }}
         rootStyle={{ top: "53px" }}
-        bodyStyle={{ padding: "0" }}
         placement={"left"}
         closable={false}
         onClose={toggleSidebar}
         open={sidebarStatus}
+        styles={{
+          header: { display: "none" },
+          body: { padding: "0" },
+        }}
       >
         <SidebarNav />
       </Drawer>

@@ -15,30 +15,26 @@ import {
   POLYGON_TESTNET_CHAIN_ID,
   TESTNET,
 } from "./global";
-import { POLYGON_CONTRACT_MAP } from "../packages/evm/polygon";
+import {
+  POLYGON_CONTRACTS,
+  POLYGON_TESTNET_CONTRACTS,
+} from "../packages/evm/polygon";
 
 import {
-  POLYGON_MAINNET_FNEO_TOKEN_METADATA,
-  POLYGON_MAINNET_NEP_TOKEN_METADATA,
-} from "../packages/evm/polygon/mainnet";
-import {
-  NEO_MAINNET_TOKENS,
-  NEO_TESTNET_TOKENS,
+  NEO_BNEO_CONTRACT_ADDRESS,
+  NEO_NEP_CONTRACT_ADDRESS,
 } from "../packages/neo/consts/tokens";
 
 import { MAINNET_CONFIG, TESTNET_CONFIG } from "../packages/neo/consts";
-import { INetworkType } from "../packages/neo/network";
 import { NEO_BRIDGE_SCRIPT_HASH } from "../packages/neo/contracts/ftw/bridge/consts";
-import { ETHEREUM_CONTRACT_MAP } from "../packages/evm/ethereum";
 import {
-  ETHEREUM_MAINNET_FNEO_TOKEN_METADATA,
-  ETHEREUM_MAINNET_NEP_TOKEN_METADATA,
-} from "../packages/evm/ethereum/mainnet";
-import {
-  POLYGON_TESTNET_FNEO_METADATA,
-  POLYGON_TESTNET_NEP_METADATA,
-} from "../packages/evm/polygon/testnet";
-import { ETHEREUM_TESTNET_NEP_METADATA } from "../packages/evm/ethereum/testnet";
+  ETHEREUM_CONTRACTS,
+  ETHEREUM_MAINNET_CONTRACTS,
+  ETHEREUM_TESTNET_CONTRACTS,
+} from "../packages/evm/ethereum";
+
+import { getTokenByHash } from "../common/helpers";
+import { POLYGON_MAINNET_CONTRACTS } from "../packages/evm/polygon";
 
 export const BRIDGE_CHAINS = {
   [MAINNET]: {
@@ -95,54 +91,108 @@ export const BRIDGE_CHAINS = {
   },
 };
 
-export const BRIDGE_CHAIN_LIST = (network: INetworkType) =>
-  Object.keys(BRIDGE_CHAINS[network]).map((key) => {
-    return BRIDGE_CHAINS[network][key];
-  });
+const NEO_MAINNET_NEP = getTokenByHash(
+  NEO_CHAIN,
+  MAINNET,
+  NEO_NEP_CONTRACT_ADDRESS[MAINNET]
+);
+const NEO_TESTNET_NEP = getTokenByHash(
+  NEO_CHAIN,
+  TESTNET,
+  NEO_NEP_CONTRACT_ADDRESS[TESTNET]
+);
+const NEO_MAINNET_BNEO = getTokenByHash(
+  NEO_CHAIN,
+  MAINNET,
+  NEO_BNEO_CONTRACT_ADDRESS[MAINNET]
+);
+const NEO_TESTNET_BNEO = getTokenByHash(
+  NEO_CHAIN,
+  TESTNET,
+  NEO_BNEO_CONTRACT_ADDRESS[TESTNET]
+);
+
+const POLYGON_MAINNET_NEP = getTokenByHash(
+  POLYGON_CHAIN,
+  MAINNET,
+  POLYGON_MAINNET_CONTRACTS.NEP
+);
+const POLYGON_MAINNET_FNEO = getTokenByHash(
+  POLYGON_CHAIN,
+  MAINNET,
+  POLYGON_MAINNET_CONTRACTS.FNEO
+);
+const POLYGON_TESTNET_NEP = getTokenByHash(
+  POLYGON_CHAIN,
+  TESTNET,
+  POLYGON_TESTNET_CONTRACTS.NEP
+);
+const POLYGON_TESTNET_FNEO = getTokenByHash(
+  POLYGON_CHAIN,
+  TESTNET,
+  POLYGON_TESTNET_CONTRACTS.FNEO
+);
+
+const ETHEREUM_MAINNET_NEP = getTokenByHash(
+  ETH_CHAIN,
+  MAINNET,
+  ETHEREUM_MAINNET_CONTRACTS.NEP
+);
+const ETHEREUM_MAINNET_FNEO = getTokenByHash(
+  ETH_CHAIN,
+  MAINNET,
+  ETHEREUM_MAINNET_CONTRACTS.FNEO
+);
+
+const ETHEREUM_TESTNET_NEP= getTokenByHash(
+  ETH_CHAIN,
+  TESTNET,
+  ETHEREUM_TESTNET_CONTRACTS.NEP
+);
 
 export const BRIDGE_SUPPORTED_TOKEN_LIST = {
   [MAINNET]: {
     [NEO_MAINNET_CHAIN_ID]: [
       {
-        ...NEO_MAINNET_TOKENS.NEP,
+        ...NEO_MAINNET_NEP,
         pairs: {
-          [ETH_MAINNET_CHAIN_ID]: ETHEREUM_MAINNET_NEP_TOKEN_METADATA,
-          [POLYGON_MAINNET_CHAIN_ID]: POLYGON_MAINNET_NEP_TOKEN_METADATA,
+          [ETH_MAINNET_CHAIN_ID]: ETHEREUM_MAINNET_NEP,
+          [POLYGON_MAINNET_CHAIN_ID]: POLYGON_MAINNET_NEP,
         },
       },
       {
-        ...NEO_MAINNET_TOKENS.bNEO,
+        ...NEO_MAINNET_BNEO,
         pairs: {
-          [ETH_MAINNET_CHAIN_ID]: ETHEREUM_MAINNET_FNEO_TOKEN_METADATA,
-          [POLYGON_MAINNET_CHAIN_ID]: POLYGON_MAINNET_FNEO_TOKEN_METADATA,
+          [ETH_MAINNET_CHAIN_ID]: ETHEREUM_MAINNET_FNEO,
+          [POLYGON_MAINNET_CHAIN_ID]: POLYGON_MAINNET_FNEO,
         },
       },
     ],
     [POLYGON_MAINNET_CHAIN_ID]: [
       {
-        ...POLYGON_MAINNET_NEP_TOKEN_METADATA,
+        ...POLYGON_MAINNET_NEP,
         pairs: {
-          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_TOKENS.NEP,
+          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_NEP,
         },
       },
       {
-        ...POLYGON_MAINNET_FNEO_TOKEN_METADATA,
+        ...POLYGON_MAINNET_FNEO,
         pairs: {
-          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_TOKENS.bNEO,
+          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_BNEO,
         },
       },
     ],
     [ETH_MAINNET_CHAIN_ID]: [
       {
-        ...ETHEREUM_MAINNET_NEP_TOKEN_METADATA,
+        ...ETHEREUM_MAINNET_NEP,
         pairs: {
-          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_TOKENS.NEP,
+          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_NEP,
         },
       },
       {
-        ...ETHEREUM_MAINNET_FNEO_TOKEN_METADATA,
+        ...ETHEREUM_MAINNET_FNEO,
         pairs: {
-          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_TOKENS.bNEO,
+          [NEO_MAINNET_CHAIN_ID]: NEO_MAINNET_BNEO,
         },
       },
     ],
@@ -150,38 +200,38 @@ export const BRIDGE_SUPPORTED_TOKEN_LIST = {
   [TESTNET]: {
     [NEO_TESTNET_CHAIN_ID]: [
       {
-        ...NEO_TESTNET_TOKENS.BNEO,
+        ...NEO_TESTNET_BNEO,
         pairs: {
-          [POLYGON_TESTNET_CHAIN_ID]: POLYGON_TESTNET_FNEO_METADATA,
+          [POLYGON_TESTNET_CHAIN_ID]: POLYGON_TESTNET_FNEO,
         },
       },
       {
-        ...NEO_TESTNET_TOKENS.NEP,
+        ...NEO_TESTNET_NEP,
         pairs: {
-          [POLYGON_TESTNET_CHAIN_ID]: POLYGON_TESTNET_NEP_METADATA,
-          [ETH_TESTNET_CHAIN_ID]: ETHEREUM_TESTNET_NEP_METADATA,
+          [POLYGON_TESTNET_CHAIN_ID]: POLYGON_TESTNET_NEP,
+          [ETH_TESTNET_CHAIN_ID]: ETHEREUM_TESTNET_NEP,
         },
       },
     ],
     [POLYGON_TESTNET_CHAIN_ID]: [
       {
-        ...POLYGON_TESTNET_FNEO_METADATA,
+        ...POLYGON_TESTNET_FNEO,
         pairs: {
-          [NEO_TESTNET_CHAIN_ID]: NEO_TESTNET_TOKENS.BNEO,
+          [NEO_TESTNET_CHAIN_ID]: NEO_TESTNET_BNEO,
         },
       },
       {
-        ...POLYGON_TESTNET_NEP_METADATA,
+        ...POLYGON_TESTNET_NEP,
         pairs: {
-          [NEO_TESTNET_CHAIN_ID]: NEO_TESTNET_TOKENS.NEP,
+          [NEO_TESTNET_CHAIN_ID]: NEO_TESTNET_NEP,
         },
       },
     ],
     [ETH_TESTNET_CHAIN_ID]: [
       {
-        ...ETHEREUM_TESTNET_NEP_METADATA,
+        ...ETHEREUM_TESTNET_NEP,
         pairs: {
-          [NEO_TESTNET_CHAIN_ID]: NEO_TESTNET_TOKENS.NEP,
+          [NEO_TESTNET_CHAIN_ID]: NEO_TESTNET_NEP,
         },
       },
     ],
@@ -196,10 +246,10 @@ export const BRIDGE_CONTRACTS = {
       [ETH_MAINNET_CHAIN_ID]: NEO_BRIDGE_SCRIPT_HASH[ETH_CHAIN][MAINNET],
     },
     [POLYGON_MAINNET_CHAIN_ID]: {
-      [NEO_MAINNET_CHAIN_ID]: POLYGON_CONTRACT_MAP[MAINNET][BRIDGE],
+      [NEO_MAINNET_CHAIN_ID]: POLYGON_CONTRACTS[MAINNET][BRIDGE],
     },
     [ETH_MAINNET_CHAIN_ID]: {
-      [NEO_MAINNET_CHAIN_ID]: ETHEREUM_CONTRACT_MAP[MAINNET][BRIDGE],
+      [NEO_MAINNET_CHAIN_ID]: ETHEREUM_CONTRACTS[MAINNET][BRIDGE],
     },
   },
   [TESTNET]: {
@@ -209,10 +259,10 @@ export const BRIDGE_CONTRACTS = {
       [ETH_TESTNET_CHAIN_ID]: NEO_BRIDGE_SCRIPT_HASH[ETH_CHAIN][TESTNET],
     },
     [POLYGON_TESTNET_CHAIN_ID]: {
-      [NEO_TESTNET_CHAIN_ID]: POLYGON_CONTRACT_MAP[TESTNET][BRIDGE],
+      [NEO_TESTNET_CHAIN_ID]: POLYGON_CONTRACTS[TESTNET][BRIDGE],
     },
     [ETH_TESTNET_CHAIN_ID]: {
-      [NEO_TESTNET_CHAIN_ID]: ETHEREUM_CONTRACT_MAP[TESTNET][BRIDGE],
+      [NEO_TESTNET_CHAIN_ID]: ETHEREUM_CONTRACTS[TESTNET][BRIDGE],
     },
   },
 };

@@ -1,14 +1,15 @@
 import React from "react";
-import { Spin } from "antd";
+import { Space, Spin, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 14 }} spin />;
 
 const LoadingWithText = ({ title }) => {
   return (
-    <>
-      {title} <Spin indicator={antIcon} />
-    </>
+    <Space>
+      <Typography.Text>{title}</Typography.Text>
+      <Spin indicator={antIcon} />
+    </Space>
   );
 };
 export default LoadingWithText;

@@ -2,8 +2,8 @@ import React from "react";
 import { Avatar, Button, Space, Typography } from "antd";
 import { CHAINS } from "../../../../../consts/chains";
 import { MAINNET } from "../../../../../consts/global";
-import { TOKEN_LIST } from "../../../../../consts/tokens";
 import { toDecimal } from "../../../../../packages/neo/utils";
+import { getTokenByHash } from "../../../../../common/helpers";
 interface IPairItem {
   chain: CHAINS;
   defaultToken: string;
@@ -18,8 +18,8 @@ interface IPairItem {
   onClick: (val: string[]) => void;
 }
 const PairItem = ({ defaultToken, chain, data, onClick }: IPairItem) => {
-  let tokenA = TOKEN_LIST[chain][MAINNET][data.tokenA];
-  let tokenB = TOKEN_LIST[chain][MAINNET][data.tokenB];
+  let tokenA = getTokenByHash(chain, MAINNET, data.tokenA);
+  let tokenB = getTokenByHash(chain, MAINNET, data.tokenB);
 
   if (tokenA === undefined || tokenB === undefined) return null;
   return (

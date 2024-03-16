@@ -3,11 +3,11 @@ import { INetworkType } from "../../../../../../packages/neo/network";
 import { decimalCuts, numberTrim } from "../../../../../../packages/neo/utils";
 import { FaChartLine } from "react-icons/fa";
 import { Avatar, Space } from "antd";
-import { TOKEN_LIST } from "../../../../../../consts/tokens";
 import { CHAINS } from "../../../../../../consts/chains";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../../../consts/global";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import { RestAPI } from "../../../../../../packages/neo/api";
+import { getTokenByHash } from "../../../../../../common/helpers";
 
 interface ITokenItem {
   chain: CHAINS;
@@ -23,9 +23,9 @@ const TokenItem = ({ id, symbol, chain, network, onClick }: ITokenItem) => {
 
   if (!isLoaded) return <></>;
   if (data && data.totalLiquidityUSD <= 0) return <></>;
-  const logo = TOKEN_LIST[chain][network][id]
-    ? TOKEN_LIST[chain][network][id].icon
-    : UNKNOWN_TOKEN_IMAGE;
+
+  const token = getTokenByHash(chain, network, id);
+  const logo = token && token.icon ? token.icon : UNKNOWN_TOKEN_IMAGE;
 
   return (
     <tr>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RestAPI } from "../../../packages/neo/api";
-import { useApp } from "../../../common/hooks/use-app";
-
-const API_ENDPOINT = "your-api-endpoint"; // Replace with your actual API endpoint
+import { MAINNET } from "../../../consts/global";
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -11,23 +9,22 @@ const getRandomInt = (min, max) => {
 };
 
 const NFTAds = () => {
-  const { network } = useApp();
   const [nftData, setNftData] = useState<any>({
     no: 1065,
     image: "/boyz/1065.png",
   });
 
-  useEffect(() => {
-    const fetchNFT = async () => {
-      const no = getRandomInt(1, 1111);
-      try {
-        const data = await new RestAPI(network).getBoy(no);
-        setNftData(data);
-      } catch (err) {
-        console.error(`Failed to fetch NFT: ${err}`);
-      }
-    };
+  const fetchNFT = async () => {
+    const no = getRandomInt(1, 1111);
+    try {
+      const data = await new RestAPI(MAINNET).getBoy(no);
+      setNftData(data);
+    } catch (err) {
+      console.error(`Failed to fetch NFT: ${err}`);
+    }
+  };
 
+  useEffect(() => {
     fetchNFT();
 
     const intervalId = setInterval(fetchNFT, 3000);

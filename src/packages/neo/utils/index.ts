@@ -207,6 +207,7 @@ const intList = [
   "claimableAmount",
   "sharesPercentage",
   "chainId",
+  "lock",
 ];
 const classify = (k: string): any => {
   if (addressList.includes(k)) {

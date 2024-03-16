@@ -78,7 +78,6 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
       : value; // Return other values unchanged
 
   const jsonString = JSON.stringify(res1, replacer, 2);
-  console.log(jsonString);
 
   const res: any = await readContract(wagmiConfig, {
     address: CONTRACT_MAP[chain][network][SMITH] as any,
@@ -87,7 +86,6 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
     args: [30, 1],
     chainId: CONFIGS[network][chain].chainId,
   });
-  console.log(res);
   return res;
 };
 

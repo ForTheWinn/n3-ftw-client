@@ -1,14 +1,13 @@
 import { readContract, writeContract, simulateContract } from "@wagmi/core";
 import { IClaimable, IFarmPair } from "../../../common/routers/farm/interfaces";
-import { TOKEN_LIST } from "../../../consts/tokens";
 import { IClaimableRewards } from "../../neo/contracts/ftw/farm-v2/interfaces";
 import FTWFarmABI from "./abi/FTWFarm.json";
 import { getTokenURI } from "./swap";
 import { INetworkType } from "../../neo/network";
 import { ISwapLPToken } from "../../../common/routers/swap/interfaces";
 import { FARM } from "../../../consts/global";
-import { formatAmount } from "../../../common/helpers";
-import { EVM_CONTRACT_MAP } from "..";
+import { formatAmount, getTokenByHash } from "../../../common/helpers";
+import { EVM_CONTRACTS } from "..";
 import { CHAINS, CONFIGS } from "../../../consts/chains";
 import { wagmiConfig } from "../../../wagmi-config";
 
@@ -16,7 +15,7 @@ export const getPools = async (
   chain: CHAINS,
   network: INetworkType
 ): Promise<IFarmPair[]> => {
-  const contractAddress = EVM_CONTRACT_MAP[chain][network][FARM];
+  const contractAddress = EVM_CONTRACTS[chain][network][FARM];
   const chainId = CONFIGS[network][chain].chainId;
 
   const res: any = await readContract(wagmiConfig, {
@@ -26,8 +25,6 @@ export const getPools = async (
     args: [],
     chainId,
   });
-
-  console.log(res);
 
   const pools: IFarmPair[] = [];
 
@@ -40,18 +37,19 @@ export const getPools = async (
       chainId,
     });
 
-    const tokenA = TOKEN_LIST[chain][network][pool.tokenA];
-    const tokenB = TOKEN_LIST[chain][network][pool.tokenB];
-    const bonusToken = TOKEN_LIST[chain][network][pool.bonusToken];
+    const tokenA = await getTokenByHash(chain, network, pool.tokenA);
+    const tokenB = await getTokenByHash(chain, network, pool.tokenB);
+    const bonusToken = await getTokenByHash(chain, network, pool.bonusToken);
 
     const hasBonusRewards = pool.bonusTokensPerSecond > 0;
+
     pools.push({
       tokenA: pool.tokenA,
       tokenB: pool.tokenB,
       symbolA: tokenA ? tokenA.symbol : "Unknown",
       symbolB: tokenB ? tokenB.symbol : "Unknown",
-      iconA: tokenA ? tokenA.icon : "",
-      iconB: tokenB ? tokenB.icon : "",
+      iconA: tokenA && tokenA.icon ? tokenA.icon : "",
+      iconB: tokenB && tokenB.icon ? tokenB.icon : "",
       tokensStaked: pool.tokensStaked.toString(),
       nepTokensPerSecond: pool.nepTokensPerSecond.toString(),
       bonusToken: pool.bonusToken,
@@ -82,7 +80,7 @@ export const getStakedTokens = async (
   network: INetworkType,
   address: string
 ): Promise<ISwapLPToken[]> => {
-  const contractAddress = EVM_CONTRACT_MAP[chain][network][FARM];
+  const contractAddress = EVM_CONTRACTS[chain][network][FARM];
   const chainId = CONFIGS[network][chain].chainId;
 
   const res: any = await readContract(wagmiConfig, {
@@ -107,7 +105,7 @@ export const getClaimable = async (
   network: INetworkType,
   address: string
 ): Promise<IClaimable> => {
-  const contractAddress = EVM_CONTRACT_MAP[chain][network][FARM];
+  const contractAddress = EVM_CONTRACTS[chain][network][FARM];
   const chainId = CONFIGS[network][chain].chainId;
 
   const res: any = await readContract(wagmiConfig, {
@@ -118,16 +116,19 @@ export const getClaimable = async (
     chainId,
   });
 
+  console.log(res)
+
   const rewards: IClaimableRewards[] = [];
-  res.map((reward: any) => {
+  for (const reward of res) {
     const userShare = reward.shares.toString();
     if (userShare !== "0") {
-      const tokenList = TOKEN_LIST[chain][network];
-      const tokenAAddress = reward.tokenA;
-      const tokenBAddress = reward.tokenB;
-      const tokenA = tokenList[tokenAAddress];
-      const tokenB = tokenList[tokenBAddress];
-      const bonusToken = tokenList[reward.bonusToken];
+      const tokenA = await getTokenByHash(chain, network, reward.tokenA);
+      const tokenB = await getTokenByHash(chain, network, reward.tokenB);
+      const bonusToken = await getTokenByHash(
+        chain,
+        network,
+        reward.bonusToken
+      );
       const obj = {
         pairId: reward.pairId,
         tokenA: reward.tokenA,
@@ -145,7 +146,7 @@ export const getClaimable = async (
       };
       rewards.push(obj);
     }
-  });
+  }
 
   return {
     rewards: rewards,
@@ -159,7 +160,7 @@ export const stake = async (
   network: INetworkType,
   tokenId: string
 ): Promise<string> => {
-  const contractAddress = EVM_CONTRACT_MAP[chain][network][FARM];
+  const contractAddress = EVM_CONTRACTS[chain][network][FARM];
   const chainId = CONFIGS[network][chain].chainId;
   const args = {
     address: contractAddress,
@@ -179,7 +180,7 @@ export const unStake = async (
   tokenId: string
 ): Promise<string> => {
   const args = {
-    address: EVM_CONTRACT_MAP[chain][network][FARM],
+    address: EVM_CONTRACTS[chain][network][FARM],
     abi: FTWFarmABI,
     functionName: "unStake",
     args: [tokenId],
@@ -201,7 +202,7 @@ export const claim = async (
     pairIds.push(item.pairId as any);
   });
   const args = {
-    address: EVM_CONTRACT_MAP[chain][network][FARM],
+    address: EVM_CONTRACTS[chain][network][FARM],
     abi: FTWFarmABI,
     functionName: "claimMany",
     args: [pairIds],

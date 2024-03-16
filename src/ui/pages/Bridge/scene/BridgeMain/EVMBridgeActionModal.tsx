@@ -16,7 +16,7 @@ import {
 } from "../../../../../packages/evm/contracts/bridge";
 import { getCurrentStep, getExplorer } from "../../../../../common/helpers";
 import { getScriptHashFromAddressWithPrefix } from "../../../../../packages/neo/utils";
-import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
+import { NEP_ADDRESSES } from "../../../../../consts/contracts";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { STATUS_STATE } from "../../../../../consts/global";
@@ -93,7 +93,7 @@ const EVMBridgeActionModal = ({
     BRIDGE_CONTRACTS[network][chainId][destChain.chainId];
   const neoBridgeContractHash =
     BRIDGE_CONTRACTS[network][destChain.chainId][originChain.chainId];
-  const nepTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
+  const nepTokenContractHash = NEP_ADDRESSES[chain][network];
 
   const [state, setState] = useState(initialState);
 

@@ -8,7 +8,6 @@ import { FARM_V2_SCRIPT_HASH } from "./consts";
 import { parseMapValue, withDecimal } from "../../../utils";
 import { ILPToken } from "../swap/interfaces";
 import { BOYZ_SCRIPT_HASH } from "../boyz/consts";
-import { TOKEN_LIST } from "../../../../../consts/tokens";
 import {
   IClaimable,
   IFarmPair,
@@ -16,6 +15,7 @@ import {
 import { WENT_WRONG } from "../../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../../consts/global";
 import { NeoWallets } from "../../../wallets";
+import { getTokenByHash } from "../../../../../common/helpers";
 
 export class FarmV2Contract {
   network: INetworkType;
@@ -219,19 +219,17 @@ export class FarmV2Contract {
     if (res.state === "FAULT") {
       throw new Error(res.exception ? (res.exception as string) : WENT_WRONG);
     }
+    const pools: any = [];
 
-    return res.stack[0].value.map((pair) => {
+    for (const pair of res.stack[0].value) {
       const pool: IPool = parseMapValue(pair);
-      console.log(pool);
       const hasBonusRewards = pool.bonusTokensPerSecond > 0;
-      return {
+      const tokenA = await getTokenByHash(NEO_CHAIN, this.network, pool.tokenA);
+      const tokenB = await getTokenByHash(NEO_CHAIN, this.network, pool.tokenB);
+      pools.push({
         ...pool,
-        iconA: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenASymbol]
-          ? TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenASymbol].icon
-          : "",
-        iconB: TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenBSymbol]
-          ? TOKEN_LIST[NEO_CHAIN][this.network][pool.tokenBSymbol].icon
-          : "",
+        iconA: tokenA && tokenA.icon ? tokenA.icon : "",
+        iconB: tokenB && tokenB.icon ? tokenB.icon : "",
         symbolA: pool.tokenASymbol,
         symbolB: pool.tokenBSymbol,
         nepRewardsPerDay: withDecimal(pool.nepTokensPerSecond * 86400, 8, true),
@@ -241,12 +239,14 @@ export class FarmV2Contract {
               pool.bonusTokenDecimals,
               true
             )
-          : 0,
+          : "0",
         tokensStaked: pool.tokensStaked.toString(),
         nepTokensPerSecond: pool.nepTokensPerSecond.toString(),
         hasBonusRewards,
-      };
-    });
+      });
+    }
+
+    return pools;
   };
 
   getStakedLPTokens = async (address: string): Promise<ILPToken[]> => {

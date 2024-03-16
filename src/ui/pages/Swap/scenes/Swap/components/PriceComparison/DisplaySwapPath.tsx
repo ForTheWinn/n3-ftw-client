@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
-import { ITokenState } from "../../interfaces";
+import { IToken } from "../../../../../../../consts/tokens";
 import { swapRouter } from "../../../../../../../common/routers";
 import { Avatar, Space } from "antd";
 import Level from "../../../../../../components/Level";
@@ -12,7 +12,7 @@ import { formatAmount } from "../../../../../../../common/helpers";
 interface IDisplaySwapPathProps {
   chain: CHAINS;
   network: INetworkType;
-  path: ITokenState[];
+  path: IToken[];
   amountIn: string;
 }
 const DisplaySwapPath = ({

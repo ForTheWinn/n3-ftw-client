@@ -8,7 +8,7 @@ export const DisplayAd = () => {
     <div className="has-text-centered">
       <NFTAds />
       <Typography.Text>
-        <LoadingWithText title="Please hold while your transaction is being confirmed" />
+        <LoadingWithText title="Transaction is being confirmed" />
       </Typography.Text>
     </div>
   );

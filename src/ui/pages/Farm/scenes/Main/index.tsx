@@ -6,6 +6,7 @@ import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import ErrorNotificationWithRefresh from "../../../../components/ErrorNotificationWithRefresh";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { FARM_STAKE_POSITIONS_PATH } from "../../../../../consts/routes";
+import { Spin } from "antd";
 
 const StakingMain = () => {
   const { network } = useApp();
@@ -39,7 +40,9 @@ const StakingMain = () => {
       <hr />
       <div>
         {!isLoaded ? (
-          <div>Loading..</div>
+          <div className="has-text-centered">
+            <Spin />
+          </div>
         ) : error ? (
           <ErrorNotificationWithRefresh
             error={error}

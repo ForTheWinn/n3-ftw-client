@@ -51,8 +51,8 @@ export const CONFIGS = {
       rpc: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_POLYGON_MAINNET_API_KEY}`,
     },
     [NEOX_CHAIN]: {
-      label: "Neo X",
-      color: "primary",
+      label: "Neo X Testnet",
+      color: "danger",
       icon: NEOX_LOGO,
       chainId: NEOX_MAINNET_CHAIN_ID,
       rpc: "https://neoxseed1.ngd.network",

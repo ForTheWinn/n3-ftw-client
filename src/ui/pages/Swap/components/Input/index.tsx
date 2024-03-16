@@ -3,16 +3,17 @@ import { FaAngleDown } from "react-icons/fa";
 import NumberFormat from "react-number-format";
 import { Avatar } from "antd";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../../consts/global";
-import { ITokenState } from "../../scenes/Swap/interfaces";
+import { IToken } from "../../../../../consts/tokens";
 
 interface IInputProps {
-  token?: ITokenState;
+  token?: IToken;
   val?: string;
   isLoading?: boolean;
   userBalance?: string;
   setValue: (val?: string) => void;
   onClickAsset: () => void;
   isDisabled?: boolean;
+  notEnoughBalance?: boolean;
 }
 
 const Input = ({
@@ -21,8 +22,9 @@ const Input = ({
   isLoading,
   userBalance,
   isDisabled,
+  notEnoughBalance,
   setValue,
-  onClickAsset
+  onClickAsset,
 }: IInputProps) => {
   return (
     <div>
@@ -102,7 +104,9 @@ const Input = ({
                   setValue(userBalance);
                 }
               }}
-              className={`help has-text-righ is-clickable`}
+              className={`help has-text-righ is-clickable ${
+                notEnoughBalance ? "has-text-danger" : ""
+              }`}
             >
               Balance:{" "}
               {userBalance ? parseFloat(userBalance).toLocaleString() : "0"}

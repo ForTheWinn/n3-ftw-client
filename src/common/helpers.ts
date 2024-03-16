@@ -14,12 +14,33 @@ import {
 } from "../consts/global";
 import { TOKEN_LIST } from "../consts/tokens";
 import { INetworkType } from "../packages/neo/network";
-import { ITokenState } from "../ui/pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../consts/tokens";
 import { EXPLORER_URLS } from "../consts/urls";
 import { CHAINS, CONFIGS } from "../consts/chains";
 import { ethers } from "ethers";
-import { fetchTokenInfo } from "./routers/global";
 import { WENT_WRONG } from "../consts/messages";
+
+export function createTokenMetadata({
+  hash,
+  symbol,
+  decimals,
+  icon = "",
+  pairs = [],
+  isWhitelisted = false,
+  isNative = false,
+  nativePair,
+}: IToken) {
+  return {
+    hash,
+    symbol,
+    icon,
+    decimals,
+    pairs,
+    isWhitelisted,
+    isNative,
+    nativePair,
+  };
+}
 
 export const getExplorer = (
   chain: string,
@@ -102,32 +123,39 @@ const getNetworkByChainId = (chainId: number): INetworkType => {
   }
 };
 
-export const getTokenByHash = async (
+export const getTokenByHash = (
   chain: CHAINS,
   network: INetworkType,
   hash: string
-): Promise<ITokenState | undefined> => {
-  if (TOKEN_LIST[chain][network][hash]) {
-    return TOKEN_LIST[chain][network][hash];
+): IToken | undefined => {
+  const tokens: any = TOKEN_LIST[chain][network];
+  let token: IToken | undefined = undefined;
+
+  if (tokens) {
+    tokens.forEach((t) => {
+      if (t.hash.toLocaleLowerCase() === hash.toLocaleLowerCase()) {
+        token = t;
+      }
+    });
+  }
+
+  if (token) {
+    return token;
   } else {
-    try {
-      return await fetchTokenInfo(chain, network, hash);
-    } catch (error) {
-      console.error(error);
-      return undefined;
-    }
+    return undefined;
   }
 };
 
 export const findTradePaths = (
-  tokenList,
-  sourceToken: ITokenState,
-  targetToken: ITokenState,
+  chain: CHAINS,
+  network: INetworkType,
+  sourceToken: IToken,
+  targetToken: IToken,
   maxDepth = 3
 ) => {
-  const paths: ITokenState[][] = [];
+  const paths: IToken[][] = [];
 
-  function dfs(currentToken: ITokenState, currentPath: ITokenState[], depth) {
+  function dfs(currentToken: IToken, currentPath: IToken[], depth) {
     if (depth > maxDepth) return;
 
     if (currentToken === targetToken) {
@@ -135,14 +163,17 @@ export const findTradePaths = (
       paths.push(currentPath);
       return;
     }
+    const token = getTokenByHash(chain, network, currentToken.hash);
+
     const nextTokens =
-      tokenList[currentToken.hash] && tokenList[currentToken.hash].pairs
-        ? tokenList[currentToken.hash].pairs
-        : [];
+      token && token.pairs && token.pairs.length > 0 ? token.pairs : [];
+
     for (const nextToken of nextTokens) {
-      const _nextToken = tokenList[nextToken];
-      if (!currentPath.includes(_nextToken)) {
-        dfs(_nextToken, [...currentPath, _nextToken], depth + 1);
+      const _nextToken = getTokenByHash(chain, network, nextToken);
+      if (_nextToken) {
+        if (!currentPath.includes(_nextToken)) {
+          dfs(_nextToken, [...currentPath, _nextToken], depth + 1);
+        }
       }
     }
   }
@@ -218,33 +249,40 @@ export function convertChainForBackend(chain: CHAINS): string {
       throw new Error("Invalid chain");
   }
 }
-export function createTokenMetadata({
-  hash,
-  symbol,
-  icon,
-  decimals,
-  pairs = [],
-  isWhitelisted = false,
-  isNative = false,
-  nativePair,
-}: {
-  hash: string;
-  symbol: string;
-  decimals: number;
-  icon: string;
-  pairs?: string[];
-  isWhitelisted?: boolean;
-  isNative?: boolean;
-  nativePair?: string;
-}) {
-  return {
-    hash,
-    symbol,
-    icon,
-    decimals,
-    pairs,
-    isWhitelisted,
-    isNative,
-    nativePair,
-  };
-}
+
+export const getWhitelistSwapTokens = (tokens: any) => {
+  return Object.values(tokens).filter((token: any) => !!token.isWhitelisted);
+};
+
+export const getParamsFromBrowser = (): { tokenA: string; tokenB: string } | undefined => {
+  try {
+    const href = window.location.href;
+    // Find the start of the query string
+    const queryStringStart = href.indexOf("?");
+
+    // If there is a query string, extract and parse it; otherwise, params is an empty object
+    const params: any =
+      queryStringStart !== -1
+        ? href
+            .substring(queryStringStart + 1)
+            .split("&")
+            .reduce((acc, pair) => {
+              const [key, value] = pair.split("=").map(decodeURIComponent);
+              if (key) acc[key] = value; // Only add to acc if key is not empty
+              return acc;
+            }, {})
+        : {};
+
+    if (params && params.tokenA && params.tokenB) {
+      return {
+        tokenA: params.tokenA,
+        tokenB: params.tokenB,
+      };
+    } else {
+      return undefined;
+    }
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};

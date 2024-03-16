@@ -1,3 +1,4 @@
+import { Alert } from "antd";
 import React from "react";
 
 interface IErrorsProps {
@@ -5,16 +6,7 @@ interface IErrorsProps {
   onClose: () => void;
 }
 const Errors = ({ errorMessages, onClose }: IErrorsProps) => {
-  return (
-    <>
-      <div className="message is-danger" style={{ wordBreak: "break-word" }}>
-        {errorMessages}
-      </div>
-      <button onClick={onClose} className="button is-black">
-        Close
-      </button>
-    </>
-  );
+  return <Alert message="Error" description={errorMessages} type="error" />;
 };
 
 export default Errors;

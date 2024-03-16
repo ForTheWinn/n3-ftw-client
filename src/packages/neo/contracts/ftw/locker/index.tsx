@@ -12,7 +12,7 @@ import {
   ILockersByToken,
 } from "./interface";
 import { getDefaultWitnessScope } from "../../../utils";
-import { ITokenState } from "../../../../../ui/pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../../../consts/tokens";
 import { NeoWallets } from "../../../wallets";
 
 export class LockerContract {
@@ -26,7 +26,7 @@ export class LockerContract {
 
   create = async (
     connectedWallet: IConnectedWallet,
-    contract: ITokenState,
+    contract: IToken,
     receiver: string,
     amount: number,
     releaseAt: number,

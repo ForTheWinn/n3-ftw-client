@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
-import { Steps } from "antd";
-import { ITokenState } from "../../scenes/Swap/interfaces";
+import { Button, Result, Space, Steps } from "antd";
+import { IToken } from "../../../../../consts/tokens";
 import LoadingWithText from "../../../../components/Commons/LoadingWithText";
 import { CHAINS } from "../../../../../consts/chains";
 import { INetworkType } from "../../../../../packages/neo/network";
@@ -24,8 +24,8 @@ interface IActionModalProps {
   chain: CHAINS;
   network: INetworkType;
   address: any;
-  tokenA: ITokenState;
-  tokenB: ITokenState;
+  tokenA: IToken;
+  tokenB: IToken;
   amountA: string;
   amountB: string;
   slippage: number;
@@ -53,7 +53,7 @@ const steps = [
     key: "tokenB",
   },
   {
-    title: "Tranasction Submit",
+    title: "Confirm",
     key: "provide",
   },
 ];
@@ -66,10 +66,10 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
     amountB,
     slippage,
     address,
-    onSuccess,
-    onCancel,
     chain,
     network,
+    onSuccess,
+    onCancel,
   } = props;
   const [state, setState] = useState(initialState);
   const parsedAmountA = ethers.parseUnits(amountA, tokenA.decimals);
@@ -249,12 +249,18 @@ const EVMLiquidityActionModal = (props: IActionModalProps) => {
         </div>
 
         {errorMessages.length > 0 && (
-          <div className="block">
+          <Space
+            style={{
+              width: "100%",
+            }}
+            direction="vertical"
+          >
             <Errors
               errorMessages={errorMessages.join(" ")}
               onClose={onCancel}
             />
-          </div>
+            <Button onClick={onCancel}>Close</Button>
+          </Space>
         )}
       </div>
     </Modal>

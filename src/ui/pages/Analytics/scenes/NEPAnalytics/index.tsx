@@ -13,7 +13,7 @@ import {
 } from "../../../../../consts/global";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { fetchTokenInfo } from "../../../../../common/routers/global";
-import { GLOBAL_NEP_CONTRACT_ADDRESS } from "../../../../../consts/contracts";
+import { NEP_ADDRESSES } from "../../../../../consts/contracts";
 import {
   getChainIdByChain,
   getExplorer,
@@ -23,7 +23,7 @@ import { RestAPI } from "../../../../../packages/neo/api";
 import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/tokens";
 import AddTokenButton from "../../../../components/AddTokenOnMetaMaskButton";
 import CandleChart from "../../components/Pairs/TokenDetailPage/CandleChart";
-import { NEO_MAINNET_TOKENS } from "../../../../../packages/neo/consts/tokens";
+import { CONFIGS } from "../../../../../consts/chains";
 
 const EMMISSIONS = [
   {
@@ -80,25 +80,17 @@ const NEPAnalytics = () => {
       setLoading(true);
       try {
         const [neoNEP, polNEP, ethNEP, neoXNep, nepPrice] = await Promise.all([
-          fetchTokenInfo(
-            NEO_CHAIN,
-            network,
-            GLOBAL_NEP_CONTRACT_ADDRESS[NEO_CHAIN][network]
-          ),
+          fetchTokenInfo(NEO_CHAIN, network, NEP_ADDRESSES[NEO_CHAIN][network]),
           fetchTokenInfo(
             POLYGON_CHAIN,
             network,
-            GLOBAL_NEP_CONTRACT_ADDRESS[POLYGON_CHAIN][network]
+            NEP_ADDRESSES[POLYGON_CHAIN][network]
           ),
-          fetchTokenInfo(
-            ETH_CHAIN,
-            network,
-            GLOBAL_NEP_CONTRACT_ADDRESS[ETH_CHAIN][network]
-          ),
+          fetchTokenInfo(ETH_CHAIN, network, NEP_ADDRESSES[ETH_CHAIN][network]),
           fetchTokenInfo(
             NEOX_CHAIN,
             network,
-            GLOBAL_NEP_CONTRACT_ADDRESS[NEOX_CHAIN][network]
+            NEP_ADDRESSES[NEOX_CHAIN][network]
           ),
           new RestAPI(MAINNET).getPrice(NEO_NEP_CONTRACT_ADDRESS[MAINNET]),
         ]);
@@ -161,7 +153,7 @@ const NEPAnalytics = () => {
             <br />
             <CandleChart
               chain={"NEO_CHAIN"}
-              tokenHash={NEO_MAINNET_TOKENS.NEP.hash}
+              tokenHash={NEO_NEP_CONTRACT_ADDRESS[MAINNET]}
               height={160}
             />
           </Card>
@@ -198,12 +190,11 @@ const NEPAnalytics = () => {
         <div className="column is-4">
           <Card style={{ height: "240px" }} loading={loading}>
             <Card.Meta
-              avatar={<Avatar src={NEO_LOGO} />}
-              title="NEP on Neo"
+              avatar={<Avatar src={CONFIGS[network][NEO_CHAIN].icon} />}
+              title={`NEP on ${CONFIGS[network][NEO_CHAIN].label}`}
               description={
                 <>
                   <Typography.Paragraph>
-                    Hash:{" "}
                     <a
                       target="_blank"
                       href={`${getExplorer(NEO_CHAIN, network, "contract")}/${
@@ -225,12 +216,11 @@ const NEPAnalytics = () => {
         <div className="column is-4">
           <Card style={{ height: "240px" }} loading={loading}>
             <Card.Meta
-              avatar={<Avatar src={ETHEREUM_LOGO} />}
-              title="NEP on Ethereum"
+              avatar={<Avatar src={CONFIGS[network][ETH_CHAIN].icon} />}
+              title={`NEP on ${CONFIGS[network][ETH_CHAIN].label}`}
               description={
                 <>
                   <Typography.Paragraph>
-                    Hash:{" "}
                     <a
                       target="_blank"
                       href={`${getExplorer(ETH_CHAIN, network, "contract")}/${
@@ -261,12 +251,11 @@ const NEPAnalytics = () => {
         <div className="column is-4">
           <Card style={{ height: "240px" }} loading={loading}>
             <Card.Meta
-              avatar={<Avatar src={POLYGON_LOGO} />}
-              title="NEP on Polygon"
+              avatar={<Avatar src={CONFIGS[network][POLYGON_CHAIN].icon} />}
+              title={`NEP on ${CONFIGS[network][POLYGON_CHAIN].label}`}
               description={
                 <>
                   <Typography.Paragraph>
-                    Hash:{" "}
                     <a
                       target="_blank"
                       href={`${getExplorer(
@@ -299,12 +288,11 @@ const NEPAnalytics = () => {
         <div className="column is-4">
           <Card style={{ height: "240px" }} loading={loading}>
             <Card.Meta
-              avatar={<Avatar src={NEO_LOGO} />}
-              title="NEP on NeoX"
+              avatar={<Avatar src={CONFIGS[network][NEOX_CHAIN].icon} />}
+              title={`NEP on ${CONFIGS[network][NEOX_CHAIN].label}`}
               description={
                 <>
                   <Typography.Paragraph>
-                    Hash:{" "}
                     <a
                       target="_blank"
                       href={`${getExplorer(NEO_CHAIN, network, "contract")}/${
@@ -315,8 +303,8 @@ const NEPAnalytics = () => {
                     </a>
                     <br />
                     Total Supply: {transformString(neoXSupply)}
-                    <br />
-                    MC: ${transformString(neoXMC)}
+                    {/* <br /> */}
+                    {/* MC: ${transformString(neoXMC)} */}
                   </Typography.Paragraph>
                   <AddTokenButton
                     chainId={getChainIdByChain(NEOX_CHAIN, network)}

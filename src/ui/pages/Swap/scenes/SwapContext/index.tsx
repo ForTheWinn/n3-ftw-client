@@ -8,10 +8,9 @@ import React, {
 import Decimal from "decimal.js";
 import { ethers } from "ethers";
 
-import { ISwapInputState, ITokenState } from "../Swap/interfaces";
+import { ISwapInputState } from "../Swap/interfaces";
+import { IToken } from "../../../../../consts/tokens";
 import { useLocation } from "react-router-dom";
-import queryString from "query-string";
-import { useApp } from "../../../../../common/hooks/use-app";
 import {
   ISwapReserves,
   IUserTokenBalances,
@@ -20,20 +19,24 @@ import { swapRouter } from "../../../../../common/routers";
 import { CHAINS } from "../../../../../consts/chains";
 import { DEFAULT_SLIPPAGE } from "../../../../../packages/neo/contracts/ftw/swap/consts";
 import { INetworkType } from "../../../../../packages/neo/network";
-import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
-import { formatAmount, getTokenByHash } from "../../../../../common/helpers";
+import {
+  formatAmount,
+  getParamsFromBrowser,
+  getTokenByHash,
+} from "../../../../../common/helpers";
 
 import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
-import ProvideLPInfo from "../../components/ProvideLPInfo";
-import { SWAP_PATH_LIQUIDITY_ADD } from "../../../../../consts/routes";
 import { message } from "antd";
+import { fetchTokenInfo } from "../../../../../common/routers/global";
+import { calculatePriceImpact } from "../Swap/helpers";
 
 interface ISwapContext {
+  type: "swap" | "liquidity";
   chain: CHAINS;
   network: INetworkType;
-  tokenA: ITokenState | undefined;
-  tokenB: ITokenState | undefined;
+  tokenA: IToken | undefined;
+  tokenB: IToken | undefined;
   amountA: string | undefined;
   amountB: string | undefined;
   isAmountALoading: boolean;
@@ -46,31 +49,51 @@ interface ISwapContext {
   priceImpact: number;
   hasEstimatedError: boolean;
   hasReservesError: boolean;
+  isUnWrapping: boolean;
+  isWrapping: boolean;
+  isSwapWithWrapping: boolean;
+  isSwapWithUnWrapping: boolean;
+  notEnoughBalanceA?: boolean;
+  notEnoughBalanceB?: boolean;
   setAssetChangeModalActive: (v: "A" | "B" | undefined) => void;
   setSettingsModalActive: (v: boolean) => void;
   onSwapInputChange: (v: ISwapInputState) => void;
   onInputSwitch: () => void;
   onAfterSwapCompleted: () => void;
-  toggleWalletSidebar: () => void;
 }
 
 export const SwapContext = createContext({} as ISwapContext);
 
 const getEstimatedForSwap = async (
-  chain,
-  network,
-  swapInput,
-  tokenA,
-  tokenB
+  chain: CHAINS,
+  network: INetworkType,
+  swapInput: {
+    type: "A" | "B";
+    value: string;
+  },
+  tokenA: IToken,
+  tokenB: IToken
 ) => {
   try {
     const args = {
-      tokenA: tokenA.hash,
-      tokenB: tokenB.hash,
+      tokenA:
+        tokenA.isNative && tokenA.nativePair
+          ? tokenA.nativePair.hash
+          : tokenA.hash,
+      tokenB:
+        tokenB.isNative && tokenB.nativePair
+          ? tokenB.nativePair.hash
+          : tokenB.hash,
       amount: ethers
         .parseUnits(
           swapInput.value,
-          swapInput.type === "A" ? tokenA.decimals : tokenB.decimals
+          swapInput.type === "A"
+            ? tokenA.isNative && tokenA.nativePair
+              ? tokenA.nativePair.decimals
+              : tokenA.decimals
+            : tokenB.isNative && tokenB.nativePair
+            ? tokenB.nativePair.decimals
+            : tokenB.decimals
         )
         .toString(),
       isReverse: swapInput.type === "B",
@@ -92,8 +115,8 @@ const getEstimatedForSwap = async (
 
 const getEstimatedForLiquidity = (
   swapInput: ISwapInputState,
-  tokenA: ITokenState,
-  tokenB: ITokenState,
+  tokenA: IToken,
+  tokenB: IToken,
   reserves: ISwapReserves | undefined
 ) => {
   if (reserves && swapInput.value && reserves && reserves.shares !== "0") {
@@ -122,24 +145,26 @@ const getEstimatedForLiquidity = (
   return null;
 };
 
-export const SwapContextProvider = (props: {
+export const SwapContextProvider = ({
+  type,
+  children,
+  chain,
+  network,
+  refreshCount,
+  userWalletAddress,
+  increaseRefreshCount,
+}: {
   type: "swap" | "liquidity";
   children: any;
+  chain: CHAINS;
+  network: INetworkType;
+  refreshCount: number;
+  userWalletAddress?: string;
+  increaseRefreshCount: () => void;
 }) => {
   const location = useLocation();
-  const params = queryString.parse(location.search);
-  const {
-    chain,
-    network,
-    refreshCount,
-    increaseRefreshCount,
-    toggleWalletSidebar,
-  } = useApp();
-
-  const { address, isConnected, client } = useWalletRouter(chain);
-
-  const [tokenA, setTokenA] = useState<ITokenState | undefined>();
-  const [tokenB, setTokenB] = useState<ITokenState | undefined>();
+  const [tokenA, setTokenA] = useState<IToken | undefined>();
+  const [tokenB, setTokenB] = useState<IToken | undefined>();
 
   const [amountA, setAmountA] = useState<string | undefined>();
   const [amountB, setAmountB] = useState<string | undefined>();
@@ -172,18 +197,20 @@ export const SwapContextProvider = (props: {
   };
 
   const onInputSwitch = async () => {
-    setTokenA(tokenB);
-    setTokenB(tokenA);
     setAmountA(undefined);
     setAmountB(undefined);
+    setSwapInput(undefined);
+    setTokenA(tokenB);
+    setTokenB(tokenA);
   };
 
   // This is used in TokenList when users select a token.
-  const onAssetClick = (token: ITokenState) => {
+  const onAssetClick = (token: IToken) => {
     if (isAssetChangeModalActive === "A") {
       if (tokenB && tokenB.hash === token.hash) {
         return false;
       }
+
       setTokenA(token);
     } else {
       if (tokenA && tokenA.hash === token.hash) {
@@ -191,6 +218,9 @@ export const SwapContextProvider = (props: {
       }
       setTokenB(token);
     }
+    setSwapInput(undefined);
+    setAmountA(undefined);
+    setAmountB(undefined);
     setAssetChangeModalActive(undefined);
   };
 
@@ -201,94 +231,49 @@ export const SwapContextProvider = (props: {
     increaseRefreshCount();
   };
 
-  useEffect(() => {
-    const load = async (_tokenA: ITokenState, _tokenB: ITokenState) => {
-      setReservesError(false);
-      try {
+  const fetchPairReserves = async () => {
+    try {
+      if (tokenA && tokenB) {
+        setReserve(undefined);
+        setBalances(undefined);
+        setReservesError(false);
         const res = await swapRouter.getReserves(
           chain,
           network,
-          _tokenA.hash,
-          _tokenB.hash
+          tokenA.isNative && tokenA.nativePair
+            ? tokenA.nativePair.hash
+            : tokenA.hash,
+          tokenB.isNative && tokenB.nativePair
+            ? tokenB.nativePair.hash
+            : tokenB.hash
         );
-
         setReserve(res);
-        if (address) {
+        if (userWalletAddress) {
           const { amountA, amountB } = await swapRouter.getBalances(
             chain,
             network,
-            address,
-            _tokenA,
-            _tokenB
+            userWalletAddress,
+            tokenA,
+            tokenB
           );
           setBalances({
             amountA,
             amountB,
           });
         }
-
         window.history.replaceState(
           null,
           "",
-          `/#${location.pathname}?tokenA=${_tokenA.hash}&tokenB=${_tokenB.hash}`
+          `/#${location.pathname}?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
         );
-      } catch (e) {
-        setReservesError(true);
-        console.error(e);
       }
-    };
-    if (tokenA && tokenB) {
-      load(tokenA, tokenB);
+    } catch (e) {
+      setReservesError(true);
+      console.error("fetchPairReserves error", e);
     }
-  }, [address, tokenA, tokenB, refreshCount]);
+  };
 
-  useEffect(() => {
-    if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
-      const delayDebounceFn = setTimeout(async () => {
-        setEstimatedError(false);
-        setAmountALoading(swapInput.type === "B");
-        setAmountBLoading(swapInput.type === "A");
-
-        let estimated;
-        if (props.type === "swap") {
-          estimated = await getEstimatedForSwap(
-            chain,
-            network,
-            swapInput,
-            tokenA,
-            tokenB
-          );
-        } else if (props.type === "liquidity") {
-          estimated = getEstimatedForLiquidity(
-            swapInput,
-            tokenA,
-            tokenB,
-            reserves
-          );
-        }
-        if (estimated && estimated !== "0") {
-          if (swapInput.type === "A") {
-            setAmountB(estimated);
-          } else {
-            setAmountA(estimated);
-          }
-        }
-
-        setAmountALoading(false);
-        setAmountBLoading(false);
-      }, 800);
-
-      return () => clearTimeout(delayDebounceFn);
-    }
-  }, [swapInput, tokenA, tokenB]);
-
-  const isFirstRender = useRef(true);
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+  const resetStates = () => {
     setTokenA(undefined);
     setTokenB(undefined);
     setAmountA(undefined);
@@ -301,56 +286,189 @@ export const SwapContextProvider = (props: {
     setAmountBLoading(false);
     window.history.replaceState(null, "", `/#${location.pathname}`);
     message.success("Chain switced!");
-  }, [chain]);
+    increaseRefreshCount();
+  };
 
-  useEffect(() => {
-    const fetchTokens = async () => {
+  const setTokensFromParams = async () => {
+    let tokenA: IToken | undefined;
+    let tokenB: IToken | undefined;
+    const params = getParamsFromBrowser();
+    if (params) {
       if (params.tokenA) {
-        const tokenA = await getTokenByHash(
-          chain,
-          network,
-          params.tokenA as string
-        );
-        setTokenA(tokenA);
+        tokenA = getTokenByHash(chain, network, params.tokenA as string);
+        if (!tokenA) {
+          const res = await fetchTokenInfo(
+            chain,
+            network,
+            params.tokenA as string
+          );
+          if (res) {
+            tokenA = res;
+          }
+        }
       }
       if (params.tokenB) {
-        const tokenB = await getTokenByHash(
-          chain,
-          network,
-          params.tokenB as string
-        );
-        setTokenB(tokenB);
+        tokenB = getTokenByHash(chain, network, params.tokenB as string);
+        if (!tokenB) {
+          const res = await fetchTokenInfo(
+            chain,
+            network,
+            params.tokenB as string
+          );
+          if (res) {
+            tokenB = res;
+          }
+        }
       }
-    };
-
-    fetchTokens();
-  }, [chain, network]);
-
-  let noLiquidity = reserves?.shares === "0";
-  let priceImpact = 0;
-  if (tokenA && tokenB && !noLiquidity) {
-    if (amountA && amountB && reserves) {
-      try {
-        const parsedAmountB = new Decimal(amountB).mul(
-          new Decimal(10).pow(tokenB.decimals)
-        );
-        const reserveB = BigInt(reserves.reserveB);
-
-        priceImpact = parsedAmountB
-          .div(reserveB.toString())
-          .mul(100)
-          .toNumber();
-      } catch (e) {
-        console.error(e);
+      if (tokenA && tokenB) {
+        setTokenA(tokenA);
+        setTokenB(tokenB);
+      } else {
+        window.history.replaceState(null, "", `/#${location.pathname}`);
       }
     }
+  };
+
+  const getEstimated = async () => {
+    if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
+      if (tokenA && tokenB && swapInput && swapInput.value !== undefined) {
+        const delayDebounceFn = setTimeout(async () => {
+          setEstimatedError(false);
+          setAmountALoading(swapInput.type === "B");
+          setAmountBLoading(swapInput.type === "A");
+
+          let estimated;
+          if (type === "swap") {
+            if (isUnWrapping || isWrapping) {
+              estimated = swapInput.value;
+            } else {
+              estimated = await getEstimatedForSwap(
+                chain,
+                network,
+                swapInput as any,
+                tokenA,
+                tokenB
+              );
+            }
+          } else if (type === "liquidity") {
+            estimated = getEstimatedForLiquidity(
+              swapInput,
+              tokenA,
+              tokenB,
+              reserves
+            );
+          }
+          if (estimated && estimated !== "0") {
+            if (swapInput.type === "A") {
+              setAmountB(estimated);
+            } else {
+              setAmountA(estimated);
+            }
+          }
+
+          setAmountALoading(false);
+          setAmountBLoading(false);
+        }, 800);
+
+        return () => clearTimeout(delayDebounceFn);
+      }
+    }
+  };
+
+  let isWrapping = false;
+  let isUnWrapping = false;
+  let isSwapWithWrapping = false;
+  let isSwapWithUnWrapping = false;
+  let notEnoughBalanceA: boolean | undefined = undefined;
+  let notEnoughBalanceB: boolean | undefined = undefined;
+  let noLiquidity = reserves?.shares === "0";
+  let priceImpact = 0;
+
+  if (tokenA && tokenB && !noLiquidity && amountA && reserves) {
+    let tokenADecimals = tokenA.nativePair
+      ? tokenA.nativePair.decimals
+      : tokenA.decimals;
+
+    priceImpact = calculatePriceImpact(
+      ethers.parseUnits(amountA, tokenADecimals).toString(),
+      reserves.reserveA,
+      reserves.reserveB
+    );
   }
-  // let isNativeTokenSwap = false;
-  // if (tokenA && tokenB) {
-  //   isNativeTokenSwap = tokenA.isNative || tokenB.isNative;
-  // }
+
+  if (balances && amountA) {
+    if (new Decimal(balances.amountA).lt(new Decimal(amountA))) {
+      notEnoughBalanceA = true;
+    } else {
+      notEnoughBalanceA = false;
+    }
+  }
+
+  if (balances && amountB) {
+    if (new Decimal(balances.amountB).lt(new Decimal(amountB))) {
+      notEnoughBalanceB = true;
+    } else {
+      notEnoughBalanceB = false;
+    }
+  }
+
+  if (tokenA && tokenA.nativePair) {
+    if (tokenA.nativePair.hash === tokenB?.hash) {
+      isWrapping = true;
+    } else {
+      isSwapWithWrapping = true;
+    }
+  }
+
+  if (tokenB && tokenB.nativePair) {
+    if (tokenB.nativePair.hash === tokenA?.hash) {
+      isUnWrapping = true;
+    } else {
+      isSwapWithUnWrapping = true;
+    }
+  }
+
+  /* 
+    Reset all states when chain changed
+  */
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
+      resetStates();
+    }
+  }, [chain]);
+  /*
+    Get estimated amount when user input amount
+  */
+  useEffect(() => {
+    (async () => {
+      getEstimated();
+    })();
+  }, [swapInput, tokenA, tokenB]);
+
+  /* 
+    Get token info from browser query params
+  */
+
+  useEffect(() => {
+    (async () => {
+      await setTokensFromParams();
+    })();
+  }, [chain, network]);
+
+  /*
+    Get reserves and balances when tokenA and tokenB are set
+  */
+  useEffect(() => {
+    (async () => {
+      await fetchPairReserves();
+    })();
+  }, [tokenA, tokenB, refreshCount, userWalletAddress]);
 
   const contextValue = {
+    type,
     chain,
     network,
     tokenA,
@@ -367,32 +485,22 @@ export const SwapContextProvider = (props: {
     priceImpact,
     hasEstimatedError,
     hasReservesError,
+    isWrapping,
+    isUnWrapping,
+    isSwapWithWrapping,
+    isSwapWithUnWrapping,
+    notEnoughBalanceA,
+    notEnoughBalanceB,
     setAssetChangeModalActive,
     setSettingsModalActive,
     onSwapInputChange,
     onInputSwitch,
     onAfterSwapCompleted,
-    toggleWalletSidebar,
   };
-
   return (
     <SwapContext.Provider value={contextValue}>
-      {noLiquidity && (
-        <ProvideLPInfo
-          path={
-            props.type === "swap"
-              ? {
-                  pathname: `${SWAP_PATH_LIQUIDITY_ADD}`,
-                  search:
-                    tokenA && tokenB
-                      ? `?tokenA=${tokenA.hash}&tokenB=${tokenB.hash}`
-                      : "",
-                }
-              : null
-          }
-        />
-      )}
-      {props.children}
+      {children}
+
       {isAssetChangeModalActive && (
         <TokenList
           chain={chain}

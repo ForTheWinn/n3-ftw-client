@@ -3,14 +3,13 @@ import { getAfterSlippage } from "../../../../../../../packages/neo/contracts/ft
 import { numberTrim } from "../../../../../../../packages/neo/utils";
 import { priceImpactFormat } from "../../helpers";
 
-import { ITokenState } from "../../interfaces";
+import { IToken } from "../../../../../../../consts/tokens";
 import PriceRatio from "./PriceRatio";
 import { Collapse, Divider } from "antd";
-const { Panel } = Collapse;
 
 interface ISwapDetailsProps {
-  tokenA: ITokenState;
-  tokenB: ITokenState;
+  tokenA: IToken;
+  tokenB: IToken;
   amountA: string;
   amountB: string;
   priceImpact: number;
@@ -22,7 +21,7 @@ const SwapDetails = ({
   amountA,
   amountB,
   slippage,
-  priceImpact
+  priceImpact,
 }: ISwapDetailsProps) => {
   const tolerance = numberTrim(
     parseFloat(getAfterSlippage(amountB, slippage)),
@@ -31,16 +30,14 @@ const SwapDetails = ({
   const expected = numberTrim(parseFloat(amountB), tokenB.decimals);
 
   return (
-    <div className="mt-1">
-      <Collapse
-        size="small"
-        collapsible="icon"
-        bordered={false}
-        defaultActiveKey={[]}
-        style={{ background: "white" }}
-      >
-        <Panel
-          header={
+    <Collapse
+      className="mt-1"
+      bordered={false}
+      style={{ background: "white" }}
+      items={[
+        {
+          key: "1",
+          label: (
             <PriceRatio
               symbolA={tokenA.symbol}
               symbolB={tokenB.symbol}
@@ -49,49 +46,49 @@ const SwapDetails = ({
               decimalsA={tokenA.decimals}
               decimalsB={tokenB.decimals}
             />
-          }
-          key="1"
-        >
-          <div className="box is-shadowless content is-small has-background-light">
-            <div className="level is-mobile mb-2">
-              <div className="level-left">
-                <div className="level-item">Expected output</div>
+          ),
+          children: (
+            <div className="box is-shadowless content is-small has-background-light">
+              <div className="level is-mobile mb-2">
+                <div className="level-left">
+                  <div className="level-item">Expected output</div>
+                </div>
+                <div className="level-right">
+                  <div className="level-item has-text-right">
+                    {expected} {tokenB.symbol}
+                  </div>
+                </div>
               </div>
-              <div className="level-right">
-                <div className="level-item has-text-right">
-                  {expected} {tokenB.symbol}
+              <div className="level is-mobile is-marginless">
+                <div className="level-left">
+                  <div className="level-item">Price impact</div>
+                </div>
+                <div className="level-right">
+                  <div className="level-item  has-text-right">
+                    {priceImpactFormat(priceImpact)}
+                  </div>
+                </div>
+              </div>
+              <Divider className="mt-2 mb-2" />
+              <div className="level is-mobile  is-marginless">
+                <div className="level-left">
+                  <div className="level-item">
+                    Minimum received after slippage
+                    <br /> ({slippage} %)
+                  </div>
+                </div>
+                <div className="level-right">
+                  <div className="level-item has-text-right">
+                    {tolerance}
+                    <br /> {tokenB.symbol}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="level is-mobile is-marginless">
-              <div className="level-left">
-                <div className="level-item">Price impact</div>
-              </div>
-              <div className="level-right">
-                <div className="level-item  has-text-right">
-                  {priceImpactFormat(priceImpact)}
-                </div>
-              </div>
-            </div>
-            <Divider className="mt-2 mb-2" />
-            <div className="level is-mobile  is-marginless">
-              <div className="level-left">
-                <div className="level-item">
-                  Minimum received after slippage
-                  <br /> ({slippage} %)
-                </div>
-              </div>
-              <div className="level-right">
-                <div className="level-item has-text-right">
-                  {tolerance}
-                  <br /> {tokenB.symbol}
-                </div>
-              </div>
-            </div>
-          </div>
-        </Panel>
-      </Collapse>
-    </div>
+          ),
+        },
+      ]}
+    />
   );
 };
 

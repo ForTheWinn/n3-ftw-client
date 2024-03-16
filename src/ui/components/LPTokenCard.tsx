@@ -3,6 +3,7 @@ import { ISwapLPToken } from "../../common/routers/swap/interfaces";
 import { formatAmount } from "../../common/helpers";
 
 const LPTokenCard = (props: ISwapLPToken) => {
+  const isLocked = props.lock && props.lock > new Date().getTime();
   return (
     <>
       <strong>Token Id: {props.tokenId}</strong>
@@ -17,6 +18,12 @@ const LPTokenCard = (props: ISwapLPToken) => {
         }`}</small>
         <br />
         <small>{parseFloat(props.sharesPercentage) / 100}%</small>
+        {isLocked && props.lock && (
+          <>
+            <br />
+            <small>Locked until {new Date(props.lock).toLocaleString()}</small>
+          </>
+        )}
       </>
     </>
   );

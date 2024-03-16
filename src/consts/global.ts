@@ -23,8 +23,9 @@ export const SMITH = "SMITH";
 
 export const ETHEREUM_LOGO = "/symbols/eth.png";
 export const POLYGON_LOGO = "/symbols/matic.png";
-export const NEOX_LOGO = "/symbols/neo.svg";
+export const NEOX_LOGO = "/symbols/neox.png";
 export const NEP_LOGO = "/symbols/nep.png";
+export const FNEO_LOGO = "/symbols/fneo.png";
 export const NEO_LOGO = "/symbols/neo.svg";
 export const UNKNOWN_TOKEN_IMAGE = "/symbols/unknown.png";
 export const FTW_LOGO_URL = "/logo/FTW_512_512.svg";

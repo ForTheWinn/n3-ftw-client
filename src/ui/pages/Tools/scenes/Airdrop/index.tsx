@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PageLayout from "../../../../components/Commons/PageLayout";
 import SelectTokenContract from "../../../Locker/Create/SelectTokenContract";
-import { ITokenState } from "../../../Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../../../consts/tokens";
 import NumberFormat from "react-number-format";
 import Level from "../../../../components/Level";
 import Modal from "../../../../components/Modal";
@@ -150,7 +150,7 @@ const Airdrop = () => {
     });
   };
 
-  const onTokenChange = (token: ITokenState | undefined) => {
+  const onTokenChange = (token: IToken | undefined) => {
     if (!token) return false;
 
     const newList = [...list];

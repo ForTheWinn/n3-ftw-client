@@ -1,17 +1,15 @@
 import React from "react";
-import { TOKEN_LIST } from "../../../../../consts/tokens";
 import TruncatedAddress from "../../../../components/TruncatedAddress";
 import { IBridgeBurn } from "../../../../../common/routers/bridge/interfaces";
-import { ethers } from "ethers";
 import { INetworkType } from "../../../../../packages/neo/network";
 import { NEO_CHAIN } from "../../../../../consts/global";
-import { formatAmount } from "../../../../../common/helpers";
+import { formatAmount, getTokenByHash } from "../../../../../common/helpers";
 interface IBridgeBurnCardProps {
   data: IBridgeBurn;
   network: INetworkType;
 }
 const BridgeBurnCard = ({ data, network }: IBridgeBurnCardProps) => {
-  const token = TOKEN_LIST[NEO_CHAIN][network][data.neoTokenAddress];
+  const token = getTokenByHash(NEO_CHAIN, network, data.neoTokenAddress);
   return (
     <tr>
       <td>{data.no}</td>

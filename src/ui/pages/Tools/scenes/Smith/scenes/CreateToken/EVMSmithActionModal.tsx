@@ -7,7 +7,7 @@ import Modal from "../../../../../../components/Modal";
 import LoadingWithText from "../../../../../../components/Commons/LoadingWithText";
 import {
   CONTRACT_MAP,
-  GLOBAL_NEP_CONTRACT_ADDRESS,
+  NEP_ADDRESSES,
 } from "../../../../../../../consts/contracts";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { SMITH, STATUS_STATE } from "../../../../../../../consts/global";
@@ -54,7 +54,7 @@ const steps = [
     key: "fee",
   },
   {
-    title: "Tranasction Submit",
+    title: "Confirm",
     key: "deploy",
   },
 ];
@@ -72,7 +72,7 @@ const EVMSmithActionModal = ({
   onSuccess,
   onCancel,
 }: IActionModalProps) => {
-  const feeTokenContractHash = GLOBAL_NEP_CONTRACT_ADDRESS[chain][network];
+  const feeTokenContractHash = NEP_ADDRESSES[chain][network];
   const smithTokenContractHash = CONTRACT_MAP[chain][network][SMITH];
   const fee = SMITH_FEE[chain][network];
 

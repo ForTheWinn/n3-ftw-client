@@ -1,7 +1,8 @@
 import React from "react";
 import Input from "../../components/Input";
 import { FaArrowDown } from "react-icons/fa";
-import { ISwapInputState, ITokenState } from "./interfaces";
+import { ISwapInputState } from "./interfaces";
+import { IToken } from "../../../../../consts/tokens";
 import {
   ISwapReserves,
   IUserTokenBalances,
@@ -11,8 +12,8 @@ import InputDivider from "../../components/InputDivider";
 
 interface ISwapInputsProps {
   reserves?: ISwapReserves;
-  tokenA?: ITokenState;
-  tokenB?: ITokenState;
+  tokenA?: IToken;
+  tokenB?: IToken;
   amountA?: string;
   amountB?: string;
   balances?: IUserTokenBalances;
@@ -23,6 +24,7 @@ interface ISwapInputsProps {
   hasEstimatedError: boolean;
   hasReservesError: boolean;
   priceImpact: number;
+  notEnoughBalance?: boolean;
   onAssetChange: (type: "A" | "B") => void;
   onSwitch: () => void;
   setSwapInputChange: (val: ISwapInputState) => void;
@@ -42,6 +44,7 @@ const SwapInputs = ({
   hasReservesError,
   noLiquidity,
   priceImpact,
+  notEnoughBalance,
   onSwitch,
   setSwapInputChange,
   onAssetChange,
@@ -59,6 +62,16 @@ const SwapInputs = ({
     errors.push("Check price impact");
   }
 
+  let inputADisable = false;
+  let inputBDisable = false;
+
+  if (tokenB?.decimals === 0) {
+    inputADisable = true;
+  }
+  if (tokenA?.decimals === 0) {
+    inputBDisable = true;
+  }
+
   return (
     <>
       <div className="box is-shadowless is-marginless">
@@ -74,7 +87,8 @@ const SwapInputs = ({
               value,
             });
           }}
-          isDisabled={tokenB?.decimals === 0}
+          isDisabled={inputADisable}
+          notEnoughBalance={notEnoughBalance}
         />
       </div>
 
@@ -95,7 +109,7 @@ const SwapInputs = ({
               value,
             });
           }}
-          isDisabled={tokenA?.decimals === 0}
+          isDisabled={inputBDisable}
         />
       </div>
 

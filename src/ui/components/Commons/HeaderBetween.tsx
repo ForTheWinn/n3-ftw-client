@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaAngleLeft } from "react-icons/fa";
+import { LeftOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 interface IHeaderBetweenProps {
   path: string | object;
   title: string;
@@ -13,15 +14,14 @@ const HeaderBetween = (props: IHeaderBetweenProps) => {
       style={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
       }}
     >
-      <div style={{ width: "50px" }}>
-        <Link className="button is-rounded is-white is-small" to={props.path}>
-          <span className="icon">
-            <FaAngleLeft />
-          </span>
-          <span className="is-hidden-mobile">Main</span>
+      <div style={{ width: "80px" }}>
+        <Link to={props.path}>
+          <Button size="small" icon={<LeftOutlined />} type="text">
+            Main
+          </Button>
         </Link>
       </div>
 
@@ -29,7 +29,7 @@ const HeaderBetween = (props: IHeaderBetweenProps) => {
         {props.title}
       </h1>
 
-      <div className="is-relative" style={{ width: "50px" }}>
+      <div className="is-relative" style={{ width: "80px" }}>
         {props.isLoading && (
           <div
             className="button is-white is-loading"

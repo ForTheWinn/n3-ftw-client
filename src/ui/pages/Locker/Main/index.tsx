@@ -14,6 +14,7 @@ import {
   LOCKER_USER_PATH,
 } from "../../../../consts/routes";
 import Level from "../../../components/Level";
+import { Spin } from "antd";
 
 const LockerMain = () => {
   const { chain, network } = useApp();
@@ -61,7 +62,9 @@ const LockerMain = () => {
             />
           </div>
           {!isLoaded ? (
-            <div>Loading..</div>
+            <div className="has-text-centered">
+              <Spin />
+            </div>
           ) : (
             <div className="columns is-multiline">
               {data &&

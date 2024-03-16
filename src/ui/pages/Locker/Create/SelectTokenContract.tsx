@@ -2,15 +2,15 @@ import React from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import TokenList from "../../../components/Commons/TokenList";
 import { useApp } from "../../../../common/hooks/use-app";
-import { ITokenState } from "../../Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../../consts/tokens";
 
 interface ISelectTokenContractProps {
-  contract?: ITokenState;
-  onContractChange: (contract: ITokenState | undefined) => void;
+  contract?: IToken;
+  onContractChange: (contract: IToken | undefined) => void;
 }
 const SelectTokenContract = ({
   contract,
-  onContractChange
+  onContractChange,
 }: ISelectTokenContractProps) => {
   const { chain, network } = useApp();
   const [isModalActive, setModalActive] = React.useState(false);
@@ -56,7 +56,7 @@ const SelectTokenContract = ({
           activeTokenInput={"A"}
           tokenAHash={undefined}
           tokenBHash={undefined}
-          onAssetClick={(token: ITokenState) => {
+          onAssetClick={(token: IToken) => {
             onContractChange(token);
             setModalActive(false);
           }}

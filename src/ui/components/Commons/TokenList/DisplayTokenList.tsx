@@ -1,15 +1,15 @@
 import React from "react";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
-import { SWAP_TOKEN_LIST } from "../../../../consts/tokens";
+import { TOKEN_LIST } from "../../../../consts/tokens";
 import { Avatar, Space } from "antd";
-import { ITokenState } from "../../../pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../../consts/tokens";
 
 interface ITokenListProps {
   keyword?: string;
   chain: CHAINS;
   network: INetworkType;
-  onClick: (token: ITokenState) => void;
+  onClick: (token: IToken) => void;
 }
 const DisplayTokenList = ({
   keyword,
@@ -17,7 +17,7 @@ const DisplayTokenList = ({
   network,
   onClick,
 }: ITokenListProps) => {
-  let tokenList: any = SWAP_TOKEN_LIST[chain][network];
+  let tokenList: any = TOKEN_LIST[chain][network];
   if (keyword) {
     tokenList = tokenList.filter((item) =>
       item.symbol.toLowerCase().includes(keyword.toLowerCase())
@@ -26,6 +26,7 @@ const DisplayTokenList = ({
   return (
     <>
       {tokenList.map((token) => {
+        if (!token.isWhitelisted) return null;
         return (
           <a
             key={token.hash}

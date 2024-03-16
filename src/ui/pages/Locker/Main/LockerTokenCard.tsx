@@ -1,18 +1,18 @@
 import React from "react";
-import { u } from "@cityofzion/neon-core";
 import { useHistory } from "react-router-dom";
 import { UNKNOWN_TOKEN_IMAGE } from "../../../../consts/global";
-import { TOKEN_LIST } from "../../../../consts/tokens";
 import { CHAINS } from "../../../../consts/chains";
 import { LOCKER_PATH } from "../../../../consts/routes";
 import { toDecimal } from "../../../../packages/neo/utils";
+import { getTokenByHash } from "../../../../common/helpers";
+import { INetworkType } from "../../../../packages/neo/network";
 interface ILockerTokenCardProps {
   chain: CHAINS;
   lockedAmount: number;
   decimals: number;
   contractHash: string;
   symbol: string;
-  network: string;
+  network: INetworkType;
 }
 const LockerTokenCard = ({
   chain,
@@ -23,9 +23,8 @@ const LockerTokenCard = ({
   symbol,
 }: ILockerTokenCardProps) => {
   const history = useHistory();
-  const logo = TOKEN_LIST[chain][network][contractHash]
-    ? TOKEN_LIST[chain][network][contractHash].icon
-    : UNKNOWN_TOKEN_IMAGE;
+  const token = getTokenByHash(chain, network, contractHash);
+  const logo = token && token.icon ? token.icon : UNKNOWN_TOKEN_IMAGE;
   const amount = toDecimal(lockedAmount, decimals);
   return (
     <div

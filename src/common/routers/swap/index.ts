@@ -8,7 +8,7 @@ import {
   getReserves as evmGetReserves,
   removeLiquidity as evmRemoveLiquidity,
 } from "../../../packages/evm/contracts/swap";
-import { ITokenState } from "../../../ui/pages/Swap/scenes/Swap/interfaces";
+import { IToken } from "../../../consts/tokens";
 import {
   ISwapReserves,
   ISwapEstimateArgs,
@@ -40,8 +40,8 @@ export const getBalances = async (
   chain: CHAINS,
   network: INetworkType,
   address: string,
-  tokenA: ITokenState,
-  tokenB: ITokenState
+  tokenA: IToken,
+  tokenB: IToken
 ): Promise<IUserTokenBalances> => {
   let amountA;
   let amountB;
@@ -53,12 +53,12 @@ export const getBalances = async (
     default:
       const res1 = await getBalance(wagmiConfig, {
         address,
-        token: tokenA.hash,
+        token: tokenA.isNative ? undefined : tokenA.hash,
         chainId: getChainIdByChain(chain, network),
       } as any);
       const res2 = await getBalance(wagmiConfig, {
         address,
-        token: tokenB.hash,
+        token: tokenB.isNative ? undefined : tokenB.hash,
         chainId: getChainIdByChain(chain, network),
       } as any);
       amountA = res1.formatted;
@@ -124,23 +124,7 @@ export const getLPTokens = async (
   if (!address) return [];
   switch (chain) {
     case NEO_CHAIN:
-      const tokens: ISwapLPToken[] = [];
-      const res = await new SwapContract(network).getLPTokens(address);
-      for (const token of res) {
-        tokens.push({
-          tokenId: token.tokenId,
-          tokenA: token.tokenA,
-          tokenB: token.tokenB,
-          symbolA: token.symbolA,
-          symbolB: token.symbolB,
-          amountA: token.amountA,
-          amountB: token.amountB,
-          decimalsA: token.decimalsA,
-          decimalsB: token.decimalsB,
-          sharesPercentage: token.sharesPercentage.toString(),
-        });
-      }
-      return tokens;
+      return await new SwapContract(network).getLPTokens(address);
     default:
       return evmGetLPTokens(chain, network, address);
   }
@@ -153,19 +137,7 @@ export const getLPToken = async (
 ): Promise<ISwapLPToken | undefined> => {
   switch (chain) {
     case NEO_CHAIN:
-      const res = await new SwapContract(network).getProperties(tokenId);
-      return {
-        tokenId: res.tokenId,
-        tokenA: res.tokenA,
-        tokenB: res.tokenB,
-        symbolA: res.symbolA,
-        symbolB: res.symbolB,
-        amountA: res.amountA,
-        amountB: res.amountB,
-        decimalsA: res.decimalsA,
-        decimalsB: res.decimalsB,
-        sharesPercentage: res.sharesPercentage.toString(),
-      };
+      return await new SwapContract(network).getProperties(tokenId);
     default:
       return evmGetLPToken(chain, network, tokenId);
   }

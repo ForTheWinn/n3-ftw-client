@@ -8,7 +8,7 @@ import { RUNE_PHASE_FILTER } from "../../../../packages/neo/contracts/ftw/rune/c
 import { useApp } from "../../../../common/hooks/use-app";
 import { WENT_WRONG } from "../../../../consts/messages";
 import { RestAPI } from "../../../../packages/neo/api";
-import { message } from "antd";
+import { Spin, message } from "antd";
 
 const Gallery = () => {
   const [filter, setFilter] = useState<string>(RUNE_PHASE_FILTER[0]);
@@ -63,7 +63,9 @@ const Gallery = () => {
       />
       {isLoading ? (
         <PageLayout>
-          <div>Loading..</div>
+          <div className="has-text-centered">
+            <Spin />
+          </div>
         </PageLayout>
       ) : error ? (
         <PageLayout>
@@ -74,7 +76,7 @@ const Gallery = () => {
           className="container"
           style={{
             display: "flex",
-            flexFlow: "wrap"
+            flexFlow: "wrap",
           }}
         >
           {tokens.map((token) => (
