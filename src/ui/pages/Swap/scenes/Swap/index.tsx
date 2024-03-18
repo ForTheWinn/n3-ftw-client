@@ -67,7 +67,6 @@ const SwapMain = () => {
     setActionModalActive(false);
   };
 
-  console.log(prices);
   return (
     <>
       <SwapNav

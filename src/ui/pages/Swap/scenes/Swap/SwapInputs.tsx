@@ -78,9 +78,6 @@ const SwapInputs = ({
     inputBDisable = true;
   }
 
-  console.log(prices);
-  console.log(tokenA);
-
   return (
     <>
       <div className="box is-shadowless is-marginless">

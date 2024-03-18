@@ -28,7 +28,6 @@ const Input = ({
   setValue,
   onClickAsset,
 }: IInputProps) => {
-  console.log(price);
 
   let usdPrice = "";
 

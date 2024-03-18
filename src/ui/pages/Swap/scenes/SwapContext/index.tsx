@@ -243,9 +243,8 @@ export const SwapContextProvider = ({
         setReserve(undefined);
         setBalances(undefined);
         setReservesError(false);
-        const prices = await getPrices(chain);
-        console.log("toomuch")
-        setPrices(prices);
+        
+        setPrices(await getPrices(chain));
 
         const res = await swapRouter.getReserves(
           chain,
