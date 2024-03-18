@@ -43,6 +43,7 @@ const NEO_B$_CONTRACT_ADDRESS = "0x3782720ad22ecfdd26cc99135dbc6739a47a38c9";
 const NEO_GLC_CONTRACT_ADDRESS = "0x77dc8cadcaef3694ab0f23901d8d9d825b19e6a2";
 const NEO__7F_CONTRACT_ADDRESS = "0x8d91c0b210dcd568d287711a4c1c54c7ae392814";
 const NEO_PEPE_CONTRACT_ADDRESSH = "0x8a651ecad98582603323bdd20169b81b81c1da5c";
+const NEO_APE_CONTRACT_ADDRESS = "0x63f1a9c6bef178f54a6332b874407068d9a99e50";
 
 export const NEO_MAINNET_TOKENS = [
   createTokenMetadata({
@@ -245,9 +246,17 @@ export const NEO_MAINNET_TOKENS = [
   }),
   createTokenMetadata({
     hash: NEO_PEPE_CONTRACT_ADDRESSH,
-    symbol: "pepe",
+    symbol: "PEPE",
     icon: "/symbols/pepe.png",
     decimals: 18,
+    pairs: [],
+    isWhitelisted: true,
+  }),
+  createTokenMetadata({
+    hash: NEO_APE_CONTRACT_ADDRESS,
+    symbol: "APE",
+    icon: "/symbols/ape.png",
+    decimals: 8,
     pairs: [],
     isWhitelisted: true,
   }),
