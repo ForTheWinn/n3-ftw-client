@@ -25,6 +25,11 @@ interface ISwapInputsProps {
   hasReservesError: boolean;
   priceImpact: number;
   notEnoughBalance?: boolean;
+  prices:
+    | {
+        [key: string]: number;
+      }
+    | undefined;
   onAssetChange: (type: "A" | "B") => void;
   onSwitch: () => void;
   setSwapInputChange: (val: ISwapInputState) => void;
@@ -45,6 +50,7 @@ const SwapInputs = ({
   noLiquidity,
   priceImpact,
   notEnoughBalance,
+  prices,
   onSwitch,
   setSwapInputChange,
   onAssetChange,
@@ -71,6 +77,9 @@ const SwapInputs = ({
   if (tokenA?.decimals === 0) {
     inputBDisable = true;
   }
+
+  console.log(prices);
+  console.log(tokenA);
 
   return (
     <>
@@ -110,6 +119,9 @@ const SwapInputs = ({
             });
           }}
           isDisabled={inputBDisable}
+          price={
+            prices && tokenB ? prices[tokenB.hash.toLowerCase()] : undefined
+          }
         />
       </div>
 

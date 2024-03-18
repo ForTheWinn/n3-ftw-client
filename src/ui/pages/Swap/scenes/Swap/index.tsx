@@ -38,6 +38,7 @@ const SwapMain = () => {
     isSwapWithWrapping,
     isSwapWithUnWrapping,
     notEnoughBalanceA,
+    prices,
     onAfterSwapCompleted,
     setAssetChangeModalActive,
     setSettingsModalActive,
@@ -65,6 +66,8 @@ const SwapMain = () => {
   const onCancel = () => {
     setActionModalActive(false);
   };
+
+  console.log(prices);
   return (
     <>
       <SwapNav
@@ -93,6 +96,7 @@ const SwapMain = () => {
         hasEstimatedError={hasEstimatedError}
         hasReservesError={hasReservesError}
         notEnoughBalance={notEnoughBalanceA}
+        prices={prices}
         onSwitch={onInputSwitch}
         onAssetChange={setAssetChangeModalActive}
         setSwapInputChange={onSwapInputChange}

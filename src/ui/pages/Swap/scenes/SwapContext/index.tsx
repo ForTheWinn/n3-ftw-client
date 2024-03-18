@@ -28,7 +28,10 @@ import {
 import TokenList from "../../../../components/Commons/TokenList";
 import SwapSettings from "../../components/Settings";
 import { message } from "antd";
-import { fetchTokenInfo } from "../../../../../common/routers/global";
+import {
+  fetchTokenInfo,
+  getPrices,
+} from "../../../../../common/routers/global";
 import { calculatePriceImpact } from "../Swap/helpers";
 
 interface ISwapContext {
@@ -55,6 +58,7 @@ interface ISwapContext {
   isSwapWithUnWrapping: boolean;
   notEnoughBalanceA?: boolean;
   notEnoughBalanceB?: boolean;
+  prices: { [key: string]: number } | undefined;
   setAssetChangeModalActive: (v: "A" | "B" | undefined) => void;
   setSettingsModalActive: (v: boolean) => void;
   onSwapInputChange: (v: ISwapInputState) => void;
@@ -187,6 +191,8 @@ export const SwapContextProvider = ({
   const [hasReservesError, setReservesError] = useState<boolean>(false);
   const [hasEstimatedError, setEstimatedError] = useState<boolean>(false);
 
+  const [prices, setPrices] = useState<{ [key: string]: number }>();
+
   const onSwapInputChange = (val: ISwapInputState) => {
     if (val.type === "A") {
       setAmountA(val.value);
@@ -237,6 +243,10 @@ export const SwapContextProvider = ({
         setReserve(undefined);
         setBalances(undefined);
         setReservesError(false);
+        const prices = await getPrices(chain);
+        console.log("toomuch")
+        setPrices(prices);
+
         const res = await swapRouter.getReserves(
           chain,
           network,
@@ -491,6 +501,7 @@ export const SwapContextProvider = ({
     isSwapWithUnWrapping,
     notEnoughBalanceA,
     notEnoughBalanceB,
+    prices,
     setAssetChangeModalActive,
     setSettingsModalActive,
     onSwapInputChange,

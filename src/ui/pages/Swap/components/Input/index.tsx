@@ -10,10 +10,11 @@ interface IInputProps {
   val?: string;
   isLoading?: boolean;
   userBalance?: string;
-  setValue: (val?: string) => void;
-  onClickAsset: () => void;
   isDisabled?: boolean;
   notEnoughBalance?: boolean;
+  price?: number;
+  setValue: (val?: string) => void;
+  onClickAsset: () => void;
 }
 
 const Input = ({
@@ -23,9 +24,20 @@ const Input = ({
   userBalance,
   isDisabled,
   notEnoughBalance,
+  price,
   setValue,
   onClickAsset,
 }: IInputProps) => {
+  console.log(price);
+
+  let usdPrice = "";
+
+  if (price && val && val !== "0") {
+    const _usdPrice = price * parseFloat(val);
+    if (_usdPrice > 0.01) {
+      usdPrice = "$" + _usdPrice.toFixed(2);
+    }
+  }
   return (
     <div>
       <div
@@ -94,7 +106,9 @@ const Input = ({
       </div>
 
       <div className="columns is-mobile" style={{ alignItems: "center" }}>
-        <div className="column"></div>
+        <div className="column">
+          <p className={`help has-text-grey`}>{usdPrice}</p>
+        </div>
 
         <div className="column is-narrow">
           <div>
