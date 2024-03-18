@@ -151,6 +151,7 @@ export const NEO_MAINNET_TOKENS = [
     icon: "/symbols/TGAS.svg",
     decimals: 8,
     pairs: [],
+    isWhitelisted: true,
   }),
   createTokenMetadata({
     hash: NEO_WATT_CONTRACT_ADDRESS,

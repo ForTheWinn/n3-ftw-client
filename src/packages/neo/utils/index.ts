@@ -402,17 +402,14 @@ export const useBalances = async (
     throw new Error(res.exception as string);
   }
   const balances: number[] = [];
-
   res.stack.forEach((item, index) => {
     if (index % 2 === 0) {
       balances.push(
         parseFloat(
-          ethers
-            .formatUnits(
-              item.value as string,
-              res.stack[index + 1].value as string
-            )
-            .toString()
+          ethers.formatUnits(
+            item.value as any,
+            parseFloat(res.stack[index + 1].value as string)
+          )
         )
       );
     }
