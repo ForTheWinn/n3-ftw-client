@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import TokenItem from "./TokenItem";
 import ModalCard from "../../../../../components/Modal";
 import TokenDetail from "../../TokenDetail";
-import { useApp } from "../../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
 import {
   ANALYTICS_PATH,

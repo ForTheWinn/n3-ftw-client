@@ -4,6 +4,18 @@ import { CHAINS } from "../../../../../consts/chains";
 import TokenItem from "./TokenItem";
 import Swaps from "./TokenDetailPage/Swaps";
 import TokenDetailPage from "./TokenDetailPage";
+import {
+  ETH_CHAIN,
+  NEOX_CHAIN,
+  NEO_CHAIN,
+  POLYGON_CHAIN,
+} from "../../../../../consts/global";
+import {
+  ANALYTICS_ETHEREUM_SWAP_PATH,
+  ANALYTICS_NEOX_SWAP_PATH,
+  ANALYTICS_NEO_SWAP_PATH,
+  ANALYTICS_POLYGON_SWAP_PATH,
+} from "../../../../../consts/routes";
 
 interface IPairsAnalyticsProps {
   chain: CHAINS;
@@ -14,19 +26,22 @@ interface IPairsAnalyticsProps {
 
 const Pairs = ({ chain, data, isLoaded, error }: IPairsAnalyticsProps) => {
   const [tokenDetailObj, setTokenDetailObj] = useState<string[]>([]);
-  // const ANALYTICS_PATH = {
-  //   [POLYGON_CHAIN]: ANALYTICS_POLYGON_SWAP_PATH,
-  //   [NEO_CHAIN]: ANALYTICS_NEO_SWAP_PATH,
-  //   [ETH_CHAIN]: ANALYTICS_ETHEREUM_SWAP_PATH,
-  // };
-  // const path = ANALYTICS_PATH[chain];
+  const ANALYTICS_PATH = {
+    [POLYGON_CHAIN]: ANALYTICS_POLYGON_SWAP_PATH,
+    [NEO_CHAIN]: ANALYTICS_NEO_SWAP_PATH,
+    [ETH_CHAIN]: ANALYTICS_ETHEREUM_SWAP_PATH,
+    [NEOX_CHAIN]: ANALYTICS_NEOX_SWAP_PATH,
+  };
+  const path = ANALYTICS_PATH[chain];
   const handleTokenClick = (tokens: string[]) => {
     setTokenDetailObj(tokens);
-    // window.history.replaceState(null, "", `#${path}/${tokens.join(",")}`);
+    if (tokens.length > 0) {
+      window.history.replaceState(null, "", `#${path}/token/${tokens[0]}`);
+    }
   };
 
   const handleModalClose = () => {
-    // window.history.replaceState(null, "", `#${path}/`);
+    window.history.replaceState(null, "", `#${path}`);
     setTokenDetailObj([]);
   };
 
@@ -58,7 +73,6 @@ const Pairs = ({ chain, data, isLoaded, error }: IPairsAnalyticsProps) => {
           <TokenDetailPage
             chain={chain}
             tokens={tokenDetailObj}
-            tokenHash={tokenDetailObj[0]}
           />
         </Modal>
       )}

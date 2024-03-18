@@ -15,6 +15,7 @@ import {
 import { Avatar, Tabs } from "antd";
 import {
   ETHEREUM_LOGO,
+  NEO_CHAIN,
   NEO_LOGO,
   NEP_LOGO,
   POLYGON_LOGO,
@@ -24,6 +25,7 @@ import NEOAnalytics from "./scenes/NEOAnalytics";
 import PolygonAnalytics from "./scenes/EVMAnalytics/Polygon";
 import EthereumAnalytics from "./scenes/EVMAnalytics/Ethereum";
 import NeoXAnalytics from "./scenes/EVMAnalytics/NeoX";
+import TokenDetailPage from "./components/Pairs/TokenDetailPage";
 
 const Analytics = () => {
   const location = useLocation();
@@ -84,14 +86,14 @@ const Analytics = () => {
               ),
               key: "neo-swap",
             },
-            {
-              label: (
-                <>
-                  <Avatar size="small" src={NEO_LOGO} /> FTW Swap (NeoX)
-                </>
-              ),
-              key: "neox-swap",
-            },
+            // {
+            //   label: (
+            //     <>
+            //       <Avatar size="small" src={NEO_LOGO} /> FTW Swap (NeoX)
+            //     </>
+            //   ),
+            //   key: "neox-swap",
+            // },
             {
               label: (
                 <>
@@ -117,11 +119,23 @@ const Analytics = () => {
           path={`${ANALYTICS_PATH}`}
           component={NEPAnalytics}
         />
-        <Route path={`${ANALYTICS_NEO_SWAP_PATH}`} component={NEOAnalytics} />
         <Route
-          path={`${ANALYTICS_NEOX_SWAP_PATH}`}
-          component={NeoXAnalytics}
+          exact={true}
+          path={`${ANALYTICS_NEO_SWAP_PATH}`}
+          component={NEOAnalytics}
         />
+        <Route
+          path={`${ANALYTICS_NEO_SWAP_PATH}/token/:tokenId`}
+          component={(props) => {
+            return (
+              <TokenDetailPage
+                chain={NEO_CHAIN}
+                tokens={[props.match.params.tokenId]}
+              />
+            );
+          }}
+        />
+        <Route path={`${ANALYTICS_NEOX_SWAP_PATH}`} component={NeoXAnalytics} />
         <Route
           path={`${ANALYTICS_POLYGON_SWAP_PATH}`}
           component={PolygonAnalytics}

@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import Decimal from "decimal.js";
 import { ethers } from "ethers";
+import queryString from "query-string";
 
 import { ISwapInputState } from "../Swap/interfaces";
 import { IToken } from "../../../../../consts/tokens";
@@ -243,7 +244,7 @@ export const SwapContextProvider = ({
         setReserve(undefined);
         setBalances(undefined);
         setReservesError(false);
-        
+
         setPrices(await getPrices(chain));
 
         const res = await swapRouter.getReserves(
@@ -301,7 +302,11 @@ export const SwapContextProvider = ({
   const setTokensFromParams = async () => {
     let tokenA: IToken | undefined;
     let tokenB: IToken | undefined;
-    const params = getParamsFromBrowser();
+    let params: any = queryString.parse(location.search);
+    const browserParams = getParamsFromBrowser();
+    if (browserParams) {
+      params = browserParams;
+    }
     if (params) {
       if (params.tokenA) {
         tokenA = getTokenByHash(chain, network, params.tokenA as string);
@@ -329,10 +334,14 @@ export const SwapContextProvider = ({
           }
         }
       }
-      if (tokenA && tokenB) {
+      if (tokenA) {
         setTokenA(tokenA);
+      }
+      if (tokenB) {
         setTokenB(tokenB);
-      } else {
+      }
+
+      if (!tokenA && !tokenB) {
         window.history.replaceState(null, "", `/#${location.pathname}`);
       }
     }

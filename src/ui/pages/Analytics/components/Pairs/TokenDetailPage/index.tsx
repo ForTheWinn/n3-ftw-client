@@ -3,30 +3,39 @@ import Swaps from "./Swaps";
 import { CHAINS } from "../../../../../../consts/chains";
 import CandleChart from "./CandleChart";
 import { MAINNET } from "../../../../../../consts/global";
-import { Avatar, Space, Typography } from "antd";
+import { Avatar, Button, Divider, Space, Typography } from "antd";
 import { getTokenByHash } from "../../../../../../common/helpers";
+import { Link } from "react-router-dom";
+import { SWAP_PATH } from "../../../../../../consts/routes";
 
 interface ITokenDetailPageProps {
   chain: CHAINS;
   tokens: string[];
-  tokenHash?: string;
 }
 const TokenDetailPage = (props: ITokenDetailPageProps) => {
   let token;
-  if (props.tokenHash) {
-    token = getTokenByHash(props.chain, MAINNET, props.tokenHash);
+  if (props.tokens.length > 0) {
+    token = getTokenByHash(props.chain, MAINNET, props.tokens[0]);
   }
   return (
     <div>
-      <Typography.Paragraph>
+      <Space style={{ justifyContent: "space-between", width: "100%" }}>
         <Space>
-          <Avatar size={"small"} src={token.icon} />
-          <Typography.Text strong>{token.symbol}</Typography.Text>
+          <Avatar src={token.icon} />
+          <Typography.Title level={3} className="is-marginless">
+            {token.symbol}
+          </Typography.Title>
         </Space>
-      </Typography.Paragraph>
+        <Link to={`${SWAP_PATH}?tokenB=${token.hash}`}>
+          <Button type="primary">Trade on FTWSwap</Button>
+        </Link>
+      </Space>
 
-      {props.tokenHash && (
-        <CandleChart chain={props.chain} tokenHash={props.tokenHash} />
+      <Divider />
+      {token && (
+        <>
+          <CandleChart chain={props.chain} tokenHash={token.hash} /> <Divider />
+        </>
       )}
       <Swaps {...props} />
     </div>

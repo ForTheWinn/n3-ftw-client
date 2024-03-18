@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import LiquidityChart from "../NEOAnalytics/LiquidityChart";
 import SwapHistory from "./SwapHistory";
-import { useApp } from "../../../../../common/hooks/use-app";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { RestAPI } from "../../../../../packages/neo/api";
+import { CHAINS } from "../../../../../consts/chains";
+import { MAINNET } from "../../../../../consts/global";
 
 interface ITokenDetailProps {
   tokenId: string;
 }
 const TokenDetail = ({ tokenId }: ITokenDetailProps) => {
-  const { network, chain } = useApp();
-
   const { data } = useOnChainData(() => {
-    return new RestAPI(network).getToken(tokenId);
-  }, [network]);
+    return new RestAPI(MAINNET).getToken(tokenId);
+  }, []);
 
   if (!data) return <div></div>;
 
@@ -35,7 +34,7 @@ const TokenDetail = ({ tokenId }: ITokenDetailProps) => {
         <div className="column is-12">
           <div className="box is-shadowless">
             <h1 className="title is-6">Swap history</h1>
-            <SwapHistory id={tokenId} network={network} />
+            <SwapHistory id={tokenId} network={MAINNET} />
           </div>
         </div>
       </div>
