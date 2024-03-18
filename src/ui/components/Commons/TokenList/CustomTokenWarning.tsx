@@ -18,7 +18,7 @@ const CustomTokenWarning = ({
   onOk,
   onCancel,
 }: ICustomTokenWarningProps) => {
-  const explorerLink = `${getExplorer(chain, network, "tx")}/${token.hash}`;
+  const explorerLink = `${getExplorer(chain, network, "contract")}/${token.hash}`;
   return (
     <div className="has-text-centered p-5">
       <div className="notification is-warning is-light is-small">

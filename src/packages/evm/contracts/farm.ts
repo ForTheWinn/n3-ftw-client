@@ -116,7 +116,6 @@ export const getClaimable = async (
     chainId,
   });
 
-  console.log(res)
 
   const rewards: IClaimableRewards[] = [];
   for (const reward of res) {

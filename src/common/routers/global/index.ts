@@ -9,6 +9,7 @@ import { RestAPI } from "../../../packages/neo/api";
 import { ethers } from "ethers";
 import { formatAmount } from "../../helpers";
 import { wagmiConfig } from "../../../wagmi-config";
+import { SmithContract } from "../../../packages/neo/contracts/ftw/smith";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -66,6 +67,20 @@ export const fetchTokenInfo = async (
 ): Promise<IToken | null> => {
   switch (chain) {
     case NEO_CHAIN:
+      try {
+        const res: any = await new SmithContract(network).getNep17ContractInfo(
+          hash
+        );
+        const manifest = res.manifest ? JSON.parse(res.manifest) : {};
+        return {
+          hash,
+          decimals: parseFloat(res.decimals),
+          symbol: res.symbol,
+          icon: manifest.logo,
+          totalSupply: res.totalSupply,
+        };
+      } catch (e) {}
+
       const scripts: any = [];
       const script1 = {
         scriptHash: hash,

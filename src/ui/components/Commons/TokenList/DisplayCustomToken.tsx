@@ -40,7 +40,7 @@ const DisplayCustomToken = ({
             hash: token,
             decimals: res.decimals,
             symbol: res.symbol,
-            icon: "",
+            icon: res.icon,
           });
         } else {
           setError(TOKEN_FETCH_ERROR);
