@@ -5,6 +5,8 @@ import { MAINNET } from "../../../../../consts/global";
 import { toDecimal } from "../../../../../packages/neo/utils";
 import PairItem from "./PairItem";
 import { getTokenByHash } from "../../../../../common/helpers";
+import { LineChartOutlined } from "@ant-design/icons";
+
 interface ITokenItem {
   chain: CHAINS;
   data: {
@@ -53,7 +55,11 @@ const TokenItem = ({ chain, data, onClick }: ITokenItem) => {
                   </Space>
                 </Space>
 
-                <Button onClick={() => onClick([data.token])} size="small">
+                <Button
+                  onClick={() => onClick([data.token])}
+                  size="small"
+                  icon={<LineChartOutlined />}
+                >
                   View
                 </Button>
               </Space>
