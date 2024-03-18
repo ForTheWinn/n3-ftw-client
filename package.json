@@ -9,6 +9,7 @@
     "@cityofzion/wallet-connect-sdk-react": "^1.4.1",
     "@coinbase/wallet-sdk": "^3.6.3",
     "@neongd/neo-dapi": "^1.2.0",
+    "@pogix3m/short-number": "^1.0.1",
     "@tanstack/react-query": "^5.18.1",
     "@wagmi/connectors": "^4.1.13",
     "@wagmi/core": "^2.6.4",

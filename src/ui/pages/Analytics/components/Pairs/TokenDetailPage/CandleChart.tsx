@@ -4,6 +4,7 @@ import { RestAPI } from "../../../../../../packages/neo/api";
 import { MAINNET, NEO_CHAIN } from "../../../../../../consts/global";
 import { CHAINS } from "../../../../../../consts/chains";
 import { createChart, CrosshairMode } from "lightweight-charts";
+import { Divider } from "antd";
 
 interface ICandleChartProps {
   chain: CHAINS;
@@ -115,6 +116,9 @@ const CandleChart = ({ chain, tokenHash, height = 300 }: ICandleChartProps) => {
       };
     }
   }, [data]);
+
+  if (!data) return <></>;
+
   return (
     <div style={{ position: "relative" }}>
       <div ref={chartContainerRef}></div>
@@ -128,6 +132,8 @@ const CandleChart = ({ chain, tokenHash, height = 300 }: ICandleChartProps) => {
           top: "0",
         }}
       ></div>
+      if
+      <Divider />
     </div>
   );
 };

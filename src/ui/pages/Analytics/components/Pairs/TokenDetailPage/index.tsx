@@ -5,18 +5,30 @@ import CandleChart from "./CandleChart";
 import { MAINNET } from "../../../../../../consts/global";
 import { Avatar, Button, Divider, Space, Typography } from "antd";
 import { getTokenByHash } from "../../../../../../common/helpers";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { SWAP_PATH } from "../../../../../../consts/routes";
+import { useApp } from "../../../../../../common/hooks/use-app";
 
 interface ITokenDetailPageProps {
   chain: CHAINS;
   tokens: string[];
 }
 const TokenDetailPage = (props: ITokenDetailPageProps) => {
+  const history = useHistory();
+  const { chain, switchChain } = useApp();
   let token;
   if (props.tokens.length > 0) {
     token = getTokenByHash(props.chain, MAINNET, props.tokens[0]);
   }
+
+  const handleTradeClick = () => {
+    if (token) {
+      if (chain !== props.chain) {
+        switchChain(props.chain);
+      }
+      history.push(`${SWAP_PATH}?tokenB=${token.hash}`);
+    }
+  };
   return (
     <div>
       <Space style={{ justifyContent: "space-between", width: "100%" }}>
@@ -26,15 +38,15 @@ const TokenDetailPage = (props: ITokenDetailPageProps) => {
             {token.symbol}
           </Typography.Title>
         </Space>
-        <Link to={`${SWAP_PATH}?tokenB=${token.hash}`}>
-          <Button type="primary">Trade on FTWSwap</Button>
-        </Link>
+        <Button type="primary" onClick={handleTradeClick}>
+          Trade on FTWSwap
+        </Button>
       </Space>
 
       <Divider />
       {token && (
         <>
-          <CandleChart chain={props.chain} tokenHash={token.hash} /> <Divider />
+          <CandleChart chain={props.chain} tokenHash={token.hash} />
         </>
       )}
       <Swaps {...props} />

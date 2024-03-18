@@ -1,12 +1,12 @@
 import React from "react";
-import { Avatar, Button, Collapse, List, Space, Typography } from "antd";
+import { Avatar, Button, Collapse, List, Modal, Space, Typography } from "antd";
 import { CHAINS } from "../../../../../consts/chains";
 import { MAINNET } from "../../../../../consts/global";
 import { toDecimal } from "../../../../../packages/neo/utils";
 import PairItem from "./PairItem";
 import { getTokenByHash } from "../../../../../common/helpers";
 import { LineChartOutlined } from "@ant-design/icons";
-
+import shortNumber from "@pogix3m/short-number";
 interface ITokenItem {
   chain: CHAINS;
   data: {
@@ -25,10 +25,60 @@ interface ITokenItem {
 }
 const TokenItem = ({ chain, data, onClick }: ITokenItem) => {
   let token = getTokenByHash(chain, MAINNET, data.token);
+  const [pairs, setPairs] = React.useState<any[] | undefined>(undefined);
   if (token === undefined) return null;
   return (
     <>
-      <Collapse
+      <Space>
+        <Avatar size={"small"} src={token.icon} />
+        <Space size="small">
+          <Typography.Text>
+            {shortNumber(toDecimal(data.liquidity, token.decimals))}
+          </Typography.Text>
+          <Typography.Text strong>{token.symbol}</Typography.Text>
+        </Space>
+      </Space>
+      <Space>
+        <Button
+          onClick={() => onClick([data.token])}
+          size="small"
+          icon={<LineChartOutlined />}
+        >
+          View
+        </Button>
+        <Button onClick={() => setPairs(data.pairs)} size="small">
+          Pairs
+        </Button>
+      </Space>
+
+      <Modal
+        open={pairs ? true : false}
+        onCancel={() => setPairs(undefined)}
+        footer={[
+          <Button key="back" onClick={() => setPairs(undefined)}>
+            Close
+          </Button>,
+        ]}
+      >
+        <List
+          bordered={false}
+          pagination={false}
+          dataSource={pairs}
+          renderItem={(item: any, i) => (
+            <List.Item>
+              <PairItem
+                chain={chain}
+                key={"token" + i}
+                defaultToken={data.token}
+                data={item}
+                onClick={onClick}
+              />
+            </List.Item>
+          )}
+        />
+      </Modal>
+
+      {/* <Collapse
         bordered={false}
         style={{ background: "white", width: "100%" }}
         items={[
@@ -84,7 +134,7 @@ const TokenItem = ({ chain, data, onClick }: ITokenItem) => {
             ),
           },
         ]}
-      />
+      /> */}
     </>
   );
 };
