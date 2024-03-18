@@ -51,7 +51,7 @@ export const CONFIGS = {
       rpc: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_POLYGON_MAINNET_API_KEY}`,
     },
     [NEOX_CHAIN]: {
-      label: "Neo X Testnet",
+      label: "NeoX Testnet",
       color: "danger",
       icon: NEOX_LOGO,
       chainId: NEOX_MAINNET_CHAIN_ID,
@@ -81,7 +81,7 @@ export const CONFIGS = {
       rpc: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_POLYGON_TESTNET_API_KEY}`,
     },
     [NEOX_CHAIN]: {
-      label: "Neo X Testnet",
+      label: "NeoX Testnet",
       color: "primary",
       icon: NEOX_LOGO,
       chainId: NEOX_TESTNET_CHAIN_ID,
@@ -93,7 +93,7 @@ export const CONFIGS = {
 // Define your custom chain
 export const NEOX_MAINNET_CHAIN_DETAIL: Chain = {
   id: NEOX_MAINNET_CHAIN_ID, // Replace with your custom chain ID
-  name: "Neo X", // Replace with your custom chain name
+  name: "NeoX", // Replace with your custom chain name
   nativeCurrency: {
     name: "GAS", // Replace with your currency name
     symbol: "GAS", // Replace with your currency symbol
@@ -123,7 +123,7 @@ export const NEOX_MAINNET_CHAIN_DETAIL: Chain = {
 
 export const NEOX_TESTNET_CHAIN_DETAIL = {
   id: NEOX_TESTNET_CHAIN_ID, // Replace with your custom chain ID
-  name: "Neo X Testnet", // Replace with your custom chain name
+  name: "NeoX Testnet", // Replace with your custom chain name
   network: "testnet", // Replace with your network name if applicable
   nativeCurrency: {
     name: "GAS", // Replace with your currency name
