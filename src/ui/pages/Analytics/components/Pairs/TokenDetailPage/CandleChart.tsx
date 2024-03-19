@@ -132,7 +132,6 @@ const CandleChart = ({ chain, tokenHash, height = 300 }: ICandleChartProps) => {
           top: "0",
         }}
       ></div>
-      if
       <Divider />
     </div>
   );
