@@ -43,18 +43,6 @@ const EMMISSIONS = [
     daily: 0,
   },
 ];
-const EllipsisMiddle: React.FC<{ suffixCount: number; children: string }> = ({
-  suffixCount,
-  children,
-}) => {
-  const start = children.slice(0, children.length - suffixCount).trim();
-  const suffix = children.slice(-suffixCount).trim();
-  return (
-    <Typography.Text style={{ maxWidth: "100%" }} ellipsis={{ suffix }}>
-      {start}
-    </Typography.Text>
-  );
-};
 
 const NEPAnalytics = () => {
   const { network } = useApp();

@@ -261,14 +261,14 @@ export const NEO_MAINNET_TOKENS = [
     pairs: [],
     isWhitelisted: true,
   }),
-  // createTokenMetadata({
-  //   hash: NEO_HD_CONTRACT_ADDRESS,
-  //   symbol: "HD",
-  //   icon: "/symbols/hd.png",
-  //   decimals: 8,
-  //   pairs: [],
-  //   isWhitelisted: true,
-  // }),
+  createTokenMetadata({
+    hash: NEO_HD_CONTRACT_ADDRESS,
+    symbol: "HD",
+    icon: "/symbols/hd.png",
+    decimals: 8,
+    pairs: [],
+    isWhitelisted: true,
+  }),
 ];
 
 export const NEO_TESTNET_TOKENS = [
