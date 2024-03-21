@@ -10,6 +10,7 @@ interface ITokenCardProps extends ISmithTokenProps {
   chain: CHAINS;
   network: INetworkType;
   isContractOwner?: boolean;
+  price?: number;
   onUpdate: () => void;
 }
 const TokenCard = ({
@@ -21,8 +22,17 @@ const TokenCard = ({
   tokenAddress,
   website,
   icon,
+  price,
+  totalSupply,
   onUpdate,
 }: ITokenCardProps) => {
+  console.log(price);
+  console.log(totalSupply);
+  let MC = 0;
+  if (totalSupply && price) {
+    MC = parseFloat(totalSupply as any) * price;
+  }
+
   return (
     <List.Item
       actions={
@@ -63,18 +73,21 @@ const TokenCard = ({
       <List.Item.Meta
         avatar={<Avatar size={"large"} src={icon ? icon : FTW_LOGO_URL} />}
         title={
-          <Space>
-            <span>{symbol}</span>
-            <span>({name})</span>
-          </Space>
-        }
-        description={
-          <div>
-            <Space>
+          <>
+            <div>{`${symbol} (${name})`}</div>
+            <div>
               <span>{website}</span>
-            </Space>
-            <br />
-          </div>
+            </div>
+            {MC > 0 ? (
+              <div>
+                <Space>
+                  <span>MC: ${MC.toLocaleString()}</span>
+                </Space>
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
         }
       />
     </List.Item>

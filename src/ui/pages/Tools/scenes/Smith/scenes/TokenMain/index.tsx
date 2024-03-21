@@ -22,11 +22,8 @@ const TokenMainPage = () => {
   const { address } = useWalletRouter(chain);
   const [page, setPage] = useState(1);
   const [updateModalObj, setUpdateModalObj] = useState<ITokenStateProps>();
-  const { data, loading, error, totalPages, fetchData }: any = useTokenData(
-    chain,
-    network,
-    page
-  );
+  const { data, loading, error, totalPages, prices, fetchData }: any =
+    useTokenData(chain, network, page);
 
   useEffect(() => {
     fetchData();
@@ -54,6 +51,7 @@ const TokenMainPage = () => {
                   key={index}
                   chain={chain}
                   network={network}
+                  price={prices?.[item.tokenAddress]}
                   {...item}
                   isContractOwner={address === item.owner}
                   onUpdate={() =>

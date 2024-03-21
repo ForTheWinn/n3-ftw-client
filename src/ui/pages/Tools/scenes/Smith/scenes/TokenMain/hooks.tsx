@@ -9,12 +9,15 @@ import { message } from "antd";
 import { extractErrorMessage } from "../../../../../../../common/helpers";
 import { getSmithTokenList } from "../../../../../../../common/routers/smith";
 import { ISmithTokenProps } from "../../../../../../../common/routers/smith/interfaces";
+import { getPrices } from "../../../../../../../common/routers/global";
+import { IPrices } from "../../../../../../../packages/neo/api/interfaces";
 
 export const useTokenData = (
   chain: CHAINS,
   network: INetworkType,
   page: number
 ) => {
+  const [prices, setPrices] = useState<IPrices>();
   const [data, setData] = useState<ISmithTokenProps[]>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -28,6 +31,7 @@ export const useTokenData = (
       let res = await getSmithTokenList(chain, network, page);
       setData(res.items);
       setTotalPages(res.totalPages);
+      setPrices(await getPrices(chain));
     } catch (e) {
       console.error(e);
       setError(true);
@@ -36,7 +40,7 @@ export const useTokenData = (
     setLoading(false);
   }, [chain, network, page]);
 
-  return { data, loading, error, totalPages, fetchData };
+  return { data, loading, error, totalPages, prices, fetchData };
 };
 
 export const useUpdateTokenMetadata = (chain, network, setTxid) => {
