@@ -9,13 +9,13 @@ const LPTokenCard = (props: ISwapLPToken) => {
       <strong>Token Id: {props.tokenId}</strong>
       <>
         <br />
-        <small>{`${formatAmount(props.amountA, props.decimalsA)} ${
-          props.symbolA
-        }`}</small>
+        <small>{`${parseFloat(
+          formatAmount(props.amountA, props.decimalsA)
+        ).toLocaleString()} ${props.symbolA}`}</small>
         <br />
-        <small>{`${formatAmount(props.amountB, props.decimalsB)} ${
-          props.symbolB
-        }`}</small>
+        <small>{`${parseFloat(
+          formatAmount(props.amountB, props.decimalsB)
+        ).toLocaleString()} ${props.symbolB}`}</small>
         <br />
         <small>{parseFloat(props.sharesPercentage) / 100}%</small>
         {isLocked && props.lock && (

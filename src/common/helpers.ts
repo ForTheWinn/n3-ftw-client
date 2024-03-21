@@ -186,15 +186,13 @@ export const formatAmount = (
   amount: string,
   decimals: string | number
 ): string => {
-  // Convert decimals to a number if it's a string
-  const decimalsNumber =
-    typeof decimals === "string" ? Number(decimals) : decimals;
+  const decimalsNumber = +decimals;
 
-  // Ensure decimalsNumber is a valid number before using it
   if (isNaN(decimalsNumber)) {
     throw new Error("Invalid decimals value");
   }
-  return ethers.formatUnits(BigInt(amount), decimalsNumber).toLocaleString();
+
+  return ethers.formatUnits(BigInt(amount), decimalsNumber);
 };
 
 export const calculateSlippage = (amount: bigint, slippage: number) => {
@@ -254,7 +252,9 @@ export const getWhitelistSwapTokens = (tokens: any) => {
   return Object.values(tokens).filter((token: any) => !!token.isWhitelisted);
 };
 
-export const getParamsFromBrowser = (): { tokenA: string; tokenB: string } | undefined => {
+export const getParamsFromBrowser = ():
+  | { tokenA: string; tokenB: string }
+  | undefined => {
   try {
     const href = window.location.href;
     // Find the start of the query string
