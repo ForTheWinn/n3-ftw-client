@@ -289,8 +289,8 @@ const NEPAnalytics = () => {
                     >
                       {values.neoX.hash}
                     </a>
-                    <br />
-                    Total Supply: {transformString(neoXSupply)}
+                    {/* <br />
+                    Total Supply: {transformString(neoXSupply)} */}
                     {/* <br /> */}
                     {/* MC: ${transformString(neoXMC)} */}
                   </Typography.Paragraph>

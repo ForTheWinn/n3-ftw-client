@@ -264,7 +264,7 @@ export const NEO_MAINNET_TOKENS = [
   createTokenMetadata({
     hash: NEO_HD_CONTRACT_ADDRESS,
     symbol: "HD",
-    icon: "/symbols/hd.png",
+    icon: "/symbols/hd.jpeg",
     decimals: 8,
     pairs: [],
     isWhitelisted: true,
