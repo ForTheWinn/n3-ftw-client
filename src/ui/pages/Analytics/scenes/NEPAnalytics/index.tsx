@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
 import { Avatar, Card, Divider, Typography } from "antd";
 import {
-  ETHEREUM_LOGO,
   ETH_CHAIN,
   MAINNET,
   NEOX_CHAIN,
   NEO_CHAIN,
-  NEO_LOGO,
   NEP_LOGO,
   POLYGON_CHAIN,
-  POLYGON_LOGO,
 } from "../../../../../consts/global";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { fetchTokenInfo } from "../../../../../common/routers/global";
@@ -104,11 +101,11 @@ const NEPAnalytics = () => {
     parseFloat(values.neo.totalSupply) - parseFloat(values.polygon.totalSupply);
   const polygonSupply = parseFloat(values.polygon.totalSupply);
   const ethereumSupply = parseFloat(values.ethereum.totalSupply);
-  const neoXSupply = parseFloat(values.neoX.totalSupply);
+  // const neoXSupply = parseFloat(values.neoX.totalSupply);
   const neoMC = neoSupply * values.nepPrice;
   const polygonMC = polygonSupply * values.nepPrice;
   const ethereumMC = ethereumSupply * values.nepPrice;
-  const neoXMC = neoXSupply * values.nepPrice;
+  // const neoXMC = neoXSupply * values.nepPrice;
   let totalEmmissions = 0;
   return (
     <div>
