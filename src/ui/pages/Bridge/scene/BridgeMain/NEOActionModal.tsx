@@ -174,7 +174,7 @@ const ActionModal = ({
               >
                 Check balance
               </a>
-              <button onClick={onSuccess} className="button is-black">
+              <button onClick={onSuccess} className="button is-light">
                 Close
               </button>
             </div>
@@ -190,7 +190,7 @@ const ActionModal = ({
               {state.lock.error}
               {state.mint.error}
             </div>
-            <button onClick={onCancel} className="button is-black">
+            <button onClick={onCancel} className="button is-light">
               Close
             </button>
           </div>

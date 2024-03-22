@@ -206,7 +206,7 @@ const EVMRemoveLiquidityActionModal = ({
                 >
                   View txid on explorer
                 </a>
-                <button onClick={onSuccess} className="button is-black">
+                <button onClick={onSuccess} className="button is-light">
                   Close
                 </button>
               </div>

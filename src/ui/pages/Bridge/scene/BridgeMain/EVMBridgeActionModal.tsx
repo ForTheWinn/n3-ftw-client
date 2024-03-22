@@ -292,7 +292,7 @@ const EVMBridgeActionModal = ({
               >
                 Check balance
               </a>
-              <button onClick={onSuccess} className="button is-black">
+              <button onClick={onSuccess} className="button is-light">
                 Close
               </button>
             </div>

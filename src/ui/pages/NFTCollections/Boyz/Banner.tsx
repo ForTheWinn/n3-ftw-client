@@ -64,7 +64,7 @@ const Banner = ({ filter, setFilter, setFilterActive }: IBanner) => {
                   </div>
                   <button
                     onClick={setFilterActive}
-                    className="button is-black"
+                    className="button is-primary"
                   >
                     <span className="icon">
                       <FaSearch />

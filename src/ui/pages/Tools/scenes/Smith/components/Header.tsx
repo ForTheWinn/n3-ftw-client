@@ -28,7 +28,7 @@ const Header = () => {
         right={
           <Link
             to={SMITH_CREATE_NEP17_PATH}
-            className="button is-primary is-light is-fullwidth"
+            className="button is-primary is-fullwidth"
           >
             Create
           </Link>

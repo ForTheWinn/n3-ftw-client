@@ -78,7 +78,7 @@ const RarityList = ({
         );
       })}
       <hr />
-      <button onClick={() => setFilter(newFilter)} className="button is-black">
+      <button onClick={() => setFilter(newFilter)} className="button is-primary">
         Browse
       </button>
     </div>

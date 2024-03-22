@@ -8,7 +8,10 @@ interface ILevelProps {
 const Level = ({ isMobile, left, right, className }: ILevelProps) => {
   return (
     <div className={className ? className : ""}>
-      <div className={`columns is-centered ${isMobile && "is-mobile"}`}>
+      <div
+        className={`columns is-centered ${isMobile && "is-mobile"}`}
+        style={{ alignItems: "center" }}
+      >
         <div className="column">{left}</div>
         <div className="column is-narrow">{right}</div>
       </div>
