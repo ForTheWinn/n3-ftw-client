@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { List, Modal } from "antd";
 import { CHAINS } from "../../../../../consts/chains";
 import TokenItem from "./TokenItem";
-import Swaps from "./TokenDetailPage/Swaps";
 import TokenDetailPage from "./TokenDetailPage";
 import {
   ETH_CHAIN,

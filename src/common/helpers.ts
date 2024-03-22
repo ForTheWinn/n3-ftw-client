@@ -286,3 +286,28 @@ export const getParamsFromBrowser = ():
     return undefined;
   }
 };
+
+export function formatSignificantNumbers(input) {
+  // Ensure the input is in string format to handle both numbers and strings
+  let numStr = typeof input === "number" ? input.toString() : input;
+
+  // Handling for numbers in scientific notation
+  if (numStr.includes("e")) {
+    let [base, exponent] = numStr.split("e");
+    let decimalPlaces = Math.max(parseInt(exponent, 10), 0); // Ensure non-negative
+    numStr = Number(numStr).toFixed(decimalPlaces + 2);
+  }
+
+  // Find leading zeros and decimal point
+  const leadingZerosMatch = numStr.match(/^(0*\.0*)/);
+
+  // If there are leading zeros followed by a decimal point, process further
+  if (leadingZerosMatch) {
+    const afterZeros = numStr.substring(leadingZerosMatch[0].length); // Get part of string after leading zeros and decimal
+    const significantDigits = afterZeros.substring(0, 2); // Get first two significant digits
+    return leadingZerosMatch[0] + significantDigits; // Combine leading zeros with first two significant digits
+  } else {
+    // For numbers without leading zeros (including integers and non-zero decimals), return up to two decimal places
+    return Number(numStr).toFixed(2);
+  }
+}

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useApp } from "../../../../../common/hooks/use-app";
 import { MAINNET, NEO_CHAIN } from "../../../../../consts/global";
 import Pairs from "../../components/Pairs";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
@@ -13,7 +12,6 @@ const AnalyticsMain = () => {
   const payload = useOnChainData(() => {
     return new RestAPI(MAINNET).getNEOPairs();
   }, []);
-
   return (
     <>
       <Pairs chain={NEO_CHAIN} {...payload} />
