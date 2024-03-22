@@ -103,7 +103,7 @@ const LockerSearch = () => {
                   <thead>
                     <tr>
                       <th>Locker no</th>
-                      <th>Contract hash</th>
+                      <th>Key Owner</th>
                       <th>Symbol</th>
                       <th>Amount</th>
                       <th>Release at</th>
