@@ -5,9 +5,12 @@ import CandleChart from "./CandleChart";
 import { MAINNET } from "../../../../../../consts/global";
 import { Avatar, Button, Divider, Space, Typography } from "antd";
 import { getTokenByHash } from "../../../../../../common/helpers";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { SWAP_PATH } from "../../../../../../consts/routes";
 import { useApp } from "../../../../../../common/hooks/use-app";
+import { RestAPI } from "../../../../../../packages/neo/api";
+import { useOnChainData } from "../../../../../../common/hooks/use-onchain-data";
+import TokenStats from "./TokenStats";
 
 interface ITokenDetailPageProps {
   chain: CHAINS;
@@ -29,6 +32,11 @@ const TokenDetailPage = (props: ITokenDetailPageProps) => {
       history.push(`${SWAP_PATH}?tokenB=${token.hash}`);
     }
   };
+
+  const { data, isLoaded } = useOnChainData(() => {
+    return new RestAPI(MAINNET).getToken(token.hash);
+  }, []);
+
   return (
     <div>
       <Space style={{ justifyContent: "space-between", width: "100%" }}>
@@ -42,7 +50,8 @@ const TokenDetailPage = (props: ITokenDetailPageProps) => {
           Trade on FTWSwap
         </Button>
       </Space>
-
+      <Divider />
+      <TokenStats ca={token.hash} />
       <Divider />
       {token && (
         <>

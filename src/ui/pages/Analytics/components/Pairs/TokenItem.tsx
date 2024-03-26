@@ -5,6 +5,7 @@ import { MAINNET } from "../../../../../consts/global";
 import PairItem from "./PairItem";
 import { getTokenByHash } from "../../../../../common/helpers";
 import { LineChartOutlined } from "@ant-design/icons";
+import shortNumber from "@pogix3m/short-number";
 interface ITokenItem {
   chain: CHAINS;
   data: {
@@ -12,6 +13,7 @@ interface ITokenItem {
     price: string;
     liquidityUSD: string;
     liquidity: string;
+    mc?: string;
     pairs: {
       tokenA: string;
       tokenB: string;
@@ -32,12 +34,19 @@ const TokenItem = ({ chain, data, onClick }: ITokenItem) => {
       <Space>
         <Avatar size={"small"} src={token.icon} />
         <Space size="small">
-          <Typography.Text>${data.price}</Typography.Text>
+          <Typography.Text className="is-accent">${data.price}</Typography.Text>
           <Typography.Text>
-            Liq: ${data.liquidityUSD}
+            Liq: ${shortNumber(data.liquidityUSD)}
             {/* ({data.liquidity}{" "}
             <strong>{token.symbol}</strong>) */}
           </Typography.Text>
+          {data.mc && (
+            <Typography.Text>
+              MC: ${shortNumber(data.mc)}
+              {/* ({data.liquidity}{" "}
+            <strong>{token.symbol}</strong>) */}
+            </Typography.Text>
+          )}
         </Space>
       </Space>
       <Space>
