@@ -7,7 +7,7 @@ const MaticBoyz = () => {
         <div className="container">
           <div className="has-text-centered mb-6">
             <h1 className="title is-spaced is-size-4-mobile">Matic Boyz</h1>
-            <p className="heading is-size-6-mobile">
+            <p className="is-accent is-size-6-mobile">
               The coolest boyz on the polygon blocks
             </p>
             <p>-</p>
@@ -19,7 +19,7 @@ const MaticBoyz = () => {
                 src="/boyz/sample-matic-boy.png"
               />
               <br />
-              <p className="heading is-size-6-mobile">Coming soon</p>
+              <p className="is-accent is-size-6-mobile">Coming soon</p>
             </div>
           </div>
         </div>

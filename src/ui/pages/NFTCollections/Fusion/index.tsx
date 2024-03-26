@@ -8,7 +8,7 @@ const Fusion = () => {
         <div className="column is-half">
           <div className="box is-shadowless">
             <h1 className="title">Fusion</h1>
-            <p className="subtitle heading">
+            <p className="subtitle is-accent">
               Fuse a Rune & Cryptonaut NFT to create a Fusion Cryptonaut. <br />{" "}
               Battle to earn Experience, Rank, Rewards and Glory.
             </p>
@@ -66,28 +66,18 @@ const Fusion = () => {
               </p>
               <h6>Markets</h6>
               <p>
-                <a
-                  href="https://tothemoonuniverse.com/marketplace/fusion"
-                >
+                <a href="https://tothemoonuniverse.com/marketplace/fusion">
                   TTM, &nbsp;
                 </a>
-                <a
-                  href="https://ghostmarket.io/collection/fusion/"
-                >
-                  GM
-                </a>
+                <a href="https://ghostmarket.io/collection/fusion/">GM</a>
               </p>
               <p>
                 <strong>Press</strong>
                 <br />
-                <a
-                  href="https://neonewstoday.com/nft/tothemoon-and-forthewin-launch-new-fused-cryptonaut-collaboration/"
-                >
+                <a href="https://neonewstoday.com/nft/tothemoon-and-forthewin-launch-new-fused-cryptonaut-collaboration/">
                   Article 1, &nbsp;
                 </a>
-                <a
-                  href="https://neonewstoday.com/gaming/tothemoon-launches-arenas-for-fused-cryptonaut-nfts-to-compete-for-gas/"
-                >
+                <a href="https://neonewstoday.com/gaming/tothemoon-launches-arenas-for-fused-cryptonaut-nfts-to-compete-for-gas/">
                   Article 2
                 </a>
               </p>

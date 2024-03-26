@@ -49,7 +49,7 @@ const SwapHistory = ({ network, tokenA, tokenB, pairs }: ISwapHistoryProps) => {
                         pairs[swap.base_id].decimals,
                         true
                       )}
-                      <span className="heading">
+                      <span className="is-accent">
                         {pairs[swap.base_id].symbol}
                       </span>
                     </td>
@@ -60,7 +60,7 @@ const SwapHistory = ({ network, tokenA, tokenB, pairs }: ISwapHistoryProps) => {
                         true
                       )}
                       &nbsp;
-                      <span className="heading">
+                      <span className="is-accent">
                         {pairs[swap.quote_id].symbol}
                       </span>
                     </td>

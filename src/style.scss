@@ -1,4 +1,4 @@
-$primary: #32CD32;
+$primary: #32cd32;
 $info: #8247e5;
 $link: $primary;
 $hr-height: 1px;
@@ -30,16 +30,14 @@ html {
   overflow-y: overlay;
 }
 
-.heading {
-  color: #000;
-  font-family: VCR, Arial, serif;
-}
-
 .title {
   font-family: VCR, Arial, serif;
   @extend .is-uppercase;
 }
 
+.is-accent {
+  font-family: VCR, Arial, serif;
+}
 
 /**
 Align element in center

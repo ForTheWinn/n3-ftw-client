@@ -3,7 +3,6 @@ import LiquidityChart from "../NEOAnalytics/LiquidityChart";
 import SwapHistory from "./SwapHistory";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { RestAPI } from "../../../../../packages/neo/api";
-import { CHAINS } from "../../../../../consts/chains";
 import { MAINNET } from "../../../../../consts/global";
 
 interface ITokenDetailProps {

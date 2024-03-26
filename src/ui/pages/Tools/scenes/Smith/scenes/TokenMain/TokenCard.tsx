@@ -26,8 +26,6 @@ const TokenCard = ({
   totalSupply,
   onUpdate,
 }: ITokenCardProps) => {
-  console.log(price);
-  console.log(totalSupply);
   let MC = 0;
   if (totalSupply && price) {
     MC = parseFloat(totalSupply as any) * price;

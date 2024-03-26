@@ -27,7 +27,7 @@ const Home = () => {
               <h1 className="title is-spaced is-size-4-mobile">
                 Forthewin Network
               </h1>
-              <p className="heading is-size-6-mobile">
+              <p className="is-accent is-size-6-mobile">
                 DeFi / Web3 Tools / Cool NFTs
               </p>
 
@@ -36,7 +36,7 @@ const Home = () => {
                 <div className="mt-3">
                   <img alt="Neo Boyz #1065" width={150} src="/boyz/1065.png" />
                   <br />
-                  <p className="heading is-size-6-mobile">Neo Boyz #1065</p>
+                  <p className="is-accent is-size-6-mobile">Neo Boyz #1065</p>
                 </div>
               </>
             </div>

@@ -35,7 +35,7 @@ const LockerTokenCard = ({
     >
       <img style={{ width: "64px" }} src={logo} />
       <br />
-      <div className="heading">Locked</div>
+      <div className="is-accent">Locked</div>
       {`${amount.toLocaleString()} ${symbol}`}
     </div>
   );

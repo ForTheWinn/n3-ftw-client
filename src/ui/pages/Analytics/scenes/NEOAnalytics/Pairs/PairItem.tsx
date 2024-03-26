@@ -52,7 +52,7 @@ const PairItem = ({
             tokenA={tokenA}
             tokenB={tokenB}
           />
-          <span className="heading">{`${tokenASymbol}-${tokenBSymbol}`}</span>
+          <span className="is-accent">{`${tokenASymbol}-${tokenBSymbol}`}</span>
         </Space>
       </td>
       <td>

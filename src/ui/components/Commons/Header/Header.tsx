@@ -36,7 +36,7 @@ const Header = () => {
           <Link className="is-center is-hidden-touch" to="/">
             <Logo />
             {process.env.REACT_APP_NETWORK === TESTNET ? (
-              <span className="heading is-marginless has-text-danger">
+              <span className="is-accent is-marginless has-text-danger">
                 Testnet
               </span>
             ) : (

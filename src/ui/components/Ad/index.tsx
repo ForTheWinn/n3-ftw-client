@@ -39,7 +39,7 @@ const NFTAds = () => {
         <figure className="image is-128x128" style={{ margin: "0 auto" }}>
           <img src={nftData.image} alt={`NFT ${nftData.no}`} />
         </figure>
-        <p className="heading is-size-6-mobile">Neo Boyz #{nftData.no}</p>
+        <p className="is-accent is-size-6-mobile">Neo Boyz #{nftData.no}</p>
       </div>
     </>
   );

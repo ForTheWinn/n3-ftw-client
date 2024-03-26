@@ -32,7 +32,7 @@ const TokenItem = ({ id, symbol, chain, network, onClick }: ITokenItem) => {
       <td>
         <Space>
           <Avatar size={"small"} src={process.env.PUBLIC_URL + logo} />
-          <span className="heading">{symbol}</span>
+          <span className="is-accent">{symbol}</span>
         </Space>
       </td>
       <td>{data ? "$" + numberTrim(data.price, decimalCuts(symbol)) : ""}</td>
