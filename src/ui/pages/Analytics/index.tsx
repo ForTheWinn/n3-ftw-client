@@ -56,7 +56,7 @@ const Analytics = () => {
   return (
     <PageLayout>
       <div className="box is-shadowless">
-        <Tabs
+        {/* <Tabs
           onChange={handleTabChange}
           activeKey={(() => {
             if (location.pathname.includes(ANALYTICS_NEO_SWAP_PATH))
@@ -112,7 +112,7 @@ const Analytics = () => {
               key: "polygon-swap",
             },
           ]}
-        />
+        /> */}
 
         <Route
           exact={true}
