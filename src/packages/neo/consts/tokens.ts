@@ -47,6 +47,7 @@ const NEO_APE_CONTRACT_ADDRESS = "0x63f1a9c6bef178f54a6332b874407068d9a99e50";
 const NEO_HD_CONTRACT_ADDRESS = "0x4b027a8320d5705802e5efbb51f6231ebf412cf6";
 const NEO_SCHRUTE_CONTRACT_ADDRESS =
   "0xd8ee6f84ef456c8023524087a0788120e15d2647";
+const NEO_FLAI_CONTRACT_ADDRESS = "0x253deaed7bd305c06d3cf1454d502637c89a10d9";
 
 export const NEO_MAINNET_TOKENS = [
   createTokenMetadata({
@@ -268,7 +269,7 @@ export const NEO_MAINNET_TOKENS = [
     symbol: "HD",
     icon: "/symbols/hd.jpeg",
     decimals: 8,
-    pairs: [],
+    pairs: [NEO_BNEO_CONTRACT_ADDRESS[MAINNET], NEO_GAS_CONTRACT_ADDRESS],
     isWhitelisted: true,
   }),
   createTokenMetadata({
@@ -276,6 +277,14 @@ export const NEO_MAINNET_TOKENS = [
     symbol: "SCHRUTE",
     icon: "/symbols/schrute.png",
     decimals: 2,
+    pairs: [],
+    isWhitelisted: true,
+  }),
+  createTokenMetadata({
+    hash: NEO_FLAI_CONTRACT_ADDRESS,
+    symbol: "FLAI",
+    icon: "/symbols/flai.jpg",
+    decimals: 8,
     pairs: [],
     isWhitelisted: true,
   }),
