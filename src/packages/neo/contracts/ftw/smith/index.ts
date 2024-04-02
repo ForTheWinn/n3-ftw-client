@@ -4,10 +4,7 @@ import { getDefaultWitnessScope } from "../../../utils";
 import { ISmithNEP11Info, ISmithNEP17Info } from "./interfaces";
 import { tx, u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { parseMapValue } from "../../../utils";
-import {
-  NEO_GAS_CONTRACT_ADDRESS,
-  NEO_NEP_CONTRACT_ADDRESS,
-} from "../../../consts/tokens";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../../consts/tokens";
 import { CONTRACT_LIST } from "../../../consts";
 import { SMITH } from "../../../../../consts/global";
 import { NeoWallets } from "../../../wallets";
@@ -519,44 +516,5 @@ export class SmithContract {
       throw new Error(res.exception as string);
     }
     return res.stack[0].value as boolean;
-  };
-
-  balanceCheck = async (
-    connectedWallet: IConnectedWallet
-  ): Promise<{
-    gasBalance: number;
-    nepBalance: number;
-  }> => {
-    const ownerHash = NeonWallet.getScriptHashFromAddress(
-      connectedWallet.account.address
-    );
-    const script1 = {
-      scriptHash: NEO_GAS_CONTRACT_ADDRESS,
-      operation: "balanceOf",
-      args: [
-        {
-          type: "Hash160",
-          value: ownerHash,
-        },
-      ],
-    };
-    const script2 = {
-      scriptHash: NEO_NEP_CONTRACT_ADDRESS[this.network],
-      operation: "balanceOf",
-      args: [
-        {
-          type: "Hash160",
-          value: ownerHash,
-        },
-      ],
-    };
-    const res = await Network.read(this.network, [script1, script2]);
-    if (res.state === "FAULT") {
-      throw new Error(res.exception as string);
-    }
-    return {
-      gasBalance: parseFloat(res.stack[0].value as string),
-      nepBalance: parseFloat(res.stack[1].value as string),
-    };
   };
 }

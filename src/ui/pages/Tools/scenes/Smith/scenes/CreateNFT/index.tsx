@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNeoWallets } from "../../../../../../../common/hooks/use-neo-wallets";
 import { useApp } from "../../../../../../../common/hooks/use-app";
 
@@ -89,24 +89,6 @@ const NEP11FormModal = () => {
       message.error(e.message ? e.message : WENT_WRONG);
     }
   };
-
-  useEffect(() => {
-    // firstInput.current.focus();
-    async function balanceCheck(w) {
-      setBalanceLoading(true);
-      try {
-        const res = await new SmithContract(network).balanceCheck(w);
-        setBalances(res);
-        setBalanceLoading(false);
-      } catch (e: any) {
-        setBalanceLoading(false);
-        console.error(e);
-      }
-    }
-    if (connectedWallet) {
-      balanceCheck(connectedWallet);
-    }
-  }, [connectedWallet, network]);
 
   return (
     <>

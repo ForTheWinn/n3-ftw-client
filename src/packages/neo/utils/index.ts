@@ -376,7 +376,7 @@ export const useBalances = async (
   network: INetworkType,
   address: string,
   tokens: string[]
-) => {
+): Promise<number[]> => {
   const ownerHash = wallet.getScriptHashFromAddress(address);
   const scripts: any = [];
   for (const token of tokens) {
@@ -399,7 +399,7 @@ export const useBalances = async (
 
   const res = await Network.read(network, scripts);
   if (res.state === "FAULT") {
-    throw new Error(res.exception as string);
+    return [];
   }
   const balances: number[] = [];
   res.stack.forEach((item, index) => {

@@ -10,7 +10,10 @@ import ConnectWalletButton from "../../../../../../components/ConnectWalletButto
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
 import EVMActionModal from "./EVMSmithActionModal";
 import { SMITH_FEE } from "../../../../../../../consts/smith";
-import { withDecimal } from "../../../../../../../packages/neo/utils";
+import {
+  toDecimal,
+  withDecimal,
+} from "../../../../../../../packages/neo/utils";
 import { message } from "antd";
 
 export interface ITokenMetadata {
@@ -29,7 +32,7 @@ const CreateToken = () => {
 
   const [isActionModalActive, setActionModalActive] = useState(false);
   const [userAgreement, setUserAgreement] = useState(false);
-  const smithFee = withDecimal(SMITH_FEE[chain][network], 8, true);
+  const smithFee = toDecimal(SMITH_FEE[chain][network], 8);
 
   const [values, setValues] = useState<ITokenMetadata>({
     name: "",

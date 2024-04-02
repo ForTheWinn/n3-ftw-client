@@ -13,19 +13,21 @@ import NEOSmithActionModal from "./NEOActionModal";
 import { Modal, message } from "antd";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { useWalletRouter } from "../../../../../../../common/hooks/use-wallet-router";
-import { useBalances } from "../../../../../../../packages/neo/utils";
+import {
+  toDecimal,
+  useBalances,
+} from "../../../../../../../packages/neo/utils";
 import {
   NEO_GAS_CONTRACT_ADDRESS,
   NEO_NEP_CONTRACT_ADDRESS,
 } from "../../../../../../../packages/neo/consts/tokens";
-import { withDecimal } from "../../../../../../../packages/neo/utils";
 
 const CreateToken = () => {
   const { chain, network } = useApp();
   const history = useHistory();
   const [txid, setTxid] = useState<string | undefined>();
   const { client, address } = useWalletRouter(chain);
-  const smithFee = withDecimal(SMITH_FEE[chain][network], 8, true);
+  const smithFee = toDecimal(SMITH_FEE[chain][network], 8);
   const [values, setValues] = useState({
     name: "",
     symbol: "",
@@ -59,7 +61,7 @@ const CreateToken = () => {
         NEO_NEP_CONTRACT_ADDRESS[network],
       ]);
 
-      if (balances[1] < parseFloat(smithFee)) {
+      if (balances[1] < smithFee) {
         message.error("You don't have enough NEP.");
         return;
       }
@@ -279,8 +281,9 @@ const CreateToken = () => {
                     before you mint on <strong>Mainnet</strong>.
                   </li>
                   <li>
-                    Do not use <strong>EMOJI</strong> or{" "}
-                    <strong>Unicode</strong>.
+                    Do not use{" "}
+                    <strong className="has-text-danger">Emoji</strong> or{" "}
+                    <strong className="has-text-danger">Unicode</strong>.
                   </li>
                   <li>FTWSwap cannot support tokens with 0 decimals.</li>
                   <li>

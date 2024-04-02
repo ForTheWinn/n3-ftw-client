@@ -8,12 +8,13 @@ import moment from "moment";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { wallet } from "@cityofzion/neon-core";
-import { SmithContract } from "../../../../packages/neo/contracts/ftw/smith";
 import { LOCKER_NEP_FEE } from "../../../../packages/neo/contracts/ftw/locker/consts";
 import { useApp } from "../../../../common/hooks/use-app";
 import { LOCKER_USER_PATH } from "../../../../consts/routes";
 import { IToken } from "../../../../consts/tokens";
 import { message } from "antd";
+import { toDecimal, useBalances } from "../../../../packages/neo/utils";
+import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../packages/neo/consts/tokens";
 
 const Create = () => {
   const location = useLocation();
@@ -27,20 +28,12 @@ const Create = () => {
   );
   const [amount, setAmount] = useState<number | undefined>(0);
   const [keys, setKeys] = useState<number | undefined>(1);
-  const [isMultiInvoke, setIsMultiInvoke] = useState(false);
   const [title, setTile] = useState("");
   const [description, setDescription] = useState("");
   const [releaseAt, setReleaseAt] = useState(
     new Date(Date.now() + 3600 * 1000 * 24)
-    // new Date(Date.now())
   );
-  const [balances, setBalances] = useState<{
-    gasBalance: number;
-    nepBalance: number;
-  }>({
-    gasBalance: 0,
-    nepBalance: 0,
-  });
+  const lockerFee = toDecimal(LOCKER_NEP_FEE[network], 8);
 
   const onSubmit = async () => {
     if (connectedWallet && contract && receiver && amount) {
@@ -49,15 +42,21 @@ const Create = () => {
         return;
       }
 
-      if (balances.nepBalance < LOCKER_NEP_FEE[network]) {
-        message.error("You don't have enough NEP for platform fee.");
+      const balances = await useBalances(
+        network,
+        connectedWallet.account.address,
+        [NEO_NEP_CONTRACT_ADDRESS[network]]
+      );
+
+      if (balances[0] < lockerFee) {
+        message.error("You don't have enough NEP.");
         return;
       }
 
-      if (keys === 0 || keys === undefined || keys > 10) {
-        message.error("Lockers needs to be 1 ~ 10.");
-        return;
-      }
+      // if (keys === 0 || keys === undefined || keys > 10) {
+      //   message.error("Lockers needs to be 1 ~ 10.");
+      //   return;
+      // }
 
       try {
         const res = await new LockerContract(network).create(
@@ -102,13 +101,6 @@ const Create = () => {
             symbol: contract.symbol,
             icon: "",
           });
-        }
-
-        if (connectedWallet) {
-          const res = await new SmithContract(network).balanceCheck(
-            connectedWallet
-          );
-          setBalances(res);
         }
       } catch (e: any) {
         console.error(e);
@@ -251,10 +243,10 @@ const Create = () => {
               <div className="box is-shadowless">
                 <div className="content is-small">
                   <li>
-                    Fee is{" "}
+                    Fee:{" "}
                     <span className="has-text-primary has-text-weight-bold">
                       {" "}
-                      100 NEP
+                      {lockerFee} NEP
                     </span>
                   </li>
                   <li>

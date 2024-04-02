@@ -7,5 +7,5 @@ export const LOCKER_SCRIPT_HASH = {
 
 export const LOCKER_NEP_FEE = {
   [TESTNET]: 100_00000000,
-  [MAINNET]: 100_00000000
+  [MAINNET]: 1000_00000000
 };
