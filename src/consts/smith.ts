@@ -9,7 +9,7 @@ import {
 
 export const SMITH_FEE = {
   [NEO_CHAIN]: {
-    [MAINNET]: 1000_00000000,
+    [MAINNET]: 10000_00000000,
     [TESTNET]: 1000_00000000,
   },
   [POLYGON_CHAIN]: {
