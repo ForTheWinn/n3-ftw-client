@@ -5,6 +5,7 @@ import { MAINNET, NEO_CHAIN } from "../../../../../../consts/global";
 import { CHAINS } from "../../../../../../consts/chains";
 import { createChart, CrosshairMode } from "lightweight-charts";
 import { Divider } from "antd";
+import { formatSignificantNumbers } from "../../../../../../common/helpers";
 
 interface ICandleChartProps {
   chain: CHAINS;
@@ -12,7 +13,19 @@ interface ICandleChartProps {
   height?: number;
 }
 
-function showCustomTooltip(percentage: number) {
+// function showCustomTooltip({ open, close, high, low }: any) {
+function showCustomTooltip(percentage: any) {
+  // const tooltip: any = document.getElementById("percentage_tooltip");
+  // tooltip.innerHTML = `Open: ${formatSignificantNumbers(
+  //   open
+  // )}<br>Close: ${formatSignificantNumbers(
+  //   close
+  // )}<br>High: ${formatSignificantNumbers(
+  //   high
+  // )}<br>Low: ${formatSignificantNumbers(low)}`;
+  // tooltip.style.display = "block";
+  // tooltip.style.color = close > open ? GREEN : RED; // Color based on price increase or decrease
+
   const tooltip: any = document.getElementById("percentage_tooltip");
   if (percentage) {
     tooltip.innerHTML = percentage.toFixed(2) + "%";
@@ -76,7 +89,7 @@ const CandleChart = ({ chain, tokenHash, height = 300 }: ICandleChartProps) => {
           timeVisible: true,
           secondsVisible: false, // Adjust according to your interval
         },
-        autoSize: true,
+        // autoSize: true,
       });
 
       const candleSeries = chart.addCandlestickSeries({
@@ -94,13 +107,33 @@ const CandleChart = ({ chain, tokenHash, height = 300 }: ICandleChartProps) => {
 
       candleSeries.setData(data);
 
+      // Assuming 'data' is sorted and contains the timestamp in Unix format
+      // Set visible range to the last 24 hours based on the last data timestamp
+      if (data.length > 0) {
+        const lastDataTimestamp = data[data.length - 1].time; // Ensure your data array has a 'time' property
+        const fromTimestamp = lastDataTimestamp - 24 * 60 * 60; // Subtract 24 hours
+        chart.timeScale().setVisibleRange({
+          from: fromTimestamp as any, // Convert to seconds since lightweight-charts uses seconds
+          to: lastDataTimestamp,
+        });
+      }
+
       chart.subscribeCrosshairMove(function (param: any) {
         if (!param || !param.seriesData) {
           return;
         }
 
         const seriesPrice = param.seriesData.get(candleSeries);
-
+        // if (seriesPrice) {
+        //   showCustomTooltip({
+        //     open: seriesPrice.open,
+        //     close: seriesPrice.close,
+        //     high: seriesPrice.high,
+        //     low: seriesPrice.low,
+        //   });
+        // } else {
+        //   showCustomTooltip(null); // Hide tooltip if no specific candlestick data
+        // }
         if (!seriesPrice) {
           return;
         }
