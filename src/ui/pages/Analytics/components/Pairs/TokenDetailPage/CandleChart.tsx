@@ -13,27 +13,17 @@ interface ICandleChartProps {
   height?: number;
 }
 
-// function showCustomTooltip({ open, close, high, low }: any) {
-function showCustomTooltip(percentage: any) {
-  // const tooltip: any = document.getElementById("percentage_tooltip");
-  // tooltip.innerHTML = `Open: ${formatSignificantNumbers(
-  //   open
-  // )}<br>Close: ${formatSignificantNumbers(
-  //   close
-  // )}<br>High: ${formatSignificantNumbers(
-  //   high
-  // )}<br>Low: ${formatSignificantNumbers(low)}`;
-  // tooltip.style.display = "block";
-  // tooltip.style.color = close > open ? GREEN : RED; // Color based on price increase or decrease
-
+function showCustomTooltip(data: any) {
+  console.log(data.volume);
+  const { open, close, volume } = data;
+  const percentageChange = ((open - close) / open) * 100;
+  // function showCustomTooltip( data: any) {
   const tooltip: any = document.getElementById("percentage_tooltip");
-  if (percentage) {
-    tooltip.innerHTML = percentage.toFixed(2) + "%";
-    tooltip.style.display = "block";
-    tooltip.style.color = percentage > 0 ? GREEN : RED;
-  } else {
-    tooltip.style.display = "none";
-  }
+  tooltip.innerHTML = `Change: ${percentageChange.toFixed(2)}%${
+    volume ? "<br>Volume: $" + formatSignificantNumbers(volume) : ""
+  }`;
+  tooltip.style.display = "block";
+  tooltip.style.color = close > open ? GREEN : RED; // Color based on price increase or decrease
 }
 
 const RED = "rgba(255, 82, 82, 1)";
@@ -122,26 +112,15 @@ const CandleChart = ({ chain, tokenHash, height = 300 }: ICandleChartProps) => {
         if (!param || !param.seriesData) {
           return;
         }
-
         const seriesPrice = param.seriesData.get(candleSeries);
-        // if (seriesPrice) {
-        //   showCustomTooltip({
-        //     open: seriesPrice.open,
-        //     close: seriesPrice.close,
-        //     high: seriesPrice.high,
-        //     low: seriesPrice.low,
-        //   });
-        // } else {
-        //   showCustomTooltip(null); // Hide tooltip if no specific candlestick data
-        // }
         if (!seriesPrice) {
           return;
         }
 
-        const percentageChange =
-          ((seriesPrice.open - seriesPrice.close) / seriesPrice.open) * 100;
-
-        showCustomTooltip(percentageChange);
+        showCustomTooltip({
+          ...seriesPrice,
+          volume: data[param.logical].volume,
+        });
       });
 
       return () => {

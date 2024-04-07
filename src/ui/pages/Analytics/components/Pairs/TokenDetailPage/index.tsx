@@ -33,10 +33,6 @@ const TokenDetailPage = (props: ITokenDetailPageProps) => {
     }
   };
 
-  const { data, isLoaded } = useOnChainData(() => {
-    return new RestAPI(MAINNET).getToken(token.hash);
-  }, []);
-
   return (
     <div>
       <Space style={{ justifyContent: "space-between", width: "100%" }}>
