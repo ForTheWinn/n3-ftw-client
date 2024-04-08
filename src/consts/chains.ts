@@ -26,7 +26,8 @@ export type CHAINS =
   | typeof NEO_CHAIN
   | typeof POLYGON_CHAIN
   | typeof ETH_CHAIN
-  | typeof NEOX_CHAIN;
+  | typeof NEOX_CHAIN
+  | typeof BASE_CHAIN;
 
 export const LIST = [
   NEO_CHAIN,

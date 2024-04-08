@@ -3,8 +3,10 @@ import { CHAINS } from "../../consts/chains";
 import { LocalStorage } from "../../packages/neo/local-storage";
 import { INetworkType } from "../../packages/neo/network";
 import {
+  BASE_CHAIN,
   ETH_CHAIN,
   MAINNET,
+  NEOX_CHAIN,
   NEO_CHAIN,
   POLYGON_CHAIN,
 } from "../../consts/global";
@@ -21,12 +23,15 @@ const initChain = (): CHAINS => {
   ) {
     const subdomain = parts[0];
     if (subdomain.includes("polygon")) {
-      
       return POLYGON_CHAIN;
     } else if (subdomain.includes("neo")) {
       return NEO_CHAIN;
     } else if (subdomain.includes("eth") || subdomain.includes("ethereum")) {
       return ETH_CHAIN;
+    } else if (subdomain.includes("base")) {
+      return BASE_CHAIN;
+    } else if (subdomain.includes("neox")) {
+      return NEOX_CHAIN;
     } else {
       return LocalStorage.getChain();
     }

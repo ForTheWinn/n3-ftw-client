@@ -1,4 +1,5 @@
 import {
+  BASE_CHAIN,
   ETH_CHAIN,
   ETH_MAINNET_CHAIN_ID,
   ETH_TESTNET_CHAIN_ID,
@@ -103,6 +104,8 @@ export const getChainNameByChain = (chain: CHAINS): string => {
       return "Polygon";
     case ETH_CHAIN:
       return "Ethereum";
+    case BASE_CHAIN:
+      return "Base";
     default:
       return "";
   }
