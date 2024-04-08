@@ -18,8 +18,8 @@ const Header = () => {
             <h1 className="title is-5">Smith</h1>
             <p className="subtitle is-7">
               Smith simplifies crypto token creation, allowing users to launch
-              their own token in just 1-2 minutes without any complex coding or
-              developer experience.
+              their own token quickly without any complex coding or developer
+              experience.
               <br />
               <a onClick={() => setInfoModalActive(true)}>Learn more</a>
             </p>

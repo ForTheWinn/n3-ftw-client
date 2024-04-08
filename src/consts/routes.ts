@@ -360,7 +360,7 @@ const SMITH_PAGE_ROUTE = {
   label: "Token Launcher",
   icon: "/520/smith.png",
   description:
-    "Smith simplifies crypto token creation, allowing users to launch their own token in just 1-2 minutes without any complex coding or developer experience",
+    "Smith simplifies crypto token creation, allowing users to launch their own token quickly without any complex coding or developer experience.",
   path: SMITH_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
@@ -481,6 +481,7 @@ const HOME_PAGE_ROUTE = {
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
     [NEOX_CHAIN]: [TESTNET, MAINNET],
+    [BASE_CHAIN]: [MAINNET],
   },
   category: [],
   noShow: true,
