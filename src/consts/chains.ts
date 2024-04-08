@@ -1,5 +1,8 @@
 import { Chain } from "viem";
 import {
+  BASE_CHAIN,
+  BASE_LOGO,
+  BASE_MAINNET_CHAIN_ID,
   ETH_CHAIN,
   ETH_MAINNET_CHAIN_ID,
   ETH_TESTNET_CHAIN_ID,
@@ -25,7 +28,13 @@ export type CHAINS =
   | typeof ETH_CHAIN
   | typeof NEOX_CHAIN;
 
-export const LIST = [NEO_CHAIN, ETH_CHAIN, POLYGON_CHAIN, NEOX_CHAIN];
+export const LIST = [
+  NEO_CHAIN,
+  ETH_CHAIN,
+  BASE_CHAIN,
+  POLYGON_CHAIN,
+  NEOX_CHAIN,
+];
 
 export const CONFIGS = {
   [MAINNET]: {
@@ -56,6 +65,13 @@ export const CONFIGS = {
       icon: NEOX_LOGO,
       chainId: NEOX_MAINNET_CHAIN_ID,
       rpc: "https://neoxseed1.ngd.network",
+    },
+    [BASE_CHAIN]: {
+      label: "Base",
+      color: "info",
+      icon: BASE_LOGO,
+      chainId: BASE_MAINNET_CHAIN_ID,
+      rpc: "https://mainnet.base.org",
     },
   },
   [TESTNET]: {

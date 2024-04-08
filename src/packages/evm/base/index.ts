@@ -1,0 +1,25 @@
+import { MAINNET, TESTNET, SMITH, SWAP, FARM } from "../../../consts/global";
+
+export const BASE_MAINNET_CONTRACTS = {
+  SMITH: "0x6cf4098e47207139c3e35929bf59a1410e195695",
+  NEP: "",
+  SWAP: "",
+  FARM: "",
+  FNEO: "",
+  ETH: "",
+  WETH: "",
+};
+
+export const BASE_CONTRACTS = {
+  [MAINNET]: {
+    [SMITH]: BASE_MAINNET_CONTRACTS.SMITH,
+  },
+  [TESTNET]: {
+    [SMITH]: BASE_MAINNET_CONTRACTS.SMITH,
+  },
+};
+
+export const NEOX_NEP_ADDRESSES = {
+  [MAINNET]: BASE_MAINNET_CONTRACTS.NEP,
+  [TESTNET]: BASE_MAINNET_CONTRACTS.NEP,
+};

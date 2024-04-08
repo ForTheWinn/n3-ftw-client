@@ -2,11 +2,13 @@ export const NEO_CHAIN = "NEO_CHAIN";
 export const ETH_CHAIN = "ETH_CHAIN";
 export const POLYGON_CHAIN = "POLYGON_CHAIN";
 export const NEOX_CHAIN = "NEOX_CHAIN";
+export const BASE_CHAIN = "BASE_CHAIN";
 
 export const NEO_MAINNET_CHAIN_ID = 888;
 export const POLYGON_MAINNET_CHAIN_ID = 137;
 export const ETH_MAINNET_CHAIN_ID = 1;
 export const NEOX_MAINNET_CHAIN_ID = 12227330;
+export const BASE_MAINNET_CHAIN_ID = 8453;
 
 export const NEO_TESTNET_CHAIN_ID = 889;
 export const POLYGON_TESTNET_CHAIN_ID = 80001;
@@ -29,6 +31,7 @@ export const FNEO_LOGO = "/symbols/fneo.png";
 export const NEO_LOGO = "/symbols/neo.svg";
 export const UNKNOWN_TOKEN_IMAGE = "/symbols/unknown.png";
 export const FTW_LOGO_URL = "/logo/FTW_512_512.svg";
+export const BASE_LOGO = "/symbols/base.png";
 
 export const ALCHEMY_KEY = {
   ETH_CHAIN: {
