@@ -3,7 +3,8 @@ import DisplayConnectedWallet from "./DisplayConnectedWallet";
 import { Connector, useAccount, useConnect } from "wagmi";
 import { useApp } from "../../../../../common/hooks/use-app";
 import { WALLET_CONNECTED, WENT_WRONG } from "../../../../../consts/messages";
-import { Button, Space, message } from "antd";
+import { Avatar, Button, Space, message } from "antd";
+import { getWalletIcon } from "../NEOWallets/helpers";
 
 function ConnectorButton({
   connector,
@@ -30,8 +31,15 @@ function ConnectorButton({
       }}
       disabled={!ready}
       onClick={onClick}
-      icon={<img width="14px" src={connector.icon} />}
     >
+      <Space>
+        <Avatar
+          style={{ display: "flex" }}
+          size={20}
+          src={connector.icon ? getWalletIcon(connector.icon) : ""}
+        />
+        {connector.name}
+      </Space>
       {connector.name}
     </Button>
   );

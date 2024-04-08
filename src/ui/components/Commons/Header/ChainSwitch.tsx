@@ -16,7 +16,10 @@ const ChainSwitch = () => {
     <div className={`dropdown is-right ${isActive ? "is-active" : ""}`}>
       <div className="dropdown-trigger">
         <Button onClick={onActive} aria-controls="dropdown-wallet">
-          Chain: {CONFIGS[network][chain].label}
+          <Space>
+            <Avatar size="small" src={CONFIGS[network][chain].icon} />
+            <span>{CONFIGS[network][chain].label}</span>
+          </Space>
         </Button>
       </div>
       <div className="dropdown-menu" id="dropdown-wallet" role="menu">

@@ -47,7 +47,7 @@ const NEOWalletList = () => {
                 <Space>
                   <Avatar
                     style={{ display: "flex" }}
-                    size="small"
+                    size={20}
                     alt={`${_wallet.label} logo`}
                     src={getWalletIcon(_wallet.key)}
                   />
