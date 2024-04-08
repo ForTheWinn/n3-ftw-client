@@ -110,6 +110,7 @@ export const NEO_MAINNET_TOKENS = [
     icon: "/symbols/b$.png",
     decimals: 8,
     pairs: [],
+    isWhitelisted: true,
   }),
   createTokenMetadata({
     hash: NEO_GAS_CONTRACT_ADDRESS,
