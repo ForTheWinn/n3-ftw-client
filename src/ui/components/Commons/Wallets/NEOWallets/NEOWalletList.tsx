@@ -5,6 +5,7 @@ import { IWalletType } from "../../../../../packages/neo/wallets/interfaces";
 import Modal from "../../../Modal";
 import DisplayConnectedWallet from "./DisplayConnectedWallet";
 import { useApp } from "../../../../../common/hooks/use-app";
+import { Avatar, Button, Space } from "antd";
 
 const NEOWalletList = () => {
   const { network, toggleWalletSidebar } = useApp();
@@ -26,24 +27,33 @@ const NEOWalletList = () => {
           disConnectWallet={disConnectWallet}
         />
       ) : (
-        <>
+        <Space
+          direction="vertical"
+          style={{
+            width: "100%",
+          }}
+        >
           {list.map((_wallet) => {
             return (
-              <div key={_wallet.key} className="mb-1">
-                <button
-                  style={{ justifyContent: "flex-start" }}
-                  className="button is-fullwidth"
-                  onClick={() => onWalletConnect(_wallet.key)}
-                >
-                  <span className="panel-icon">
-                    <img
-                      alt={`${_wallet.label} logo`}
-                      src={getWalletIcon(_wallet.key)}
-                    />
-                  </span>
+              <Button
+                key={_wallet.key}
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  width: "100%",
+                }}
+                onClick={() => onWalletConnect(_wallet.key)}
+              >
+                <Space>
+                  <Avatar
+                    style={{ display: "flex" }}
+                    size="small"
+                    alt={`${_wallet.label} logo`}
+                    src={getWalletIcon(_wallet.key)}
+                  />
                   {_wallet.label}
-                </button>
-              </div>
+                </Space>
+              </Button>
             );
           })}
 
@@ -57,7 +67,7 @@ const NEOWalletList = () => {
               </div>
             </Modal>
           )}
-        </>
+        </Space>
       )}
     </>
   );

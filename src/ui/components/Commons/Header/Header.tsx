@@ -70,9 +70,7 @@ const Header = () => {
             <ChainSwitch />
           </div>
           <div className="navbar-item">
-            <div className="buttons">
               <DisplayConnectedWallets />
-            </div>
           </div>
         </div>
       </div>
