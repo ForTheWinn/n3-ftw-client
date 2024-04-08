@@ -1,4 +1,5 @@
 import {
+  BASE_CHAIN,
   ETH_CHAIN,
   MAINNET,
   NEOX_CHAIN,
@@ -21,6 +22,10 @@ export const SMITH_FEE = {
     [TESTNET]: 0,
   },
   [NEOX_CHAIN]: {
+    [MAINNET]: 0,
+    [TESTNET]: 0,
+  },
+  [BASE_CHAIN]: {
     [MAINNET]: 0,
     [TESTNET]: 0,
   },

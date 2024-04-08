@@ -116,27 +116,28 @@ const EVMSmithActionModal = ({
 
   useEffect(() => {
     async function start() {
-      let allowances: any;
+      let allowances: any = 0;
       let feeTokenApprovalHash: any;
       let deployHash: any;
 
       handleStatus("allowlances", "processing");
-      try {
-        allowances = await getAllowances(
-          chain,
-          network,
-          address,
-          [feeTokenContractHash],
-          smithTokenContractHash
-        );
-      } catch (e: any) {
-        handleStatus(
-          "allowlances",
-          "error",
-          e.message ? e.message : WENT_WRONG
-        );
-        return;
-      }
+      if (fee > 0)
+        try {
+          allowances = await getAllowances(
+            chain,
+            network,
+            address,
+            [feeTokenContractHash],
+            smithTokenContractHash
+          );
+        } catch (e: any) {
+          handleStatus(
+            "allowlances",
+            "error",
+            e.message ? e.message : WENT_WRONG
+          );
+          return;
+        }
 
       handleStatus("allowlances", "success");
 

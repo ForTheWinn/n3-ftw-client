@@ -24,6 +24,7 @@ import PolygonAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/Polygon"
 import EthereumAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/Ethereum";
 
 import {
+  BASE_CHAIN,
   ETH_CHAIN,
   MAINNET,
   NEOX_CHAIN,
@@ -366,6 +367,7 @@ const SMITH_PAGE_ROUTE = {
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [MAINNET, TESTNET],
     [NEOX_CHAIN]: [MAINNET, TESTNET],
+    [BASE_CHAIN]: [MAINNET],
   },
   category: [],
   component: Smith,
