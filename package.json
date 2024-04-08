@@ -17,7 +17,7 @@
     "@walletconnect/sign-client": "^2.0.0-rc.3",
     "@walletconnect/types": "^2.0.0-rc.3",
     "alchemy-sdk": "^2.9.1",
-    "antd": "^5.1.7",
+    "antd": "^5.16.1",
     "browserify": "^17.0.0",
     "bulma": "^0.9.3",
     "chart.js": "^3.8.0",

@@ -37,7 +37,6 @@ const TokenCard = ({
         isContractOwner
           ? [
               <Button
-                size="small"
                 target="_blank"
                 href={`${getExplorer(
                   chain,
@@ -48,13 +47,10 @@ const TokenCard = ({
               >
                 View
               </Button>,
-              <Button size="small" onClick={onUpdate} type="primary">
-                Update
-              </Button>,
+              <Button onClick={onUpdate}>Update</Button>,
             ]
           : [
               <Button
-                size="small"
                 target="_blank"
                 href={`${getExplorer(
                   chain,

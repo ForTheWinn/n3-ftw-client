@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar } from "antd";
+import { Avatar, Button } from "antd";
 import NeoWalletConnected from "./NeoWalletConnected";
 import EVMWalletConnected from "./EVMWalletConnected";
 import { useApp } from "../../../../../common/hooks/use-app";
@@ -14,8 +14,7 @@ const DisplayConnectedWallets = () => {
   const { isConnected } = useAccount();
   let isWalletConnected = connectedWallet || isConnected;
   return (
-    <button
-      className="button is-rounded is-small is-dark is-inversed is-outlined"
+    <Button
       onClick={toggleWalletSidebar}
     >
       {isWalletConnected ? (
@@ -29,7 +28,7 @@ const DisplayConnectedWallets = () => {
       ) : (
         "Connect"
       )}
-    </button>
+    </Button>
   );
 };
 

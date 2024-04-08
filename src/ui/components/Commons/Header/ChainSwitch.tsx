@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useApp } from "../../../../common/hooks/use-app";
 import Avatar from "antd/es/avatar/avatar";
-import { Space } from "antd";
+import { Button, Space } from "antd";
 import { CHAINS, CONFIGS, LIST } from "../../../../consts/chains";
 
 const ChainSwitch = () => {
@@ -15,13 +15,12 @@ const ChainSwitch = () => {
   return (
     <div className={`dropdown is-right ${isActive ? "is-active" : ""}`}>
       <div className="dropdown-trigger">
-        <button
-          onClick={onActive}
-          className={`button is-small is-rounded is-${CONFIGS[network][chain].color}`}
-          aria-controls="dropdown-wallet"
-        >
-          {CONFIGS[network][chain].label}
-        </button>
+        <Button onClick={onActive} aria-controls="dropdown-wallet">
+          <Space>
+            <Avatar size="small" src={CONFIGS[network][chain].icon} />
+            <span>{CONFIGS[network][chain].label}</span>
+          </Space>
+        </Button>
       </div>
       <div className="dropdown-menu" id="dropdown-wallet" role="menu">
         <div className="dropdown-content">
@@ -31,19 +30,20 @@ const ChainSwitch = () => {
             }
             return (
               <div key={`chain${v}`} className="dropdown-item">
-                <button
-                  className={`button is-fullwidth is-small is-${CONFIGS[network][v].color}`}
+                <Button
+                  type="dashed"
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                  }}
                   onClick={() => handleSwitch(v as CHAINS)}
                 >
                   <Space>
-                    <Avatar
-                      style={{ background: "white" }}
-                      size="small"
-                      src={CONFIGS[network][v].icon}
-                    />
+                    <Avatar size="small" src={CONFIGS[network][v].icon} />
                     <span>{CONFIGS[network][v].label}</span>
                   </Space>
-                </button>
+                </Button>
               </div>
             );
           })}

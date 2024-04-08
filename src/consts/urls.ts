@@ -1,4 +1,5 @@
 import {
+  BASE_CHAIN,
   ETH_CHAIN,
   MAINNET,
   NEOX_CHAIN,
@@ -54,6 +55,18 @@ export const EXPLORER_URLS = {
       tx: "https://xt2scan.ngd.network/tx",
       account: "https://xt2scan.ngd.network/address",
       contract: "https://xt2scan.ngd.network/token",
+    },
+  },
+  [BASE_CHAIN]: {
+    [MAINNET]: {
+      tx: "https://basescan.org/tx",
+      account: "https://basescan.org/address",
+      contract: "https://basescan.org/token",
+    },
+    [TESTNET]: {
+      tx: "https://basescan.org/tx",
+      account: "https://basescan.org/address",
+      contract: "https://basescan.org/token",
     },
   },
 };
