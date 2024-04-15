@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useApp } from "../../../../common/hooks/use-app";
 import Modal from "../../Modal";
 import { CHAINS, CONFIGS, LIST } from "../../../../consts/chains";
+import { Avatar, Button, Space } from "antd";
 
 const DisplayCurrentChain = () => {
   const [isActive, setActive] = useState(false);
@@ -29,23 +30,30 @@ const DisplayCurrentChain = () => {
         <Modal onClose={() => setActive(false)}>
           <div>
             <h5 className="title is-6 has-text-centered">Chain switch</h5>
-            <div>
+            <Space direction="vertical" style={{ width: "100%" }}>
               {LIST.map((v) => {
                 if (chain === v) {
                   return false;
                 }
+                const chainObj = CONFIGS[network][v];
                 return (
-                  <div key={`chain${v}`} className="dropdown-item">
-                    <button
-                      className={`button is-fullwidth is-small is-rounded is-${CONFIGS[network][v].color}`}
-                      onClick={() => handleSwitch(v as CHAINS)}
-                    >
-                      Switch to {CONFIGS[network][v].label}
-                    </button>
-                  </div>
+                  <Button
+                    style={{ width: "100%" }}
+                    key={`chain${v}`}
+                    onClick={() => handleSwitch(v as CHAINS)}
+                  >
+                    <Space>
+                      <Avatar
+                        style={{ display: "flex" }}
+                        size={20}
+                        src={chainObj.icon}
+                      />
+                      {CONFIGS[network][v].label}
+                    </Space>
+                  </Button>
                 );
               })}
-            </div>
+            </Space>
           </div>
         </Modal>
       )}

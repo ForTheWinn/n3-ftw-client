@@ -41,7 +41,7 @@
     "react-text-truncate": "^0.19.0",
     "react-wavify": "^1.5.7",
     "store2": "^2.12.0",
-    "viem": "^2.7.6",
+    "viem": "^2.9.16",
     "wagmi": "^2.5.6",
     "web-vitals": "^3.3.2",
     "write-excel-file": "^1.4.25",
