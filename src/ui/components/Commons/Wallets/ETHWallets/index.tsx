@@ -33,14 +33,9 @@ function ConnectorButton({
       onClick={onClick}
     >
       <Space>
-        <Avatar
-          style={{ display: "flex" }}
-          size={20}
-          src={connector.icon ? getWalletIcon(connector.icon) : ""}
-        />
+        <Avatar style={{ display: "flex" }} size={20} src={connector.icon} />
         {connector.name}
       </Space>
-      {connector.name}
     </Button>
   );
 }

@@ -97,15 +97,13 @@ const NEPAnalytics = () => {
     fetchData();
   }, []);
 
-  const neoSupply =
-    parseFloat(values.neo.totalSupply) - parseFloat(values.polygon.totalSupply);
   const polygonSupply = parseFloat(values.polygon.totalSupply);
   const ethereumSupply = parseFloat(values.ethereum.totalSupply);
-  // const neoXSupply = parseFloat(values.neoX.totalSupply);
+  const neoSupply =
+    parseFloat(values.neo.totalSupply) - polygonSupply - ethereumSupply;
   const neoMC = neoSupply * values.nepPrice;
   const polygonMC = polygonSupply * values.nepPrice;
   const ethereumMC = ethereumSupply * values.nepPrice;
-  // const neoXMC = neoXSupply * values.nepPrice;
   let totalEmmissions = 0;
   return (
     <div>
@@ -281,10 +279,10 @@ const NEPAnalytics = () => {
                     <a
                       target="_blank"
                       href={`${getExplorer(NEO_CHAIN, network, "contract")}/${
-                        values.neoX.hash
+                        values.neoX?.hash
                       }`}
                     >
-                      {values.neoX.hash}
+                      {values.neoX?.hash}
                     </a>
                     {/* <br />
                     Total Supply: {transformString(neoXSupply)} */}
@@ -294,7 +292,7 @@ const NEPAnalytics = () => {
                   <AddTokenButton
                     chainId={getChainIdByChain(NEOX_CHAIN, network)}
                     chainName={"NeoX"}
-                    address={values.neoX.hash}
+                    address={values.neoX?.hash}
                     symbol={"NEP"}
                     decimals={8}
                     image={"https://forthewin.network/symbols/nep.png"}
