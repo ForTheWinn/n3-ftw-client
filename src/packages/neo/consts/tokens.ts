@@ -48,6 +48,7 @@ const NEO_HD_CONTRACT_ADDRESS = "0x4b027a8320d5705802e5efbb51f6231ebf412cf6";
 const NEO_SCHRUTE_CONTRACT_ADDRESS =
   "0xd8ee6f84ef456c8023524087a0788120e15d2647";
 const NEO_FLAI_CONTRACT_ADDRESS = "0x253deaed7bd305c06d3cf1454d502637c89a10d9";
+const NEO_UTC_CONTRACT_ADDRESS = "0x8616fa1049e175c1d65e1affda911899c3d2d09a";
 
 export const NEO_MAINNET_TOKENS = [
   createTokenMetadata({
@@ -285,6 +286,14 @@ export const NEO_MAINNET_TOKENS = [
     hash: NEO_FLAI_CONTRACT_ADDRESS,
     symbol: "FLAI",
     icon: "/symbols/flai.jpg",
+    decimals: 8,
+    pairs: [],
+    isWhitelisted: true,
+  }),
+  createTokenMetadata({
+    hash: NEO_UTC_CONTRACT_ADDRESS,
+    symbol: "UTC",
+    icon: "/symbols/utc.jpg",
     decimals: 8,
     pairs: [],
     isWhitelisted: true,
