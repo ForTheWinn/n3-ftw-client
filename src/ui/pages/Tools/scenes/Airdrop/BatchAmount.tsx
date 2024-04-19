@@ -1,9 +1,5 @@
-import { wallet } from "@cityofzion/neon-core";
 import React, { useState } from "react";
 import NumberFormat from "react-number-format";
-import { IExcelData } from ".";
-import { useApp } from "../../../../../common/hooks/use-app";
-import { toolsRouter } from "../../../../../common/routers";
 
 interface IBatchAmountProps {
   onSubmit: (amount: number) => void;

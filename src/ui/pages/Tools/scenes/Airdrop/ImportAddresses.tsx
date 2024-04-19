@@ -1,5 +1,4 @@
-import { wallet } from "@cityofzion/neon-core";
-import React, { useState } from "react";
+import React from "react";
 import * as XLSX from "xlsx";
 
 interface IImportAddressesProps {
@@ -26,7 +25,7 @@ const ImportAddresses = ({ onSubmit }: IImportAddressesProps) => {
             //   return false;
             list.push({
               address: address,
-              amount: amount
+              amount: amount,
             });
           });
           onSubmit(list);
@@ -42,13 +41,11 @@ const ImportAddresses = ({ onSubmit }: IImportAddressesProps) => {
     <div>
       <div className="notification content">
         <ul>
+          <li>Upload an excel file (.xlsx or .xls)</li>
           <li>
-            Click 'Choose file' to select an Excel file (.xlsx or .xls) from
-            your
-          </li>
-          <li>
-            Ensure the first column contains wallet addresses and the second
-            column contains amounts.
+            Ensure that the first column of the Excel file lists wallet
+            addresses, and the second column specifies the corresponding
+            amounts.
           </li>
         </ul>
       </div>

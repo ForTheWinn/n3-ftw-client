@@ -10,7 +10,7 @@ import writeXlsxFile from "write-excel-file";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { useApp } from "../../../../../common/hooks/use-app";
 import TruncatedAddress from "../../../../components/TruncatedAddress";
-import { Space, message } from "antd";
+import { Button, Space, message } from "antd";
 import BatchAmount from "./BatchAmount";
 import ImportAddresses from "./ImportAddresses";
 import { toolsRouter } from "../../../../../common/routers";
@@ -203,37 +203,22 @@ const Airdrop = () => {
     <PageLayout>
       <div className="columns is-centered">
         <div className="column is-half">
-          <div className="notification is-warning is-light">
-            This is an experimental product. Please use with caution.
-          </div>
           <div className="box is-shadowless">
             <h1 className="title is-5">Batch Transfer</h1>
-            <p className="subtitle is-6">
+            <p className="subtitle is-7">
               This tool helps multiple token transfers in one transaction.
+              Please use with caution.
             </p>
             <hr />
 
-            <label className="label">Targets</label>
-            <div className="buttons">
-              {/* <button
-                onClick={() => setModalType("new")}
-                className="button is-small"
-              >
-                Add receivers
-              </button> */}
-              <button
-                onClick={() => setModalType("import")}
-                className="button is-small"
-              >
-                Import file
-              </button>
-              <button
-                onClick={() => setModalType("gernerate")}
-                className="button is-small"
-              >
-                Generate wallets
-              </button>
-            </div>
+            <Space>
+              <Button onClick={() => setModalType("import")}>
+                Import wallets
+              </Button>
+              <Button onClick={() => setModalType("gernerate")}>
+                Generate new wallets
+              </Button>
+            </Space>
             {list.length > 0 ? (
               <>
                 <hr />
