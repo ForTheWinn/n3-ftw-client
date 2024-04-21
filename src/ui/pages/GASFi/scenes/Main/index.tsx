@@ -41,7 +41,8 @@ const Main = (props) => {
     async function fetch() {
       try {
         setLoading(true);
-        const res = await new GasFiContract(network).getStatus(connectedWallet);
+        const res = await new GasFiContract(network).getStatus(network, connectedWallet);
+        console.log(res)
         setData(res);
         setLoading(false);
       } catch (e: any) {

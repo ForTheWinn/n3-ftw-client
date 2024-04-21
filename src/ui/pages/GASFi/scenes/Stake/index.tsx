@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
-import { POSITION_RANGE } from "../../../../../packages/neo/contracts/ftw/gas-fi/consts";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
 import { useApp } from "../../../../../common/hooks/use-app";
@@ -58,7 +57,7 @@ const Stake = () => {
     async function fetch() {
       try {
         setLoading(true);
-        const res = await new GasFiContract(network).getStatus(connectedWallet);
+        const res = await new GasFiContract(network).getStatus(network, connectedWallet);
         setData(res);
         setLoading(false);
       } catch (e: any) {
@@ -90,7 +89,7 @@ const Stake = () => {
               <h5 className="title is-5">Stake bNEO</h5>
               <hr />
               <label className="label mb-4">Choose your position</label>
-              <div className="columns is-mobile">
+              {/* <div className="columns is-mobile">
                 {Array.from(Array(POSITION_RANGE), (e, i) => {
                   const p = i + 1;
                   return (
@@ -106,7 +105,7 @@ const Stake = () => {
                     </div>
                   );
                 })}
-              </div>
+              </div> */}
 
               <div className="field">
                 <label className="label mb-4">Amount</label>

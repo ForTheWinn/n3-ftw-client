@@ -33,6 +33,7 @@ import {
   TESTNET,
 } from "./global";
 import NeoXAnalytics from "../ui/pages/Analytics/scenes/EVMAnalytics/NeoX";
+import GASFi from "../ui/pages/GASFi";
 /* 
   Global
 */
@@ -468,6 +469,16 @@ const EVENT_PAGE_ROUTE = {
   component: Consensus2023,
 };
 
+const GASFI_PAGE_ROUTE = {
+  label: "GAS-Fi",
+  path: GASFI_PATH,
+  chain: {
+    [NEO_CHAIN]: [TESTNET, MAINNET],
+  },
+  category: [],
+  component: GASFi,
+};
+
 /*
   No show routes
 */
@@ -524,6 +535,7 @@ const BRAND_PAGE_ROUTE = {
 };
 
 export const ROUTE_LIST = [
+  GASFI_PAGE_ROUTE,
   SMITH_PAGE_ROUTE,
   SWAP_PAGE_ROUTE,
   FARM_V2_PAGE_ROUTE,
@@ -540,10 +552,3 @@ export const ROUTE_LIST = [
   HOME_PAGE_ROUTE,
   { ...LOCKER_PAGE_ROUTE, noShow: true },
 ];
-
-const GASFI_PAGE_ROUTE = {
-  label: "GAS-Fi",
-  path: GASFI_PATH,
-  network: [],
-  category: [],
-};

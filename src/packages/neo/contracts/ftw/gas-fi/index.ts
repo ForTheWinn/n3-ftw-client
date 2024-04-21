@@ -5,7 +5,10 @@ import { getDefaultWitnessScope } from "../../../utils";
 import { parseMapValue, toDecimal } from "../../../utils";
 import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
-import { NEO_BNEO_CONTRACT_ADDRESS } from "../../../consts/tokens";
+import {
+  NEO_BNEO_CONTRACT_ADDRESS,
+  NEO_GAS_CONTRACT_ADDRESS,
+} from "../../../consts/tokens";
 import {
   IClaimableResult,
   IDrawsResult,
@@ -13,6 +16,10 @@ import {
   IStakeResult,
 } from "./interfaces";
 import { NeoWallets } from "../../../wallets";
+import { CONTRACT_MAP } from "../../../../../consts/contracts";
+import { NEO_CHAIN } from "../../../../../consts/global";
+import { TOKEN_LIST } from "../../../../../consts/tokens";
+import { GasContract } from "@cityofzion/neon-core/lib/sc";
 
 export class GasFiContract {
   network: INetworkType;
@@ -161,67 +168,94 @@ export class GasFiContract {
   };
 
   getStatus = async (
+    network: INetworkType,
     connectedWallet?: IConnectedWallet
-  ): Promise<IGASFiStatus> => {
+  ): Promise<any> => {
     const scripts: any = [
       {
-        operation: "status",
-        scriptHash: this.contractHash,
-        args: [],
-      },
-    ];
-
-    if (connectedWallet) {
-      const senderHash = NeonWallet.getScriptHashFromAddress(
-        connectedWallet.account.address
-      );
-      const stake = {
-        operation: "getStake",
-        scriptHash: this.contractHash,
-        args: [
-          {
-            type: "Hash160",
-            value: senderHash,
-          },
-        ],
-      };
-      const claimable = {
-        operation: "getClaimable",
-        scriptHash: this.contractHash,
-        args: [
-          {
-            type: "Hash160",
-            value: senderHash,
-          },
-        ],
-      };
-      const bNEOBalance = {
         operation: "balanceOf",
         scriptHash: NEO_BNEO_CONTRACT_ADDRESS[this.network],
         args: [
           {
             type: "Hash160",
-            value: senderHash,
+            value: GASFI_SCRIPT_HASH[this.network],
           },
         ],
-      };
-      scripts.push(stake);
-      scripts.push(claimable);
-      scripts.push(bNEOBalance);
-    }
+      },
+      {
+        operation: "reward",
+        scriptHash: NEO_BNEO_CONTRACT_ADDRESS[this.network],
+        args: [
+          {
+            type: "Hash160",
+            value: GASFI_SCRIPT_HASH[this.network],
+          },
+        ],
+      },
+      {
+        operation: "balanceOf",
+        scriptHash: NEO_GAS_CONTRACT_ADDRESS,
+        args: [
+          {
+            type: "Hash160",
+            value: GASFI_SCRIPT_HASH[this.network],
+          },
+        ],
+      },
+    ];
+    console.log(2)
+    // if (connectedWallet) {
+    //   const senderHash = NeonWallet.getScriptHashFromAddress(
+    //     connectedWallet.account.address
+    //   );
+    //   const stake = {
+    //     operation: "getStake",
+    //     scriptHash: this.contractHash,
+    //     args: [
+    //       {
+    //         type: "Hash160",
+    //         value: senderHash,
+    //       },
+    //     ],
+    //   };
+    //   const claimable = {
+    //     operation: "getClaimable",
+    //     scriptHash: this.contractHash,
+    //     args: [
+    //       {
+    //         type: "Hash160",
+    //         value: senderHash,
+    //       },
+    //     ],
+    //   };
+    //   const bNEOBalance = {
+    //     operation: "balanceOf",
+    //     scriptHash: NEO_BNEO_CONTRACT_ADDRESS[this.network],
+    //     args: [
+    //       {
+    //         type: "Hash160",
+    //         value: senderHash,
+    //       },
+    //     ],
+    //   };
+    //   scripts.push(stake);
+    //   scripts.push(claimable);
+    //   scripts.push(bNEOBalance);
+    // }
 
     const res = await Network.read(this.network, scripts);
-    const obj: IGASFiStatus = { status: parseMapValue(res.stack[0] as any) };
-    if (connectedWallet) {
-      obj.staking = res.stack[1].value
-        ? parseMapValue(res.stack[1] as any)
-        : undefined;
-      obj.claimable = res.stack[2].value
-        ? parseMapValue(res.stack[2] as any)
-        : undefined;
-      obj.bNEOBalance = toDecimal(res.stack[3].value as any);
-    }
-    return obj;
+    console.log(res);
+    // const obj: IGASFiStatus = { status: parseMapValue(res.stack[0] as any) };
+    // if (connectedWallet) {
+    //   obj.staking = res.stack[1].value
+    //     ? parseMapValue(res.stack[1] as any)
+    //     : undefined;
+    //   obj.claimable = res.stack[2].value
+    //     ? parseMapValue(res.stack[2] as any)
+    //     : undefined;
+    //   obj.bNEOBalance = toDecimal(res.stack[3].value as any);
+    // }
+    // return obj;
   };
 
   getStake = async (connectedWallet): Promise<IStakeResult | undefined> => {
