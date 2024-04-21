@@ -223,7 +223,7 @@ const ActionModal = (props: IActionModalProps) => {
 
     setSubmitting(true);
 
-    await waitTransactionUntilSubmmited(chain, network, approveTx);
+    await waitTransactionUntilSubmmited(chain, network, swapTx);
 
     setTxid(swapTx);
   };

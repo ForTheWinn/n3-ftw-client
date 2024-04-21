@@ -1,7 +1,12 @@
 import { POLYGON_TESTNET_CONTRACTS } from ".";
 import { POLYGON_MAINNET_CONTRACTS } from ".";
 import { createTokenMetadata } from "../../../common/helpers";
-import { FNEO_LOGO, MAINNET, POLYGON_LOGO, TESTNET } from "../../../consts/global";
+import {
+  FNEO_LOGO,
+  MAINNET,
+  POLYGON_LOGO,
+  TESTNET,
+} from "../../../consts/global";
 
 export const POLYGON_MAINNET_TOKENS = [
   createTokenMetadata({
@@ -23,6 +28,7 @@ export const POLYGON_MAINNET_TOKENS = [
     symbol: "USDT",
     icon: "/symbols/usdt.png",
     decimals: 6,
+    isWhitelisted: true,
   }),
   createTokenMetadata({
     hash: POLYGON_MAINNET_CONTRACTS.WBTC,
