@@ -25,9 +25,9 @@ const ChainSwitch = () => {
       <div className="dropdown-menu" id="dropdown-wallet" role="menu">
         <div className="dropdown-content">
           {LIST.map((v) => {
-            if (chain === v) {
-              return false;
-            }
+            if (chain === v) return false;
+            const _chain = CONFIGS[network][v];
+            if (!_chain) return false;
             return (
               <div key={`chain${v}`} className="dropdown-item">
                 <Button
@@ -40,8 +40,8 @@ const ChainSwitch = () => {
                   onClick={() => handleSwitch(v as CHAINS)}
                 >
                   <Space>
-                    <Avatar size="small" src={CONFIGS[network][v].icon} />
-                    <span>{CONFIGS[network][v].label}</span>
+                    <Avatar size="small" src={_chain.icon} />
+                    <span>{_chain.label}</span>
                   </Space>
                 </Button>
               </div>
