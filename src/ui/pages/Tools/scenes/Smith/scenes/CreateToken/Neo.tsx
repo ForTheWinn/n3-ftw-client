@@ -36,6 +36,7 @@ const CreateToken = () => {
     author: "",
     description: "",
     email: "",
+    version: "v3",
   });
 
   const handleValueChange = (key: string, val: string) => {
@@ -46,6 +47,14 @@ const CreateToken = () => {
   };
 
   const hasEmoji = detectEmojiInString(values) !== 0;
+
+  const onVersionChange = (e) => {
+    console.log(e);
+    setValues({
+      ...values,
+      version: e.target.value,
+    });
+  };
 
   const onMint = async () => {
     try {
@@ -71,7 +80,7 @@ const CreateToken = () => {
         return;
       }
 
-      const res = await new SmithContract(network).createNEP17V3(
+      const res = await new SmithContract(network).createNEP17(
         client,
         values.totalSupply,
         values.decimals,
@@ -79,7 +88,8 @@ const CreateToken = () => {
         values.name,
         values.author,
         values.description,
-        values.email
+        values.email,
+        values.version
       );
       setTxid(res);
     } catch (e: any) {
@@ -241,6 +251,16 @@ const CreateToken = () => {
                       className="input is-shadowless"
                       type="text"
                     />
+                  </div>
+                </div>
+
+                <div className="field">
+                  <label className="label">Contract type</label>
+                  <div className="select is-link">
+                    <select value={values.version} onChange={onVersionChange}>
+                      <option value="v3">V3(standard)</option>
+                      <option value="v4">V4 (includes burning)</option>
+                    </select>
                   </div>
                 </div>
 

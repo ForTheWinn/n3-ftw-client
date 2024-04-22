@@ -18,7 +18,7 @@ export class SmithContract {
     this.contractHash = CONTRACT_LIST[networkType][SMITH];
   }
 
-  createNEP17V3 = async (
+  createNEP17 = async (
     connectedWallet: IConnectedWallet,
     totalSupply: string,
     decimals: string,
@@ -26,7 +26,8 @@ export class SmithContract {
     contractName: string,
     author: string,
     description: string,
-    email: string
+    email: string,
+    version: string
   ): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
@@ -37,7 +38,7 @@ export class SmithContract {
       args: [
         {
           type: "String",
-          value: "v3",
+          value: version,
         },
         {
           type: "Hash160",
@@ -70,65 +71,6 @@ export class SmithContract {
         {
           type: "String",
           value: email,
-        },
-      ],
-      signers: [
-        {
-          account: senderHash,
-          scopes: tx.WitnessScope.CustomContracts,
-          allowedContracts: [
-            this.contractHash,
-            NEO_NEP_CONTRACT_ADDRESS[this.network],
-          ],
-        },
-      ],
-    };
-    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
-  };
-
-  createNEP17 = async (
-    connectedWallet: IConnectedWallet,
-    contractName: string,
-    symbol: string,
-    decimals: string,
-    totalSupply: string,
-    author: string,
-    description: string
-  ): Promise<string> => {
-    const senderHash = NeonWallet.getScriptHashFromAddress(
-      connectedWallet.account.address
-    );
-    const invokeScript = {
-      operation: "createNEP17",
-      scriptHash: this.contractHash,
-      args: [
-        {
-          type: "Hash160",
-          value: senderHash,
-        },
-        {
-          type: "String",
-          value: contractName,
-        },
-        {
-          type: "String",
-          value: author,
-        },
-        {
-          type: "String",
-          value: description,
-        },
-        {
-          type: "String",
-          value: symbol,
-        },
-        {
-          type: "Integer",
-          value: totalSupply,
-        },
-        {
-          type: "Integer",
-          value: decimals,
         },
       ],
       signers: [

@@ -205,6 +205,7 @@ const CreateToken = () => {
                     />
                   </div>
                 </div>
+
                 <div className="field">
                   <label className="checkbox has-text-weight-light">
                     <input
