@@ -11,7 +11,7 @@ export const ONE_GATE = "ONE_GATE";
 
 export const MAINNET_CONFIG = {
   label: "N3MainNet",
-  url: "http://seed1.neo.org:10332",
+  url: "https://mainnet1.neo.coz.io:443",
 };
 
 export const TESTNET_CONFIG = {
