@@ -14,7 +14,6 @@ interface ICandleChartProps {
 }
 
 function showCustomTooltip(data: any) {
-  console.log(data.volume);
   const { open, close, volume } = data;
   const percentageChange = ((open - close) / open) * 100;
   // function showCustomTooltip( data: any) {

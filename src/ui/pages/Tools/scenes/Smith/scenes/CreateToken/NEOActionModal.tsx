@@ -3,12 +3,11 @@ import {
   INetworkType,
   Network,
 } from "../../../../../../../packages/neo/network";
-import { Button, Result, Spin } from "antd";
+import { Button, Result } from "antd";
 import { getTokenContractHashNotifications } from "../../../../../../../packages/neo/contracts/ftw/smith/helpers";
 import { WENT_WRONG } from "../../../../../../../consts/messages";
 import { NEO_CHAIN } from "../../../../../../../consts/global";
 import { getExplorer } from "../../../../../../../common/helpers";
-import NFTAds from "../../../../../../components/Ad";
 import { DisplayAd } from "../../../../../Swap/components/Actions/components/DisplayAd";
 
 interface IAfterTransactionSubmittedProps {

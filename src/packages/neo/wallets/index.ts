@@ -91,6 +91,10 @@ export class NeoWallets {
       });
     }
 
+    if (extraSystemFee) {
+      invokeScript.extraSystemFee = extraSystemFee;
+    }
+
     const instance = connectedWallet.instance;
 
     if (connectedWallet.key === NEON) {

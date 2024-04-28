@@ -17,8 +17,8 @@ const ChainSwitch = () => {
       <div className="dropdown-trigger">
         <Button onClick={onActive} aria-controls="dropdown-wallet">
           <Space>
-            <Avatar size="small" src={CONFIGS[network][chain].icon} />
-            <span>{CONFIGS[network][chain].label}</span>
+            <Avatar size="small" src={CONFIGS[network][chain]?.icon} />
+            <span>{CONFIGS[network][chain]?.label}</span>
           </Space>
         </Button>
       </div>
@@ -40,8 +40,8 @@ const ChainSwitch = () => {
                   onClick={() => handleSwitch(v as CHAINS)}
                 >
                   <Space>
-                    <Avatar size="small" src={_chain.icon} />
-                    <span>{_chain.label}</span>
+                    <Avatar size="small" src={CONFIGS[network][v]?.icon} />
+                    <span>{CONFIGS[network][v]?.label}</span>
                   </Space>
                 </Button>
               </div>

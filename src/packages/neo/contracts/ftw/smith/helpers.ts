@@ -20,3 +20,15 @@ export const getTokenContractHashNotifications = (
     throw Error("Can't find contract hash from the txid.");
   }
 };
+
+export const getSpinEvent = (json: ApplicationLogJson): string => {
+  let result;
+  json.executions[0].notifications.forEach((log) => {
+    // For bneo spin
+    // if (log.eventname === "Spin" && log.state.value) {
+    if (log.eventname === "Result" && log.state.value) {
+      result = log.state.value[1].value;
+    }
+  });
+  return result;
+};

@@ -468,6 +468,16 @@ const EVENT_PAGE_ROUTE = {
   component: Consensus2023,
 };
 
+// const GASFI_PAGE_ROUTE = {
+//   label: "GAS-Fi",
+//   path: GASFI_PATH,
+//   chain: {
+//     [NEO_CHAIN]: [TESTNET, MAINNET],
+//   },
+//   category: [],
+//   component: GASFi,
+// };
+
 /*
   No show routes
 */
@@ -540,10 +550,3 @@ export const ROUTE_LIST = [
   HOME_PAGE_ROUTE,
   { ...LOCKER_PAGE_ROUTE, noShow: true },
 ];
-
-const GASFI_PAGE_ROUTE = {
-  label: "GAS-Fi",
-  path: GASFI_PATH,
-  network: [],
-  category: [],
-};
