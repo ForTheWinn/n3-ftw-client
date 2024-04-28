@@ -1,48 +1,47 @@
 import React, { useEffect, useState } from "react";
-import StakeHeader from "./StakeHeader";
 import { useNeoWallets } from "../../../../../common/hooks/use-neo-wallets";
 import { GasFiContract } from "../../../../../packages/neo/contracts/ftw/gas-fi";
-import {
-  IClaimableResult,
-  IStakeResult,
-  IStatusResult
-} from "../../../../../packages/neo/contracts/ftw/gas-fi/interfaces";
-import { withDecimal } from "../../../../../packages/neo/utils";
-import History from "../History";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { message } from "antd";
+import { Modal, Space, message } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import Spin from "./Spin";
+import NFTAds from "../../../../components/Ad";
+import FreeSpinInfo from "./FreeSpinInfo";
 
-export interface IMainData {
-  status: IStatusResult;
-  staking?: IStakeResult;
-  claimable?: IClaimableResult;
-  bNEOBalance?: number;
+export interface IStatusForSpin {
+  neo: number;
+  gas: number;
+  userbNEOBalance: number;
+  isUserStaked: boolean;
+  isTimeToSpin: boolean;
+  nextAvailableToSpin: number;
 }
 
-const Main = (props) => {
-  const { network, setTxid, refreshCount } = useApp();
+export interface IStatusForSpinForFree {
+  nep: string;
+  isTimeToSpin: boolean;
+  nextAvailableToSpin: number;
+}
+
+const Main = () => {
+  const { network, refreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<IMainData | undefined>(undefined);
+  const [showStakeModal, setShowStakeModal] = useState(false);
+  const [showInfoModal, setInfoModal] = useState(false);
+  const [data, setData] = useState<IStatusForSpinForFree | undefined>(
+    undefined
+  );
   const [error, setError] = useState();
-  const onClaimAll = async () => {
-    if (connectedWallet) {
-      try {
-        const tx = await new GasFiContract(network).claimAll(connectedWallet);
-        setTxid(tx);
-      } catch (e: any) {
-        message.error(e.message);
-      }
-    } else {
-      // toggleWalletSidebar();
-    }
-  };
+  const [txid, setTxid] = useState<string | undefined>(undefined);
+
   useEffect(() => {
     async function fetch() {
       try {
         setLoading(true);
-        const res = await new GasFiContract(network).getStatus(network, connectedWallet);
-        console.log(res)
+        const res = await new GasFiContract(network).getStatusForFreeSpin(
+          connectedWallet
+        );
         setData(res);
         setLoading(false);
       } catch (e: any) {
@@ -53,122 +52,75 @@ const Main = (props) => {
     }
     fetch();
   }, [connectedWallet, network, refreshCount]);
+
+  const onSpin = async () => {
+    if (connectedWallet) {
+      try {
+        const res = await new GasFiContract(network).spinForFree(
+          connectedWallet
+        );
+        console.log(res);
+        setTxid(res);
+        message.success("Transaction sent successfully");
+      } catch (e: any) {
+        console.error(e);
+        message.error(e.message);
+      }
+    }
+  };
   return (
-    <div>
+    <>
       <div className="columns is-centered">
         <div className="column is-half">
-          <StakeHeader
-            isLoading={isLoading}
-            data={data}
-            connectedWallet={connectedWallet}
-          />
-          {data && data.status ? (
-            <div className="columns is-hidden-mobile">
-              {data.status.positions.map((amount, i) => {
-                const percentage = (amount * 100) / data.status.totalNEO;
-                return (
-                  <div
-                    key={`positions${i}`}
-                    className="column has-text-centered"
-                  >
-                    <div className="box is-shadowless">
-                      <strong>{`Position ${i + 1}`}</strong> <br />
-                      {withDecimal(amount, 8, true)} ({Math.round(percentage)}%)
-                      bNEO
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div></div>
-          )}
-
-          {connectedWallet && data && data.staking ? (
-            <div className="box is-shadowless">
-              <div className="columns is-mobile content has-text-centered">
-                <div className="column">
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                  >
-                    <div>
-                      {" "}
-                      <h6>Claimable GAS</h6>
-                      <p>
-                        {data.claimable
-                          ? withDecimal(data.claimable.claimableAmount, 8, true)
-                          : "0"}{" "}
-                        GAS
-                      </p>
-                    </div>
+          <div className=" is-shadowless">
+            {txid && data ? (
+              <Spin txid={txid} onClose={() => setTxid(undefined)} />
+            ) : (
+              <Space direction="vertical" size={"large"}>
+                <NFTAds />
+                <div className="has-text-centered">
+                  <h1 className="title is-6">Are you feeling lucky today?</h1>
+                  <div className="subtitle is-7 is-accent mb-0">
+                    <Space>
+                      <span>Free spin to win {data?.nep} NEP</span>
+                      <button onClick={() => setInfoModal(true)} className=" is-light is-small">
+                        <InfoCircleOutlined />
+                      </button>
+                    </Space>
                   </div>
                 </div>
-
-                {data.claimable ? (
-                  <div
-                    className="column"
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                  >
-                    <button
-                      // disabled={data.claimable.claimableAmount === 0}
-                      onClick={onClaimAll}
-                      className="button is-primary"
-                    >
-                      Claim GAS
-                    </button>
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
-
-          <div className="box is-shadowless">
-            <h6 className="title is-6">History</h6>
-            {/*<div className="level">*/}
-            {/*  <div className="level-left">*/}
-            {/*    <div className="level-item">*/}
-            {/*      <h6 className="title is-6">History</h6>*/}
-            {/*    </div>*/}
-            {/*  </div>*/}
-
-            {/*  <div className="level-right">*/}
-            {/*    <div className="level-item has-text-right">*/}
-            {/*      {data ? (*/}
-            {/*        <div className="has-text-info is-size-7">*/}
-            {/*          Next drawing after &nbsp;*/}
-            {/*          {moment(data.status.nextDrawingAt).format("lll")} <br />*/}
-            {/*          <Countdown*/}
-            {/*            // date={Date.now() + 500000}*/}
-            {/*            date={data && data.status.nextDrawingAt}*/}
-            {/*            renderer={renderer}*/}
-            {/*          >*/}
-            {/*            <DrawBtn />*/}
-            {/*          </Countdown>*/}
-            {/*        </div>*/}
-            {/*      ) : (*/}
-            {/*        <></>*/}
-            {/*      )}*/}
-            {/*    </div>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
-
-            <History />
+                <button
+                  style={{ maxWidth: "300px", margin: "0 auto" }}
+                  disabled={connectedWallet ? !data?.isTimeToSpin : true}
+                  className="button is-primary is-fullwidth is-large"
+                  onClick={() => onSpin()}
+                >
+                  {connectedWallet ? "I am feeling lucky" : "Connect Wallet"}
+                </button>
+              </Space>
+            )}
           </div>
         </div>
       </div>
-    </div>
+      {showInfoModal && (
+        <Modal
+          open={showInfoModal}
+          onCancel={() => setInfoModal(false)}
+          footer={[]}
+        >
+          <FreeSpinInfo network={network} />
+        </Modal>
+      )}
+      {/* {showStakeModal && (
+        <Modal
+          open={showStakeModal}
+          onCancel={() => setShowStakeModal(false)}
+          footer={[]}
+        >
+          {data && <Stake data={data} />}
+        </Modal>
+      )} */}
+    </>
   );
 };
 

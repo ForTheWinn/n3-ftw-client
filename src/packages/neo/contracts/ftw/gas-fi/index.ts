@@ -3,23 +3,17 @@ import { IConnectedWallet } from "../../../wallets/interfaces";
 import { getDefaultWitnessScope } from "../../../utils";
 
 import { parseMapValue, toDecimal } from "../../../utils";
-import { u, wallet as NeonWallet } from "@cityofzion/neon-core";
+import { u, wallet as NeonWallet, tx } from "@cityofzion/neon-core";
 import { GASFI_SCRIPT_HASH } from "./consts";
 import {
   NEO_BNEO_CONTRACT_ADDRESS,
   NEO_GAS_CONTRACT_ADDRESS,
 } from "../../../consts/tokens";
-import {
-  IClaimableResult,
-  IDrawsResult,
-  IGASFiStatus,
-  IStakeResult,
-} from "./interfaces";
+import { IClaimableResult, IDrawsResult, IStakeResult } from "./interfaces";
 import { NeoWallets } from "../../../wallets";
-import { CONTRACT_MAP } from "../../../../../consts/contracts";
+import { NEP_ADDRESSES } from "../../../../../consts/contracts";
 import { NEO_CHAIN } from "../../../../../consts/global";
-import { TOKEN_LIST } from "../../../../../consts/tokens";
-import { GasContract } from "@cityofzion/neon-core/lib/sc";
+import moment from "moment";
 
 export class GasFiContract {
   network: INetworkType;
@@ -30,36 +24,29 @@ export class GasFiContract {
     this.contractHash = GASFI_SCRIPT_HASH[networkType];
   }
 
-  stake = async (
-    connectedWallet: IConnectedWallet,
-    amount: number,
-    position: number
-  ): Promise<string> => {
+  stake = async (connectedWallet: IConnectedWallet): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
     const invokeScript = {
-      operation: "transfer",
-      scriptHash: NEO_BNEO_CONTRACT_ADDRESS[this.network],
+      operation: "stake",
+      scriptHash: this.contractHash,
       args: [
         {
           type: "Hash160",
           value: senderHash,
         },
+      ],
+      signers: [
         {
-          type: "Hash160",
-          value: this.contractHash,
-        },
-        {
-          type: "Integer",
-          value: u.BigInteger.fromDecimal(amount, 8).toString(),
-        },
-        {
-          type: "Integer",
-          value: position,
+          account: senderHash,
+          scopes: tx.WitnessScope.CustomContracts,
+          allowedContracts: [
+            NEO_BNEO_CONTRACT_ADDRESS[this.network],
+            this.contractHash,
+          ],
         },
       ],
-      signers: [getDefaultWitnessScope(senderHash)],
     };
     return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
@@ -82,14 +69,37 @@ export class GasFiContract {
     return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
   };
 
-  draw = async (connectedWallet: IConnectedWallet): Promise<string> => {
+  spin = async (connectedWallet: IConnectedWallet): Promise<string> => {
     const senderHash = NeonWallet.getScriptHashFromAddress(
       connectedWallet.account.address
     );
     const invokeScript = {
-      operation: "draw",
+      operation: "spin",
       scriptHash: this.contractHash,
-      args: [],
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+      ],
+      signers: [getDefaultWitnessScope(senderHash)],
+    };
+    return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
+  };
+
+  spinForFree = async (connectedWallet: IConnectedWallet): Promise<string> => {
+    const senderHash = NeonWallet.getScriptHashFromAddress(
+      connectedWallet.account.address
+    );
+    const invokeScript = {
+      operation: "freeSpin",
+      scriptHash: this.contractHash,
+      args: [
+        {
+          type: "Hash160",
+          value: senderHash,
+        },
+      ],
       signers: [getDefaultWitnessScope(senderHash)],
     };
     return NeoWallets.invoke(connectedWallet, this.network, invokeScript);
@@ -167,10 +177,7 @@ export class GasFiContract {
     }
   };
 
-  getStatus = async (
-    network: INetworkType,
-    connectedWallet?: IConnectedWallet
-  ): Promise<any> => {
+  getStatus = async (connectedWallet?: IConnectedWallet): Promise<any> => {
     const scripts: any = [
       {
         operation: "balanceOf",
@@ -203,48 +210,50 @@ export class GasFiContract {
         ],
       },
     ];
-    console.log(2)
-    // if (connectedWallet) {
-    //   const senderHash = NeonWallet.getScriptHashFromAddress(
-    //     connectedWallet.account.address
-    //   );
-    //   const stake = {
-    //     operation: "getStake",
-    //     scriptHash: this.contractHash,
-    //     args: [
-    //       {
-    //         type: "Hash160",
-    //         value: senderHash,
-    //       },
-    //     ],
-    //   };
-    //   const claimable = {
-    //     operation: "getClaimable",
-    //     scriptHash: this.contractHash,
-    //     args: [
-    //       {
-    //         type: "Hash160",
-    //         value: senderHash,
-    //       },
-    //     ],
-    //   };
-    //   const bNEOBalance = {
-    //     operation: "balanceOf",
-    //     scriptHash: NEO_BNEO_CONTRACT_ADDRESS[this.network],
-    //     args: [
-    //       {
-    //         type: "Hash160",
-    //         value: senderHash,
-    //       },
-    //     ],
-    //   };
-    //   scripts.push(stake);
-    //   scripts.push(claimable);
-    //   scripts.push(bNEOBalance);
-    // }
+    if (connectedWallet) {
+      const senderHash = NeonWallet.getScriptHashFromAddress(
+        connectedWallet.account.address
+      );
+      const stake = {
+        operation: "getStake",
+        scriptHash: this.contractHash,
+        args: [
+          {
+            type: "Hash160",
+            value: senderHash,
+          },
+        ],
+      };
+
+      scripts.push({
+        operation: "balanceOf",
+        scriptHash: NEO_BNEO_CONTRACT_ADDRESS[this.network],
+        args: [
+          {
+            type: "Hash160",
+            value: senderHash,
+          },
+        ],
+      });
+
+      scripts.push({
+        operation: "canDrawAt",
+        scriptHash: this.contractHash,
+        args: [
+          {
+            type: "Hash160",
+            value: senderHash,
+          },
+        ],
+      });
+    }
 
     const res = await Network.read(this.network, scripts);
-    console.log(res);
+    // if(res.state == "HALT") {
+    //   return res.stack.map((item: any) => {
+    //     return parseMapValue(item);
+    //   });
+    // }
     // const obj: IGASFiStatus = { status: parseMapValue(res.stack[0] as any) };
     // if (connectedWallet) {
     //   obj.staking = res.stack[1].value
@@ -256,6 +265,63 @@ export class GasFiContract {
     //   obj.bNEOBalance = toDecimal(res.stack[3].value as any);
     // }
     // return obj;
+    const canDrawAt = connectedWallet ? (res.stack[4].value as number) : 0;
+    const now = moment().unix();
+    return {
+      neo: toDecimal(res.stack[0].value as any),
+      gas:
+        toDecimal(res.stack[1].value as any) +
+        toDecimal(res.stack[2].value as any),
+      userbNEOBalance: connectedWallet
+        ? toDecimal(res.stack[3].value as any)
+        : 0,
+      isUserStaked: canDrawAt > 0,
+      isTimeToSpin: now > canDrawAt,
+      nextAvailableToSpin: canDrawAt,
+    };
+  };
+
+  getStatusForFreeSpin = async (
+    connectedWallet?: IConnectedWallet
+  ): Promise<any> => {
+    const scripts: any = [
+      {
+        operation: "balanceOf",
+        scriptHash: NEP_ADDRESSES[NEO_CHAIN][this.network],
+        args: [
+          {
+            type: "Hash160",
+            value: GASFI_SCRIPT_HASH[this.network],
+          },
+        ],
+      },
+    ];
+    if (connectedWallet) {
+      const senderHash = NeonWallet.getScriptHashFromAddress(
+        connectedWallet.account.address
+      );
+      scripts.push({
+        operation: "canSpinForFreeAt",
+        scriptHash: this.contractHash,
+        args: [
+          {
+            type: "Hash160",
+            value: senderHash,
+          },
+        ],
+      });
+    }
+
+    const res = await Network.read(this.network, scripts);
+    console.log(res)
+    console.log(connectedWallet);
+    const canDrawAt = connectedWallet ? (res.stack[1].value as number) : 0;
+    const now = moment().unix();
+    return {
+      nep: toDecimal(res.stack[0].value as any),
+      isTimeToSpin: now >= canDrawAt,
+      nextAvailableToSpin: canDrawAt,
+    };
   };
 
   getStake = async (connectedWallet): Promise<IStakeResult | undefined> => {

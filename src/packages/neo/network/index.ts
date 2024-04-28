@@ -103,7 +103,6 @@ export class Network {
     scripts: sc.ContractCallJson[]
     // passFaultCheck?: boolean
   ): Promise<InvokeResult> => {
-    console.log(scripts)
     const rpcClient = Network.getRPCClient(network);
     const sb = new sc.ScriptBuilder();
     scripts.map((script) => {
@@ -112,7 +111,7 @@ export class Network {
         params = script.args.map((arg) => convertContractCallParam(arg));
       }
       sb.emitAppCall(script.scriptHash, script.operation, params);
-    });console.log(scripts)
+    });
     return rpcClient.invokeScript(u.HexString.fromHex(sb.build()));
   };
 

@@ -11,7 +11,7 @@ export const ONE_GATE = "ONE_GATE";
 
 export const MAINNET_CONFIG = {
   label: "N3MainNet",
-  url: "https://neo1-nodes.ghostmarket.io:443",
+  url: "http://seed1.neo.org:10332",
 };
 
 export const TESTNET_CONFIG = {
