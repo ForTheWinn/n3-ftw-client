@@ -13,6 +13,8 @@ import {
 } from "../../consts/routes";
 import { NEO_CHAIN, POLYGON_CHAIN } from "../../consts/global";
 import Main from "./GASFi/scenes/Main";
+import NFTAds from "../components/Ad";
+import { Space } from "antd";
 
 const Home = () => {
   useEffect(() => {
@@ -25,21 +27,19 @@ const Home = () => {
         <div className="hero-body">
           <div className="container">
             <div className="has-text-centered mb-6">
-              {/* <h1 className="title is-spaced is-size-4-mobile">
-                Forthewin Network
-              </h1>
-              <p className="is-accent is-size-6-mobile">
-                DeFi / Web3 Tools / Cool NFTs
-              </p> */}
-              {/* <>
-                <p>-</p>
-                <div className="mt-3">
-                  <img alt="Neo Boyz #1065" width={150} src="/boyz/1065.png" />
-                  <br />
-                  <p className="is-accent is-size-6-mobile">Neo Boyz #1065</p>
-                </div>
-              </> */}
-              <Main />
+              {chain === NEO_CHAIN ? (
+                <Main />
+              ) : (
+                <Space direction="vertical">
+                  <NFTAds />
+                  <h1 className="title is-5">
+                    Forthewin Network
+                  </h1>
+                  <p className="is-accent is-6 subtitle">
+                    DeFi / Web3 Tools / Cool NFTs
+                  </p>
+                </Space>
+              )}
             </div>
           </div>
         </div>
