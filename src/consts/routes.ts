@@ -494,7 +494,7 @@ const HOME_PAGE_ROUTE = {
     [BASE_CHAIN]: [MAINNET],
   },
   category: [],
-  noShow: true,
+  // noShow: true,
   component: Home,
 };
 
@@ -534,6 +534,7 @@ const BRAND_PAGE_ROUTE = {
 };
 
 export const ROUTE_LIST = [
+  HOME_PAGE_ROUTE,
   SMITH_PAGE_ROUTE,
   SWAP_PAGE_ROUTE,
   FARM_V2_PAGE_ROUTE,
@@ -547,6 +548,5 @@ export const ROUTE_LIST = [
   LP_FINDER_PAGE_ROUTE,
   FARM_PAGE_ROUTE,
   BRAND_PAGE_ROUTE,
-  HOME_PAGE_ROUTE,
   { ...LOCKER_PAGE_ROUTE, noShow: true },
 ];

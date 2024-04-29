@@ -21,7 +21,11 @@ export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
               key={`header-${route.label}${i}`}
               className="navbar-item has-dropdown is-hoverable"
             >
-              <NavLink className="navbar-link" to={route.path}>
+              <NavLink
+                exact={route.exact}
+                className="navbar-link"
+                to={route.path}
+              >
                 {route.label}
               </NavLink>
               <div className="navbar-dropdown">
@@ -47,6 +51,7 @@ export const HeaderMenu = ({ chain, network }: IHeaderMenuProps) => {
         } else {
           return (
             <NavLink
+              exact={route.exact}
               key={`header-${route.label}${i}`}
               activeClassName="is-active"
               to={route.path}

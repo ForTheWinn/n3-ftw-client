@@ -25,6 +25,7 @@ const SidebarNav = () => {
                 {route.category.length > 0 ? (
                   <>
                     <NavLink
+                      exact={route.exact}
                       onClick={toggleSidebar}
                       key={`category-${route.label}`}
                       // activeClassName={"is-active"}
@@ -55,6 +56,7 @@ const SidebarNav = () => {
                   </>
                 ) : (
                   <NavLink
+                    exact={route.exact}
                     onClick={toggleSidebar}
                     activeClassName={"is-active"}
                     to={route.path}
