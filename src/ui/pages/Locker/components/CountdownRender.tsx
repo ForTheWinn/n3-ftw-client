@@ -3,6 +3,7 @@ import moment from "moment";
 
 const CountdownRender = ({ timestamp }: { timestamp: number }) => {
   const releaseAt = moment.unix(timestamp / 1000);
+  console.log(releaseAt.format("llll"));
   const diff = releaseAt.diff(moment(), "days");
   let timeLeft;
   if (diff > 0) {
@@ -25,7 +26,7 @@ const CountdownRender = ({ timestamp }: { timestamp: number }) => {
       }
     }
   }
-  return timeLeft;
+  return timeLeft !== "0" ? <span className="help">{`Next spin in: ${timeLeft}`}</span> : "";
 };
 
 export default CountdownRender;

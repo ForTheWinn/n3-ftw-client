@@ -7,6 +7,7 @@ import { InfoCircleOutlined } from "@ant-design/icons";
 import Spin from "./Spin";
 import NFTAds from "../../../../components/Ad";
 import FreeSpinInfo from "./FreeSpinInfo";
+import CountdownRender from "../../../Locker/components/CountdownRender";
 
 export interface IStatusForSpin {
   neo: number;
@@ -68,6 +69,7 @@ const Main = () => {
       }
     }
   };
+  console.log(data);
   return (
     <>
       <div className="columns is-centered">
@@ -83,7 +85,10 @@ const Main = () => {
                   <div className="subtitle is-7 is-accent mb-0">
                     <Space>
                       <span>Free spin to win {data?.nep} NEP</span>
-                      <button onClick={() => setInfoModal(true)} className=" is-light is-small">
+                      <button
+                        onClick={() => setInfoModal(true)}
+                        className=" is-light is-small"
+                      >
                         <InfoCircleOutlined />
                       </button>
                     </Space>
@@ -97,6 +102,9 @@ const Main = () => {
                 >
                   {connectedWallet ? "I am feeling lucky" : "Connect Wallet"}
                 </button>
+                {data && data.nextAvailableToSpin > 0 && (
+                  <CountdownRender timestamp={data.nextAvailableToSpin} />
+                )}
               </Space>
             )}
           </div>
