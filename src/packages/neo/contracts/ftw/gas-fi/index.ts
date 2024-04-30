@@ -313,10 +313,10 @@ export class GasFiContract {
     }
 
     const res = await Network.read(this.network, scripts);
-    console.log(res)
-    console.log(connectedWallet);
-    const canDrawAt = connectedWallet ? (res.stack[1].value as number) : 0;
-    const now = moment().unix();
+    const canDrawAt = connectedWallet
+      ? parseFloat(res.stack[1].value as any)
+      : 0;
+    const now = moment().unix() * 1000;
     return {
       nep: toDecimal(res.stack[0].value as any),
       isTimeToSpin: now >= canDrawAt,

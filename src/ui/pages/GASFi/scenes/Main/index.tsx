@@ -60,7 +60,6 @@ const Main = () => {
         const res = await new GasFiContract(network).spinForFree(
           connectedWallet
         );
-        console.log(res);
         setTxid(res);
         message.success("Transaction sent successfully");
       } catch (e: any) {
@@ -69,7 +68,6 @@ const Main = () => {
       }
     }
   };
-  console.log(data);
   return (
     <>
       <div className="columns is-centered">

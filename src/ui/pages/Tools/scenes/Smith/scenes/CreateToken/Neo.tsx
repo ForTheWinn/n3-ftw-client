@@ -49,7 +49,6 @@ const CreateToken = () => {
   const hasEmoji = detectEmojiInString(values) !== 0;
 
   const onVersionChange = (e) => {
-    console.log(e);
     setValues({
       ...values,
       version: e.target.value,

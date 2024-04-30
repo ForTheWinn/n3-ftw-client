@@ -26,9 +26,7 @@ const Spin = ({ txid, onClose }: ISpinProps) => {
           const res = await Network.getRawTx(txid, network);
           const rn = getSpinEvent(res);
           setResult(rn);
-          console.log(rn);
         } catch (e: any) {
-          console.log(e);
           setError(e.message);
         }
       }
