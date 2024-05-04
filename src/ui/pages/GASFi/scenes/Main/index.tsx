@@ -25,7 +25,7 @@ export interface IStatusForSpinForFree {
 }
 
 const Main = () => {
-  const { network, refreshCount } = useApp();
+  const { network, refreshCount, increaseRefreshCount } = useApp();
   const { connectedWallet } = useNeoWallets();
   const [isLoading, setLoading] = useState(true);
   const [showStakeModal, setShowStakeModal] = useState(false);
@@ -68,13 +68,18 @@ const Main = () => {
       }
     }
   };
+
+  const onReset = async () => {
+    increaseRefreshCount();
+    setTxid(undefined);
+  }
   return (
     <>
       <div className="columns is-centered">
         <div className="column is-half">
           <div className=" is-shadowless">
             {txid && data ? (
-              <Spin txid={txid} onClose={() => setTxid(undefined)} />
+              <Spin txid={txid} onClose={onReset} />
             ) : (
               <Space direction="vertical" size={"large"}>
                 <NFTAds />
