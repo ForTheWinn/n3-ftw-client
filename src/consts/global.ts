@@ -7,13 +7,13 @@ export const BASE_CHAIN = "BASE_CHAIN";
 export const NEO_MAINNET_CHAIN_ID = 888;
 export const POLYGON_MAINNET_CHAIN_ID = 137;
 export const ETH_MAINNET_CHAIN_ID = 1;
-export const NEOX_MAINNET_CHAIN_ID = 12227330;
+export const NEOX_MAINNET_CHAIN_ID = 12227331;
 export const BASE_MAINNET_CHAIN_ID = 8453;
 
 export const NEO_TESTNET_CHAIN_ID = 889;
 export const POLYGON_TESTNET_CHAIN_ID = 80001;
 export const ETH_TESTNET_CHAIN_ID = 5;
-export const NEOX_TESTNET_CHAIN_ID = 12227330;
+export const NEOX_TESTNET_CHAIN_ID = 12227331;
 
 export const TESTNET = "N3TestNet";
 export const MAINNET = "N3MainNet";

@@ -1,3 +1,4 @@
+import { NEOX_MAINNET_CHAIN_DETAIL, NEOX_TESTNET_CHAIN_DETAIL } from "./chains";
 import {
   BASE_CHAIN,
   ETH_CHAIN,
@@ -47,14 +48,14 @@ export const EXPLORER_URLS = {
   },
   [NEOX_CHAIN]: {
     [MAINNET]: {
-      tx: "https://xt2scan.ngd.network/tx",
-      account: "https://xt2scan.ngd.network/address",
-      contract: "https://xt2scan.ngd.network/token",
+      tx: `${NEOX_MAINNET_CHAIN_DETAIL.blockExplorers.default.url}/tx`,
+      account: `${NEOX_MAINNET_CHAIN_DETAIL.blockExplorers.default.url}/address`,
+      contract: `${NEOX_MAINNET_CHAIN_DETAIL.blockExplorers.default.url}/token`,
     },
     [TESTNET]: {
-      tx: "https://xt2scan.ngd.network/tx",
-      account: "https://xt2scan.ngd.network/address",
-      contract: "https://xt2scan.ngd.network/token",
+      tx: `${NEOX_TESTNET_CHAIN_DETAIL.blockExplorers.default.url}/tx`,
+      account: `${NEOX_TESTNET_CHAIN_DETAIL.blockExplorers.default.url}/address`,
+      contract: `${NEOX_TESTNET_CHAIN_DETAIL.blockExplorers.default.url}/token`,
     },
   },
   [BASE_CHAIN]: {

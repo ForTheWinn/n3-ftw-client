@@ -11,13 +11,13 @@ export const NEOX_MAINNET_TOKENS = [
     decimals: 8,
     isWhitelisted: true,
   }),
-  createTokenMetadata({
-    hash: NEOX_MAINNET_CONTRACTS.FNEO,
-    symbol: "fNEO",
-    icon: FNEO_LOGO,
-    decimals: 8,
-    isWhitelisted: true,
-  }),
+  // createTokenMetadata({
+  //   hash: NEOX_MAINNET_CONTRACTS.FNEO,
+  //   symbol: "fNEO",
+  //   icon: FNEO_LOGO,
+  //   decimals: 8,
+  //   isWhitelisted: true,
+  // }),
   createTokenMetadata({
     hash: NEOX_MAINNET_CONTRACTS.GAS,
     symbol: "GAS",

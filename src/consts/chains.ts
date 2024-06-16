@@ -108,7 +108,7 @@ export const CONFIGS = {
 };
 
 // Define your custom chain
-export const NEOX_MAINNET_CHAIN_DETAIL: Chain = {
+export const NEOX_MAINNET_CHAIN_DETAIL = {
   id: NEOX_MAINNET_CHAIN_ID, // Replace with your custom chain ID
   name: "NeoX", // Replace with your custom chain name
   nativeCurrency: {
@@ -127,7 +127,7 @@ export const NEOX_MAINNET_CHAIN_DETAIL: Chain = {
   blockExplorers: {
     default: {
       name: "Custom Explorer",
-      url: "https://xt2scan.ngd.network/",
+      url: "https://xt3scan.ngd.network",
     },
   },
   // contracts: {
@@ -158,7 +158,7 @@ export const NEOX_TESTNET_CHAIN_DETAIL = {
   blockExplorers: {
     default: {
       name: "Custom Explorer",
-      url: "https://xt2scan.ngd.network/",
+      url: "https://xt3scan.ngd.network",
     }, // Replace with your block explorer details
   },
   testnet: false, // Set to true if it's a testnet
