@@ -1,4 +1,9 @@
-import { readContract, simulateContract, writeContract } from "@wagmi/core";
+import {
+  getBalance,
+  readContract,
+  simulateContract,
+  writeContract,
+} from "@wagmi/core";
 import { getPrices } from "../../../common/routers/global";
 import {
   NEO_BNEO_CONTRACT_ADDRESS,
@@ -8,11 +13,14 @@ import { BLOCK_TIME, MAINNET, NEO_CHAIN } from "../../../consts/global";
 import FNEOABI from "./abi/fNEO.json";
 import { ethers } from "ethers";
 import { wagmiConfig } from "../../../wagmi-config";
+import { NEP_ADDRESSES } from "../../../consts/contracts";
+import { CHAINS } from "../../../consts/chains";
 export interface IfNEODetail {
   totalSupply: string;
   nepPerBlock: string;
   apr: string;
   claimable: string;
+  availableRewardsInContract: string;
 }
 
 export const claim = async (
@@ -30,8 +38,10 @@ export const claim = async (
 };
 
 export const getfNEODetail = async (
+  chain: CHAINS,
   chainId: number,
   contractHash: string,
+  network: any,
   address?: string
 ): Promise<IfNEODetail> => {
   const prices = await getPrices(NEO_CHAIN);
@@ -50,6 +60,10 @@ export const getfNEODetail = async (
   // Assuming totalSupply and nepPerBlock are fetched correctly in BigInt from the blockchain
   const totalSupplyBigInt = await getTotalSupply(contractHash, chainId); // Replace with actual contract call
   const nepPerBlockBigInt = await getNepPerBlock(contractHash, chainId); // Replace with actual contract call
+  const available = await getBalance(wagmiConfig, {
+    address: contractHash as any,
+    token: NEP_ADDRESSES[chain][network] as any,
+  });
 
   // Calculate blocks per year and NEP rewarded per year
   const blocksPerYear = secondsInYear / blockTime;
@@ -76,6 +90,7 @@ export const getfNEODetail = async (
     nepPerBlock: ethers.formatUnits(nepPerBlockBigInt, 8),
     apr: aprValue,
     claimable: await getClaimableAmount(contractHash, chainId, address),
+    availableRewardsInContract: available.formatted,
   };
 };
 

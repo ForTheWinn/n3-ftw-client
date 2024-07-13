@@ -1,4 +1,9 @@
-import { readContract, writeContract, simulateContract } from "@wagmi/core";
+import {
+  readContract,
+  writeContract,
+  simulateContract,
+  getBalance,
+} from "@wagmi/core";
 import { IClaimable, IFarmPair } from "../../../common/routers/farm/interfaces";
 import { IClaimableRewards } from "../../neo/contracts/ftw/farm-v2/interfaces";
 import FTWFarmABI from "./abi/FTWFarm.json";
@@ -10,6 +15,7 @@ import { formatAmount, getTokenByHash } from "../../../common/helpers";
 import { EVM_CONTRACTS } from "..";
 import { CHAINS, CONFIGS } from "../../../consts/chains";
 import { wagmiConfig } from "../../../wagmi-config";
+import { NEP_ADDRESSES } from "../../../consts/contracts";
 
 export const getPools = async (
   chain: CHAINS,
@@ -106,6 +112,8 @@ export const getClaimable = async (
   address: string
 ): Promise<IClaimable> => {
   const contractAddress = EVM_CONTRACTS[chain][network][FARM];
+  console.log(contractAddress);
+  const NEPAddress = NEP_ADDRESSES[chain][network] as any;
   const chainId = CONFIGS[network][chain].chainId;
 
   const res: any = await readContract(wagmiConfig, {
@@ -116,6 +124,11 @@ export const getClaimable = async (
     chainId,
   });
 
+  const available = await getBalance(wagmiConfig, {
+    address: contractAddress,
+    token: NEPAddress,
+    chainId,
+  });
 
   const rewards: IClaimableRewards[] = [];
   for (const reward of res) {
@@ -151,6 +164,7 @@ export const getClaimable = async (
     rewards: rewards,
     boyz: [],
     bonus: 0,
+    NEPInContract: available.formatted,
   };
 };
 

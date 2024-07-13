@@ -33,6 +33,7 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
     apr: "0",
     claimable: "0",
     nepPerBlock: "0",
+    availableRewardsInContract: "0",
   });
 
   const onClaim = async () => {
@@ -56,7 +57,8 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
     (async () => {
       setLoading(true);
       try {
-        const res = await getfNEODetail(chainId, hash, address);
+        const res = await getfNEODetail(chain, chainId, hash, network, address);
+        console.log(res);
         setData(res);
       } catch (e: any) {
         message.error(e.messages ? e.messages : WENT_WRONG);
@@ -166,6 +168,20 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
                     >
                       View
                     </Button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: 0 }}>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "left" }}
+                  >
+                    Available rewards in contract
+                  </div>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "right" }}
+                  >
+                    {data.availableRewardsInContract} NEP
                   </div>
                 </td>
               </tr>

@@ -337,12 +337,14 @@ export class FarmV2Contract {
         rewards,
         boyz,
         bonus,
+        NEPInContract: "Infinite",
       };
     } else {
       return {
         boyz: [],
         rewards: [],
         bonus: 0,
+        NEPInContract: "Infinite",
       };
     }
   };

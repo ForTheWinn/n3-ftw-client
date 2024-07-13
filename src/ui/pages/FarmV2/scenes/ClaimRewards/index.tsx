@@ -10,7 +10,7 @@ import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { NEO_CHAIN, NEP_LOGO } from "../../../../../consts/global";
-import { Avatar, message } from "antd";
+import { Avatar, Space, message } from "antd";
 import { WENT_WRONG } from "../../../../../consts/messages";
 
 const ClaimRewards = () => {
@@ -19,7 +19,7 @@ const ClaimRewards = () => {
     toggleWalletSidebar,
     increaseRefreshCount,
     setTxid,
-    refreshCount
+    refreshCount,
   } = useApp();
   const { network } = useApp();
   const { connectedWallet } = useNeoWallets();
@@ -62,7 +62,6 @@ const ClaimRewards = () => {
     boyz = data.boyz;
     bonus = data.bonus;
   }
-
   return (
     <>
       {chain === NEO_CHAIN && (
@@ -94,16 +93,15 @@ const ClaimRewards = () => {
       )}
 
       <div className="box is-shadowless mb-1">
-        <div className="level is-mobile">
-          <div className="level-left">
-            <div className="level-item">
-              <Avatar src={NEP_LOGO} />
-            </div>
-            <div className="level-item">
-              <h1 className="title is-6 ">Rewards</h1>
-            </div>
+        <Space>
+          <Avatar src={NEP_LOGO} />
+          <div>
+            <h1 className="title is-6">Rewards</h1>
+            {chain !== NEO_CHAIN && data && (
+              <p className="subtitle is-7">{data.NEPInContract} NEP</p>
+            )}
           </div>
-        </div>
+        </Space>
 
         <div className="mb-3">
           <ClaimList

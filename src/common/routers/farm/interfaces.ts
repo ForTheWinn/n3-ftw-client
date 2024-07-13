@@ -1,6 +1,6 @@
 import {
   IBoyStaked,
-  IClaimableRewards
+  IClaimableRewards,
 } from "../../../packages/neo/contracts/ftw/farm-v2/interfaces";
 
 export interface IFarmPair {
@@ -26,4 +26,5 @@ export interface IClaimable {
   rewards: IClaimableRewards[];
   boyz: IBoyStaked[];
   bonus: number;
+  NEPInContract: string;
 }
