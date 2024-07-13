@@ -14,6 +14,7 @@ import {
   NEO_MAINNET_CHAIN_ID,
   NEO_TESTNET_CHAIN_ID,
 } from "../../../../../consts/global";
+import { message } from "antd";
 
 const BridgeSwap = () => {
   const {
@@ -38,7 +39,8 @@ const BridgeSwap = () => {
   } = useBridgeSwap();
 
   const onBridge = async () => {
-    setActionModalActive(true);
+    message.warning("Bridge is not available at the moment.");
+    // setActionModalActive(true);
   };
 
   let evmChainId;
