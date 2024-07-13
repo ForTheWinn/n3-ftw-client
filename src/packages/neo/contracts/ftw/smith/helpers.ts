@@ -4,22 +4,21 @@ import { base64ToHash160 } from "../../../utils";
 export const getTokenContractHashNotifications = (
   json: ApplicationLogJson
 ): string => {
-  let contractHash;
   try {
-    json.executions[0].notifications.forEach((log) => {
+    for (const log of json.executions[0].notifications) {
       if (log.eventname === "TokenCreated" && log.state.value) {
-        contractHash = base64ToHash160(log.state.value[0].value);
+        const contractHash = base64ToHash160(log.state.value[0].value);
+        if (contractHash) {
+          return contractHash;
+        }
       }
-    });
+    }
+    throw new Error("Can't find contract hash from the txid.");
   } catch (e) {
-    throw Error("Can't find contract hash from the txid.");
-  }
-  if (contractHash) {
-    return contractHash;
-  } else {
-    throw Error("Can't find contract hash from the txid.");
+    throw new Error("Can't find contract hash from the txid.");
   }
 };
+
 
 export const getSpinEvent = (json: ApplicationLogJson): string => {
   let result;
