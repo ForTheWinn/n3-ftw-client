@@ -63,6 +63,7 @@ export const getfNEODetail = async (
   const available = await getBalance(wagmiConfig, {
     address: contractHash as any,
     token: NEP_ADDRESSES[chain][network] as any,
+    chainId,
   });
 
   // Calculate blocks per year and NEP rewarded per year

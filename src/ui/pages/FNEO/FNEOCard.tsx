@@ -58,7 +58,6 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
       setLoading(true);
       try {
         const res = await getfNEODetail(chain, chainId, hash, network, address);
-        console.log(res);
         setData(res);
       } catch (e: any) {
         message.error(e.messages ? e.messages : WENT_WRONG);
