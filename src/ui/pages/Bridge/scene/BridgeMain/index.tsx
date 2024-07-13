@@ -39,8 +39,12 @@ const BridgeSwap = () => {
   } = useBridgeSwap();
 
   const onBridge = async () => {
-    message.warning("Bridge is not available at the moment.");
-    // setActionModalActive(true);
+    console.log(originChain);
+    if (originChain && originChain.chainId === NEO_MAINNET_CHAIN_ID) {
+      message.warning("Bridge is not available at the moment.");
+    } else {
+      setActionModalActive(true);
+    }
   };
 
   let evmChainId;
