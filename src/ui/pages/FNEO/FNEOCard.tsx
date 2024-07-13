@@ -71,6 +71,7 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
     <>
       <div className="box is-shadowless">
         <Level
+          isMobile
           left={<h5 className="title is-6">{name}</h5>}
           right={
             <AddTokenButton
@@ -152,6 +153,20 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
                   <div
                     style={{ float: "left", width: "50%", textAlign: "left" }}
                   >
+                    Available rewards in contract
+                  </div>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "right" }}
+                  >
+                    {data.availableRewardsInContract} NEP
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: 0 }}>
+                  <div
+                    style={{ float: "left", width: "50%", textAlign: "left" }}
+                  >
                     Contract
                   </div>
                   <div
@@ -168,20 +183,6 @@ const FNEOCard = ({ name, hash, network, chain, chainId }: IFNEOCardProps) => {
                     >
                       View
                     </Button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style={{ border: 0 }}>
-                  <div
-                    style={{ float: "left", width: "50%", textAlign: "left" }}
-                  >
-                    Available rewards in contract
-                  </div>
-                  <div
-                    style={{ float: "left", width: "50%", textAlign: "right" }}
-                  >
-                    {data.availableRewardsInContract} NEP
                   </div>
                 </td>
               </tr>

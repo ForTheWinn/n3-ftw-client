@@ -10,7 +10,7 @@ import { useWalletRouter } from "../../../../../common/hooks/use-wallet-router";
 import { farmRouter } from "../../../../../common/routers";
 import { useOnChainData } from "../../../../../common/hooks/use-onchain-data";
 import { NEO_CHAIN, NEP_LOGO } from "../../../../../consts/global";
-import { Avatar, Space, message } from "antd";
+import { Avatar, Divider, Space, message } from "antd";
 import { WENT_WRONG } from "../../../../../consts/messages";
 
 const ClaimRewards = () => {
@@ -102,7 +102,7 @@ const ClaimRewards = () => {
             )}
           </div>
         </Space>
-
+        <Divider />
         <div className="mb-3">
           <ClaimList
             chain={chain}
