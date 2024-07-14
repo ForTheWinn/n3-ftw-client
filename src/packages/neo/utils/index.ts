@@ -342,7 +342,10 @@ export const getUserBalance = async (
   tokenHash: string
 ): Promise<string> => {
   const scripts: any = [];
-  const senderHash = wallet.getScriptHashFromAddress(address);
+  const senderHash = wallet.isAddress(address)
+    ? wallet.getScriptHashFromAddress(address)
+    : address;
+
   const script1 = {
     scriptHash: tokenHash,
     operation: "balanceOf",

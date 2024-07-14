@@ -9,7 +9,10 @@ import {
   POLYGON_CHAIN,
 } from "../../../../../consts/global";
 import { useApp } from "../../../../../common/hooks/use-app";
-import { fetchTokenInfo } from "../../../../../common/routers/global";
+import {
+  fetchTokenBalance,
+  fetchTokenInfo,
+} from "../../../../../common/routers/global";
 import { NEP_ADDRESSES } from "../../../../../consts/contracts";
 import {
   getChainIdByChain,
@@ -21,6 +24,7 @@ import { NEO_NEP_CONTRACT_ADDRESS } from "../../../../../packages/neo/consts/tok
 import AddTokenButton from "../../../../components/AddTokenOnMetaMaskButton";
 import CandleChart from "../../components/Pairs/TokenDetailPage/CandleChart";
 import { CONFIGS } from "../../../../../consts/chains";
+import { BRIDGE_CONTRACTS } from "../../../../../consts/bridge";
 
 const EMMISSIONS = [
   {
@@ -46,15 +50,19 @@ const NEPAnalytics = () => {
   const [values, setValues] = React.useState<any>({
     neo: {
       totalSupply: "0",
+      bridge: "0",
     },
     polygon: {
       totalSupply: "0",
+      bridge: "0",
     },
     ethereum: {
       totalSupply: "0",
+      bridge: "0",
     },
     neoX: {
       totalSupply: "0",
+      bridge: "0",
     },
     nepPrice: 0,
   });
@@ -63,8 +71,22 @@ const NEPAnalytics = () => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
+      console.log(
+        BRIDGE_CONTRACTS[network][getChainIdByChain(NEO_CHAIN, network)][
+          getChainIdByChain(ETH_CHAIN, network)
+        ]
+      );
+      console.log(NEP_ADDRESSES[NEO_CHAIN][network]);
       try {
-        const [neoNEP, polNEP, ethNEP, neoXNep, nepPrice] = await Promise.all([
+        const [
+          neoNEP,
+          polNEP,
+          ethNEP,
+          neoXNep,
+          nepPrice,
+          ethNEPInBridge,
+          polNEPInBridge,
+        ] = await Promise.all([
           fetchTokenInfo(NEO_CHAIN, network, NEP_ADDRESSES[NEO_CHAIN][network]),
           fetchTokenInfo(
             POLYGON_CHAIN,
@@ -78,12 +100,30 @@ const NEPAnalytics = () => {
             NEP_ADDRESSES[NEOX_CHAIN][network]
           ),
           new RestAPI(MAINNET).getPrice(NEO_NEP_CONTRACT_ADDRESS[MAINNET]),
+
+          fetchTokenBalance(
+            NEO_CHAIN,
+            network,
+            BRIDGE_CONTRACTS[network][getChainIdByChain(NEO_CHAIN, network)][
+              getChainIdByChain(ETH_CHAIN, network)
+            ],
+            NEP_ADDRESSES[NEO_CHAIN][network]
+          ),
+          fetchTokenBalance(
+            NEO_CHAIN,
+            network,
+            BRIDGE_CONTRACTS[network][getChainIdByChain(NEO_CHAIN, network)][
+              getChainIdByChain(POLYGON_CHAIN, network)
+            ],
+            NEP_ADDRESSES[NEO_CHAIN][network]
+          ),
         ]);
+        console.log(ethNEPInBridge, polNEPInBridge);
 
         setValues({
-          neo: neoNEP,
-          polygon: polNEP,
-          ethereum: ethNEP,
+          neo: { ...neoNEP },
+          polygon: { ...polNEP, bridge: polNEPInBridge },
+          ethereum: { ...ethNEP, bridge: ethNEPInBridge },
           neoX: neoXNep,
           nepPrice: nepPrice.price,
         });
@@ -215,6 +255,8 @@ const NEPAnalytics = () => {
                     <br />
                     Total Supply: {transformString(ethereumSupply)}
                     <br />
+                    In Bridge: {transformString(values.ethereum.bridge)}
+                    <br />
                     MC: ${transformString(ethereumMC)}
                     <br />
                   </Typography.Paragraph>
@@ -251,6 +293,8 @@ const NEPAnalytics = () => {
                     </a>
                     <br />
                     Total Supply: {transformString(polygonSupply)}
+                    <br />
+                    In Bridge: {transformString(values.polygon.bridge)}
                     <br />
                     MC: ${transformString(polygonMC)}
                   </Typography.Paragraph>
