@@ -32,9 +32,7 @@ const Home = () => {
               ) : (
                 <Space direction="vertical">
                   <NFTAds />
-                  <h1 className="title is-5">
-                    Forthewin Network
-                  </h1>
+                  <h1 className="title is-5">Forthewin Network</h1>
                   <p className="is-accent is-6 subtitle">
                     DeFi / Web3 Tools / Cool NFTs
                   </p>
@@ -96,16 +94,6 @@ const Home = () => {
                   <Link to={FARM_V2_PATH} className="has-text-white">
                     Farm
                   </Link>
-                </li>
-                <li>
-                  <a
-                    rel="noreferrer"
-                    target="_blank"
-                    href={"https://bridge.poly.network/"}
-                    className="has-text-white"
-                  >
-                    NEP Bridge
-                  </a>
                 </li>
               </ul>
             </div>
