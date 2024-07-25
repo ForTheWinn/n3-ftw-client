@@ -80,7 +80,7 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
   const jsonString = JSON.stringify(res1, replacer, 2);
 
   const res: any = await readContract(wagmiConfig, {
-    address: CONTRACT_MAP[chain][network][SMITH] as any,
+    address: contractAddress as `0x${string}`,
     abi: smithABI,
     functionName: "getTokens",
     args: [30, 1],

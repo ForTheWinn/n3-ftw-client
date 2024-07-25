@@ -7,7 +7,7 @@ export const BASE_CHAIN = "BASE_CHAIN";
 export const NEO_MAINNET_CHAIN_ID = 888;
 export const POLYGON_MAINNET_CHAIN_ID = 137;
 export const ETH_MAINNET_CHAIN_ID = 1;
-export const NEOX_MAINNET_CHAIN_ID = 12227331;
+export const NEOX_MAINNET_CHAIN_ID = 47763;
 export const BASE_MAINNET_CHAIN_ID = 8453;
 
 export const NEO_TESTNET_CHAIN_ID = 889;
@@ -25,7 +25,7 @@ export const SMITH = "SMITH";
 
 export const ETHEREUM_LOGO = "/symbols/eth.png";
 export const POLYGON_LOGO = "/symbols/matic.png";
-export const NEOX_LOGO = "/symbols/neox.png";
+export const NEOX_LOGO = "/symbols/neox.svg";
 export const NEP_LOGO = "/symbols/nep.png";
 export const FNEO_LOGO = "/symbols/fneo.png";
 export const NEO_LOGO = "/symbols/neo.svg";

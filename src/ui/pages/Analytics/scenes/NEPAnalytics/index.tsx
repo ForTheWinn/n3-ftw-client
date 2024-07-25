@@ -312,7 +312,7 @@ const NEPAnalytics = () => {
           </Card>
         </div>
 
-        <div className="column is-4">
+        {/* <div className="column is-4">
           <Card style={{ height: "240px" }} loading={loading}>
             <Card.Meta
               avatar={<Avatar src={CONFIGS[network][NEOX_CHAIN].icon} />}
@@ -328,10 +328,6 @@ const NEPAnalytics = () => {
                     >
                       {values.neoX?.hash}
                     </a>
-                    {/* <br />
-                    Total Supply: {transformString(neoXSupply)} */}
-                    {/* <br /> */}
-                    {/* MC: ${transformString(neoXMC)} */}
                   </Typography.Paragraph>
                   <AddTokenButton
                     chainId={getChainIdByChain(NEOX_CHAIN, network)}
@@ -345,7 +341,7 @@ const NEPAnalytics = () => {
               }
             />
           </Card>
-        </div>
+        </div> */}
       </div>
     </div>
   );

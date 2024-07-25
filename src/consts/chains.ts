@@ -1,4 +1,3 @@
-import { Chain } from "viem";
 import {
   BASE_CHAIN,
   BASE_LOGO,
@@ -31,11 +30,67 @@ export type CHAINS =
 
 export const LIST = [
   NEO_CHAIN,
+  NEOX_CHAIN,
   ETH_CHAIN,
   BASE_CHAIN,
   POLYGON_CHAIN,
-  NEOX_CHAIN,
 ];
+
+// Define your custom chain
+export const NEOX_MAINNET_CHAIN_DETAIL: any = {
+  id: NEOX_MAINNET_CHAIN_ID, // Replace with your custom chain ID
+  name: "NeoX", // Replace with your custom chain name
+  nativeCurrency: {
+    name: "GAS", // Replace with your currency name
+    symbol: "GAS", // Replace with your currency symbol
+    decimals: 18, // Replace with your currency decimals
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://mainnet-1.rpc.banelabs.org"],
+    },
+    public: {
+      http: ["https://mainnet-1.rpc.banelabs.org"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Neo x Explorer",
+      url: "https://xexplorer.neo.org",
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: "0xD6010D102015fEa9cB3a9AbFBB51994c0Fd6E672",
+      blockCreated: 7271,
+    },
+  },
+};
+
+export const NEOX_TESTNET_CHAIN_DETAIL = {
+  id: NEOX_TESTNET_CHAIN_ID,
+  name: "NeoX Testnet",
+  nativeCurrency: {
+    name: "GAS",
+    symbol: "GAS",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://neoxseed1.ngd.network"],
+    },
+    public: {
+      http: ["https://neoxseed1.ngd.network"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Neo x Testnet Explorer",
+      url: "https://xt3scan.ngd.network",
+    },
+  },
+  testnet: true, // Set to true if it's a testnet
+};
 
 export const CONFIGS = {
   [MAINNET]: {
@@ -61,11 +116,11 @@ export const CONFIGS = {
       rpc: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_POLYGON_MAINNET_API_KEY}`,
     },
     [NEOX_CHAIN]: {
-      label: "NeoX Testnet",
+      label: "NeoX",
       color: "danger",
       icon: NEOX_LOGO,
       chainId: NEOX_MAINNET_CHAIN_ID,
-      rpc: "https://neoxseed1.ngd.network",
+      rpc: NEOX_MAINNET_CHAIN_DETAIL.rpcUrls.default.http[0],
     },
     [BASE_CHAIN]: {
       label: "Base",
@@ -102,70 +157,7 @@ export const CONFIGS = {
       color: "primary",
       icon: NEOX_LOGO,
       chainId: NEOX_TESTNET_CHAIN_ID,
-      rpc: "https://neoxseed1.ngd.network",
+      rpc: NEOX_TESTNET_CHAIN_DETAIL.rpcUrls.default.http[0],
     },
   },
-};
-
-// Define your custom chain
-export const NEOX_MAINNET_CHAIN_DETAIL = {
-  id: NEOX_MAINNET_CHAIN_ID, // Replace with your custom chain ID
-  name: "NeoX", // Replace with your custom chain name
-  nativeCurrency: {
-    name: "GAS", // Replace with your currency name
-    symbol: "GAS", // Replace with your currency symbol
-    decimals: 18, // Replace with your currency decimals
-  },
-  rpcUrls: {
-    default: {
-      http: ["https://neoxseed1.ngd.network"],
-    },
-    public: {
-      http: ["https://neoxseed1.ngd.network"],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Custom Explorer",
-      url: "https://xt3scan.ngd.network",
-    },
-  },
-  // contracts: {
-  //   multicall3: {
-  //     address: "0xca11bde05977b3631167028862be2a173976ca11",
-  //     blockCreated: 25770160,
-  //   },
-  // },
-};
-
-export const NEOX_TESTNET_CHAIN_DETAIL = {
-  id: NEOX_TESTNET_CHAIN_ID, // Replace with your custom chain ID
-  name: "NeoX Testnet", // Replace with your custom chain name
-  network: "testnet", // Replace with your network name if applicable
-  nativeCurrency: {
-    name: "GAS", // Replace with your currency name
-    symbol: "GAS", // Replace with your currency symbol
-    decimals: 18, // Replace with your currency decimals
-  },
-  rpcUrls: {
-    default: {
-      http: ["https://neoxseed1.ngd.network"],
-    },
-    public: {
-      http: ["https://neoxseed1.ngd.network"],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Custom Explorer",
-      url: "https://xt3scan.ngd.network",
-    }, // Replace with your block explorer details
-  },
-  testnet: false, // Set to true if it's a testnet
-  // contracts: {
-  //   multicall3: {
-  //     address: "0xca11bde05977b3631167028862be2a173976ca11",
-  //     blockCreated: 25770160,
-  //   },
-  // },
 };

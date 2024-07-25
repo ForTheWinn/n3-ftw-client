@@ -146,7 +146,7 @@ const SWAP_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
-    [NEOX_CHAIN]: [TESTNET, MAINNET],
+    [NEOX_CHAIN]: [TESTNET],
   },
   category: [],
   component: Swap,
@@ -159,7 +159,7 @@ const FARM_V2_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [MAINNET],
     [ETH_CHAIN]: [MAINNET],
-    [NEOX_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [TESTNET],
   },
   category: [],
   component: FarmV2,
@@ -172,6 +172,7 @@ export const ANALYTICS_MAIN_ROUTE = {
     [NEO_CHAIN]: [MAINNET],
     [POLYGON_CHAIN]: [MAINNET, TESTNET],
     [ETH_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [MAINNET],
   },
   category: [],
   component: Analytics,
@@ -184,6 +185,7 @@ export const ANALYTICS_FTW_SWAP_ROUTE = {
     [NEO_CHAIN]: [MAINNET],
     [POLYGON_CHAIN]: [MAINNET, TESTNET],
     [ETH_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [MAINNET],
   },
   category: [],
   component: NEOAnalytics,
@@ -196,6 +198,7 @@ export const ANALYTICS_FTW_SWAP_POLYGON_ROUTE = {
     [NEO_CHAIN]: [MAINNET],
     [POLYGON_CHAIN]: [MAINNET],
     [ETH_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [MAINNET],
   },
   category: [],
   component: PolygonAnalytics,
@@ -208,6 +211,7 @@ export const ANALYTICS_FTW_SWAP_ETHEREUM_ROUTE = {
     [NEO_CHAIN]: [MAINNET],
     [POLYGON_CHAIN]: [MAINNET],
     [ETH_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [MAINNET],
   },
   category: [],
   component: EthereumAnalytics,
@@ -217,9 +221,10 @@ export const ANALYTICS_FTW_SWAP_NEOX_ROUTE = {
   label: "FTW Swap (NeoX)",
   path: ANALYTICS_NEOX_SWAP_PATH,
   chain: {
-    [NEO_CHAIN]: [MAINNET],
+    [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [MAINNET],
     [ETH_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [MAINNET],
   },
   category: [],
   component: NeoXAnalytics,
@@ -232,6 +237,7 @@ export const ANALYTICS_ROUTE = {
     [NEO_CHAIN]: [MAINNET],
     [POLYGON_CHAIN]: [MAINNET, TESTNET],
     [ETH_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [MAINNET],
   },
   category: [
     ANALYTICS_MAIN_ROUTE,
@@ -254,6 +260,7 @@ export const NFT_MAIN_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
@@ -267,6 +274,7 @@ export const NEO_BOYZ_PAGE_ROUTE = {
   path: BOYZ_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   component: Boyz,
@@ -278,8 +286,8 @@ export const MATIC_BOYZ_PAGE_ROUTE = {
   description: "Coming soon",
   path: MATIC_BOYZ_PATH,
   chain: {
-    [NEO_CHAIN]: [MAINNET],
-    [POLYGON_CHAIN]: [MAINNET],
+    // [NEO_CHAIN]: [MAINNET],
+    // [POLYGON_CHAIN]: [MAINNET],
   },
   category: [],
   component: MaticBoyz,
@@ -292,6 +300,7 @@ export const RUNES_PAGE_ROUTE = {
   path: RUNE_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   component: Rune,
@@ -304,6 +313,7 @@ export const FUSION_PAGE_ROUTE = {
   path: FUSION_PATH,
   chain: {
     [NEO_CHAIN]: [MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   component: Fusion,
@@ -314,6 +324,7 @@ export const NFT_ROUTE = {
   path: NFT_PATH,
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
     // [POLYGON_CHAIN]: [TESTNET, MAINNET]
   },
   category: [
@@ -337,6 +348,7 @@ export const TOOLS_MAIN_PAGE_ROUTE = {
   chain: {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   noShow: true,
@@ -397,6 +409,7 @@ export const TOOLS_LP_FINDER_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
+    // [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   component: LPTokens,
@@ -409,6 +422,7 @@ export const TOOLS_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
+    // [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [
     TOOLS_MAIN_PAGE_ROUTE,
