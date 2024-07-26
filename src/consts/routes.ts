@@ -146,7 +146,7 @@ const SWAP_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
-    [NEOX_CHAIN]: [TESTNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   component: Swap,

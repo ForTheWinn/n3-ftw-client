@@ -10,6 +10,26 @@ export const NEOX_MAINNET_TOKENS = [
   //   decimals: 8,
   //   isWhitelisted: true,
   // }),
+  createTokenMetadata({
+    hash: NEOX_MAINNET_CONTRACTS.GAS,
+    symbol: "GAS",
+    icon: "/symbols/gas.svg",
+    decimals: 18,
+    isWhitelisted: true,
+    isNative: true,
+    nativePair: {
+      hash: NEOX_MAINNET_CONTRACTS.WGAS,
+      symbol: "WGAS",
+      decimals: 18,
+    },
+  }),
+  createTokenMetadata({
+    hash: NEOX_MAINNET_CONTRACTS.WGAS,
+    symbol: "WGAS",
+    icon: "/symbols/gas.svg",
+    decimals: 18,
+    isWhitelisted: true,
+  }),
 ];
 
 export const NEOX_TESTNET_TOKENS = [

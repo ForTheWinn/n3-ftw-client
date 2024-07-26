@@ -3,11 +3,11 @@ import { MAINNET, TESTNET, SMITH, SWAP, FARM } from "../../../consts/global";
 export const NEOX_MAINNET_CONTRACTS = {
   SMITH: "0x67DEE0d471D516221EF107c0d7aB6Ce538CbC4Ec",
   NEP: "",
-  SWAP: "",
+  SWAP: "0xE1e1cC68841D1fF13bdd8C8fB36E6f91995788f4",
   FARM: "",
   FNEO: "",
   GAS: "",
-  WGAS: "",
+  WGAS: "0xdE41591ED1f8ED1484aC2CD8ca0876428de60EfF",
 };
 
 export const NEOX_TESTNET_CONTRACTS = {
