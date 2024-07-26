@@ -106,6 +106,8 @@ export const getChainNameByChain = (chain: CHAINS): string => {
       return "Ethereum";
     case BASE_CHAIN:
       return "Base";
+    case NEOX_CHAIN:
+      return "Neo X";
     default:
       return "";
   }
