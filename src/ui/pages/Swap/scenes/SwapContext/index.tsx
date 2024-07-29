@@ -295,7 +295,7 @@ export const SwapContextProvider = ({
     setAmountALoading(false);
     setAmountBLoading(false);
     window.history.replaceState(null, "", `/#${location.pathname}`);
-    message.success("Chain switced!");
+    message.success("Chain swithced!");
     increaseRefreshCount();
   };
 
