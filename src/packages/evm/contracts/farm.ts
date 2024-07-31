@@ -112,7 +112,6 @@ export const getClaimable = async (
   address: string
 ): Promise<IClaimable> => {
   const contractAddress = EVM_CONTRACTS[chain][network][FARM];
-  console.log(contractAddress);
   const NEPAddress = NEP_ADDRESSES[chain][network] as any;
   const chainId = CONFIGS[network][chain].chainId;
 

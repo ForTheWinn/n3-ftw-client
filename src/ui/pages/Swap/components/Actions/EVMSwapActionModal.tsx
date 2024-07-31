@@ -83,6 +83,7 @@ const ActionModal = (props: IActionModalProps) => {
     onSuccess,
     onCancel,
   } = props;
+  console.log(1)
   const [status, setStatus] = useState({
     isProcessing: false,
     message: "",

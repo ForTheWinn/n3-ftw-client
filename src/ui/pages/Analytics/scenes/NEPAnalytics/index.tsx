@@ -71,12 +71,7 @@ const NEPAnalytics = () => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      console.log(
-        BRIDGE_CONTRACTS[network][getChainIdByChain(NEO_CHAIN, network)][
-          getChainIdByChain(ETH_CHAIN, network)
-        ]
-      );
-      console.log(NEP_ADDRESSES[NEO_CHAIN][network]);
+
       try {
         const [
           neoNEP,
@@ -118,7 +113,6 @@ const NEPAnalytics = () => {
             NEP_ADDRESSES[NEO_CHAIN][network]
           ),
         ]);
-        console.log(ethNEPInBridge, polNEPInBridge);
 
         setValues({
           neo: { ...neoNEP },
