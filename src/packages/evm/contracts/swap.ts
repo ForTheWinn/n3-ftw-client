@@ -2,7 +2,7 @@ import {
   readContract,
   writeContract,
   simulateContract,
-  multicall,
+  estimateGas,
 } from "@wagmi/core";
 import { erc20Abi } from "viem";
 import { ethers } from "ethers";
@@ -243,9 +243,14 @@ export const provide = async (
     args: [tokenA, amountA, tokenB, amountB, slippage],
     chainId: CONFIGS[network][chain].chainId,
   };
-  const config = await simulateContract(wagmiConfig, args);
+  await simulateContract(wagmiConfig, args);
+  const gasEstimate = await estimateGas(wagmiConfig, args);
+  // Add a buffer to the gas estimate (e.g., 20% more)
+  const bufferPercentage: number = 1.2;
+  const gasLimit: bigint =
+    (gasEstimate * BigInt(Math.ceil(bufferPercentage * 100))) / BigInt(100);
 
-  return await writeContract(wagmiConfig, args);
+  return await writeContract(wagmiConfig, { ...args, gasLimit });
 };
 
 export const removeLiquidity = async (
