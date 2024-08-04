@@ -1,46 +1,36 @@
 import React from "react";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
-import { TOKEN_LIST } from "../../../../consts/tokens";
-import { Avatar, Space } from "antd";
+import { Avatar, Space, List, Card, Typography } from "antd";
 import { IToken } from "../../../../consts/tokens";
 
 interface ITokenListProps {
-  keyword?: string;
+  tokenList: any[];
   chain: CHAINS;
   network: INetworkType;
   onClick: (token: IToken) => void;
 }
+
 const DisplayTokenList = ({
-  keyword,
+  tokenList,
   chain,
   network,
   onClick,
 }: ITokenListProps) => {
-  let tokenList: any = TOKEN_LIST[chain][network];
-  if (keyword) {
-    tokenList = tokenList.filter((item) =>
-      item.symbol.toLowerCase().includes(keyword.toLowerCase())
-    );
-  }
   return (
-    <>
-      {tokenList.map((token) => {
-        if (!token.isWhitelisted) return null;
-        return (
-          <a
-            key={token.hash}
-            onClick={() => onClick(token)}
-            className="panel-block is-clickable"
-          >
+    <Card size="small">
+      <List
+        dataSource={tokenList.filter((token) => token.isWhitelisted)}
+        renderItem={(token: IToken) => (
+          <List.Item onClick={() => onClick(token)}>
             <Space>
               <Avatar size="small" src={token.icon} />
-              {token.symbol}
+              <Typography.Text>{token.symbol}</Typography.Text>
             </Space>
-          </a>
-        );
-      })}
-    </>
+          </List.Item>
+        )}
+      />
+    </Card>
   );
 };
 

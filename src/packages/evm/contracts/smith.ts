@@ -89,7 +89,7 @@ export const getTokenList = async (chain: CHAINS, network: INetworkType) => {
   return res;
 };
 
-const getTokenMetadata = async (
+export const getTokenMetadata = async (
   chain: CHAINS,
   network: INetworkType,
   contractHash: string

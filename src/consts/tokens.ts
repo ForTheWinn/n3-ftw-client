@@ -5,6 +5,7 @@ export interface IToken {
   hash: string;
   symbol: string;
   decimals: number;
+  name?: string;
   icon?: string;
   totalSupply?: string;
   pairs?: string[];

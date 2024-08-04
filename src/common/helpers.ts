@@ -20,6 +20,7 @@ import { EXPLORER_URLS } from "../consts/urls";
 import { CHAINS, CONFIGS } from "../consts/chains";
 import { ethers } from "ethers";
 import { WENT_WRONG } from "../consts/messages";
+import { LocalStorage } from "../packages/neo/local-storage";
 
 export function createTokenMetadata({
   hash,
@@ -316,3 +317,13 @@ export function formatSignificantNumbers(input) {
     return Number(numStr).toFixed(2);
   }
 }
+
+export const getTokenList = (chain: CHAINS, network: INetworkType) => {
+  const tokenList = TOKEN_LIST[chain][network];
+  const localTokens = LocalStorage.getToken(chain, network).map(
+    (token: IToken) => {
+      return { ...token, isWhitelisted: true };
+    }
+  );
+  return [...tokenList, ...localTokens];
+};

@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Space } from "antd";
+import {
+  Alert,
+  Avatar,
+  Button,
+  Card,
+  List,
+  Space,
+  Spin,
+  Typography,
+} from "antd";
 import { IToken } from "../../../../consts/tokens";
 import { CHAINS } from "../../../../consts/chains";
 import { INetworkType } from "../../../../packages/neo/network";
-import CustomTokenWarning from "./CustomTokenWarning";
 import { fetchTokenInfo } from "../../../../common/routers/global";
 import { TOKEN_FETCH_ERROR } from "../../../../consts/messages";
-import { getTokenByHash } from "../../../../common/helpers";
+import { getExplorer, getTokenByHash } from "../../../../common/helpers";
+import { LocalStorage } from "../../../../packages/neo/local-storage";
 
 interface IDisplayCustomTokenProps {
   chain: CHAINS;
@@ -24,63 +33,111 @@ const DisplayCustomToken = ({
 }: IDisplayCustomTokenProps) => {
   const [customToken, setCustomToken] = useState<IToken | undefined>();
   const [error, setError] = useState<string | undefined>();
-  const [showConfirm, setShowConfirm] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   useEffect(() => {
-    const fetchToken = async () => {
-      setError(undefined);
-      let _token = getTokenByHash(chain, network, token);
-      if (_token) {
-        setIsVerified(true);
-        setCustomToken(_token);
-      } else {
-        const res = await fetchTokenInfo(chain, network, token);
-        if (res) {
-          setCustomToken({
-            hash: token,
-            decimals: res.decimals,
-            symbol: res.symbol,
-            icon: res.icon,
-          });
+    (async () => {
+      setLoading(true);
+      try {
+        let _token = getTokenByHash(chain, network, token);
+        if (_token) {
+          setIsVerified(true);
+          setCustomToken(_token);
         } else {
-          setError(TOKEN_FETCH_ERROR);
+          const res = await fetchTokenInfo(chain, network, token);
+          if (res) {
+            setCustomToken(res);
+          } else {
+            setError(TOKEN_FETCH_ERROR);
+          }
         }
+      } catch (error) {
+        setError(TOKEN_FETCH_ERROR);
+      } finally {
+        setLoading(false);
       }
-    };
-    if (token) {
-      fetchToken();
-    }
+    })();
   }, [token]);
 
-  const handleClick = () => {
-    if (isVerified && customToken) {
-      onClick(customToken);
-    } else {
-      setShowConfirm(true);
-    }
-  };
-
-  if (error) return <div className="panel-block">{TOKEN_FETCH_ERROR}</div>;
-  if (!customToken) return <></>;
-  if (showConfirm)
-    return (
-      <CustomTokenWarning
-        onOk={onClick}
-        onCancel={onCancel}
-        chain={chain}
-        network={network}
-        token={customToken}
-      />
-    );
   return (
-    <>
-      <a onClick={handleClick} className="panel-block is-clickable">
+    <Card size="small">
+      <List>
+        {isLoading && (
+          <List.Item>
+            <Spin />
+          </List.Item>
+        )}
+        {error && (
+          <List.Item
+            actions={[
+              <Button onClick={onCancel} size="small" type="link">
+                Reset
+              </Button>,
+            ]}
+          >
+            <Alert showIcon type="error" message={error} />
+          </List.Item>
+        )}
+        {customToken && (
+          <List.Item onClick={() => onClick(customToken)}>
+            <Space direction="vertical">
+              <Space>
+                <Avatar size="small" src={customToken.icon} />
+                <Typography.Text>{customToken.symbol}</Typography.Text>
+                {customToken.name && (
+                  <Typography.Text>({customToken.name})</Typography.Text>
+                )}
+              </Space>
+              {!isVerified && (
+                <Alert
+                  type="warning"
+                  message={
+                    <Space direction="vertical">
+                      <Typography.Text>
+                        Ensure that the token address is correct and from a
+                        trusted source to prevent any potential security risks.
+                      </Typography.Text>
+                      <Space>
+                        <Button
+                          target="_blank"
+                          href={`${getExplorer(chain, network, "contract")}/${
+                            customToken.hash
+                          }`}
+                          size="small"
+                        >
+                          View Token Details
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            LocalStorage.setToken(chain, network, {
+                              ...customToken,
+                            })
+                          }
+                          type="primary"
+                          size="small"
+                        >
+                          Save Token
+                        </Button>
+                      </Space>
+                    </Space>
+                  }
+                />
+              )}
+            </Space>
+          </List.Item>
+        )}
+      </List>
+
+      {/* <a onClick={handleClick} className="panel-block is-clickable">
         <Space>
           <Avatar size="small" src={customToken.icon} />
-          {customToken.symbol}
+          <Typography.Text strong>{customToken.symbol}</Typography.Text>
+          {customToken.name && (
+            <Typography.Text>({customToken.name})</Typography.Text>
+          )}
         </Space>
-      </a>
-    </>
+      </a> */}
+    </Card>
   );
 };
 

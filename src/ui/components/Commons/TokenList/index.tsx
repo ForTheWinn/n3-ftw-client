@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Input, Modal } from "antd";
-
-import { FaSearch } from "react-icons/fa";
+import { Divider, Input, Modal } from "antd";
 
 import { IToken } from "../../../../consts/tokens";
 import { CHAINS } from "../../../../consts/chains";
@@ -9,6 +7,7 @@ import { INetworkType } from "../../../../packages/neo/network";
 import { ethers } from "ethers";
 import DisplayTokenList from "./DisplayTokenList";
 import DisplayCustomToken from "./DisplayCustomToken";
+import { getTokenList } from "../../../../common/helpers";
 
 interface IAssetListModalProps {
   chain: CHAINS;
@@ -26,70 +25,68 @@ const TokenList = ({
   onAssetClick,
   onClose,
 }: IAssetListModalProps) => {
-  const [search, setSearch] = useState<string | undefined>();
   const [customContract, setCustomContract] = useState<string | undefined>();
-
-  const searchContract = async (value: string) => {
-    if (value && ethers.isAddress(value)) {
+  const [symbol, setSymbol] = useState<string | undefined>();
+  let tokenList: any = getTokenList(chain, network);
+  const onSearch = (value, _e, info) => {
+    if (info.source === "clear") {
+      onReset();
+      return;
+    }
+    if (ethers.isAddress(value)) {
       setCustomContract(value);
     } else {
-      if (!value) {
-        setCustomContract(undefined);
-      }
-      setSearch(value);
+      setSymbol(value);
     }
   };
 
   const onReset = () => {
     setCustomContract(undefined);
-    setSearch(undefined);
+    setSymbol(undefined);
   };
+
+  if (symbol) {
+    tokenList = tokenList.filter((token) =>
+      token.symbol.toLowerCase().includes(symbol.toLowerCase())
+    );
+  } else {
+    tokenList = getTokenList(chain, network);
+  }
 
   return (
     <>
       <Modal
-        style={{ padding: "0!important" }}
         title="Select a token"
         centered
         open={true}
         onCancel={onClose}
-        // footer={null}
-        styles={{ body: { padding: "-10px" } }}
-        footer={
-          <nav
-            className="panel is-shadowless"
-            style={{
-              border: "1px solid #eee",
-              height: "500px",
-              overflowY: "auto",
-            }}
-          >
-            {customContract ? (
-              <DisplayCustomToken
-                chain={chain}
-                network={network}
-                token={customContract}
-                onClick={onAssetClick}
-                onCancel={onReset}
-              />
-            ) : (
-              <DisplayTokenList
-                keyword={search}
-                chain={chain}
-                network={network}
-                onClick={onAssetClick}
-              />
-            )}
-          </nav>
-        }
+        footer={null}
       >
-        <Input
-          onChange={(e) => searchContract(e.target.value)}
-          placeholder="Search symbol or paste contract address"
-          prefix={<FaSearch />}
+        {customContract ? (
+          <DisplayCustomToken
+            chain={chain}
+            network={network}
+            token={customContract}
+            onClick={onAssetClick}
+            onCancel={onReset}
+          />
+        ) : (
+          <DisplayTokenList
+            tokenList={tokenList}
+            chain={chain}
+            network={network}
+            onClick={onAssetClick}
+          />
+        )}
+        <Divider />
+        <Input.Search
+          placeholder="0x.."
+          allowClear
+          onSearch={onSearch}
+          onPressEnter={(e: any) =>
+            onSearch(e.target.value, e, { source: "input" })
+          }
         />
-
-        <hr />
       </Modal>
     </>
   );

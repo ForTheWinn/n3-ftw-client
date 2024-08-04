@@ -10,6 +10,7 @@ import { ethers } from "ethers";
 import { formatAmount } from "../../helpers";
 import { wagmiConfig } from "../../../wagmi-config";
 import { SmithContract } from "../../../packages/neo/contracts/ftw/smith";
+import { getTokenMetadata } from "../../../packages/evm/contracts/smith";
 
 export const waitTransactionUntilSubmmited = async (
   chain: CHAINS,
@@ -116,6 +117,7 @@ export const fetchTokenInfo = async (
       };
     default:
       try {
+        const res = await getTokenMetadata(chain, network, hash);
         const chainId = CONFIGS[network][chain].chainId;
         const data = await getToken(wagmiConfig, {
           address: hash as any,
@@ -123,12 +125,11 @@ export const fetchTokenInfo = async (
         });
         return {
           hash,
+          name: data.name,
           decimals: data.decimals,
           symbol: data.symbol as any,
-          icon: "",
-          totalSupply: ethers
-            .formatUnits(data.totalSupply.value.toString(), data.decimals)
-            .toString(),
+          icon: res.icon ? res.icon : "",
+          totalSupply: data.totalSupply.formatted,
         };
       } catch (e) {
         console.error(e);
