@@ -15,13 +15,10 @@ import {
 } from "../../../../../packages/evm/contracts/swap";
 import {
   calculateSlippage,
-  getCurrentStep,
 } from "../../../../../common/helpers";
-import { WENT_WRONG } from "../../../../../consts/messages";
 import { waitTransactionUntilSubmmited } from "../../../../../common/routers/global";
 import { DisplayAd } from "./components/DisplayAd";
 import { TxResult } from "../../../../components/TxResult";
-import Errors from "./components/Errors";
 import { STATUS_STATE, SWAP } from "../../../../../consts/global";
 import { CONTRACT_MAP } from "../../../../../consts/contracts";
 import { ethers } from "ethers";
@@ -83,7 +80,6 @@ const ActionModal = (props: IActionModalProps) => {
     onSuccess,
     onCancel,
   } = props;
-  console.log(1)
   const [status, setStatus] = useState({
     isProcessing: false,
     message: "",
