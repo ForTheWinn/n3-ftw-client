@@ -30,6 +30,13 @@ export const NEOX_MAINNET_TOKENS = [
     decimals: 18,
     isWhitelisted: true,
   }),
+  createTokenMetadata({
+    hash: "0xE816deE05cf6D0F2a57EB4C489241D8326B5d106",
+    symbol: "NDMEME",
+    icon: "/symbols/NDMEME.png",
+    decimals: 18,
+    isWhitelisted: true,
+  }),
 ];
 
 export const NEOX_TESTNET_TOKENS = [
