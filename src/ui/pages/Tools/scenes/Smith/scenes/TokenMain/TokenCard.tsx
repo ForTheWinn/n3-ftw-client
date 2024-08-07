@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Button, List, Space } from "antd";
+import { Avatar, Button, Card, List, Space, Typography } from "antd";
 import { CHAINS } from "../../../../../../../consts/chains";
 import { INetworkType } from "../../../../../../../packages/neo/network";
 import { getExplorer } from "../../../../../../../common/helpers";
@@ -32,58 +32,52 @@ const TokenCard = ({
   }
 
   return (
-    <List.Item
-      actions={
-        isContractOwner
-          ? [
+    <List.Item>
+      <Card
+        style={{ overflow: "hidden", wordBreak: "break-all" }}
+        actions={[
+          <Space>
+            <Button
+              size="small"
+              target="_blank"
+              href={`${getExplorer(
+                chain,
+                network,
+                "contract"
+              )}/${tokenAddress}`}
+              rel="noreferrer"
+            >
+              Info
+            </Button>
+            {website && (
               <Button
+                size="small"
                 target="_blank"
-                href={`${getExplorer(
-                  chain,
-                  network,
-                  "contract"
-                )}/${tokenAddress}`}
+                href={website}
                 rel="noreferrer"
               >
-                View
-              </Button>,
-              <Button onClick={onUpdate}>Update</Button>,
-            ]
-          : [
-              <Button
-                target="_blank"
-                href={`${getExplorer(
-                  chain,
-                  network,
-                  "contract"
-                )}/${tokenAddress}`}
-                rel="noreferrer"
-              >
-                View
-              </Button>,
-            ]
-      }
-    >
-      <List.Item.Meta
-        avatar={<Avatar size={"large"} src={icon ? icon : FTW_LOGO_URL} />}
-        title={
-          <>
-            <div>{`${symbol} (${name})`}</div>
-            <div>
-              <span>{website}</span>
-            </div>
-            {MC > 0 ? (
-              <div>
-                <Space>
-                  <span>MC: ${MC.toLocaleString()}</span>
-                </Space>
-              </div>
-            ) : (
-              <></>
+                Website
+              </Button>
             )}
-          </>
-        }
-      />
+            {isContractOwner && (
+              <Button type="primary" size="small" onClick={onUpdate}>
+                Update
+              </Button>
+            )}
+          </Space>,
+        ]}
+      >
+        <Space size="middle" style={{ width: "100%" , minHeight:"80px" }}>
+          <Avatar size={"large"} src={icon ? icon : FTW_LOGO_URL} />
+          <Space direction="vertical">
+            <Typography.Text strong>{symbol}</Typography.Text>
+            <Typography.Text ellipsis>{name}</Typography.Text>
+            {MC > 0 && (
+              <Typography.Text>MC: ${MC.toLocaleString()}</Typography.Text>
+            )}
+          </Space>
+        </Space>
+      </Card>
     </List.Item>
   );
 };

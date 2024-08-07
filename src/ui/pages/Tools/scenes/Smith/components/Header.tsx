@@ -4,14 +4,14 @@ import ModalCard from "../../../../../components/Modal";
 import SmithInfo from "./SmithInfo";
 import { SMITH_CREATE_NEP17_PATH } from "../../../../../../consts/routes";
 import Level from "../../../../../components/Level";
-import { Avatar, Space } from "antd";
+import { Avatar, Card, Space } from "antd";
 import { CONFIGS } from "../../../../../../consts/chains";
 import { useApp } from "../../../../../../common/hooks/use-app";
 
 const Header = () => {
   const [isInfoModalActive, setInfoModalActive] = useState(false);
   return (
-    <div className="box is-shadowless">
+    <Card>
       <Level
         left={
           <div>
@@ -40,7 +40,7 @@ const Header = () => {
           <SmithInfo />
         </ModalCard>
       )}
-    </div>
+    </Card>
   );
 };
 

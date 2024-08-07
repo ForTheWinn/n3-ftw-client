@@ -1,0 +1,8 @@
+export const SMITH_BLACKLIST_NAMES = [
+  "boob",
+  "dick"
+]
+export const SMITH_BLACKLIST_HASHES = [
+  "0x755873119FC26e15dBA03eB57efbDbc0d1B435ea",
+  "0x4DfFd2D1604B15E7c4A303D707CE4AA9F39997A3",
+];
