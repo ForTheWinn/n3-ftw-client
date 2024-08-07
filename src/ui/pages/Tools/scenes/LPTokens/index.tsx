@@ -19,7 +19,6 @@ import {
   Space,
 } from "antd";
 
-const { Title, Text } = Typography;
 
 const LPTokens = () => {
   const location = useLocation();
