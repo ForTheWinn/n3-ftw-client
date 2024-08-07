@@ -118,6 +118,7 @@ export const getTokenURI = async (
     amountA: jsonObject.amountA,
     amountB: jsonObject.amountB,
     sharesPercentage: jsonObject.sharesPercentage,
+    image: jsonObject.image,
   };
 };
 

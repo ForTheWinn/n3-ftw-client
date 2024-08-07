@@ -813,6 +813,7 @@ export class SwapContract {
       decimalsB: token.decimalsB,
       sharesPercentage: token.sharesPercentage.toString(),
       lock: token.lock,
+      image: token.image
     };
   };
 

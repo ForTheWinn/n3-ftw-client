@@ -409,7 +409,7 @@ export const TOOLS_LP_FINDER_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
-    // [NEOX_CHAIN]: [TESTNET, MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [],
   component: LPTokens,
@@ -422,7 +422,7 @@ export const TOOLS_PAGE_ROUTE = {
     [NEO_CHAIN]: [TESTNET, MAINNET],
     [POLYGON_CHAIN]: [TESTNET, MAINNET],
     [ETH_CHAIN]: [TESTNET, MAINNET],
-    // [NEOX_CHAIN]: [TESTNET, MAINNET],
+    [NEOX_CHAIN]: [TESTNET, MAINNET],
   },
   category: [
     TOOLS_MAIN_PAGE_ROUTE,

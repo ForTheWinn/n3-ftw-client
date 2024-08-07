@@ -21,6 +21,7 @@ export interface ISwapLPToken {
   decimalsB: string;
   sharesPercentage: string;
   lock?: number;
+  image?: string;
 }
 
 export interface ISwapEstimateArgs {

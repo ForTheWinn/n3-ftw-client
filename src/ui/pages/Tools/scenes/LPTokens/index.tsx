@@ -7,90 +7,84 @@ import { swapRouter } from "../../../../../common/routers";
 import { ISwapLPToken } from "../../../../../common/routers/swap/interfaces";
 import LPTokenCard from "../../../../components/LPTokenCard";
 import { WENT_WRONG } from "../../../../../consts/messages";
-import { Divider } from "antd";
+import {
+  Divider,
+  Row,
+  Col,
+  Input,
+  Typography,
+  Alert,
+  Spin,
+  Card,
+  Space,
+} from "antd";
+
+const { Title, Text } = Typography;
 
 const LPTokens = () => {
   const location = useLocation();
   const history = useHistory();
   const params = queryString.parse(location.search);
   const { chain, network } = useApp();
-  const [id, setId] = useState<any>(
-    params && params.id ? params.id : undefined
-  );
   const [token, setToken] = useState<ISwapLPToken | undefined>();
   const [error, setError] = useState("");
   const [isSearching, setSearching] = useState(false);
 
   const onSearch = async (tokenId) => {
-    try {
-      setSearching(true);
-      setError("");
-      const token: ISwapLPToken | undefined = await swapRouter.getLPToken(
-        chain,
-        network,
-        tokenId
-      );
-      setToken(token);
-      let search = `?id=${id}`;
-      history.push(search);
-    } catch (e: any) {
-      setError(e.message ? e.message : WENT_WRONG);
+    if (tokenId) {
+      try {
+        setSearching(true);
+        setError("");
+        const token: ISwapLPToken | undefined = await swapRouter.getLPToken(
+          chain,
+          network,
+          tokenId
+        );
+        setToken(token);
+        let search = `?id=${tokenId}`;
+        history.push(search);
+      } catch (e: any) {
+        setError(e.message ? e.message : WENT_WRONG);
+      }
+      setSearching(false);
     }
-    setSearching(false);
   };
 
   return (
     <PageLayout>
-      <div className="columns is-centered">
-        <div className="column is-half">
-          <div className="box is-shadowless">
-            <h1 className="title is-5">LP Value Finder</h1>
-            <p className="subtitle is-7">
-              Enter LP token ID to find the token value.
-            </p>
-            <Divider />
-            <div className="field has-addons">
-              <div className="control is-expanded">
-                <input
-                  value={id}
-                  onChange={(e: any) => setId(e.target.value)}
-                  className="input is-shadowless"
-                  type="text"
-                  placeholder="Enter LP token ID"
-                />
-              </div>
-              <div className="control">
-                <button
-                  onClick={() => onSearch(id)}
-                  disabled={!id}
-                  className={`button is-primary ${
-                    isSearching ? "is-loading" : ""
-                  }`}
-                >
-                  Search
-                </button>
-              </div>
-            </div>
-            {error ? <p className="help is-danger">{error}</p> : <></>}
-          </div>
-
-          {isSearching ? (
-            <div className="box is-shadowless">
-              <div className="level is-mobile">
-                <div className="level-left">
-                  <div className="level-item">Searching..</div>
-                </div>
-              </div>
-            </div>
-          ) : token && id ? (
-            <div className="box is-shadowless">
+      <Row justify="center">
+        <Col xs={24} sm={18} md={8}>
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <Card>
+              <h1 className="title is-5">LP Value Finder</h1>
+              <p className="subtitle is-7">
+                Enter LP token ID to find the token value.
+              </p>
+              <Divider />
+              <Input.Search
+                defaultValue={params && params.id ? (params.id as any) : ""}
+                placeholder="Enter LP token ID"
+                onSearch={onSearch}
+                enterButton="Search"
+              />
+            </Card>
+            {error && (
+              <Alert
+                message={"Failed to load. Check your token id and try again."}
+                type="error"
+                showIcon
+              />
+            )}
+            {isSearching ? (
+              <Card>
+                <Spin tip="Searching..." />
+              </Card>
+            ) : token ? (
               <LPTokenCard {...token} />
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
-      </div>
+            ) : null}
+          </Space>
+        </Col>
+      </Row>
     </PageLayout>
   );
 };
